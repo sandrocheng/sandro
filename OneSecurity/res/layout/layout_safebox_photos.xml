@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- joy 图片导入页面 -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/com.tencent.onesecurity"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/bg_common_base"
+    android:orientation="vertical" >
+
+    <include
+        android:id="@+id/secure_line_titlebar"
+        android:layout_alignParentTop="true"
+        layout="@layout/layout_sub_title_bar" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@id/secure_line_titlebar"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:id="@+id/lay_gridview"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:orientation="vertical" >
+
+            <GridView
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/ablum_gridview"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_alignParentTop="true"
+                android:layout_marginBottom="1dp"
+                android:layout_marginLeft="6dp"
+                android:layout_marginRight="6dp"
+                android:layout_marginTop="12.66dp"
+                android:horizontalSpacing="1dp"
+                android:listSelector="#00000000"
+                android:numColumns="3"
+                android:scrollbarStyle="outsideOverlay"
+                android:scrollbarThumbVertical="@drawable/bg_common_list_scroll_bar"
+                android:stretchMode="columnWidth"
+                android:verticalSpacing="1dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/line_add_photos"
+            android:layout_width="fill_parent"
+            android:layout_height="93.33dp"
+            android:layout_weight="0"
+            android:gravity="center_horizontal|bottom"
+            android:orientation="vertical" android:layout_marginBottom="4dp">
+
+            <com.tencent.onesecurity.ui.customview.widget.CustomIconButton
+                android:id="@+id/photo_btn_import"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:buttonIcon="@drawable/btn_vault_photos_import_vip_nor"
+                app:buttonIconDisabled="@drawable/btn_vault_photos_import_vip_disabled"
+                app:buttonIconPress="@drawable/btn_vault_photos_import_vip_press"
+                app:buttonText="@string/safebox_photo_import1"
+                app:buttonType="icon_left_vip"/>
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

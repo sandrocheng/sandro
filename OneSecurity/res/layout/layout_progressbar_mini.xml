@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/desktop_progress_bg"
+    android:orientation="vertical" >
+ 	<com.tencent.onesecurity.deskassistance.MiniProgressBar
+        android:layout_width="fill_parent"
+    	android:layout_height="wrap_content"
+    	android:layout_gravity="center_vertical"
+    	android:id="@+id/progress_bar">
+    </com.tencent.onesecurity.deskassistance.MiniProgressBar>
+
+</LinearLayout>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/bg_common_base"
+    android:orientation="vertical" >
+
+    <include
+        android:id="@+id/menu_about_titlebar"
+        layout="@layout/layout_sub_title_bar" />
+
+    <include layout="@layout/layout_menu_about_scroll" />
+
+</LinearLayout>

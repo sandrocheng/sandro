@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/img_virus_main_circle_mask_press" android:state_pressed="true"></item>
+    <item android:drawable="@drawable/img_virus_main_circle_mask_nor"></item>
+</selector>

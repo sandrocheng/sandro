@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/img_widget_shortcut_bg_top"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:paddingLeft="17dp"
+            android:text="@string/widget_shortcut_switch"
+            android:textColor="@color/widget_blue"
+            android:textSize="@dimen/textsize_18pixel" />
+
+        <ImageView
+            android:id="@+id/widget_shortcut_setting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:paddingRight="17dp"
+            android:src="@drawable/img_widget_shortcut_setting" />
+    </RelativeLayout>
+
+    <com.tencent.onesecurity.widget.shortcut.ShortcutVibrateLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="1dp"
+        android:layout_marginRight="1dp"
+        android:id="@+id/widget_shortcut_sound_layout"
+        android:background="@drawable/img_widget_shortcut_bg_middle"
+        android:orientation="horizontal" >
+
+        <ImageView
+            android:id="@+id/widget_shortcut_mute"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:paddingLeft="19dp"
+            android:src="@drawable/img_widget_shortcut_mute" />
+
+        <ImageView
+            android:id="@+id/widget_shortcut_voice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:paddingRight="19dp"
+            android:src="@drawable/img_widget_shortcut_voice" />
+
+        <SeekBar
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/widget_shortcut_seekbar_sound"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/widget_shortcut_voice"
+            android:layout_toRightOf="@id/widget_shortcut_mute"
+            android:maxHeight="5dip"
+            android:minHeight="5dip"
+            android:progressDrawable="@drawable/seek_bar"
+            android:thumb="@drawable/thumb"
+            android:thumbOffset="0dp" />
+    </com.tencent.onesecurity.widget.shortcut.ShortcutVibrateLayout>
+
+    <include layout="@layout/appwidget_layout_shortcut_icons" />
+
+    <com.tencent.onesecurity.widget.shortcut.ShortcutScreenBrightnessLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/widget_shortcut_brightness_layout"
+        android:background="@drawable/img_widget_shortcut_bg_buttom"
+        android:orientation="horizontal" >
+
+        <ImageView
+            android:id="@+id/widget_shortcut_moon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:paddingLeft="19dp"
+            android:src="@drawable/img_widget_shortcut_moon" />
+
+        <ImageView
+            android:id="@+id/widget_shortcut_sun"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:paddingRight="19dp"
+            android:src="@drawable/img_widget_shortcut_sunshine" />
+
+        <SeekBar
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/widget_shortcut_seekbar_brightness"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/widget_shortcut_sun"
+            android:layout_toRightOf="@id/widget_shortcut_moon"
+            android:maxHeight="5dip"
+            android:minHeight="5dip"
+            android:progressDrawable="@drawable/seek_bar"
+            android:thumb="@drawable/thumb"
+            android:thumbOffset="0dp" />
+    </com.tencent.onesecurity.widget.shortcut.ShortcutScreenBrightnessLayout>
+
+</LinearLayout>

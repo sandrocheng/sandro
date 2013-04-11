@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:layout_gravity="center"
+    android:gravity="center"
+    android:background="#d0000000"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@drawable/bg_vault_pop_bg"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal" >
+
+            <ImageView
+            	android:id="@+id/icon_viurs_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left|center_vertical"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:contentDescription="@string/application_name"
+                android:background="@drawable/icon_notification_logo_default" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left|center_vertical"
+                android:text="@string/application_name"
+                android:textSize="17sp"
+                android:textColor="#414141"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+		<!-- 病毒信息 -->
+        <TextView
+            android:id="@+id/text_virus_dialog_desc"
+            android:text="色色男女练练看 is a virus. Uninstall now?"
+            android:layout_gravity="left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+			android:layout_marginTop="20dip"
+			android:layout_marginLeft="26.67dip"
+			android:layout_marginRight="26.67dip"
+			android:layout_marginBottom="10dip"/>
+
+		<!-- 
+		<View
+			android:id="@+id/divider_line"
+            android:layout_width="fill_parent"
+            android:layout_height="0.5dp"
+			android:layout_marginLeft="26.67dip"
+			android:layout_marginRight="26.67dip"
+            android:background="@color/white_1_fafafa"/>
+		 -->
+            
+        <!-- 隐私信息 -->
+        <TextView
+            android:id="@+id/text_virus_dialog_privacy_title"
+        	android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+			android:layout_marginTop="17dip"
+			android:layout_marginLeft="26.67dip"
+			android:layout_marginRight="26.67dip"
+			android:textColor="@color/button_black_belowtext_color"
+			android:textSize="@dimen/textsize_14sp"
+			android:lineSpacingMultiplier="1.0"
+            android:text="@string/vvcl_the_app_can_access_private_info"/>
+            
+            
+        <TextView
+            android:id="@+id/text_virus_dialog_privacy_content"
+        	android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+			android:layout_marginTop="8dip"
+			android:layout_marginLeft="26.67dip"
+			android:layout_marginRight="26.67dip"
+			android:textColor="@color/button_black_belowtext_color"
+			android:textSize="@dimen/textsize_14sp"
+			android:lineSpacingMultiplier="1.5"
+            android:text="Access jaskdjaskldf\n Access asdfklasdfj;asd"/>
+            
+        <TextView
+        	android:layout_width="wrap_content"
+        	android:layout_height="20dip"/>
+        <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/img_pop_line_h"
+            android:contentDescription="@string/application_name" />
+
+        <LinearLayout
+            android:id="@+id/BtnLayout"
+            android:layout_width="fill_parent"
+            android:layout_height="48dip"
+            android:minWidth="800dip"
+            android:orientation="horizontal" >
+
+            <LinearLayout
+                android:id="@+id/btn_virus_dialog_cancel"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:background="@drawable/sel_btn_bg_custom_dialog"
+                android:gravity="center"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:id="@+id/tv_left"
+                    style="@style/btn_custom_dialog_common_black"
+                    android:duplicateParentState="true"
+                    android:text="@string/vvcl_ignore" />
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_marginBottom="6.66dip"
+                android:layout_marginTop="6.66dip"
+                android:background="@drawable/img_pop_line_v"
+                android:contentDescription="@string/application_name" />
+
+            <LinearLayout
+                android:id="@+id/btn_virus_dialog_uninstall"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:background="@drawable/sel_btn_bg_custom_dialog"
+                android:gravity="center"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:id="@+id/tv_right"
+                    style="@style/btn_custom_dialog_common_black"
+                    android:duplicateParentState="true"
+                    android:text="@string/vvcl_uninstall" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

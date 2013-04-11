@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="wrap_content" android:layout_height="wrap_content">
+	<ImageView android:id="@+id/pre_image"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_marginLeft="5dip"
+		android:src="@drawable/btn_icon"
+		android:layout_gravity="center_vertical"
+		android:visibility="gone" />
+	<include android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="center"
+		android:visibility="gone" 
+		layout="@layout/layout_buttonview_text"/>
+	<ImageView android:id="@+id/arrow_image"
+		android:layout_height="wrap_content" android:layout_width="wrap_content"
+		android:src="@drawable/sync_btn_arrow" android:duplicateParentState="true"
+		android:layout_gravity="right|bottom" android:layout_marginBottom="3dp"
+		android:visibility="gone" />
+	<ImageView android:id="@+id/button_image"
+		android:layout_height="wrap_content" android:layout_width="wrap_content"
+		android:src="@drawable/list_icon_more" android:duplicateParentState="true"
+		android:layout_gravity="right|center_vertical"
+		android:visibility="gone"/>
+</FrameLayout>

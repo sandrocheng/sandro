@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/icon_menu_setting_setup_security_question" android:state_enabled="true"/>
+    <item android:drawable="@drawable/icon_menu_setting_setup_security_question_disable" android:state_enabled="false"/>
+    <item android:drawable="@drawable/icon_menu_setting_setup_security_question"></item>
+
+</selector>

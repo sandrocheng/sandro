@@ -1,0 +1,482 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/com.tencent.onesecurity"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/bg_common_base"
+    android:orientation="vertical" >
+
+    <include layout="@layout/layout_sub_title_bar" />
+
+    <!-- 扫描中 head -->
+
+    <LinearLayout
+        android:id="@+id/lay_full_scanning_head"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="13dp"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <!-- 扫毒动画 -->
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="24dp"
+                android:layout_marginRight="14dp" >
+
+                <com.tencent.onesecurity.ui.customview.widget.FullScanView
+                    android:id="@+id/ellipse_view"
+                    android:layout_width="86dp"
+                    android:layout_height="86dp"
+                    android:layout_gravity="center"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:layout_width="86dp"
+                    android:layout_height="86dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/mask_zoom" />
+
+                <TextView
+                    android:id="@+id/tv_start_scan"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/vvcl_start"
+                    android:textColor="@drawable/sel_btn_start_customize_scan_text"
+                    android:textSize="25sp" >
+                </TextView>
+            </FrameLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/vvcl_scanned_item_s"
+                        android:textColor="@color/white_1_fafafa"
+                        android:textSize="@dimen/textsize_16sp" />
+
+                    <TextView
+                        android:id="@+id/text_full_scanning_scannd_count"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:text="0"
+                        android:textColor="@color/color_full_scan_text"
+                        android:textSize="@dimen/textsize_16sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="1dp"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/vvcl_elapsed_time"
+                        android:textColor="@color/white_1_fafafa"
+                        android:textSize="@dimen/textsize_16sp" />
+
+                    <TextView
+                        android:id="@+id/text_full_scanning_scannd_time"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:text="00:00"
+                        android:textColor="@color/color_full_scan_text"
+                        android:textSize="@dimen/textsize_16sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="1dp"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/vvcl_threat_s_detected"
+                        android:textColor="@color/white_1_fafafa"
+                        android:textSize="@dimen/textsize_16sp" />
+
+                    <TextView
+                        android:id="@+id/text_full_scanning_virus_count"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:text="0"
+                        android:textColor="@color/color_full_scan_text"
+                        android:textSize="@dimen/textsize_16sp" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- 滚动条 层 -->
+
+        <RelativeLayout
+            android:id="@+id/lay_process_bar"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="25dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/bg_virus_full_scan_progress"
+            android:orientation="horizontal"
+            android:visibility="gone" >
+
+            <ProgressBar
+                android:id="@+id/progress_bar_full_scanning"
+                style="@android:style/Widget.ProgressBar.Horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="13dp"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="19dp"
+                android:layout_toLeftOf="@+id/btn_full_scanning_control"
+                android:max="100"
+                android:progress="0"
+                android:progressDrawable="@drawable/layer_list_progress_bar_full_scanning" >
+            </ProgressBar>
+
+            <Button
+                android:id="@+id/btn_full_scanning_control"
+                style="@style/btn_common_input_right"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:focusable="true"
+                android:text="@string/common_cancel"
+                android:textSize="@dimen/textsize_14sp" >
+            </Button>
+        </RelativeLayout>
+    </LinearLayout>
+
+    <!-- 扫描结束 无病毒 head -->
+
+    <LinearLayout
+        android:id="@+id/lay_full_scan_result_no_virus_head"
+        android:layout_width="fill_parent"
+        android:layout_height="156dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="13dp"
+        android:orientation="vertical"
+        android:visibility="gone" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:layout_marginLeft="24dp"
+                android:layout_marginRight="14dp"
+                android:background="@drawable/icon_virus_report_state_nor" />
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:shadowColor="#ffffff"
+                    android:text="@string/vvcl_no_threats_found"
+                    android:textColor="#70b81a"
+                    android:textSize="@dimen/textsize_16sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2.5dp"
+                    android:text="@string/vvcl_device_protected_and_now_safe"
+                    android:textColor="@color/white_1_fafafa"
+                    android:visibility="gone" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2.5dp"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left|center_vertical"
+                        android:text="@string/vvcl_scanned_item_s"
+                        android:textColor="@color/white_1_fafafa" />
+
+                    <TextView
+                        android:id="@+id/text_full_scan_result_scannd_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left|center_vertical"
+                        android:layout_marginLeft="5dp"
+                        android:text="0"
+                        android:textColor="@color/color_full_scan_text" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2.5dp"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left|center_vertical"
+                        android:text="@string/vvcl_elapsed_time"
+                        android:textColor="@color/white_1_fafafa" />
+
+                    <TextView
+                        android:id="@+id/text_full_scan_result_scannd_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left|center_vertical"
+                        android:layout_marginLeft="5dp"
+                        android:text="00:00"
+                        android:textColor="@color/color_full_scan_text" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+    <!-- 自定义杀毒添加滚动 start -->
+
+    <ScrollView
+        android:id="@+id/lay_customize_zone"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="35dp"
+        android:scrollbarThumbVertical="@drawable/bg_common_list_scroll_bar"
+        android:scrollbars="vertical" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <!-- scan all the apps on start -->
+
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:background="@drawable/bg_custom_scan_selection"
+                android:layout_height="wrap_content"
+                android:paddingLeft="15dip"
+                android:paddingBottom="2dip"
+                android:gravity="center_vertical"
+                android:text="@string/vvcl_custom_scan_title"
+                android:textColor="@color/white_1_fafafa"
+                android:textSize="17sp"
+                android:textStyle="bold" >
+            </TextView>
+            <!-- scan all the apps on end -->
+            <!-- 第一条 -->
+
+            <com.tencent.onesecurity.ui.customview.layout.SettingItemLayout
+                style="@style/virus_custom_scan"
+                android:layout_marginTop="15dp"
+                app:itemType="1"
+                android:paddingLeft="20dp" >
+
+                <!-- 手机 Local Device -->
+
+                <ImageView
+                    android:id="@+id/iv_virus_local_device"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:duplicateParentState="true"
+                    android:src="@drawable/icon_virus_custom_phone" />
+
+                <TextView
+                    style="@style/text_custom_scan_locao_sd"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="12.67dp"
+                    android:layout_toRightOf="@id/iv_virus_local_device"
+                    android:duplicateParentState="true"
+                    android:text="@string/vvcl_custom_scan_local_device" />
+
+                <CheckBox
+                    android:id="@+id/cb_local"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:button="@drawable/sel_cb_common_white"
+                    android:clickable="false"
+                    android:duplicateParentState="true"
+                    android:focusable="false" />
+            </com.tencent.onesecurity.ui.customview.layout.SettingItemLayout>
+            <!-- 第 二条 -->
+
+            <com.tencent.onesecurity.ui.customview.layout.SettingItemLayout
+                style="@style/virus_custom_scan"
+                app:itemType="1"
+                android:paddingLeft="20dp" >
+
+                <!-- SD卡  SD Card -->
+
+                <ImageView
+                    android:id="@+id/iv_virus_sdcard"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:duplicateParentState="true"
+                    android:src="@drawable/icon_virus_custom_sd" />
+
+                <TextView
+                    style="@style/text_custom_scan_locao_sd"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="12.67dp"
+                    android:layout_toRightOf="@id/iv_virus_sdcard"
+                    android:duplicateParentState="true"
+                    android:text="@string/vvcl_custom_scan_sd_card" />
+
+                <CheckBox
+                    android:id="@+id/cb_sdcard"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:button="@drawable/sel_cb_common_white"
+                    android:clickable="false"
+                    android:duplicateParentState="true"
+                    android:focusable="false" />
+            </com.tencent.onesecurity.ui.customview.layout.SettingItemLayout>
+            <!-- 第三条 -->
+
+            <ImageView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16.7dp"
+                android:layout_marginRight="16.7dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/bg_common_list_separate_line_white" />
+
+            <com.tencent.onesecurity.ui.customview.layout.SettingItemLayout
+                android:id="@+id/sl_cloud"
+                style="@style/virus_custom_scan"
+                app:itemType="1"
+                android:paddingLeft="20dp" >
+
+                <!-- Cloud -->
+
+                <ImageView
+                    android:id="@+id/iv_virus_cloud"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:duplicateParentState="true"
+                    android:src="@drawable/sel_virus_custom_cloud" />
+
+                <TextView
+                    android:id="@+id/tv_cloud"
+                    style="@style/text_setting_item_cloud_scan"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="12.67dp"
+                    android:layout_toRightOf="@id/iv_virus_cloud"
+                    android:duplicateParentState="true"
+                    android:text="@string/vvcl_custom_scan_cloud" />
+
+                <CheckBox
+                    android:id="@+id/cb_cloud"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:button="@drawable/sel_cb_common_white"
+                    android:clickable="false"
+                    android:duplicateParentState="true"
+                    android:focusable="false" />
+            </com.tencent.onesecurity.ui.customview.layout.SettingItemLayout>
+        </LinearLayout>
+    </ScrollView>
+    <!-- 自定义杀毒添加滚动 end -->
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical" >
+
+        <com.tencent.onesecurity.ui.customview.layout.VirusRollingNewsLayout
+            android:id="@+id/antivirus_advert_layout"
+            android:layout_width="fill_parent"
+            android:layout_height="70dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="3dp"
+            android:layout_marginRight="3dp"
+            android:orientation="horizontal"
+            android:visibility="gone" >
+        </com.tencent.onesecurity.ui.customview.layout.VirusRollingNewsLayout>
+        <!-- ListView FillParent 的话 外面必须包裹一层Layout 否则显示从下开始 -->
+
+
+        <!-- list 体 -->
+
+        <LinearLayout
+            android:id="@+id/ll_scanning_list"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_above="@id/antivirus_advert_layout"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/bg_common_list"
+            android:paddingBottom="2dp"
+            android:paddingTop="2dp" >
+
+            <ListView
+                android:id="@+id/list_scanning"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:cacheColorHint="@android:color/transparent"
+                android:descendantFocusability="blocksDescendants"
+                android:divider="@null"
+                android:fadingEdge="none"
+                android:focusable="true"
+                android:listSelector="@android:color/transparent"
+                android:scrollbarStyle="insideOverlay"
+                android:scrollbarThumbVertical="@drawable/bg_common_list_scroll_bar"
+                android:scrollbars="vertical" />
+        </LinearLayout>
+    </RelativeLayout>
+
+</LinearLayout>

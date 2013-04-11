@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/bg_common_base"
+    android:orientation="vertical" >
+
+    <include android:id="@+id/vip_trial_titlebar"
+    layout="@layout/layout_sub_title_bar" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/vip_trial_titlebar"
+        android:orientation="vertical" >
+
+        <TextView
+        	android:id="@+id/txt_shareqqdoctor"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:paddingLeft="9.33dp"
+            android:paddingRight="9.33dp"
+            android:paddingTop="20dp"
+            android:paddingBottom="16dp"
+            android:layout_marginLeft="10.66dp"
+            android:layout_marginRight="10.66dp"
+            android:text="@string/vip_trial_info"
+            style="@style/text_vip_trial_activity_description_transparent_white"/>
+
+        <include
+            android:id="@+id/contact_select"
+            layout="@layout/layout_vip_contact_select" />
+    </LinearLayout>
+
+</LinearLayout>

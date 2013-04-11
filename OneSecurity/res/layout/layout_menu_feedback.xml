@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/bg_common_base"
+    android:orientation="vertical" >
+
+    <include
+        android:id="@+id/menu_feedback_titlebar"
+        layout="@layout/layout_sub_title_bar" />
+
+   <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="14dp"
+        android:paddingRight="14dp" >
+
+        <!-- Enter feedback -->
+
+        <LinearLayout
+            android:id="@+id/enter_feedback_layout"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:orientation="vertical" >
+
+            <TextView
+                style="@style/text_common_intro_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:text="@string/feedback_readme_text" />
+
+            <EditText
+                android:id="@+id/setting_feedback_edittext_advice"
+                style="@style/edittext_feedback"
+                android:layout_width="fill_parent"
+                android:layout_height="100dp"
+                android:background="@drawable/bg_menu_feedback_input"
+                android:gravity="top"
+                android:hint="@string/feedback_advice_prompt"
+                android:inputType="textMultiLine"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="10dp"
+                android:textColorHint="@color/gray_3_a8a8a8" >
+
+                <requestFocus>
+                </requestFocus>
+            </EditText>
+        </LinearLayout>
+
+        <!-- Enter email -->
+        <LinearLayout
+            android:id="@+id/enter_email"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/enter_feedback_layout"
+            android:layout_marginTop="26.66dp"
+            android:orientation="vertical" >
+
+            <EditText
+                android:id="@+id/setting_feedback_edittext_email"
+                style="@style/text_common_intro_title"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/et_common_tranparent_white_stroke"
+                android:gravity="center_vertical"
+                android:hint="@string/feedback_email_prompt"
+                android:inputType="textEmailAddress"
+                android:textColorHint="@color/white_4_fafafa_70" />
+
+            <TextView
+                style="@style/email_text_feedback"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="4dp"
+                android:layout_marginRight="4dp"
+                android:text="@string/feedback_email_tip" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_send"
+            style="@style/btn_common_transparent_white"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/enter_email"
+            android:layout_marginTop="26.66dp"
+            android:text="@string/feedback_button_submit" />
+    </RelativeLayout>
+
+</LinearLayout>

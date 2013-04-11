@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="screen_density">0</integer>
+	<!-- 主页圆文件尺寸 -->
+    <style name="main_circle_view_size">
+    	<item name="android:layout_width">203dip</item>
+		<item name="android:layout_height">203dip</item>
+    </style>
+	<!-- 主页圆文件父控件尺寸 -->
+    <style name="main_circle_father_view_size">
+    	<item name="android:layout_width">fill_parent</item>
+		<item name="android:layout_height">fill_parent</item>
+    	<item name="android:layout_marginBottom">0dip</item>
+    </style>
+    
+	<!-- 主页圆点击区style -->
+    <style name="main_circle_click_size">
+    	<item name="android:layout_width">75dip</item>
+		<item name="android:layout_height">75dip</item>
+		<item name="android:background">@android:color/transparent</item>
+    </style>        
+    
+	<!-- 私密箱 光柱尺寸 -->
+    <style name="main_valut_view_light_size">
+    	<item name="android:layout_width">149.3dip</item>
+		<item name="android:layout_height">97dip</item>
+    	<item name="android:layout_marginTop">-23dip</item>
+    </style>
+	<!-- 私密箱 按钮尺寸 -->
+    <!-- <style name="main_valut_view_btn_size">
+    	<item name="android:layout_width">86dp</item>
+		<item name="android:layout_height">90.5dp</item>
+    </style> -->
+    <!-- 私密箱 图标移动起始速度 用于代码中直接获取 -->
+    <integer name="main_valut_x_minus">14</integer>
+    <!-- 私密箱 图片载入队列长度， 用于代码中直接获取 -->
+    <integer name="main_valut_load_image_queue_lenght">20</integer>
+    <!-- 私密箱 图片缓存长度 用于代码中直接获取 -->
+    <integer name="main_valut_image_cache_lenght">30</integer>
+            <!-- 杀毒Icon 图片缓存长度 用于代码中直接获取 -->
+    <integer name="main_virus_icon_cache_lenght">30</integer>
+        <!-- 杀毒 图片载入队列长度， 用于代码中直接获取 -->
+    <integer name="main_virus_load_image_queue_lenght">20</integer>
+    <!-- 通用dialog 文字区 padding值 -->
+    <integer name="custom_progress_dialog_padding">15</integer>
+    
+    <!-- 主页圆文件尺寸 用于代码中直接获取 -->
+    <integer name="main_circle_view_size">203</integer>
+    
+    <!-- 主页圆直径 用于代码中直接获取 -->
+    <integer name="main_circle_size">145</integer> 
+    
+    <!-- 杀毒主页内圆直径 用于代码中直接获取 -->
+    <integer name="main_inner_circle_size">56</integer>   
+    <!-- 主页Booster 直径 -->
+    <string name="main_booster_diameter">203</string>    
+    <!-- 主页Booster 外圆偏移量 -->
+    <string name="main_booster_outside_offset">24</string>
+    <!-- 主页Booster 内圆偏移量 -->
+    <string name="main_booster_inside_offset">66</string>     
+         <!-- 用户教育  button start-->
+    <style name="user_guid_rocket_style">
+    	<item name="android:layout_marginBottom">20dp</item>
+    </style>
+        <!-- 用户教育  button end-->  
+        <!-- 私密灰度版 密码页 start -->
+    <style name="vault_pwd_head_size">
+    	<item name="android:layout_width">fill_parent</item>
+		<item name="android:layout_height">170dip</item>
+    </style>
+    
+    <style name="vault_pwd_head_title_size">
+    	<item name="android:layout_width">fill_parent</item>
+		<item name="android:layout_height">70dip</item>
+    </style>
+    <style name="vault_pwd_head_title_up">
+    	<item name="android:textSize">@dimen/textsize_21sp</item>
+    </style>
+    <style name="text_vault_pwd_input_box">
+        <item name="android:textColor">@color/white_1_fafafa</item>
+		<item name="android:textSize">@dimen/textsize_23sp</item>
+        <item name="android:gravity">center</item>
+         <item name="android:layout_gravity">center</item>
+        <item name="android:inputType">none</item>
+        <item name="android:editable">false</item>
+        <item name="android:focusable">false</item>
+        <item name="android:layout_width">46dip</item>
+        <item name="android:layout_height">46dip</item>
+        <item name="android:background">@drawable/bg_vault_pwd_input_box</item>
+    </style>
+    <style name="text_vault_pwd_input_frame">
+        <item name="android:layout_marginLeft">13dip</item>
+        <item name="android:layout_marginRight">13dip</item>
+         <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+        <!-- 私密灰度版 密码页 end -->
+                <!-- 私密无图片引导页  start-->
+    <style name="secret_no_photos_guid_style">
+    	<item name="android:layout_marginBottom">12dp</item>
+    </style>
+    <!-- 私密无图片引导页 end -->
+    <!-- 主页title当前字体大小 -->
+    <integer name="main_title_text_max_size">18</integer>
+    <integer name="main_title_text_base_size">14</integer>
+    <!-- [主页面]Title Bar文字 未选中状态 -->
+    <style name="text_main_title_bar_unselect" parent="text_main_title_bar_parent">
+        <item name="android:textColor">@color/gray_1_b8c6d5</item>
+        <item name="android:textSize">@dimen/textsize_14sp</item>
+    </style>
+
+    <!-- [主页面]Title Bar文字 选中状态 -->
+    <style name="text_main_title_bar_select" parent="text_main_title_bar_parent">
+        <item name="android:textColor">@color/white_1_fafafa</item>
+        <item name="android:textSize">@dimen/textsize_15sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <!-- 快速查杀中间文字scan大小 -->
+    <dimen name="virus_mask_view_text_size">26sp</dimen>
+    <!-- 杀毒界面 fullScan 和 Virus Engine 字体大小 -->
+    <dimen name="virus_update_vdb_btn_size">15sp</dimen>
+    <dimen name="virus_full_scan_btn_size">15sp</dimen>
+    <!-- [主页面]子页面上功能按钮文字 vip BUTTON -->
+    <style name="text_main_common_function_btn">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/white_1_fafafa</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <!-- [主页面]子页面上部信息 文字 -->
+    <style name="text_main_common_info_text">
+        <item name="android:textSize">@dimen/textsize_17sp</item>
+    </style>
+    <!-- 主页面标题栏下面滑动线 -->
+    <style name="text_main_title_bar_line">
+        <item name="android:layout_marginBottom">8dp</item>
+    </style>
+    <!-- Setting 分类标题 -->
+    <style name="setting_category_layout">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">112dp</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:background">@drawable/bg_common_list_title_blue</item>
+    </style>
+            <!--  杀毒播报文本样式 -->
+        <style name="virus_rolling_news_text_syle">
+		<item name="android:textSize">@dimen/textsize_14sp</item>
+    </style>
+        <!-- 主页 Head部分文字据Titlebar 距离 -->
+    <style name="main_head_margin_top">
+        <item name="android:layout_marginTop">8.67dp</item>
+    </style>
+             <!-- 主页 Head部分文字据Titlebar 距离 vault virus页用 -->
+    <style name="main_head_padding_top">
+        <item name="android:paddingTop">8.67dp</item>
+    </style>
+            <!-- 杀毒页面杀毒过程中的文字提示 -->
+    <style name="text_virus_info_text_scanning">
+        <item name="android:textSize">@dimen/textsize_14sp</item>
+    </style>
+</resources>

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/com.tencent.onesecurity"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/bg_common_base"
+    android:orientation="vertical" >
+
+    <include
+        android:id="@+id/safe_note_titlebar"
+        android:layout_alignParentTop="true"
+        layout="@layout/layout_sub_title_bar" />
+
+    <FrameLayout
+        android:id="@+id/safe_notes_add_framelayout"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+
+        <RelativeLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical" >
+
+            <!-- android:cacheColorHint 解决滑动时候颜色变化的问题，android:listSelector解决点击时候颜色变化的问题 -->
+
+            <ListView
+                android:id="@+id/notelist"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_above="@+id/safe_notes_add_framelayout"
+                android:layout_marginBottom="10dip"
+                android:layout_marginTop="15dip"
+                android:background="@drawable/bg_common_list"
+                android:cacheColorHint="@android:color/transparent"
+                android:listSelector="@android:color/transparent"
+                android:divider="@null"
+                android:scrollbarStyle="insideOverlay"
+                android:scrollbarThumbVertical="@drawable/bg_common_list_scroll_bar"
+                android:scrollbars="vertical"
+                />
+
+            <ImageView
+                android:id="@+id/safe_notes_no_item_remind_no_private_notes"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="112dp"
+                android:src="@drawable/bg_vault_notes_no_note"
+                android:visibility="gone"
+                />
+
+            <FrameLayout
+                android:id="@+id/safe_notes_add_framelayout"
+                android:layout_width="fill_parent"
+                android:layout_height="70dip"
+                android:layout_alignParentBottom="true" >
+
+                <com.tencent.onesecurity.ui.customview.widget.CustomIconButton
+                    android:id="@+id/safe_notes_btn_add"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="7dp"
+                    android:visibility="visible"
+                    app:buttonIcon="@drawable/btn_vault_note_add_default"
+                    app:buttonIconPress="@drawable/btn_vault_note_add_press"
+                    app:buttonText="@string/safebox_notes_and_photos_add"
+                    app:buttonTextPadding="4"
+                    app:buttonType="icon_left" />
+
+                <com.tencent.onesecurity.ui.customview.widget.CustomIconButton
+                    android:id="@+id/safe_notes_btn_del"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="7dp"
+                    android:visibility="gone"
+                    app:buttonIcon="@drawable/btn_vault_photos_delete_nor"
+                    app:buttonIconDisabled="@drawable/btn_vault_photos_delete_disabled"
+                    app:buttonIconPress="@drawable/btn_vault_photos_delete_press"
+                    app:buttonText="@string/safebox_notes_del"
+                    app:buttonTextPadding="4"
+                    app:buttonType="icon_left" />
+            </FrameLayout>
+        </RelativeLayout>
+    </FrameLayout>
+
+</LinearLayout>

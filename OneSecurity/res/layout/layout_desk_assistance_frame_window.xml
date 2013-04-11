@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/com.tencent.onesecurity"
+    android:id="@+id/layout_desktop_frame_window"
+    android:layout_width="fill_parent"
+    android:layout_height="109dp"
+    android:layout_weight="1"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/layout_gallery"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <com.tencent.onesecurity.deskassistance.SingleFlingGallery
+            android:id="@+id/item_gallery"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:fadingEdge="none"
+            android:unselectedAlpha="1" >
+        </com.tencent.onesecurity.deskassistance.SingleFlingGallery>
+    </LinearLayout>
+
+</LinearLayout>

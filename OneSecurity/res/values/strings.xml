@@ -1,0 +1,782 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--
+    	** common或(模块_业务名) + 类型(可选) + 语义描述
+    	** Sample:
+    	   1.common_confirm_ok   
+		   2.virus_fullscan_your_phone_is_in_danger
+    -->
+    <!-- ** 应用名 ** -->
+    <string name="application_name">One Security</string>
+
+    <!-- ======== 各模块 Title ======= start -->
+    <!-- 主页 -->
+    <string name="main_title_left">Booster</string>
+    <string name="main_title_middle">Anti-virus</string>
+    <string name="main_title_right">Privacy</string>
+    <string name="main_copy_right_1">Copyright © 2010-2013 Tencent Mobile Doctor Limited.</string>
+    <string name="main_copy_right_2">All Rights Reserved.</string>
+    <!-- 优化 -->
+    <string name="booster_app_manager">Optimization</string>
+    <!-- 杀毒 -->
+    <!-- 菜单 -->
+	<string name="menu_title_vip">Vip</string>
+	<string name="menu_title_setting">Settings</string>
+	<string name="menu_title_share">Share</string>
+	<string name="menu_title_about">About</string>
+	<string name="menu_title_help">Help</string>
+	<string name="menu_title_update">Update</string>
+	<string name="menu_title_feedback">Feedback</string>
+    <!-- 私密 -->
+
+    <!-- ======== 各模块 Title ======= end -->
+
+
+    <!-- ======== 公共控件 ======= start -->
+    <string name="common_loading_tip">Loading&#8230;</string>
+    <string name="common_wait_tip">Please wait&#8230;</string>
+    <string name="common_cancel">Cancel</string>
+    <string name="common_enter">Enter</string>
+    <string name="common_exit">Exit</string>
+    <string name="common_extend">Extend</string>
+    <string name="common_restore">Restore</string>
+    <string name="common_ok">OK</string>
+    <string name="common_delete">Delete</string>
+    <string name="common_percent">%</string>
+    <string name="common_x_hours_ago">hour(s) ago</string>
+    <string name="common_x_mins_ago">min(s) ago</string>
+    <string name="common_just_now">Just now</string>
+    <!-- ======== 公共控件 ======= end -->
+
+
+    <!-- ======== 主页 ======= start -->
+    <string name="main_app_quit">Press again to exit.</string>
+    <!-- ======== 主页 ======= end -->
+
+
+    <!-- ======== 桌面快捷助手 ======= start -->
+    <string name="DeskAssisCloseSettingTipMsg">Assistant window closed, open it in One Security setting</string>
+	<string name="desk_assis_wifi">Wi-Fi</string>
+	<string name="desk_assis_setting_title">Desktop Setting</string>
+	<string name="desk_assis_switch_title">Assistant Window</string>
+	<string name="desk_assis_style">Window Style</string>
+	<string name="ram_release">Free up\n%1$sB\nMemory</string>
+	<string name="hint_show_test_version">此为测试版本</string>
+	<string name="desk_flow_window_setting_title">Assistant Window</string>
+	<string name="desk_rocket_voice_setting_title">Rocket Sound</string>
+	<string name="desk_flow_window_after_close_hint">Assistant window closed, open it in One Security setting</string>
+	<string name="desk_min_window_style_setting_title">Window Style</string>
+	<string name="ram_of_running_task"> Memory</string>    
+	<string name="desktop_running">Running</string>
+	<string name="one_key_faster">Boost</string>
+	<string name="privat_space">Private Space</string>
+	<string name="secure_space_fake_tips_text_moren">Cannot be accessed while system is reading message.</string>
+	<string name="private_space_after_refuse_reply_sms">Hi, I am currently unavailable. I will contact you later!</string>	
+	<string name="you_have_a_new_msg">You have a new message</string>
+	<string name="tips">Tips</string>
+	<string name="rocket_speed_up_tip">Release to launch boosting</string>
+	<string name="one_key_faster_tips_clear">Launched successfully, your mobile is in perfect condition.</string>
+	<string name="one_key_faster_tips_clear_great">Best condition!</string>
+    <!-- ======== 桌面快捷助手 ======= end -->
+
+
+    <!-- ======== 优化 ======= start -->
+    <string name="booster_closed_tip">Stop %1$d apps and free up %2$s memory.</string>
+    <string name="booster_closed_tip2">Stop %1$d apps and free up %2$s memory.\nExtend battery %3$d minutes of battery life.</string>
+    <string name="booster_close_button_title">Stop Running Apps (%1$d)</string>
+    <string name="booster_memory_available">Available Memory:</string>
+    <string name="booster_memory_used">Used Memory:</string>
+    <string name="booster_running_apps">Running Apps:</string>
+    <string name="booster_lastoptimized">Last boosted:</string>
+    <string name="booster_go">Go</string>
+    <string name="booster_no_need_boost">Boost just complete, your mobile is in perfect condition.</string>
+    <string name="booster_no_running_apps_tip">No running apps.</string>
+    <string name="booster_time_tip_never_boosted">Never boosted</string>
+    <string name="booster_time_tip_just_now">Just now</string>
+    <string name="booster_boosting">Boosting&#8230;</string>
+    <string name="booster_low_battery_tip">Please charge battery.</string>
+    <string name="booster_10_2_30_tip1">Battery less than 30%. Click \"Enter\" to enter power saving mode.</string>
+    <string name="booster_10_2_30_tip2">Turn off: WiFi, Data, Bluetooth\nAuto-lock screen: 15 secs</string>
+    <string name="booster_battery_title">Power saving mode</string>
+    <string name="booster_restore_settings_tip">Your previous settings will be restored after charging.</string>
+    <string name="booster_advise">Suggest to stop</string>
+    <string name="booster_allowable_auto_start_title">Allowable auto-start (%1$d)</string>
+    <string name="booster_forbidden_auto_start_title">Forbidden auto-start (%1$d)</string>
+    <string name="booster_not_root">You have no root permission to manage auto-start apps.</string>
+    <string name="booster_allow_auto_start">Allow \"%1$s\" to start automatically.</string>
+    <string name="booster_forbid_auto_start">Forbid \"%1$s\" to start automatically.</string>
+    <string name="booster_result_blank">— —</string>
+    <string name="booster_result_memory">Save Memory</string>
+    <string name="booster_result_stop_app">Closed Apps</string>
+    <string name="booster_result_battery">Extra Battery</string>
+    <string name="booster_result_time_unit">mins</string>
+    <string name="booster_tab_running">Running</string>
+    <string name="booster_tab_auto_start">Auto-start</string>
+    <string name="booster_tab_clean">Cleanup</string>
+    <string name="booster_btn_clean">Clean</string>
+    <string name="booster_clean_temp_files">Temp Files</string>
+    <string name="booster_clean_thumbnail_caches">Thumbnail Caches</string>
+    <string name="booster_clean_app_logs">App Logs</string>
+    <string name="booster_clean_residual_files">Residual Files</string>
+    <string name="booster_clean_empty_folders">Empty Folders</string>
+    <string name="booster_clean_caches">Caches</string>
+    <string name="booster_clean_apk_packages">APK Packages</string>
+    <string name="booster_clean_scanning">Scanning&#8230;</string>
+    <string name="booster_clean_cleaning">Cleaning&#8230;</string>
+    <string name="booster_clean_cleaned">Cleaned</string>
+    <string name="booster_clean_clean_result">Save %1$s memory after clean.</string>
+    <string name="booster_clean_scan_result">Total %1$d junk data is found, clean to free up %2$s memory.</string>
+    <string name="booster_clean_no_cleaning">There is no junk data to clean.</string>
+    <string name="booster_clean_file">File:</string>
+    <string name="booster_clean_size">Size:</string>
+    <string name="booster_clean_scan">Scann:</string>
+    <!-- ======== 优化 ======= end -->
+
+
+    <!-- ======== 杀毒 ======= start -->
+        <!-- 病毒模块 -->
+    <string name="vvcl_are_you_sure">Are you sure to terminate?</string>
+    <!-- 使用common_cancel <string name="vvcl_cancel">Cancel</string>-->
+    <string name="vvcl_cautions_X">Cautions</string>
+    <string name="vvcl_clean_viruses_successfully">All threats are handled successfully.</string>
+    <string name="vvcl_clear">Clear</string>
+    <string name="vvcl_cleared">Cleared</string>
+    <string name="vvcl_cleared_items_X">Cleared items</string>
+    <string name="vvcl_cloud_scanned">Cloud scanned</string>
+    <string name="vvcl_cloud_scanning">Cloud scanning\u2026</string>
+    <string name="vvcl_customized_scan">Custom</string>
+    <string name="vvcl_delete">Delete</string>
+    <string name="vvcl_device_protected_and_now_safe">Device protected and now safe.</string>
+    <string name="vvcl_done">Done</string>
+    <string name="vvcl_elapsed_time">Elapsed time:</string> 
+    <string name="vvcl_full_scan">Full Scan</string>
+    <string name="vvcl_in_depth_scan_for_all_files">(In-depth scan for all files.)</string>
+    <string name="vvcl_ignore">Ignore</string>
+    <string name="vvcl_initializing">Initializing\u2026</string>
+    <string name="vvcl_last_scan">Last scanned: </string>
+    <string name="vvcl_later">Later</string>
+    <string name="vvcl_local">Local</string>
+    <string name="vvcl_local_scanning">Local scanning\u2026</string>
+    <string name="vvcl_network_connection_failed_YYY_later">Connectivity failure. Please check network setting and try again.</string>
+    <string name="vvcl_no_threats_found">No threats detected.</string>
+    <string name="vvcl_open">Open</string>
+    <string name="vvcl_please_wait">Please wait\u2026</string>
+    <string name="vvcl_remove_viruses_and_YYY_safe">Remove viruses and malware to make your mobile safe.</string>
+    <string name="vvcl_report">Report</string>
+    <string name="vvcl_scan_canceled_unable_to_YYY_states">Scan is canceled.</string>
+    <string name="vvcl_scanned_item_s">Scanned items:</string>
+    <string name="vvcl_scanned_time">Elapsed time:</string>
+    <string name="vvcl_scan_uncertain_apps_database">Scan uncertain apps through cloud database.</string>
+    <string name="vvcl_sd_card">SD Card</string>
+    <string name="vvcl_sd_card_scanning">SD card scanning\u2026</string>
+    <string name="vvcl_secure_item_title">Security items</string>    
+    <string name="vvcl_start">Start</string>
+    <string name="vvcl_suggest_to_do_YYY_safe">Suggest to do routine scan to keep device safe.</string>
+    <string name="vvcl_the_software_has_YYY_needed">This app contains advertising information, please use as needed.</string>
+    <string name="vvcl_the_software_has_YYYY_needed">This app has been complainting with its risky behavior by more users, please use as needed.</string>
+    <string name="vvcl_this_feature_requires_YYY_vip">This feature requires upgrade to VIP, please upgrade to VIP.</string>
+    <string name="vvcl_threat_s_detected">Detected threats:</string>
+    <string name="vvcl_trusted">Trusted</string>
+    <string name="vvcl_trust">Trust</string>
+    <string name="vvcl_uninstall">Uninstall</string>
+    <string name="vvcl_updating_U2026">Updating\u2026</string>
+    <string name="vvcl_upgrade">Upgrade</string>
+    <string name="vvcl_viruses_X">Viruses</string>
+    <string name="vvcl_X_is_a_threat_delete_now">\"%1$s\" is a threat. Delete now?</string>
+    <string name="vvcl_X_threat_s_detected">%1$d threat(s) detected.</string>
+    <string name="vvcl_X_is_uninstalled">%1$s is uninstalled.</string>
+    <string name="vvcl_Yes">Yes</string>
+    <string name="vvcl_your_mobile_is_at_severe_risk">Your mobile is at severe risk.</string>
+    <string name="vvcl_your_mobile_is_safe_now">Your mobile is safe now.</string>
+    <string name="vvcl_your_virus_database_is_the_latest">Your virus database is the latest.</string>
+    <string name="vvcl_your_virus_database_is_the_latest_now">Your virus database is the latest now.</string>
+    <string name="vvcl_virus_db">Virus Engine</string>
+    <string name="vvcl_Z_is_a_threat_YYY_now">\u0020is checked as a caution, please use as needed.</string>
+    <string name="vvcl_Z_is_a_virus_YYY_now">\u0020is a virus. Uninstall now?</string>
+    <string name="vvcl_Z_threat_s_cleared">\u0020threat(s) cleared.</string>
+	
+    <string name="vvcl_scan_remind_1">Start first scan now.</string>
+    <string name="vvcl_scan_remind_2">Scan periodically and protect your mobile from threats.</string>
+    <string name="vvcl_scan_remind_3">You haven\’t scanned for some time. Your mobile might be at potential risk.</string>
+    <string name="vvcl_scan_remind_4">You haven\'t scanned for a long time. Your mobile might be at potential risk.</string>
+    <string name="vvcl_the_app_can_access_private_info">The app can access the following private info:</string>
+    <string name="vvcl_there_are_YYY_ignore">There are threats still not cleared, sure to exit?</string>
+  	<!-- 灰度增加 start -->
+    <string name="vvcl_virus_db_expired_tips">Your virus engine has expired. Please upgrade to the latest one.</string>
+    <string name="common_x_days_ago">day(s) ago</string>
+    <string name="vvcl_apk_differentiate">\u0020(apk)</string>
+    <string name="vvcl_viruses_x_deal_idea">\u0020(Suggest to clear)</string>
+    <string name="vvcl_cautions_x_deal_idea">\u0020(Use as needed)</string>
+    <!-- 灰度 end  -->
+    <!-- 灰度第二版201302158 start-->
+    <string name="vvcl_auto_check_apk_start">One Security is checking\u0020\"%1$s\"</string>
+    <string name="vvcl_white_list_title">Manage Safe Apps</string>
+    <string name="vvcl_white_list_btn_remove">Remove</string>
+    	<string name="vvcl_white_list_btn_remove1">Remove(%1$d)</string>
+    <string name="vvcl_white_list_remove_tips">Remove %1$d item(s).</string>
+    <string name="vvcl_empty_white_list_tips">No records.</string>
+    <string name="vvcl_virus_scan_reminds">You have over %1$d days not to scan your mobile. Your mobile might be at potential risk.</string>
+    <string name="vvcl_trust_config_dlg_tips">We will no longer remind this threat to you. Sure to trust it as a safe app?</string>
+    <string name="vvcl_trust_config_dlg_ok_toast">Done! You can manage it from \"Menu->Settings->Manage Safe Apps\".</string>
+    <string name="vvcl_update_lib_dlg_tips">New version for virus engine is available. Please upgrade now.</string>
+    
+    <string name="vvcl_custom_scan_title">Scan all the apps on:</string>
+    <string name="vvcl_custom_scan_local_device">Local Device</string>
+    <string name="vvcl_custom_scan_sd_card">SD Card</string>
+    <string name="vvcl_custom_scan_cloud">Cloud Security Scan</string>
+  
+        	<!-- 灰度第二版201302158 end -->
+        	
+	
+    <string name="vvcl_dialog_reporttitle">Upgrade Successfully!</string>
+    <string name="vvcl_dialog_reportdetail">Your virus database is the latest now.</string>
+    <string name="vvcl_dialog_reporleftString">Close</string>
+    <string name="vvcl_dialog_reporrightString">Scan Now</string>
+    
+        
+    <string name="vvcl_dialog_cloud_upgrade_vip">Cloud Scan is a VIP feature that scan via Cloud Server more accurately. Upgrade now?</string>
+    <string name="vvcl_virus_engine_expired">Virus engine has expired</string>
+    <string name="vvcl_virus_auto_checking">Checking mobile security...</string>
+    <string name="vvcl_updating_virus_lib_upgrading">Upgrading...</string>
+    <string name="vvcl_updating_is_goingon">Virus Engine is upgrading, please wait...</string>
+    <string name="vvcl_failed_to_deltet_file">Failed to delete file.</string>
+    
+        
+        
+    <!-- ======== 杀毒 ======= end -->
+    
+
+    <!-- ======== 私密 ======= start -->
+    <!-- buck;start -->
+    <!-- 设置密码 -->
+    <string name="title_inputpwd">Enter Password</string>
+    <string name="textview_setpwd_1">Set your password</string>
+    <string name="textview_setpwd_2">Confirm your password</string>
+    <string name="textview_resetpwd_1">Enter your old password</string>
+    <string name="textview_resetpwd_2">Enter your new password</string>
+    <string name="textview_resetpwd_3">Confirm your new password</string>
+    
+    <string name="error_password_message1">Password error!</string>
+    <string name="error_password_message2"> Please re-enter</string>
+    <string name="error_password_not_match1">Password doesn\'t match</string>
+    <string name="error_password_not_match2">Please re-enter</string>
+    <string name="safebox_update_pwd_clear">We appreciate your continued support. As One Security is updated,please reset your password to enter.</string>
+    
+    <!-- ******************* TODO 设置问题页已经去掉  这部分没用了 start ********************** -->
+    <string name="title_setquestion">Security Question</string>
+    <string name="textview_question">This question will help us identify you if you forget your password.</string>
+    <string name="button_question_hint">Select your question</string>
+    <string name="textview_answer">Enter your security answer.</string>
+    <string name="edittext_hint_setpwd_3">Your answer</string>
+    <string name="button_setpwd_3">Done</string>
+    <string name="button_Skip">Skip >></string>
+    <string name="skip_hint">If you don\'t set security question, you will not be able to retrieve your password. Are you sure to skip?</string>
+    <string name="question_1">What\'s your mother\'s birthplace?</string>
+    <string name="question_2">What\'s  your father\'s birthplace?</string>
+    <string name="question_3">What\'s the name of your  primary school?</string>
+    <string name="question_4">When did you fall in love for the first time?</string>
+    <string name="question_5">Where did your parents meet for the first time?</string>
+    <!-- ******************* TODO 设置问题页已经去掉  这部分没用了 end ********************** -->
+    
+    <string name="vault_main_tips">Protect your privacy.</string>
+    <string name="vault_main_tip_without_sdcard">An SD card is required to import photo(s) into Private Space.</string>
+    <string name="vault_main_tip_without_sdcard2">Operation failed. Please check SD card is connected correctly, and that there is enough space.</string>
+    <string name="vault_main_note">Notes</string>
+    <string name="vault_main_photo">Photos</string>
+    <string name="vault_main_lock">Lock</string>
+    <string name="vault_main_open">Open</string>
+    <string name="ablum_title">Album</string>
+    <string name="camera_title">Camera</string>
+    <string name="vault_photos_sdcard_isfull">Operation failed. Please check SD card is connected correctly, and that there is enough space.</string>
+    
+    
+    
+	<!--  私密Notes -->
+	<string name="safebox_notes_title">Notes</string>
+	<string name="safebox_notes_new_title">New note</string>
+	<string name="safebox_notes_selectall">Select All</string>
+	<string name="safebox_notes_clearall">Deselect All</string>
+	<!--使用common_cancel  <string name="safebox_notes_cancel">Cancel</string>-->
+	<!--使用common_ok<string name="safebox_notes_ok">OK</string>-->
+	<string name="safebox_notes_and_photos_add">Add</string>
+	<string name="safebox_notes_del">Delete</string>
+	<string name="safebox_notes_dial_content">Confirm to delete the note(s)?</string>
+	
+	
+	    
+	<!--  私密photo -->
+	<string name="safebox_photo_selectall">Select All</string>
+	<string name="safebox_photo_clearall">Deselect All</string>
+	<string name="safebox_photo_import1">Import</string>
+	<string name="safebox_photo_import2">Import(%d)</string>
+	<string name="safebox_secure_pic_title">Photos</string>
+    <string name="image_view_laoding">Please wait&#8230;</string>
+    <string name="image_view_delete">Delete</string>
+    <string name="image_view_restore">Restore</string>
+   	<!--使用common_ok <string name="safebox_photo_dlg_ok">OK</string>-->
+	<!--使用common_cancel <string name="safebox_photo_dlg_cancel">Cancel</string>-->
+	<string name="safebox_photo_dlg_decrypt_tips">Confirm to restore the photos?</string>
+	<string name="safebox_photo_dlg_decrypt_tips_one">Confirm to restore the photo?</string>
+	<string name="safebox_photo_dlg_decrypt_title">Restore private photo</string>
+	<string name="safebox_photo_dlg_delete_tips">Selected photos will be deleted permanently and cannot be restored.Confirm to proceed?</string>
+	<string name="safebox_photo_dlg_delete_tips_one">Selected photo will be deleted permanently and cannot be restored.Confirm to proceed?</string>
+	<string name="safebox_photo_dlg_delete_title">Delete Private photo</string>
+	<string name="safebox_photo_dlg_process_title_export">Restoring…</string>
+	<string name="safebox_photo_dlg_process_title_delete">Deleting…</string>
+	<string name="safebox_photo_dlg_vip_out_of_date">VIP membership has expired. Please upgrade to VIP to be able to import photos.</string>
+	<string name="safebox_photo_dlg_not_vip_member_tips">This feature requires upgrade to VIP, please upgrade to VIP.</string>
+	<string name="safebox_photo_dlg_not_vip_member_tips_forPhoto">Only VIP member can import more than 10 photos. Upgrade now?</string>
+	<string name="safebox_photo_dlg_vip_out_of_date_left">Later</string>
+	<string name="safebox_photo_dlg_vip_out_of_date_right">Upgrade</string>
+	<string name="safebox_photo_dlg_importing">Importing&#8230;</string>
+	<string name="safebox_photo_dlg_deleteing">Deleting&#8230;</string>
+	<string name="safebox_photo_dlg_restoring">Restoring&#8230;</string>
+	<string name="safebox_photo_toast_no_ablum">Sorry,there are no photos in your album.</string>
+	<string name="safebox_photo_album_title">Album</string>
+	<!-- 导入导出删除 Dialog 提示 -->
+    <string name="safebox_photo_operate_failed">\u0020 %1$d failed.</string>
+	      <string name="safebox_camera_operate_failed">Failed,system is busy. Please try to import photos from album.</string>
+	<!-- 导入导出删除 Toast 提示 -->
+	<string name="safebox_photo_import_toast_tips">%d photo has been imported to your Private Space.</string>
+	<string name="safebox_photos_import_toast_tips">%d photos have been imported to your Private Space.</string>
+	<string name="safebox_photo_export_toast_tips">%d photo has been restored to the original place.</string>
+	<string name="safebox_photos_export_toast_tips">%d photos have been restored to the original place.</string>
+	<string name="safebox_photo_delete_toast_tips">%d photo is deleted successfully.</string>
+	<string name="safebox_photos_delete_toast_tips">%d photos are deleted successfully.</string>
+	<string name="safebox_photo_import_notice">Photos can only be viewed by One Security once imported into Private Space.</string>
+    
+    <string name="safebox_encrypt_version_need_heigher">This feature does not work properly. Please upgrade to the latest version.</string>
+    <string name="share_pictures_notification_1">Photo(s) can only be opened by One Security once moved into Private Space. Sure to move the photo(s)?</string>
+    <string name="safebox_share_photo_toast_tips_1">%d photo has been imported to your Private Space.</string>
+	<string name="safebox_share_photo_toast_tips_failed"> %d failed.</string>
+	<string name="safebox_share_photo_toast_tips_2">%d photos have been imported to your Private Space.</string>
+	<string name="safebox_share_photo_label">Move to Privacy</string>
+	
+    
+    <!-- ======== 私密 ======= end -->
+
+    <!-- ======== 菜单 ======= start -->
+    <string name="main_menu_settings">Settings</string>
+    <string name="main_menu_share">Share</string>
+    <string name="main_menu_notice_center">Info Center</string>
+    <string name="main_menu_feedback">Feedback</string>
+    <string name="main_menu_about">About</string>
+    
+    <!-- ======== Setting ======= start -->
+    <string name="menu_category_general">General</string>
+    <string name="menu_category_vault">Privacy</string>
+    <string name="menu_rocket_homepage">Assistant Window</string>
+    <string name="menu_rocket_music">Rocket Sound</string>
+    <string name="menu_status_bar_icon">Icon on Status Bar</string>
+    <string name="menu_anim_mainpage">Animation</string>
+    <string name="menu_change_password">Change Password</string>
+    <string name="menu_secure_question">Set up Security Question</string>
+    <string name="menu_manage_auto_start">Manage Auto-start Apps</string>
+    <string name="menu_rolling_news">Rolling News</string>
+    <!-- ======== Setting ======= end -->
+     
+    <!-- ======== Share ======= start -->
+    <string name="menu_share_tip">Hi, I found a cool app called One Security. It has a rocket making my phone run much faster! LOL. Download it here for free! http://www.theonesecurity.com</string>
+    <string name="menu_share_subject">Join me to use One Security</string>
+    <!-- ======== Share ======= end --> 
+    
+    <!-- About -->
+    <string name="version_name">Version</string>
+    <string name="btn_help">Help</string>
+    <string name="btn_update">Update</string>
+    <string name="website_tip">Get in touch with us</string>
+    <string name="license">License and Services Agreement</string>
+    <string name="copyright">All Rights Reserved © 2010&#8211;2013 Tencent Mobile Doctor Limited.</string>
+    <string name="no_update_tip">Your One Security is the latest version.</string>
+    <string name="connect_failure_tip">Connectivity failure. Please check network setting and try again.</string>
+      
+    <!-- Help -->
+    <string name="help_welcome">Welcome to use One Security.</string>
+    
+    <!-- Status Bar -->
+    <string name="phone_status_safe">Your mobile is fully protected.</string>
+    <string name="phone_status_risk">Your mobile is at severe risk.</string>
+    
+    <string name="antivirus_safe">\"%1$s\"\u0020is checked and clean.</string>
+    <string name="antivirus_virus">\"%1$s\"\u0020is checked as a virus.Strongly recommend you to uninstall.</string>
+    <string name="antivirus_risk">\"%1$s\"\u0020is checked as a caution.</string>
+    
+    
+    <!-- Feedback -->
+    <string name="feedback_readme_text">We appreciate your feedback to improve One Security.</string>
+    <string name="feedback_email_tip">Your email will ONLY be used to follow up your messages. We respect and value customer’s privacy.</string>
+    <string name="feedback_button_submit">Send</string>
+    <string name="feedback_warring_text">Content cannot be blank.</string>
+    <string name="feedback_advice_prompt">Enter your message</string>
+    <string name="feedback_email_prompt">Enter your email (Optional)</string>
+    <string name="feedback_succ_prompt">Thank you for the feedback.</string>
+    
+    <!-- Info Center -->
+    <string name="setting_notice_center_title">Information Center</string>
+    <string name="setting_notice_center_information_title">Information</string>
+    
+    
+     <!-- 消息中心文字 -->
+     <string name="notice_center_dial_title">Confirm</string>
+     <string name="notice_center_dial_message">Are you sure to delete all information?</string>
+     <string name="not_information_found">No information found.</string>
+     <string name="notice_center_unread">New information: </string>
+     
+     <!-- License -->
+     <string name="license_tip">Provide you personal mobile security</string>
+     <string name="license_agree">Agree</string>
+     <string name="license_disagree">Disagree</string>
+     
+     <!-- User Guide -->
+     <string name="guide_btn_start">Start</string>
+        
+    <!-- ======== 菜单 ======= end -->
+
+    <!-- ======== VIP ======= start -->
+    <string name="string_vip_main_text_remaining">Remaining</string>
+    <string name="string_vip_main_text_days">Days</string>
+    <string name="string_vip_main_get_more_days">Pay for VIP</string>
+    <string name="string_vip_main_join_now">Pay for VIP</string>
+    <string name="string_vip_main_private_photos">Lock More Secret Photos</string>
+    <string name="string_vip_main_private_photos_description">Ensure that all your secret photos are fully protected.</string>
+    <string name="string_vip_main_latest_virus_database">Upgrade Latest Virus Database</string>
+    <string name="string_vip_main_latest_virus_database_description">Ensure that you are protected from the latest threats.</string>
+    <string name="string_vip_main_vip_confirming">VIP confirming...</string>
+    <string name="string_vip_main_vip_proper_action">VIP Features Exclusive</string>
+    <string name="string_vip_upgrade_title_bar">Payment</string>
+    <string name="vip_zone_share_up_to_10">"You can share up to 10 friends here. Share with more in Menu later."</string>
+	<string name="vip_zone_30_days_free">FREE VIP for 15 days\u0020\u0020\u0020</string>
+	<string name="vip_zone_send_sms_info">Are you sure to send SMS to selected friends?</string>
+    <string name="vip_zone_title">VIP Exclusive Zone</string>
+    <string name="vip_zone_processing_payment">Loading…</string>
+    <string name="vip_trial_title">FREE VIP for 15 days</string>
+    <string name="vip_trial_send_sms">Send SMS</string>
+    <string name="vip_trial_info">share with 1 friend via SMS=FREE VIP for 30 days</string>
+    <string name="vip_trial_sms_content">Hi, I found this cool app called One Security. It has a rocket boosting my phone! LOL. Download it here for free! http://www.theonesecurity.com</string>
+    <string name="string_vip_trial_questionnaire_title_bar">VIP Trial</string>
+    <string name="vip_payment_success_you_got">You got</string>
+    <string name="vip_payment_success_days">days</string>
+    <string name="vip_payment_success_enjoy_now">Enjoy Now</string>
+    <string name="vip_payment_success_info">Unlimited private photos and latest virus database.</string>
+    <string name="vip_payment_failed_info">Payment for VIP unsuccessful. No deduction occurred.</string>
+    <string name="vip_payment_failed_try_other">Try other form of payment</string>
+    <string name="vip_payment_failed_go_back">Return to VIP Exclusive Zone</string>
+    <string name="vip_upgrade_loading_page">Loading…</string>
+    <string name="vip_network_error">Connectivity failed. Please check the network and try it again.</string>
+    <string name="vip_out_of_time_info">Your VIP service is about to expire. Do you want to extend it now?</string>
+    <string name="vip_later">Later</string>
+    <string name="vip_trial_contact_empty">I\'m sorry, there is no contact in your phone.</string>
+    <string name="vip_trial_please_select_a_number">Please select a number</string>
+    <string name="vip_trial_contact_message_has_been_sent">Shared successfully. Free VIP will be opened for you later due to poor connection.</string>
+    <string name="vip_trial_questionnaire_has_been_sent">Submit successful，VIP services start later.</string>
+    <string name="vip_trial_questionnaire_investigation_completely">Questionnaire investigation completely. Free VIP will be opened for you later due to poor connection.</string>
+    <string name="vip_remaining_last_day">Your VIP services will be due on 23:59 today. Strongly recommend you to extend it now.</string>
+    <string name="vip_contact_list_is_less_than_5">You could get FREE VIP for 30 days by sharing with your 5 friends via SMS.</string>
+    <string name="vip_exclusive_function">I\'m sorry, these features are for VIP exclusive, please upgrade to VIP first.</string>
+    <string name="vip_mopay_label">Mopay for Android</string>
+    <string name="vip_zone_vip_introduction">VIP services can lock more secret photos and ensure that you are protected from the latest threats too.</string>
+    <string name="vip_zone_vip_remainding_days_introduction_1">VIP services are calculated by days, you can choose \"FREE VIP for 15 days\" or \"Pay for VIP\" to add VIP service time.</string>
+    <string name="vip_zone_vip_remainding_days_introduction_2">VIP services are calculated by days, you can choose \"Pay for VIP\" to add VIP service time.</string>
+    <string name="vip_expire_notification_in_notificaitonbar_title">VIP Expired</string>
+    <string name="vip_expire_notification_in_notificaitonbar">Your VIP services will be due soon!</string>
+    <!-- ======== VIP ======= end -->
+    <!-- ======== 内置赠送VIP ======= start -->
+    <string name="buildin_msgid">buildin</string>
+    <string name="buildin_msg_summary">Congratulations you have got VIP service.</string>
+    <!-- ======== 内置赠送VIP ======= end -->
+    <string name="update_cancel_tips">One Security is downloading the new version，please wait...</string>
+    <string name="update_cancel_update">Cancel</string>
+    <string name="update_cancel_minimize">Minimize</string>
+    <string name="update_error">Date error!</string>
+    <string name="update_failed">Update to new version failed. </string>
+    <string name="update_download_finished"> Download finished, click to install.</string>
+    <string name="update_download_canceled">Downloading is cancelled.</string>
+    <string name="update_download_failed">Download failed. Please check your network.</string>
+        
+    <!-- License begin -->
+    <string name="help_system_setting" formatted="false">Software End User License and Services Agreement 
+\nfor Tencent One Security Software
+\n
+\nPLEASE READ THIS END USER LICENSE AGREEMENT ("EULA") CAREFULLY AS IT REPRESENTS A BINDING AGREEMENT BETWEEN TENCENT MOBILE DOCTOR LTD AND YOU (AND YOUR COMPANY, IF APPLICABLE) AS THE LICENSEE. BY USING ALL OR ANY PORTION OF THE "One Security" PRODUCT (INCLUDING BUT NOT LIMITED TO THE SOFTWARE, FILES AND DOCUMENTATION OF SUCH PRODUCT) (COLLECTIVELY, THE “SOFTWARE”) OR USING TENCENT’S SERVICES IN CONNECTION WITH THE SOFTWARE, INCLUDING BUT NOT LIMITED TO: (I) ACCESSING TENCENT\'S SERVERS AND RESOURCES AND (II) ACCESSING PERSONALIZED CONTENTS THROUGH TENCENT\'S One Security NETWORK AND/OR OTHER NETWORKS OPERATED BY TENCENT (COLLECTIVELY, THE "SERVICES"), YOU, ON BEHALF OF: (A) YOURSELF; AND (B) IF YOU ARE USING THE SOFTWARE IN YOUR EMPLOYED CAPACITY WITHIN A COMPANY, ON BEHALF OF THAT COMPANY (EACH AND COLLECTIVELY REFERRED TO AS “LICENSEE”) ACCEPT AND AGREE TO BE BOUND BY ALL THE TERMS AND CONDITIONS OF THIS EULA (AND WHERE PARAGRAPH (B) APPLIES, YOU REPRESENT THAT YOU ARE AN AUTHORIZED REPRESENTATIVE WHO HAS THE AUTHORITY TO LEGALLY BIND YOUR COMPANY TO THIS EULA).  IF LICENSEE DOES NOT AGREE TO THIS EULA, LICENSEE MAY NOT USE THE SOFTWARE OR THE SERVICES AND MUST IMMEDIATELY REMOVE THE SOFTWARE FROM THE RELEVANT DEVICE ON WHICH THE SOFTWARE IS INSTALLED.
+\n
+\nThe following agreements are incorporated into and form part of this EULA. Where there are any inconsistencies between this EULA and the following agreements, the terms of this EULA (excluding the below agreements) shall prevail to the extent of any such inconsistencies (except the VIP Terms shall prevail in relation to the VIP Membership): 
+\n
+\n(1)	Privacy Statement for Tencent One Security Software (as set out in Schedule 1 of this   EULA); 
+\n(2)	One Security VIP Membership Terms (the “VIP Terms”), where the Licensee has purchased a VIP Membership (as defined under the VIP Terms) for the Software.
+\n
+\nFor clarity, “Services” as defined in this EULA includes any VIP Membership that the Licensee has purchased from Tencent.
+\n 
+\nUPDATES TO THIS EULA
+\nThis EULA may be updated or amended by Tencent at its sole discretion from time to time. Where we make significant and material changes to this EULA, we will endeavor to (but do not guarantee that we will) notify you via the following communication channels, so please do check them periodically:
+\n
+\n(ⅰ) in the Software through software updates; 
+\n
+\n(ⅱ) on this website;
+\n
+\n(iii) via SMS to the mobile phone number you have provided to Tencent; 
+\n
+\n(iv) via notices in the announcement column on the Software’s homepage at http://www.theonesecurity.com; and/or
+\n 
+\n(v) via notices in the Member and VIP service columns or member BBS zone at http://www.theonesecurity.com.
+\n
+\nWe may also (but do not guarantee that we will) communicate any other changes to the Software or Services, and announcements of other important events, via one or more of the above channels. Once the updated terms of the EULA are released, the updated terms will take effect immediately and substitute the original terms of this EULA. The Licensee may log into the Software or this website to review the latest version of the terms of this EULA at any time. 
+\n
+\n1.	OWNERSHIP OF THIS SOFTWARE 
+\n	This Software is developed by Tencent and Tencent owns all rights in the Software. All the ownership of intellectual property rights in this Software (including but not limited to any code, image, data, text and add-in programs contained in this Software and in any and all future updates, modifications, revisions and/or derivative works of the Software), and attached supporting documentation belong to Tencent and may not be used, reproduced, altered, distributed, exploited or otherwise dealt with by the Licensee without written authorization from Tencent, unless said usage, reproduction, alteration, distribution, exploitation or dealing are expressly provided for in and permitted by this EULA. This Software is protected by applicable law (including applicable intellectual property law), including without limitation the Copyright Law of the People\'s Republic of China ("PRC"), International Copyright Treaties and other intellectual property laws and treaties. 
+\n
+\n2.	SOFTWARE LICENSE
+\n
+\n2.1	Subject to the terms of this EULA, and provided that Licensee is in compliance with all the terms of this EULA, Tencent grants to Licensee a personal, non-exclusive, non-transferable, limited, revocable license (without the right to sublicense) to install and use one (1) copy of the Software on a single Licensee mobile device. If the Software contains any third party materials, , use of such third party materials may be subject to other terms and conditions as notified by Tencent to Licensee from time to time. Except as expressly stated herein, this EULA does not grant or transfer or license to Licensee any rights (including any intellectual property rights) in the Software and all such rights not expressly granted are reserved by Tencent.
+\n
+\n2.2	This EULA is valid until it is terminated pursuant to this EULA. 
+\n
+\n3.	RESTRICTIONS
+\n
+\n3.1	Without the prior written consent of Tencent, the Licensee shall not:
+\n
+\n(i)	reproduce the Software in whole or in part;
+\n
+\n(ii)	sell, assign, sub-license, disclose, or otherwise transfer or make available the Software in whole or in part to any third party;
+\n
+\n(iii)	use the Software to provide services to third parties;
+\n
+\n(iv)	implement, use, sell, distribute, transfer or permit any third party to implement, use, sell, distribute or transfer the Software and all the intellectual property rights thereof;
+\n
+\n(v)	copy, alter, amend, run by mount or create any derivative works based on the Software or any part or component thereof, data released to any mobile device’s internal memory by the Software and interactive data between client terminal and server’s terminal during the Software’s operation (which restricted acts include, but not limited to, the creation of plug-ins, add-on programs, outside hanging or any unauthorized third party’s tool/service accessing the Software and correlative systems); 
+\n
+\n(vi)	remove, delete alter or obfuscate any proprietary notices or marks (including without limitation the copyright statements) on or within the Software;
+\n
+\n(vii)	reengineer, de-compile, disassemble, alter, translate or reverse engineer the Software or any part or component thereto, except as permitted by  applicable laws which permit such activities notwithstanding this contractual prohibition;
+\n
+\n(viii)	amend or destroy the original state of the Software;
+\n
+\n(ix)	use the Software to take any actions to threaten the security of any element of the Services (including the Tencent and One Security networks), including but not limited to using data or entering server/account without permission; entering public networks or others’ operating systems and deleting, amending or adding the stored information without permission; attempting without permission to detect, scan or test the weakness of the Software system or the network or attempting without permission to conduct any other activities to damage the network security system; attempting without permission to intervene with or affect the normal operation of the Software or the website; intentionally spreading malicious programs or viruses, and taking other actions to damage or intervene with the normal information service of the network; forging part or all of the titles of TCP/IP packets;
+\n
+\n(x)	log in or use the Software and Services of Tencent by means of a third party’s compatible software or system not developed, authorized or approved by Tencent; as to the Software and Services of Tencent, the Licensee uses the plug-ins and outside hanging not developed, authorized or approved by Tencent;
+\n
+\n(xi)	use the Software without the prior written consent of Tencent to use, lease, lend, copy, revise, link to, cite, compile, issue or publish the information related to the Software, or to build mirror websites of said information or to develop related derivative products, works, services, plug-ins, outside hanging, compatibility or interconnection without authorization; 
+\n
+\n(xii)	use the Software to publish, deliver, transmit or store any content that contravenes the laws of any country, or threatens the national security, social stability, public order and morals of any country, or to publish, deliver, transmit or store any content that is inappropriate, insulting, defamatory, obscene, violent and against the laws, regulations and policies of any country; 
+\n
+\n(xiii)	use the Software to publish, deliver, transmit or store content that infringes other\'s intellectual property rights, trade secrets or other legal rights;
+\n
+\n(xiv)	use the Software, to issue, deliver or transmit bulk advertisements, unsolicited communications, spam and junk information; 
+\n
+\n(xv)	use the Software to deliver, transmit or otherwise accomplish the transmission of the files including pictures, photos, software or other materials, which are under the protection of intellectual property laws, such as (but not limited to), copyright or trademark laws (or right of privacy or right to publicize), unless the Licensee owns or controls the related rights or have obtained the necessary authorization;
+\n
+\n(xvi)	use the Software to use any material or information that contains pictures or photos which have been acquired by infringing existing trademark, copyright, patent, trade secrets or other exclusive rights (including without limitation intellectual property rights) of other third parties;
+\n
+\n(xvii)	use the Software to amend or forge the instruction, data and data packet in the running of software works, add, delete, decrease or change the functions or running effects of software, spread the Software for the foresaid purposes to the public through information network, or operate them;
+\n
+\n(xviii)	use the Software to apply the Software and Services offered by Tencent to the running of equipment putting humans and their belongings in danger. The Licensee understands that the Software and Services offered by Tencent are not designed for the above purposes and to the maximum extent as permitted by applicable law, Tencent will not bear any liability or be responsible for the personal injury or death, grave losses of belongings and destruction of environment due to the above unsuccessful operations arising from the Software and Services;
+\n
+\n(xix)	sell, lease, lend, spread, transfer or sub-license the Software and/or Services or gain profits from using the Software and/or Services regardless of whether the above acts were committed for the purpose of achieving direct economic or money earnings; 
+\n
+\n(xx)	use the Software and other Services offered by Tencent in any other illegal manner, for any illegal purpose or in any form inconsistent with this EULA;
+\n
+\n(xxi)	install, use or run the Software for economic benefits, including selling, lending, disseminating, transferring or granting authorization of the Software and Services and related links, or otherwise using the Software and Services to acquire economic or other benefits, without Tencent\'s prior written authorization;
+\n
+\n(xxii)	duplicate, alter or edit the Software data released by the Software into the memory of any wireless handheld terminals;
+\n
+\n(xxiii)	exchange data between clients and servers while the Software is in operation;
+\n
+\n(xxiv)	install the Software on any device or terminals that have not been expressly authorized by Tencent, including without limitation set top boxes, video game consoles, TV\'s and DVD players;
+\n
+\n(xxv)	use the Software to distribute, transmit or disseminate advertising and junk information in batch;
+\n
+\n(xxvi)	use the software to distribute or disseminate documents containing pictures, photos, software or other materials protected by law (including intellectual property, copyright, and trademark law) unless the Licensee owns or controls the ownership of such materials or has acquired the necessary authorization;
+\n
+\n(xxvii)	 increase, decrease or alter the Software\'s functions or performance by revising or forgoing operating instructions, data and data packets; distribute or run software used for such purposes through the information network; and
+\n
+\n(xxviii)	use the Software and Tencent\'s services in medical equipment or other   devices that may create substantial risks to people\'s life and property. The Licensee agrees and acknowledges that the Software and Services are not designed for the above-mentioned purposes, and that Tencent, its Affiliates (as defined below), employees, officers or agents shall not be liable for any personal injury, economic losses, and environmental damage caused by misusing the Software and Services by the Licensee. 
+\n
+\n4.	TERMINATION OF LICENSE
+\n
+\n	Tencent may, at its sole and absolute discretion at any time and for any reason (including if the Licensee breaches this EULA in any way), immediately terminate, suspend in part or in whole, or restrict the Licensee’s right to use of the Software without notice. If such termination occurs, this EULA is also terminated as between Tencent and Licensee.
+\n
+\n5.	SOFTWARE UPDATES AND SERVICE
+\n5.1	All updates, upgrades or new versions of the Software (each an “Update”) are provided to Licensee on an as-is basis and are subject to the terms of this EULA. Further, Licensee agrees that by using an Update, Licensee voluntarily terminates Licensee’s right to use any previous version of the Software. Alternatively, Licensee may choose to continue using previous versions of the Software by not using such Update. Tencent has no obligation to provide support, maintenance, Updates, or modifications under this EULA, except as specifically provided for by separate agreements between Tencent and Licensee.
+\n
+\n5.2	The Software automatically activates “upgrade reminder”. After issuing Updates of the Software, Tencent does not guarantee the continuous availability of previous version(s) of the Software.
+\n
+\n5.3	Tencent reserves the right to unilaterally change or restrict part of the functional effects of the Software for any purpose at its discretion, and Tencent assumes no liability whatsoever in respect of any damages suffered by the Licensee as a result of such change or restriction.
+\n
+\n5.4	Tencent reserves the right to amend, suspend or terminate its Service for the Software (or the availability of the Software) at any time and without prior notice to the Licensee. Tencent shall not have any liability to the Licensee or any third party for Tencent’s exercise of such right.
+\n
+\n6.	NO GUARANTEES OR WARRANTY
+\nTO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, THE SOFTWARE AND SERVICES ARE OFFERED ON AN “AS-IS” BASIS AND NO GUARANTEES OR WARRANTY, WHETHER EXPRESS, IMPLIED OR STATUTORY, IS GIVEN IN RELATION TO THEM. TENCENT EXPRESSLY DISCLAIMS ALL GUARANTEES OR WARRANTIES OF ANY KIND, WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING, BUT NOT LIMITED TO IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT.
+\n
+\n7.	EXCLUSION OF INCIDENTAL, CONSEQUENTIAL, AND OTHER DAMAGES
+\n7.1	TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, IN NO EVENT SHALL TENCENT, ITS AFFILIATES (AS DEFINED BELOW), EMPLOYEES, OFFICERS OR AGENTS BE LIABLE FOR ANY SPECIAL, INCIDENTAL, PUNITIVE, INDIRECT, OR CONSEQUENTIAL DAMAGES WHATSOEVER (INCLUDING BUT NOT LIMITED TO, DAMAGES FOR LOSS OF PROFITS OR CONFIDENTIAL OR OTHER INFORMATION, FOR BUSINESS INTERRUPTION, FOR PERSONAL INJURY, FOR LOSS OF PRIVACY, FOR FAILURE TO MEET ANY DUTY INCLUDING OF GOOD FAITH OR REASONABLE CARE, FOR NEGLIGENCE, AND FOR ANY OTHER PECUNIARY OR OTHER LOSS WHATSOEVER) ARISING OUT OF OR IN ANY WAY RELATED TO (A) THE USE OF OR INABILITY TO USE THE SOFTWARE OR ANY PART OR COMPONENT THEREOF, (B) THE PROVISION OF, OR INABILITY TO PROVIDE, THE SERVICES TO LICENSEE OR ANY OTHER THIRD PARTY, OR (C) OTHERWISE UNDER OR IN CONNECTION WITH ANY PROVISION OF THE EULA, EVEN IN THE EVENT OF FAULT, TORT, STRICT LIABILITY, BREACH OF CONTRACT, OR BREACH OF WARRANTY BY TENCENT, AND EVEN IF TENCENT OR ITS AFFILIATES, EMPLOYEES, OFFICERS OR AGENTS HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.  FOR THE AVOIDANCE OF DOUBT, IN NO EVENT SHALL TENCENT OR ITS AFFILIATES, EMPLOYEES, OFFICERS OR AGENTS BE RESPONSIBLE OR LIABLE FOR ANY USE OF THE SOFTWARE BY LICENSEE FOR THE DISTRIBUTION OF CONTENTS RELATING TO OBSCENITY, GAMBLING, DEFAMATION, THREATS AND INFORMATION WHICH INFLICTS HATRED OR DISSENSION ON INDIVIDUALS AND/OR CERTAIN GROUPS OF COMMUNITY BASED ON ETHNIC GROUP, RELIGION, RACE, AND GROUP-BASED INTEREST. 
+\n
+\n7.2	In this EULA, "Affiliates" shall mean any other person or entity which directly or indirectly Controls, is Controlled by, or is under direct or indirect common Control with Tencent from time to time.  "Control" shall mean: (a) the ownership or control (whether directly or indirectly) of more than thirty percent (30%) of the voting share capital of the relevant undertaking; or (b) the ability to direct the casting of more than thirty percent (30%) of the votes exercisable at general meetings of the relevant undertaking on all, or substantially all, matters; or (c) the right to appoint or remove directors of the relevant undertaking holding a majority of the voting rights at meeting of the board on all, or substantially all, matters and "Controls" and "Controlled" shall be construed accordingly.
+\n
+\n7.3.	As with other mobile device software, the Software could become susceptible to harassments or breaches in respect of security and use. Licensee hereby agrees and acknowledges that Tencent or its Affiliates, employees, officers or agents will not bear any liability for any such harassments or breaches, including but not limited to:
+\n
+\n(ⅰ)	other software downloaded and installed by the Licensee containing viruses, such as Trojan Horse, which threaten the security of the Licensee’s personal information and data in any way, and may as a result, adversely affect the normal use of the Software;
+\n
+\n(ⅱ)	the Licensee’s mobile device is infected by a virus or is damaged as a result of the use of the Software by Licensee of malicious web pages; or
+\n
+\n(ⅲ)	any other reasons. 
+\n
+\n7.4	Tencent and/or its Affiliates, employees, officers or agents shall bear no liability for any losses incurred by the Licensee caused by a third party\'s communication line error, technical problem, network or mobile device failure, system instability, and other third party events outside of Tencent and/or its Affiliates’ control.
+\n
+\n7.5	Tencent does not approve of or authorize any software derived from the Software that are not developed and formally released by Tencent, or otherwise not authorized by Tencent. Such software may breach Tencent’s intellectual property rights.  The download, installation or use of such software may bring about unpredictable risks to the Licensee. Tencent shall not be liable for any legal liability and dispute arising from said download, installation or use.
+\n
+\n7.6	The Software may adopt third party software or other systems to enable Users to use the Software or other Services. Such usage and access are provided by these third parties. Tencent makes no guarantee on the security, accuracy, validity and reliability of these third party software and systems. The Licensee agrees and acknowledges that Tencent and/or its Affiliates, employees, officers or agents shall bear no liability for any related disputes and damages incurred in relation to such third party software and systems.
+\n
+\n7.7	Licensees shall choose the version of Software that matches their mobile devices. The Licensees are solely liable for any software and mobile device failures due to mismatching between the Software and any mobile device.
+\n</string>
+    <string name="help_system_setting_1" formatted="false">\n8.	LICENSEE\'S WARRANTIES
+\n8.1	Except as expressly set out in this EULA or as permitted by any applicable mandatory law, Licensee warrants, represents and undertakes that it shall:
+\n	
+\n(ⅰ)	bear all risks for the use of this Software and possesses all rights and conditions required for the running of this Software (in particular, the Licensee must ensure that it has the right to use the relevant operating system required for the operation of the Software); and 
+\n
+\n(ⅱ) use the Software in accordance with the provisions of this EULA and all applicable laws.
+\n  
+\n9.	PERSONAL INFORMATION	
+\n
+\n9.1	Tencent respects the privacy of the Licensee’s personal data. Tencent will treat any personal data provided by Licensee in the course of using the Software or Services in accordance with the Privacy Statement (subject to applicable law).
+\n
+\n10.	CONSENT TO THE USE OF MOBILE DEVICE RESOURCES
+\n
+\n10.1	The Licensee hereby acknowledges, consents and agrees that the Software may make use of the Licensee\'s resources for the purpose of the Software’s performance of its functions and otherwise fulfilling Tencent’s obligations and rights under this EULA, such as the processor of the Licensee\'s mobile device and the bandwidth, for the limited purposes of maintaining and managing battery life, showing memory statuses, managing software in the mobile device, and/or performing fee scanning, anti-virus functions. Where applicable, the costs of such use by the Software of the Licensee\'s resources (including without limitation costs of service providers) shall be solely borne by the Licensee.  
+\n
+\n10.2	The Licensee acknowledges and agrees that Tencent will use its commercially reasonable efforts to protect the Licensee\'s mobile device resources and the privacy and completeness of the Licensee\'s communications via the mobile device. However, the Licensee acknowledges and agrees that Tencent does not provide any warranty or guarantee in relation to such matters and has no liability in relation to such matter.
+\n
+\n11.	LIMITATION OF LIABILITY
+\nNOTWITHSTANDING ANY DAMAGES THAT LICENSEE MIGHT INCUR FOR ANY REASON WHATSOEVER AND TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, THE ENTIRE LIABILITY OF TENCENT AND ANY OF ITS SUPPLIERS UNDER ANY PROVISION OF THIS EULA AND LICENSEE’S EXCLUSIVE REMEDY FOR ALL OF THE FOREGOING SHALL BE LIMITED AND IN NO EVENT WILL TENCENT OR ITS SUPPLIERS TOTAL CUMULATIVE LIABILITY EXCEED FIVE (5) CHINESE RENMINBI. IN ADDITION, TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, IN NO EVENT SHALL TENCENT, ITS AFFILIATES, EMPLOYEES, OFFICERS OR AGENTS BE LIABLE FOR ANY SPECIAL, INCIDENTAL, PUNITIVE, INDIRECT, OR CONSEQUENTIAL DAMAGES WHATSOEVER. 
+\n
+\n12.	INDEMNIFICATION
+\n12.1	By accepting this EULA, Licensee agrees to indemnify and otherwise hold harmless Tencent, its officers, employee, agents, subsidiaries, Affiliates, and other partners from any direct, indirect, incidental, special, consequential, exemplary or other damages arising out of, relating to, or resulting from Licensee’s use of the Software or receipt of the Services, or any other matter relating to the Software, Services or this EULA.
+\n12.2	For the avoidance of doubt, if the Licensee\'s breach of this EULA (including but not limited to the acts stipulated in Clause 3.1 above) or relevant terms of Service brings about any third party\'s claims, demands or losses to Tencent, including attorney\'s fee, the Licensee hereby agrees to indemnify and hold Tencent harmless from all losses caused by said claims, demands or losses.  
+\n 
+\n13.	INTELLECTUAL PROPERTY
+\n
+\n13.1	The Software is protected by intellectual property laws (including without limitation the Copyright Law of the PRC and Trademark Law of the PRC) and international copyright treaties, as well as other intellectual property laws and treaties. Licensee hereby acknowledges that all intellectual property rights in the Software (including but not limited to any images, text, interface frameworks, icons, designs, audio, video, and "applets" incorporated into the Software) throughout the world belong to Tencent, that rights in the Software are licensed (not sold) to Licensee, and that Licensee has no rights in, or to, the Software other than the right to use it in accordance with the terms of this EULA. Licensee acknowledges and agrees that Licensee has no right to access the Software in source code form.
+\n
+\n13.2 The Licensee further agrees and acknowledges that all the contents in any advertisements and commercial information provided by Tencent for the Licensee via the Software and Services are protected by copyright laws and international copyright treaties, as well as other intellectual property laws and treaties. The Licensee may only use content from said advertisements or commercial information with the written consent of Tencent, and shall not copy, amend or compile said advertisements or commercial, or create derivative products based on the same without Tencent\'s authorization.
+\n
+\n13.3	Tencent, 腾讯, the Tencent logo, and other Tencent names and logos are the trademarks of Tencent, use of which for any purposes by the Licensee without the written consent from Tencent is strictly prohibited. Tencent reserves all rights to claim remedies against the Licensee, including without limitation damages and injunctive relief, in respect of any unauthorized use of Tencent\'s intellectual property.
+\n
+\n14.	ENTIRE AGREEMENT
+\nThe EULA constitutes the entire agreement between Tencent and Licensee and governs Licensee’s use of the Software, superseding any prior agreement between Licensee and Tencent relating to the subject matter hereof. If any provision of this EULA is held by a court of competent jurisdiction to be contrary to law, such provision will be changed and interpreted so as to best accomplish the objectives of the original provision to the fullest extent allowed by law and the remaining provisions of the EULA will remain in full force and effect.
+\n15.	ASSIGNMENT
+\nLicensee may not assign this EULA, and any attempted assignment will be null and void. Tencent may assign this EULA at any time to any third party at its sole discretion.
+\n16.	GOVERNING LAW
+\n
+\nThis EULA will be governed by and construed in accordance with the laws of the Hong Kong Special Administrative Region ("HKSAR") without regard to conflict of laws principles.
+\n
+\n17.	DISPUTE RESOLUTION
+\n
+\n17.1	Any dispute or controversy under this EULA shall firstly be resolved through amicable negotiation. If no agreement is reached through such negotiations, the parties hereby agree to refer the dispute or controversy to arbitration pursuant to Clause 17.2 below.
+\n
+\n17.2	Subject to Clause 17.1 above, the parties agree that any dispute, controversy or claim arising out or relating to this EULA, or the breach, termination or invalidity thereof, shall be settled by final and binding arbitration in Hong Kong under the Hong Kong International Arbitration Centre Administered Arbitration Rules in force when the Notice of Arbitration is submitted in accordance with these Rules. The place of arbitration shall be in Hong Kong at the Hong Kong International Arbitration Centre ("HKIAC").
+\n
+\n17.3	The tribunal for any arbitration shall consist of three arbitrators with each party appointing one arbitrator and the two arbitrators thus appointed shall choose the third arbitrator who will act as the presiding arbitrator of the Tribunal.
+\n
+\n17.4 	The language to be used in the arbitral proceedings shall be English.
+\n
+\n17.5 	The applicable law shall be the laws of the Hong Kong.
+\n
+\n18.	LANGUAGE
+\nThis EULA is written in English; where it is translated into another language at sole discretion of Tencent or by the requirement of law, the English version shall prevail in the event of any inconsistency between such different language versions of this EULA.
+\n19.	ENQUIRIES
+\n	If the Licensee has any questions or comments as regards this Software, please contact Tencent at the below contact details:
+\nCustomer Service Hotline of Tencent: 0755-83765566. Service Website: http://www.theonesecurity.com
+\n
+\nTencent Mobile Doctor Ltd  
+\nSCHEDULE 1</string>
+    <string name="help_system_setting_2" formatted="false">\nPrivacy Statement for Tencent One Security Software
+\nLast updated: [2013-1-18]
+\nTencent Mobile Doctor Ltd (“Tencent” or “we”) is committed to protecting your privacy while providing you with the products and services that serve your needs. The operation of these products and services may require the collection and use of your personal information. This privacy statement explains how Tencent collects and uses your personal information by the Software ("Software") in those situations. This privacy statement only applies to the Software and Services and does not apply to other Tencent websites, products or services (for clarity, all references to “Software” in this Privacy Statement also refer to the Services, unless the context requires otherwise). Please read the following Privacy Statement to understand how Tencent uses any information collected from you through your use of the Software.
+\nThis Privacy Statement is current as of the “last updated” date set forth above. Tencent reserves the right to change this statement from time to time, so please be sure to check back periodically. Updated versions of this Privacy Statement will also be available in future updates to the Software.
+\nBy installing or using the Software, you acknowledge, agree and consent that your Personal Information (as defined below) will be handled as described in this Privacy Statement, which is incorporated by reference into the Software End User License and Services Agreement for Tencent One Security Software (“EULA”).
+\nIt is your responsibility to read and accept the terms of service and privacy policies for the websites you visit. Tencent is not responsible for the privacy practices of other entities, including websites whose advertisements may appear on the Software.  This Privacy Statement applies solely to information collected by Tencent with your use of the Software.
+\nWhere there is any inconsistency between the English and any other language versions of this Privacy Statement, the English version will prevail to the extent of such inconsistency.
+\nDefined terms in this Privacy Statement, if not defined in this Privacy Statement, have the meaning as given under the EULA.
+\nINFORMATION WE COLLECT FROM YOU
+\nWhat information Tencent collects or receives from you depends on how you use the Software, which may include the following:
+\nYour Personal Information
+\n"Personal Information" is information that you provide to Tencent which personally identifies you, such as your name, telephone number, identification number, email address, or credit card details. When you provide your Personal Information to Tencent using the Software, Tencent receives and stores this information in order to respond to your instructions and requests. For example, we may use your Personal Information when providing you with customer technical support. You can choose not to provide your Personal Information, but then you might not be able to take advantage of all the features in the Software.
+\nNon-Personal Information
+\n"Non-Personal Information" is information that cannot be directly associated with a specific person or entity. Non-Personal Information includes but is not limited to your computer’s configuration and the version of the Software you are using.
+\nInformation We Collect Automatically 
+\nWe receive and store certain types of information whenever you interact with us. For example, we automatically send and receive information to and from your mobile device which we use to determine which version of the Software you are using so that we may automatically update (new features, bug fixes, etc.) the Software and Services that you may use. Like many mobile applications, the Software may collect any personal information that you have inputted into your mobile device when you use the Software (for example, by using the address book synchronization function of the Software). The Software also supports the use of automated tools to obtain certain types of information to make your usage of the Software more convenient. Though such information will typically be used in an aggregated way to improve our products and services, some information we collect, including your usage patterns or preferences, may be used to personalize your experience, or to offer you products and services specifically based on your preferences and usage.
+\nIn addition, our servers automatically recognize your IP address and other technical information about your mobile device. See the section below entitled “IP Address Information” for more information.
+\nAll information received and stored as the aforesaid will be encrypted to ensure the personal data security and will be sent through a digital certificate encryption channel during data exchange between clients and servers with valid security certificates for websites and mobile clients. All local back-up information is encrypted and saved to protect the Licensee’s personal information if the Licensee loses the mobile device. However, Tencent, its affiliates, employees, officers and agents shall not be liable for any loss of information of the Licensee.
+\n
+\nIP Address Information
+\nEach time you use the Software, your wireless telecom services operator will provide our web server with your IP address, as well as other technical information about your mobile device. In addition, our servers may look up the IP address and other information about your mobile device so that Tencent can: 1) display specific or localized content and advertisements that may interest you based on the geographic location of handheld device, or 2) to enable certain features of the Software. We do not combine your IP address or location information with personally identifiable information about you.
+\nHOW TENCENT USES YOUR INFORMATION
+\nTencent may use the information we collect about you for any of the following purposes:  
+\n•	To carry out Software or Service-related verification, upgrade, security or customer support purposes. 
+\n
+\n•	To better understand how users access and use our products and services, including the Software, on an aggregated and individualized basis, for the purposes of improving our products and services, and to respond to customer desires and preferences.
+\n
+\n•	To improve our products and services by providing personalized experiences and recommendations, language and location customization, personalized help and instructions, or other responses to your and other customers’ usage of our products and services.
+\n
+\n•	To communicate with you for other customer service, software verification or software upgrades. This may include location verification for products and services which may have limited geographical access, and the like.
+\n
+\n•	To offer you content, services, games or other products and services.
+\n
+\n•	To allow you to participate in surveys about products and services.
+\n
+\n•	To receive and process payments from you (where applicable) in relation to the Software. 
+\n
+\n•	To improve our products and services by providing language and location customization, personalized help and instructions, or other responses to your and other customers’ usage of our products and services.
+\n
+\n•	To acquire software installation information for cloud anti-virus functions that requires server computation and instructions.
+\n
+\nIn addition, we may use your Personal Information for the purpose of sending you messages  (whether by messaging within the Software or by email, SMS or other means) offering or advertising:
+\n
+\n•	our goods and services and the goods and services of our affiliate and subsidiary companies and joint venture partners (including any value-added services), including instant messaging services, online media services, interactive entertainment services, social networking services, payment services, internet search services, location and mapping services, on-line advertising services and other social media, entertainment, e-commerce, information and communications software and services (“Internet Services”); and
+\n
+\n•	third party providers of Internet Services and goods and services relating to dining, food and beverages, sports, music, film, television and other entertainment, clothing and accessories, jewelry, cosmetics, personal health and hygiene, electronics, home furnishings, and housewares, automobiles, transport and travel, banking, insurance and financial services, loyalty and reward programs and other goods and services that we think may be relevant to you. 
+\n
+\nWe will honor your request to not use your Personal Information for all or any of the marketing purposes noted above.  If you do not wish to receive offers or advertising from us or only wish to receive certain offers or advertising, please notify our Privacy Officer at cs@theonesecurity.com.
+\nWe do not sell or rent your Personal Information to any third party, but we may disclose information about you to third parties acting on our behalf or who are our Affiliates (as defined in the EULA). These third parties may assist Tencent with marketing, resolving service problems, and correcting errors related to the execution of Tencent’s products including the Software.  However, we do not give these third parties (other than our subsidiaries and affiliates) an independent right to share or use your personal information. Such disclosure is further described in the below section.
+\nIn addition, we may from time to time disclose Non-Personal Information to any third parties as at our discretion.
+\nHOW AND WHEN TENCENT SHARES INFORMATION
+\nInformation about our users is an important part of our business, and we are not in the business of selling it to others. We share customer information only as compatible with the purposes described above, and when we have your permission or as described in this section.
+\nTencent Affiliates 
+\nWe may share your information with our Affiliates (as defined in the EULA) but only if those Affiliates are either subject to this Privacy Statement or follow practices at least as protective as those described in this Privacy Statement. These Affiliates may be located outside of your jurisdiction.
+\nContractors and Agents
+\nWe may employ other companies and individuals to perform functions on our behalf. Examples include without limitation sending postal mail and e-mail, removing repetitive information from customer lists, analyzing data, providing marketing assistance (including data concerning marketing and promotional programs), or providing customer service or for other purposes within the ordinary course of business. These third parties, which may be located outside of your jurisdiction, have access to the Personal Information needed to perform their functions on our behalf. We require these companies to agree (ⅰ) to provide adequate protections for your Personal Information that are no less protective than those set out in this Privacy Policy and (ⅱ) to use your Personal Information only for the purposes for which the third party has been engaged by us. Tencent or its affiliates are not liable for the acts or omissions of these third parties, except as provided by applicable law.
+\nBusiness Transfers
+\nAs Tencent continues to develop our business, we might sell or buy online stores, subsidiaries, or other businesses. In such transactions, customer information generally would be one of the transferred business assets but remains subject to the promises made in any pre-existing privacy statement or policy (unless, of course, the customer consents otherwise). Also, in the event that Tencent, or substantially all of its assets are acquired, we will provide notice before customer information, including your Personal Information, is transferred and becomes subject to a different privacy statement or policy.
+\nProtection of Tencent
+\nTencent reserve the right to disclose your personal information when we believe such disclosure are required to comply with the law, judicial proceeding, court order or other legal process; to enforce or apply the terms of the EULA; or protect the rights, property, or safety of Tencent, our employees, our users, or others. This includes exchanging information with other companies and organizations for fraud protection and credit risk reduction purposes. This does not include selling, renting, sharing, or otherwise disclosing Personal Information from customers for commercial purposes in violation of this Privacy Statement.
+\n
+\nRETENTION OF YOUR INFORMATION
+\nWe may retain any Personal Information collected from you for the period necessary to fulfill the purposes as outlined in this Privacy Statement unless a longer retention period is required by applicable law.
+\nSECURITY OF YOUR PERSONAL INFORMATION
+\nTencent is committed to protecting the security of your Personal Information. We use a variety of security technologies and procedures to help protect your Personal Information from loss, misuse, unauthorized access, use, disclosure, alteration and destruction. 
+\nWe work to protect the security of your Personal Information during transmission by using Secure Sockets Layer (SSL) software, which encrypts information you provide to Tencent while using the Software.
+\nPlease be aware that despite our best efforts, no data security measures can guarantee 100% security all of the time and Tencent is not liable for any breach of your data or mobile device in connection with your use of the Software.
+\nAny information we collect will be securely processed, stored and archived in databases and backups that could reside outside of your jurisdiction, including without limitation the People\'s Republic of China.
+\nIf you have any questions about the security of your information, please contact us at cs@theonesecurity.com. 
+\n
+\nACCESS TO AND CORRECTION OF YOUR INFORMATION 
+\nTencent will take commercially reasonable steps to ensure that the Personal Information we collect and store is reliable, accurate, complete and current. You also have the right to be given a copy of any Personal Information which Tencent holds concerning you (and for which we may charge a small fee to process) and to have any inaccuracies in your personal data that is stored by us to be corrected and/or erased. You may exercise any such rights by emailing at cs@theonesecurity.com.  We will need you to provide us with sufficient information to establish your identity and to verify your access request and also to assist us in dealing with your request. Requests will be processed in a reasonably timely manner.   
+\n
+\nVOLUNTARY PROVISION OF PERSONAL INFORMATION
+\n
+\nAs mentioned above, you can at any time choose not to provide your Personal Information to Tencent, but that may prevent you from being able to use or take advantage of specific features of the Software. 
+\nIf you choose to use the Software, any dispute over privacy is subject to this Privacy Statement and the provisions of the EULA and the VIP Terms, including without limitation applicable limitations on damages, arbitration of disputes, and application of the law of the Hong Kong Special Administrative Region. 
+\nIf you have any concerns about your privacy or this Privacy Statement, please contact us by emailing at cs@theonesecurity.com with a thorough description or your question or concern, and we will try to resolve it.
+\nEXEMPTION OF LIABILITY
+\nTencent, its Affiliates, employees, officers and agents shall have no liability for any breach of this Privacy Policy, except as required by applicable law, including: (ⅰ) any disclosure of your Personal Information as required by law or relevant governmental authority; (ⅱ) any disclosure of your Personal Information as a result of your own actions or negligent acts (including without limitation the disclosure by you of your Personal Information to any websites, forums, or social networking sites); (ⅲ) any consequence resulting from hackers, computer viruses or temporary closure of our services; or (ⅳ) any consequence resulting from Acts of God or any other events that are beyond Tencent’s reasonable control.
+\nIn addition, all provisions of the EULA and the VIP Terms, including without limitation the limitation of liability and indemnification provisions shall also apply.
+\nCONTACT US
+\nIf you have questions about the privacy aspects of our products or services, please contact us at cs@theonesecurity.com.
+\n</string>
+<!-- License end -->
+
+<!-- appwidget -->
+<string name="widget_shortcut_name">One Security 4x1</string>
+<string name="widget_booster_name">One Security Booster 4x1</string>
+<string name="widget_shortcut_switch">Switch</string>
+<string name="widget_booster_running_app">Manage Running Apps</string>
+</resources>

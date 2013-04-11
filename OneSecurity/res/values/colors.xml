@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    
+    <!-- =========== 公共部分 ==============
+    	** 颜色 + 序号 + 色值
+    	** Sample:
+    	   1.blue_1_2effbb
+    	   2.blue_2_ccffdd
+     -->
+    <color name="white_1_fafafa">#fafafa</color>
+    <color name="white_2_4cfafafa">#4cfafafa</color>
+    <color name="white_3_fafafa_80">#ccfafafa</color>
+    <color name="white_4_fafafa_70">#b2fafafa</color><!-- 颜色透明度为70 -->
+    <color name="white_5_fafafa_50">#80fafafa</color><!-- 颜色透明度为50 -->
+    <color name="white_6_ffffff">#ffffff</color>
+    <color name="gray_1_b8c6d5">#b8c6d5</color>
+    <color name="gray_2_b2b2b2">#b2b2b2</color>
+    <color name="gray_3_a8a8a8">#a8a8a8</color>
+    <color name="gray_4_666666">#666666</color>
+    <color name="gray_5_393939">#393939</color>
+    <color name="gray_6_e5e5e5">#e5e5e5</color>
+    <color name="gray_7_e1ebf5">#e1ebf5</color>
+    <color name="gray_8_393940">#393940</color>
+    <color name="gray_9_e7e8e8">#e7e8e8</color>
+    <color name="gray_10_616161">#616161</color>
+    <color name="gray_11_cccccc">#cccccc</color>
+    <color name="blue_1_205791">#205791</color>
+    <color name="blue_2_daedf7">#daedf7</color>
+    <color name="blue_3_205791">#205791</color>
+    <color name="blue_4_77a4d4">#77a4d4</color>
+    <color name="blue_5_2f5d91">#2f5d91</color>
+    <color name="blue_6_00254b">#00254b</color>
+    <color name="blue_7_1e364d">#1e364d</color>
+    <color name="blue_8_2e6299">#2e6299</color>
+    <color name="blue_9_20558e">#20558e</color>
+    <color name="blue_10_9fccfc">#9fccfc</color>
+    <color name="black_1_363636">#363636</color>
+    <color name="black_2_595959">#595959</color>
+    <color name="red_1_ff6459">#ff6459</color>
+    <color name="red_2_ff7b69">#ff7b69</color>
+    <color name="yellow_1_ffe932">#ffe932</color>
+    <color name="transparent_00000000">#00000000</color>
+    
+    
+    <!-- =========== 业务相关 =============== -->
+    <color name="button_white_belowtext_color">#FFFFFF</color>    
+    <color name="button_black_belowtext_color">#414141</color>
+    <color name="button_white_abovetext_color">#333333</color>
+    <color name="button_green_abovetext_color">#fafafa</color>
+    <color name="button_green_belowtext_color">#eeffd9</color>    
+    <color name="standar_blue">#ff047ecb</color>
+    <color name="button_disable_abovetext_color">#b2b2b2</color>
+    <color name="button_disable_belowtext_color">#FFFFFF</color>
+    <color name="button_press_abovetext_color">#205791</color>
+    <color name="button_press_belowtext_color">#eeffd9</color>        
+    <color name="color_full_scan_text">#ffad38</color>        
+    <!-- 黑色背景Button 文字颜色及选中文字颜色 -->
+    <color name="black_button_text">#ffffff</color>
+    <color name="black_button_text_select">#8f8f8f</color>
+    <color name="black_transparent">#99000000</color>  
+    <color name="black">#000000</color>
+    <color name="color_danger">#FFFF3722</color>
+    <color name="color_vip_upgrade_title_bg">#3774B6</color>
+    <color name="btn_keyboard_text_color">#3b67b2</color>
+    
+    <color name="widget_blue">#16baff</color>
+</resources>

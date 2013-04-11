@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+    <!-- android:background="@drawable/sel_bg_common_list" -->
+
+    <FrameLayout
+        android:id="@+id/item_virus_result_lay_title"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+
+        <LinearLayout
+            android:id="@+id/item_virus_result_lay_title_bar_bg"
+            android:layout_width="162dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_common_list_title_blue" >
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/item_virus_result_text_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|top"
+            android:layout_marginLeft="13.33dp"
+            android:layout_marginTop="3dp"
+            android:textColor="@color/white_1_fafafa"
+            android:textSize="@dimen/textsize_14sp" />
+
+        <!-- title icon -->
+
+        <ImageView
+            android:id="@+id/item_virus_result_title_icon_no_virus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:layout_marginLeft="155dp"
+            android:layout_marginTop="12dp"
+            android:contentDescription="@string/application_name"
+            android:visibility="gone" />
+    </FrameLayout>
+
+    <RelativeLayout
+        android:id="@+id/item_virus_result_summary"
+        android:layout_width="fill_parent"
+        android:layout_height="45dp"
+        android:layout_gravity="left|center_vertical"
+        android:layout_marginTop="1dp"
+        android:layout_marginBottom="1dp"
+        android:orientation="horizontal" >
+		<!-- app head virus or normal -->
+        <ImageView
+            android:id="@+id/item_virus_result_image_app_head"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="13.33dp"
+            android:layout_marginRight="10dp"
+            android:contentDescription="@string/application_name"
+           />
+		<!-- app name -->
+        <TextView
+            android:id="@+id/item_virus_result_text_app_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/lay_whether_cleaned"
+            android:layout_toRightOf="@+id/item_virus_result_image_app_head"
+            android:ellipsize="middle"
+            android:singleLine="true"
+            android:textSize="@dimen/textsize_14sp" />
+		<!-- left line , delete btn,clear btn ,cleared btn,trusted btn -->
+        <LinearLayout
+            android:id="@+id/lay_whether_cleaned"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:layout_marginRight="7.33dp"
+            android:duplicateParentState="true"
+            android:gravity="center"
+            android:orientation="horizontal" >
+
+            <!-- 增大触控范围start -->
+            <!--
+            <LinearLayout
+                android:id="@+id/item_virus_result_ll_trust"
+                android:layout_width="50.33dp"
+                android:layout_height="25.66dp"
+                android:clickable="true"
+                android:gravity="center" >
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:duplicateParentState="true"
+                    android:src="@drawable/sel_bg_result_trust_btn" />
+            </LinearLayout>
+            -->
+				<!-- left line -->
+            <ImageView
+                android:id="@+id/item_virus_btn_left_line"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="6dp"
+                android:layout_marginRight="6dp"
+                android:contentDescription="@string/application_name"
+                android:gravity="center"
+                android:src="@drawable/bg_virus_btn_left_line" />
+			<!-- clear btn -->
+			     <!-- 增大触控范围start -->
+            <LinearLayout
+                android:id="@+id/item_virus_result_ll_clear"
+                android:layout_width="50.33dp"
+                android:layout_height="25.66dp"
+                android:clickable="true"
+                android:gravity="center|center_vertical" >
+
+                <ImageView
+                    android:id="@+id/iv_virus_clear_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:duplicateParentState="true"
+                    android:src="@drawable/sel_bg_result_delete_btn" />
+            </LinearLayout>
+            <!-- 增大触控范围end -->
+			<!-- cleared btn -->
+            <TextView
+                android:id="@+id/item_virus_result_text_cleared"
+                android:layout_width="wrap_content"
+                android:layout_height="38dp"
+                android:layout_gravity="right|center_vertical"
+                android:layout_marginBottom="4dp"
+                android:layout_marginLeft="18dp"
+                android:layout_marginRight="13.33dp"
+                android:layout_marginTop="4dp"
+                android:gravity="center"
+                android:text="@string/vvcl_cleared"
+                android:textColor="@color/gray_11_cccccc"
+                android:textSize="@dimen/textsize_14sp"
+                android:visibility="gone" />
+			<!-- trusted btn -->
+            <TextView
+                android:id="@+id/item_virus_result_text_trusted"
+                android:layout_width="wrap_content"
+                android:layout_height="38dp"
+                android:layout_gravity="right|center_vertical"
+                android:layout_marginBottom="4dp"
+                android:layout_marginLeft="18dp"
+                android:layout_marginRight="13.33dp"
+                android:layout_marginTop="4dp"
+                android:gravity="center"
+                android:text="@string/vvcl_trusted"
+                android:textColor="@color/gray_11_cccccc"
+                android:textSize="@dimen/textsize_14sp"
+                android:visibility="gone" />
+			<!-- no virus tick -->
+            <ImageView
+                android:id="@+id/item_virus_result_icon_ok"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right|center_vertical"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="13.33dp"
+                android:contentDescription="@string/application_name"
+                android:src="@drawable/icon_virus_report_title_bar_no_virus"
+                android:visibility="gone" >
+            </ImageView>
+        </LinearLayout>
+    </RelativeLayout>
+	<!-- virus detail layout -->
+    <LinearLayout
+        android:id="@+id/item_virus_result_lay_detail"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="6dp"
+        android:layout_marginLeft="11dp"
+        android:layout_marginRight="11dp"
+        android:background="@drawable/bg_virus_item_detail"
+        android:clipChildren="false"
+        android:focusable="false"
+        android:orientation="vertical"
+        android:visibility="visible" >
+
+        <TextView
+            android:id="@+id/item_virus_result_text_virus_desc"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="6dip"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp"
+            android:layout_marginTop="3dip"
+            android:lineSpacingMultiplier="1"
+            android:text="aflaksjkfasjdlkfjasdkl"
+            android:textColor="@color/blue_9_20558e"
+            android:textSize="@dimen/textsize_12sp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_gravity="right|bottom"
+            android:clickable="true"
+            android:gravity="center" >
+
+            <ImageView
+                android:id="@+id/item_virus_btn_left_line_trust"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:contentDescription="@string/application_name"
+                android:gravity="center"
+                android:src="@drawable/bg_virus_btn_left_line" />
+
+            <LinearLayout
+                android:id="@+id/item_virus_result_ll_trust"
+                android:layout_width="46.33dp"
+                android:layout_height="25.66dp"
+                android:clickable="true"
+                android:gravity="right|center_vertical" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="7.33dp"
+                    android:duplicateParentState="true"
+                    android:text="@string/vvcl_trust"
+                    android:textColor="@color/sel_btn_virus_trust" />
+            </LinearLayout>
+            <!--
+            <TextView
+                android:id="@+id/item_virus_result_text_trusted"
+                android:layout_width="wrap_content"
+                android:layout_height="38dp"
+                android:layout_gravity="right|center_vertical"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="7.33dp"
+                android:gravity="center"
+                android:text="@string/vvcl_trusted"
+                android:textColor="@color/gray_11_cccccc"
+                android:textSize="@dimen/textsize_14sp"
+                android:visibility="gone" />
+            -->
+        </LinearLayout>
+    </LinearLayout>
+	<!-- ListView separate line -->
+    <ImageView
+        android:id="@+id/virus_cell_Bottom_line"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16.7dp"
+        android:layout_marginRight="16.7dp"
+        android:background="@drawable/bg_common_list_separate_line_blue"
+        android:contentDescription="@string/application_name" />
+
+</LinearLayout>
