@@ -1,0 +1,166 @@
+Designing for Responsiveness:对于响应的设计,如何避免ANR
+
+1 Generally, the system displays an ANR if an application cannot respond to user input
+  一般来讲，当应用不能相应用户输入，会ANR
+
+2 if your application spends too much time building an elaborate in-memory structure, or perhaps computing the next move in a game，the system will conclude that your application has hung
+  如果应用花费很多时间构建复杂的内存对象或者游戏中的每一步计算时间过长，系统会认为应用被挂起（而ANR）
+
+3 the recommended approach is to create a child thread and do most of your work there.  This keeps the main thread (which drives the user interface event loop) running and prevents the system from concluding that your code has frozen
+   推荐的做法是建立一个子线程去做比较费时的工作，这样可以保持主线程（ui的事件相应）持续运行防止系统认为应用被挂起
+
+4 What Triggers ANR?
+   No response to an input event (e.g. key press, screen touch) within 5 seconds
+   A BroadcastReceiver hasn't finished executing within 10 seconds
+   5秒钟之内不能响应ui事件（键盘 ，屏幕触摸） BroadcastReceiver不能在10秒中内结束都会引起ANR
+   
+5 Android applications normally run entirely on a single (i.e. main) thread. This means that anything your application is doing in the main thread that takes a long time to complete can trigger the ANR dialog because your application is not giving itself a chance to handle the input event or Intent broadcast.
+  一般来讲android应用都是运行在一个完整的线程。 这意味着如果应用在主线程花费太多时间完成任务都会引发ANR,因为你的应用没有机会去处理输入事件或者发送广播。  
+  
+6 Therefore any method that runs in the main thread should do as little work as possible.
+  所以，主线程的任何一个方法做的工作越少越好。
+  
+7 In particular, Activities should do as little as possible to set up in key life-cycle methods such as onCreate() and onResume(). 
+  特别在activity的关键生命周期处 如 oncreate或者onresume中做的工作要少。
+  
+8 Potentially long running operations such as network or database operations, or computationally expensive calculations such as resizing bitmaps should be done in a child thread (or in the case of databases operations, via an asynchronous request).  
+  潜在的长时间操作，如网络，数据库操作或者像图片处理这样需要大量计算的工作应该在一个子线程中完成（或者在数据操作是经由一个异步的请求）
+
+9 However, this does not mean that your main thread should block while waiting for the child thread to complete — nor should you call Thread.wait() or Thread.sleep(). Instead of blocking while waiting for a child thread to complete, your main thread should provide a Handler for child threads to post back to upon completion
+  这并不意味着主线程需要通过阻塞去等待子线程做完工作，相反主线程可以通过为子线程提供handler，子线程可以通过handler通知任务完成。  
+
+10 You can use StrictMode to help find potentially long running operations such as network or database operations that you might accidentally be doing your main thread.
+   如果不小心将网络或数据库操作放到ui主线程中，可以使用StrictMode可以帮助找到他们
+   
+11  So as with other methods called in the main thread, applications should avoid potentially long-running operations or calculations in BroadcastReceivers. 
+    正如主线程调用方法一样，应用要避免在BroadcastReceivers中进行长时间的操作和运算。
+	
+12  But instead of doing intensive tasks via child threads (as the life of a BroadcastReceiver is short), your application should start a Service if a potentially long running action needs to be taken in response to an Intent broadcast. 
+    如果应用中有耗时的操作，应该启用一个Service对应Intent broadcast,而不是在BroadcastReceiver中开子线程做这些密集的任务（因为BroadcastReceiver的声明周期很短）。
+
+13 Generally, 100 to 200ms is the threshold beyond which users will perceive lag (or lack of "snappiness," if you will) in an application.
+    一般来讲在应用中100 - 200ms	是一个门槛，超过这个值用户会感觉到延迟。
+
+14	做到以下三点可以让用户感到应用很顺畅
+    a) If your application is doing work in the background in response to user input, show that progress is being made (ProgressBar and ProgressDialog are useful for this).
+		如果你的应用在相应用户输入的时候，在后台正做一些工作，最好显示一个进度条（ProgressBar and ProgressDialog很好用）。
+		
+    b) For games specifically, do calculations for moves in a child thread.
+	   对于游戏，运动的计算要放到子线程中。
+	   
+    c) If your application has a time-consuming initial setup phase, consider showing a splash screen or rendering the main view as quickly as possible and filling in the information asynchronously. In either case, you should indicate somehow that progress is being made, lest the user perceive that the application is frozen.
+	   如果你的应用有耗时的初始化设置工作，可以考虑显示一个闪屏，或者快速的先运行一个主页面，然后异步加载数据，另一个方式是可以显示进度条的进度状态，可以让用户不会认为你的应用死掉了。
+	   
+	   
+Designing for Performance：关于执行的设计
+即使应用可以跑得非常顺畅也要尽量减少耗电量，用户会知道是你的应用导致手机经常没电。
+1 There are two basic rules for writing efficient code:
+	a)Don't do work that you don't need to do 别做不需要的工作
+	b)Don't allocate memory if you can avoid it. 尽量避免分配内存
+
+2 Using the right data structures and algorithms
+  使用正确的数据结构和算法
+
+3  There are also huge differences between devices with and without a JIT: the "best" code for a device with a JIT is not always the best code for a device without.
+   有JIT和没有jit的设备差异是非常大的：在有JIT的设备上运行的好的代码，不一定会在没有JIT的设备上运行的一样出色。
+   
+   JIT 在Android方面其实现实际上是在 Dalvik vm这一层，与内核是分离的，直观的表现就是几个库文件。用JIT之后，一部分Dalvik的字节码（apk程序包的逻辑部分，如*.dex和*.odex）会被转译成手机CPU的指令代码这部分代码就可以进行重用，减少了编译的时间，这就相当于一个“缓存”，使得访问Dalvik字节码的次数大大降低，也就是减少了解释执行字节码的次数。要知道，解释执行字节码的速度是比较慢的
+   
+4  Avoid Creating Objects 避免对象的创建
+
+5 If you allocate objects in a user interface loop, you will force a periodic garbage collection, creating little "hiccups" in the user experience.
+   不要在循环中创建对象，尤其是ui中，他会增加垃圾回收器的负担。
+
+6  避免创建不用的对象如：
+   a)When extracting strings from a set of input data, try to return a substring of the original data, instead of creating a copy. You will create a new String object, but it will share the char[] with the data.
+   当从一个输入集合数据中截取一段字符串的时候，尝试返回一个原始数据的substring，而不是创建一个copy，这样虽然创建一个新的String对象，但是他会共享数据中的char[]。
+   
+   b)If you have a method returning a string, and you know that its result will always be appended to a StringBuffer anyway, change your signature and implementation so that the function does the append directly, instead of creating a short-lived temporary object.
+     如果你有个方法是返回一个字符串，并且你知道他的结果一定会被append到一个StringBuffer中，改变你的用法和实现，直接append这个方法，而不是建立一个临时对象。
+
+7 A somewhat more radical idea is to slice up multidimensional arrays into parallel single one-dimension arrays:
+  把一些基本的对象数组放到一个单独的一纬的数组中
+  a)An array of ints is a much better than an array of Integers, but this also generalizes to the fact that two parallel arrays of ints are also a lot more efficient than an array of (int,int) objects. The same goes for any combination of primitive types.
+    一个放int类型的数组要比放Integer的数据更好，但是事实上两个int数组，要比一个二维的int数组更好，其他原始类型的集合也是这样
+  b) If you need to implement a container that stores tuples of (Foo,Bar) objects, try to remember that two parallel Foo[] and Bar[] arrays are generally much better than a single array of custom (Foo,Bar) objects. (The exception to this, of course, is when you're designing an API for other code to access; in those cases, it's usually better to trade correct API design for a small hit in speed. But in your own internal code, you should try and be as efficient as possible.)
+  如果你需要一个容器保存（Foo,Bar）对象，分别用Foo[] 和Bar[] 更有效，（当然也有例外，如果你设计一个api为调用者提供数据，当然要为好的api设计牺牲一点速度，但是在自己的代码中可以尝试这么做会更好）
+  
+8 Generally speaking, avoid creating short-term temporary objects if you can. Fewer objects created mean less-frequent garbage collection, which has a direct impact on user experience.
+  一般来讲，避免创建临时对象，少的对象创建会减少垃圾回收的频率，提高用户体验。System.currentTimeMillis() 比 new Date().getTime()好
+
+9 On devices without a JIT, it is true that invoking methods via a variable with an exact type rather than an interface is slightly more efficient. (So, for example, it was cheaper to invoke methods on a HashMap map than a Map map, even though in both cases the map was a HashMap.) It was not the case that this was 2x slower; the actual difference was more like 6% slower. Furthermore, the JIT makes the two effectively indistinguishable.
+  在没有jit的设备上，在对象使用具体的方法，比使用接口稍微高效一些，（比如直接使用HashMap map，比用Map map更好）实际上速度会慢6%，有jit的设备则不是很明显。
+  
+10 On devices without a JIT, caching field accesses is about 20% faster than repeatedly accesssing the field. With a JIT, field access costs about the same as local access, so this isn't a worthwhile optimization unless you feel it makes your code easier to read. (This is true of final, static, and static final fields too.) 
+  在没有jit的设备上，缓存读取比重复读取要快20%，有jit的设备两种方式是一样的，所以没有必要这么做除非你觉得代码比较好阅读（final, static, 和 static final 也是这样）
+
+11 If you don't need to access an object's fields, make your method static. Invocations will be about 15%-20% faster
+   如果不需要对对象中的域属性改变，方法名最好为 static，调用速度会提高 15-20%
+
+12 Avoid Internal Getters/Setters 
+   内部不要调用set get方法。
+     
+13 Without a JIT, direct field access is about 3x faster than invoking a trivial getter. With the JIT (where direct field access is as cheap as accessing a local), direct field access is about 7x faster than invoking a trivial getter.
+   在没有jit设备商直接域读取比用get方法快3倍，有jit的设备速度提高7倍。
+   
+15 Use Static Final For Constants
+   常量定义的时候 static final int intVal  比 static int intVal更快  
+   
+16     public void zero() {        
+			int sum = 0;        
+			for (int i = 0; i < mArray.length; ++i) {
+				sum += mArray[i].mSplat;        
+			}    
+		}   
+       public void one() {        
+			int sum = 0;        
+			Foo[] localArray = mArray;        
+			int len = localArray.length;        
+			for (int i = 0; i < len; ++i) {            
+				sum += localArray[i].mSplat;        
+			}    
+		}
+       public void two() {        
+			int sum = 0;        
+			for (Foo a : mArray) {            
+				sum += a.mSplat;        
+			}    
+		}
+     two() 优于 one() 优于 zero() 
+
+17 Avoid Enums Where You Only Need Ints : 如果只用int就可以，就不要用枚举类型，虽然枚举方便，但是速度慢，占用内存高
+
+18 能用int 就不用float,能用double就不用float，速度会慢两倍
+
+19 Know And Use The Libraries 了解并使用库中的方法
+   Similarly, the System.arraycopy method is about 9x faster than a hand-coded loop on a Nexus One with the JIT.
+   System.arraycopy方法比手动循环写数组拷贝快9倍。
+   
+20 Use Native Methods Judiciously谨慎使用native方法
+   Native code isn't necessarily more efficient than Java.
+ 
+21 Native code is primarily useful when you have an existing native codebase that you want to port to Android, not for "speeding up" parts of a Java app.
+   native代码只有在你想为Android以存在的代码库增加native代码的时候很有用，但不能提高java app的速度。
+
+
+Supporting Multiple Screens(各种屏幕的支持)
+Starting in Android 2.2, the platform includes support for extra high density screens (xhdpi), and starting in Android 2.3, the platform includes support for extra large screens (xlarge). 
+2.2以后支持 xhdpi,2.3以后支持xlarge 屏幕   
+
+   
+   
+
+	 
+	
+
+  	 
+
+   
+   
+   
+    
+	
+   
+
+  
+ 
