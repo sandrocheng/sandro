@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:orientation="vertical"
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent"
+  android:background="@android:color/white">
+    
+    <com.sandro.custom.widget.CustomBackageImageView
+    	android:id="@+id/iv_bg"
+      	android:layout_width="fill_parent"
+  	  	android:layout_height="fill_parent"
+  	  	android:background="@drawable/common_bg">
+    </com.sandro.custom.widget.CustomBackageImageView>
+    
+    <RelativeLayout
+      	android:layout_width="fill_parent"
+  		android:layout_height="fill_parent">
+  		
+  		<LinearLayout
+            android:id="@+id/top_lay"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" 
+            android:gravity="center">
+            
+            <TextView
+            	android:id="@+id/title_tv"
+				android:layout_width="wrap_content"
+                android:layout_height="50dip"
+                android:layout_alignParentTop="true"
+                android:text="Title" 
+                android:textColor="#ffff0000"
+                android:layout_gravity="center"/>
+                
+            <TextView
+            	android:id="@+id/desc_tv"
+				android:layout_width="wrap_content"
+                android:layout_height="50dip"
+                android:text="desc" 
+                android:textColor="#ffff0000"
+                android:layout_gravity="center"/>                
+            
+        </LinearLayout>    
+  		 
+  		<LinearLayout
+            android:id="@+id/bottom_lay"
+            android:layout_width="fill_parent"
+            android:layout_height="60dip"
+            android:orientation="vertical" 
+            android:gravity="center"
+            android:layout_alignParentBottom="true">                 
+        	<TextView
+            	android:id="@+id/bottom_tv"
+				android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#ffff0000"
+                android:text="butomLayout" />
+        </LinearLayout>
+        
+        
+  		<LinearLayout
+            android:id="@+id/center_lay"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" 
+            android:gravity="center"
+        	android:layout_above="@id/bottom_lay"
+        	android:layout_below="@id/top_lay">                    
+        	<TextView
+            	android:id="@+id/bottom_tv"
+				android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="centerLayout" 
+                android:textColor="#ffff0000"/>
+        </LinearLayout>                
+    </RelativeLayout>
+</FrameLayout>

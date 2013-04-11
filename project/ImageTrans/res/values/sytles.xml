@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme" parent="android:Theme">
+    </style>
+    
+    <style name="Theme.Transparent">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation.Translucent</item>
+        <item name="android:windowBackground">@drawable/transparent_background</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:colorForeground">#fff</item><!-- 前景色，可以当做图片背景上的文字之类的颜色 -->
+    </style>
+    
+    <!-- 通用弹出对话框样式 -->
+    <style name="fancy_dialog_style" parent="@android:style/Theme.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <!-- 屏幕背景变暗
+        	<item name="android:backgroundDimEnabled">true</item>
+        	<item name="android:windowAnimationStyle">@style/PauseDialogAnimation</item>
+         -->
+        <!-- 更改对话框标题栏 -->
+        <item name="android:windowTitleStyle">@style/title_style</item>
+        
+    </style>
+    
+    <!-- 通用弹出对话框 标题样式  不使用系统提供的title -->
+    <style name="title_style">
+        <item name="android:visibility">gone</item>
+    </style> 
+    
+    <!--所有pop win界面文字-->
+    <style name="pop_win_text_style">
+    	<item name="android:textColor">@color/light_gray_pop_win_text</item>
+    	<item name="android:textSize">13.3sp</item>
+    </style>
+    
+    <!--所有pop win界面title样式-->
+    <style name="pop_win_title_style">
+        <item name="android:textSize">17.3sp</item>
+        <item name="android:textColor">@color/light_gray_pop_win_text</item>
+    </style>
+    
+        <!-- 白色背景Button-->
+    <style name="button_style_white_bk" parent="button_style_parent">
+    	<item name="android:textColor">@color/light_gray_button_text</item>
+    	<item name="android:shadowColor">@color/white_shadow</item>
+    	<item name="android:shadowDy">-2</item>
+    </style>
+    
+ <!-- Button文字 父类-->
+    <style name="button_style_parent">
+    	<item name="android:shadowRadius">3</item>
+    	<item name="android:shadowDy">2</item>
+    	<item name="android:textSize">17.3sp</item>
+    </style>               
+</resources>

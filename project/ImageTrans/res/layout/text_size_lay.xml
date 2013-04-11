@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:scrollbars="none">
+    
+<LinearLayout
+  android:orientation="vertical"
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent">
+              
+	<TextView
+		android:id="@+id/text_scan_point_info"
+ 		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="left"
+		android:text="1号字 10sp "
+		android:textSize="10sp" />
+                
+	<TextView
+		android:id="@+id/text_scan_point_info"
+ 		android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        android:text="2号字 11sp "
+        android:textSize="11sp" />
+                
+     <TextView
+		android:id="@+id/text_scan_point_info"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="left"
+		android:text="2号字 12sp "
+		android:textSize="12sp" />
+		
+     <TextView
+		android:id="@+id/text_scan_point_info"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="left"
+		android:text="3号字 13sp "
+		android:textSize="13sp" />	
+		
+     <TextView
+		android:id="@+id/text_scan_point_info"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="left"
+		android:text="4号字 14sp "
+		android:textSize="14sp" />
+		
+     <TextView
+		android:id="@+id/text_scan_point_info"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="left"
+		android:text="5号字 15sp "
+		android:textSize="15sp" />
+		
+     <TextView
+		android:id="@+id/text_scan_point_info"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="left"
+		android:text="6号字 16sp "
+		android:textSize="16sp" />
+		
+     <TextView
+		android:id="@+id/text_scan_point_info"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="left"
+		android:text="7号字 17sp "
+		android:textSize="17sp" />	
+		
+     <TextView
+		android:id="@+id/text_scan_point_info"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="left"
+		android:text="8号字 18sp "
+		android:textSize="18sp" />
+		
+     <TextView
+		android:id="@+id/text_scan_point_info"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="left"
+		android:text="9号字 19sp "
+		android:textSize="19sp" />
+		
+     <TextView
+		android:id="@+id/text_scan_point_info"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="left"
+		android:text="10号字 20sp "
+		android:textSize="20sp" />
+		
+     <TextView
+		android:id="@+id/text_scan_point_info"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="left"
+		android:text="11号字 21sp "
+		android:textSize="21sp" />
+		
+     <TextView
+		android:id="@+id/text_scan_point_info"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="left"
+		android:text="12号字 22sp "
+		android:textSize="22sp" />
+		
+     <TextView
+		android:id="@+id/text_scan_point_info"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="left"
+		android:text="13号字 23sp "
+		android:textSize="23sp" />
+		
+     <TextView
+		android:id="@+id/text_scan_point_info"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="left"
+		android:text="14号字 24sp "
+		android:textSize="24sp" />
+		
+     <TextView
+		android:id="@+id/text_scan_point_info"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="left"
+		android:text="15号字 25sp "
+		android:textSize="25sp" />
+		
+     <TextView
+		android:id="@+id/text_scan_point_info"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="left"
+		android:text="16号字 26sp "
+		android:textSize="26sp" />
+		
+     <TextView
+		android:id="@+id/text_scan_point_info"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="left"
+		android:text="17号字 27sp "
+		android:textSize="27sp" />		
+		
+     <TextView
+		android:id="@+id/text_scan_point_info"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="left"
+		android:text="18号字 28sp "
+		android:textSize="28sp" />	
+		
+     <TextView
+		android:id="@+id/text_scan_point_info"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="left"
+		android:text="19号字 29sp "
+		android:textSize="29sp" />	
+		
+     <TextView
+		android:id="@+id/text_scan_point_info"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="left"
+		android:text="20号字 30sp "
+		android:textSize="30sp" />																																
+</LinearLayout>
+</ScrollView>

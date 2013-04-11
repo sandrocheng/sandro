@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:scrollbars="none">
+    
+	<LinearLayout 
+		android:layout_width="fill_parent" 
+		android:layout_height="fill_parent"
+		android:orientation="vertical">
+		<TextView
+			android:id="@+id/power_maxLevel"
+			android:layout_width="fill_parent" 
+			android:layout_height="wrap_content"
+			android:text="电池容量最大额度：">
+		</TextView>
+			
+		<TextView
+			android:id="@+id/power_num"
+			android:layout_width="fill_parent" 
+			android:layout_height="wrap_content"
+			android:text="当前电量数值">
+		</TextView>		
+		
+		<TextView
+			android:id="@+id/power_health"
+			android:layout_width="fill_parent" 
+			android:layout_height="wrap_content"
+			android:text="健康度health">
+		</TextView>	
+		
+		<ImageView
+			android:id="@+id/power_icon"
+			android:layout_width="wrap_content" 
+			android:layout_height="wrap_content">
+		</ImageView>
+		
+		<TextView
+			android:id="@+id/power_plugged"
+			android:layout_width="fill_parent" 
+			android:layout_height="wrap_content"
+			android:text="充电方式">
+		</TextView>
+		
+		<TextView
+			android:id="@+id/power_present"
+			android:layout_width="fill_parent" 
+			android:layout_height="wrap_content"
+			android:text="电池是否存在：">
+		</TextView>		
+		
+		<TextView
+			android:id="@+id/power_status"
+			android:layout_width="fill_parent" 
+			android:layout_height="wrap_content"
+			android:text="充电状态：">
+		</TextView>		
+		
+		<TextView
+			android:id="@+id/power_technology"
+			android:layout_width="fill_parent" 
+			android:layout_height="wrap_content"
+			android:text="电池工艺：">
+		</TextView>			
+		
+		<TextView
+			android:id="@+id/power_temperature"
+			android:layout_width="fill_parent" 
+			android:layout_height="wrap_content"
+			android:text="电池温度：">
+		</TextView>
+		
+		<TextView
+			android:id="@+id/power_voltage"
+			android:layout_width="fill_parent" 
+			android:layout_height="wrap_content"
+			android:text="电池电压：">
+		</TextView>		
+	</LinearLayout>
+</ScrollView>

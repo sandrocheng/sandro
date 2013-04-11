@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:scrollbars="none">
+    
+	<LinearLayout
+		android:layout_width="fill_parent" android:layout_height="fill_parent"
+		android:orientation="vertical">
+		<Button
+			android:id="@+id/binder_activity"
+			android:layout_width="fill_parent" 
+			android:layout_height="wrap_content"
+			android:text="binderActivity"
+			android:layout_gravity="center_vertical"			
+		/>	    
+		<Button
+			android:id="@+id/single_page"
+			android:layout_width="fill_parent" 
+			android:layout_height="wrap_content"
+			android:text="屏保"
+			android:layout_gravity="center_vertical"			
+		/>
+		
+		<Button
+			android:id="@+id/system_power_page"
+			android:layout_width="fill_parent" 
+			android:layout_height="wrap_content"
+			android:text="系统电量排行"
+			android:layout_gravity="center_vertical"			
+		/>
+		<Button
+			android:id="@+id/power_test"
+			android:layout_width="fill_parent" 
+			android:layout_height="wrap_content"
+			android:text="电量测试"
+			android:layout_gravity="center_vertical"
+		/>		
+		<Button
+			android:id="@+id/btn_clip_test"
+			android:layout_width="fill_parent" 
+			android:layout_height="wrap_content"
+			android:text="clipTest"
+			android:layout_gravity="center_vertical"
+		/>		
+		<Button
+			android:id="@+id/btn_xfermode"
+			android:layout_width="fill_parent" 
+			android:layout_height="wrap_content"
+			android:text="Xfermode实现遮罩层"
+		/>
+		
+		<Button
+			android:id="@+id/btn_virus"
+			android:layout_width="fill_parent" 
+			android:layout_height="wrap_content"
+			android:text="病毒动画效果"
+		/>		
+		
+		<Button
+			android:id="@+id/flipper_code"
+			android:layout_width="fill_parent" 
+			android:layout_height="wrap_content"
+			android:text="滑动效果"
+		/>
+		
+		<Button
+			android:id="@+id/move_code"
+			android:layout_width="fill_parent" 
+			android:layout_height="wrap_content"
+			android:text="拖拽效果"
+		/>
+		
+		<Button
+			android:id="@+id/move_code2"
+			android:layout_width="fill_parent" 
+			android:layout_height="wrap_content"
+			android:text="拖拽效果2"
+		/>
+		
+		<Button
+			android:id="@+id/cutstom_rogress_dialog"
+			android:layout_width="fill_parent" 
+			android:layout_height="wrap_content"
+			android:text="自定义进度条"
+		/>	
+		
+		<Button
+			android:id="@+id/btn_translucent_blur"
+			android:layout_width="fill_parent" 
+			android:layout_height="wrap_content"
+			android:text="背景模糊效果"
+		/>	
+		
+		<Button
+			android:id="@+id/btn_alpha_bitmap"
+			android:layout_width="fill_parent" 
+			android:layout_height="wrap_content"
+			android:text="alphaBitmap效果"
+		/>	
+		
+		<Button
+			android:id="@+id/btn_progress_dialog"
+			android:layout_width="fill_parent" 
+			android:layout_height="wrap_content"
+			android:text="进度条对话框"
+		/>	
+		
+		<Button
+			android:id="@+id/btn_text_size"
+			android:layout_width="fill_parent" 
+			android:layout_height="wrap_content"
+			android:text="文字尺寸样例"
+		/>			
+		
+		 <com.sandro.custom.widget.ShadowTextButton
+    		xmlns:client="http://schemas.android.com/apk/res/com.sandro.ImageTrans"
+        	android:layout_width="fill_parent"
+       		android:layout_height="wrap_content"
+        	android:id="@+id/btn_custom_btn"
+        	android:shadowDx="3"
+        	android:shadowDy="3"
+        	android:shadowRadius="1"
+        	android:text="自定义阴影按钮"
+        	client:shadowColors="@color/btn_green_shadow_color"/>				
+	</LinearLayout>
+</ScrollView>
