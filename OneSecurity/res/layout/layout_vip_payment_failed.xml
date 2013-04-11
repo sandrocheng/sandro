@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/bg_common_base" android:orientation="vertical">
+
+	<LinearLayout android:layout_width="fill_parent"
+    android:orientation="horizontal"
+    android:layout_gravity="center" 
+    android:layout_height="wrap_content"
+    android:layout_marginTop="78.66dp" >
+    
+    	<ImageView 
+    		android:layout_width="wrap_content"
+    		android:layout_height="wrap_content"
+    		android:layout_gravity="center"
+    		android:layout_marginLeft="13.33dp"
+    		android:layout_marginRight="12dp"
+    		android:src="@drawable/icon_vip_payfailed"
+    	/>
+    	
+    	<TextView  android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:textColor="@color/white_1_fafafa"
+                android:text="@string/vip_payment_failed_info"
+                android:gravity="center_vertical"
+            	style="@style/text_vip_failed_activity_description_transparent_white"/>
+    
+    </LinearLayout>
+
+	<LinearLayout android:layout_width="fill_parent"
+    android:orientation="vertical"
+    android:layout_gravity="center" 
+    android:layout_height="wrap_content"
+    android:layout_marginTop="28.66dp">
+    
+    	<Button
+    		android:id="@+id/vip_payment_failed_btn_try_others" 
+    		android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:text="@string/vip_payment_failed_try_other"
+            android:layout_marginLeft="13.33dp"
+            android:layout_marginRight="13.33dp"
+            style="@style/btn_vip_failed_activity_transparent_white3"/>
+            
+         <Button 
+         	android:id="@+id/vip_payment_failed_btn_try_go_back"
+         	android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:text="@string/vip_payment_failed_go_back"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="13.33dp"
+            android:layout_marginRight="13.33dp"
+            style="@style/btn_vip_failed_activity_transparent_white3"/>
+            
+         <ImageView android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/bg_vip_payfailed_separate_line"
+            android:scaleType="fitXY"
+            android:layout_marginTop="36dp"/>
+    
+    
+    </LinearLayout>
+
+</LinearLayout>

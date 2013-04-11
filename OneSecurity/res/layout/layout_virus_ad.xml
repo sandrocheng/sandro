@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 病毒广告 -->
+<ViewFlipper xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/com.tencent.onesecurity"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:layout_gravity="center_horizontal"
+    android:layout_marginLeft="1dp"
+    android:layout_marginRight="1dp"
+    android:background="@drawable/bg_virus_advert"
+    android:minHeight="70dp"
+    android:minWidth="800dp"
+    android:orientation="horizontal"
+    android:outAnimation="@anim/anim_virus_news_push_up_out"
+    android:inAnimation="@anim/anim_virus_news_push_up_in"
+    android:persistentDrawingCache="animation" >
+
+    <LinearLayout
+        android:id="@+id/fl_rolling_frame1"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:minHeight="70dp" >
+
+        <ImageView
+            android:id="@+id/virus_advert_icon_up"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical" >
+        </ImageView>
+
+        <TextView
+            android:id="@+id/virus_advert_content"
+            style="@style/virus_rolling_news_text_syle"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:gravity="center_vertical"
+            android:paddingBottom="4dp"
+            android:paddingLeft="6dp"
+            android:paddingRight="7dp"
+            android:text=""
+            android:textColor="@color/blue_1_205791" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/fl_rolling_frame2"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:minHeight="70dp"
+        android:visibility="gone" >
+
+        <ImageView
+            android:id="@+id/virus_advert_icon_down"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical" />
+
+        <TextView
+            android:id="@+id/virus_advert_content_down"
+            style="@style/virus_rolling_news_text_syle"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:gravity="center_vertical"
+            android:paddingBottom="4dp"
+            android:paddingLeft="6dp"
+            android:paddingRight="7dp"
+            android:text=""
+            android:textColor="@color/blue_1_205791" />
+    </LinearLayout>
+
+</ViewFlipper>

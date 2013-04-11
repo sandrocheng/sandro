@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- 
+	文件名： build.xml
+	创建日期： 2010/4/8
+	描述：
+		项目构建活动的组织，调用common_build.xml中的target。
+-->
+<project name="DailyBuild" default="buildAll" basedir=".">
+	
+	<!--<taskdef name="xmltask" classname="com.oopsconsultancy.xmltask.ant.XmlTask"/>-->
+
+	<!-- 导入可配置属性文件build_option.xml -->
+	<import file="build_option.xml" />
+
+	<!-- 导入构建过程文件common_build.xml -->
+	<import file="build_common.xml" />
+
+	<!-- 调用common_build.xml中的target，按顺序组织，执行构建 -->
+	<target name="buildAll" depends="">
+		<antcall target="init" />
+		<antcall target="generate" />
+		<antcall target="aidl" />
+		<antcall target="compile" />
+
+		<antcall target="package" />
+		
+		<!--自动测试需要未混淆的包-->
+		<antcall target="obfuscate" /> 
+		<antcall target="dex" />
+		<antcall target="package_res_with_assets" />
+		<antcall target="release" />
+		<antcall target="sign"/> 
+		<antcall target="align"/>
+		<antcall target="move_to_target"/>
+	</target>
+</project>

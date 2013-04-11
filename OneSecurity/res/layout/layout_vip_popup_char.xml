@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:textSize="@dimen/textsize_25sp"
+    android:textColor="@color/white_1_fafafa"
+    android:background="@drawable/bg_vip_share_contact_list_popped_index"
+    android:gravity="center"
+/>

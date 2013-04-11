@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/bg_common_base"
+    android:orientation="vertical" >
+
+    <include
+        android:id="@+id/safe_note_titlebar"
+        android:layout_alignParentTop="true"
+        layout="@layout/layout_sub_title_bar" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginBottom="10dip"
+        android:layout_marginLeft="6dip"
+        android:layout_marginRight="6dip"
+        android:layout_marginTop="10dip"
+        android:layout_weight="1"
+        android:background="@drawable/bg_vault_notes_vertical_separate_edit"
+        android:orientation="vertical" >
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/tv_note_date"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="40dp"
+            android:textColor="#8f8f8f"
+            android:textSize="14sp" />
+
+        <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/bg_vault_notes_title_separate_line" />
+
+        <ScrollView
+            android:id="@+id/sv_editeView"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:scrollbarThumbVertical="@drawable/bg_common_list_scroll_bar_gray"           
+            android:layout_weight="1" >
+
+            <com.tencent.onesecurity.safebox.ui.MemoEditText
+                android:id="@+id/note_edit"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:background="@null"
+                android:gravity="top"
+                android:lineSpacingExtra="18dp"
+                android:lineSpacingMultiplier="1.0"
+                android:paddingLeft="40dp"
+                android:paddingTop="6dp"
+                android:scrollbarStyle="outsideInset"
+                android:scrollbars="vertical"
+                android:singleLine="false"
+                android:textColor="#454545"
+                android:textSize="18sp" />
+        </ScrollView>
+    </LinearLayout>
+
+</LinearLayout>

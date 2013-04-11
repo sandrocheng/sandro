@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="67.5dp"
+    android:background="@drawable/bg_widget_shortcut"
+    android:gravity="center_vertical"
+    android:orientation="horizontal" >
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="6dp"
+        android:contentDescription="@string/application_name"
+        android:src="@drawable/img_widget_shortcut_logo" />
+
+    <ImageView
+        android:id="@+id/widget_shortcut_icon_1"
+        android:layout_width="52.6dp"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/application_name" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/application_name"
+        android:src="@drawable/img_widget_shortcut_separate_line" />
+
+    <ImageView
+        android:id="@+id/widget_shortcut_icon_2"
+        android:layout_width="52.6dp"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/application_name" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/application_name"
+        android:src="@drawable/img_widget_shortcut_separate_line" />
+
+    <ImageView
+        android:id="@+id/widget_shortcut_icon_3"
+        android:layout_width="52.6dp"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/application_name" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/application_name"
+        android:src="@drawable/img_widget_shortcut_separate_line" />
+
+    <ImageView
+        android:id="@+id/widget_shortcut_icon_4"
+        android:layout_width="52.6dp"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/application_name" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/application_name"
+        android:src="@drawable/img_widget_shortcut_separate_line" />
+
+    <ImageView
+        android:id="@+id/widget_shortcut_more"
+        android:layout_width="52.6dp"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/application_name"
+        android:src="@drawable/img_widget_shortcut_more" />
+
+</LinearLayout>

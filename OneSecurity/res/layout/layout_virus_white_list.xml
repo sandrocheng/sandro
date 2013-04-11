@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 白名单管理Acitvity -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/com.tencent.onesecurity"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/bg_common_base"
+    android:orientation="vertical" >
+
+    <include
+        android:id="@+id/white_list_title_bar"
+        layout="@layout/layout_sub_title_bar" />
+
+    <RelativeLayout
+        android:id="@+id/rl_white_list"
+        android:layout_width="fill_parent"
+        android:layout_height="83.3dp"
+        android:layout_alignParentBottom="true"
+        android:gravity="center_horizontal"
+        android:orientation="vertical" >
+
+        <com.tencent.onesecurity.ui.customview.widget.CustomIconButton
+            android:id="@+id/btn_white_list_remove"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="17dp"
+            app:buttonIcon="@drawable/btn_virus_white_list_normal"
+            app:buttonIconDisabled="@drawable/btn_virus_white_list_disable"
+            app:buttonIconPress="@drawable/btn_virus_white_list_press"
+            app:buttonText="@string/vvcl_white_list_btn_remove"
+            app:buttonTextColor="@color/white_1_fafafa"
+            app:buttonTextColorPress="@color/white_1_fafafa"
+            app:buttonTextPadding="4"
+            app:buttonType="icon_left" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_no_white_list_tips"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/rl_white_list"
+        android:layout_below="@id/white_list_title_bar"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:text="@string/vvcl_empty_white_list_tips"
+        android:textColor="@color/white_1_fafafa"
+        android:textSize="@dimen/textsize_18sp"
+        android:visibility="gone" />
+
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_above="@id/rl_white_list"
+	    android:layout_below="@id/white_list_title_bar"
+        android:layout_marginTop="25.3dp"
+        >
+	    <ListView
+	        android:id="@+id/list_white_list"
+	        android:layout_width="fill_parent"
+	        android:layout_height="fill_parent"
+	        android:background="@drawable/bg_common_list"
+	        android:cacheColorHint="@android:color/transparent"
+	        android:divider="@null"
+	        android:fadingEdge="none"
+	        android:focusable="true"
+	        android:fastScrollEnabled="true"
+	        android:scrollbarStyle="insideOverlay"
+	        android:scrollbarThumbVertical="@drawable/bg_common_list_scroll_bar"
+	        android:scrollbars="vertical" />
+	</LinearLayout>
+</RelativeLayout>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 是否进行Crashmail上报，工作环境为false开发阶段的crash无需上报,打包期间由ant替换为true接收crash上报 -->
+	<bool name="send_crash_mail">false</bool>
+	
+	<!-- 是否开启Debug信息悬浮窗口。提测时要设置为false -->
+	<bool name="debug_info_window">false</bool>
+	
+	<!--  是否输出Log的变量  打包时会置为false-->
+	<bool name="islog">true</bool>
+	
+	<!-- 推广渠道的代号，默认为1000 -->
+	<string name="campaign_source">1000</string>
+	
+	<!-- 每次发包可能会修改的项 -->
+	<!-- winmess数据上报用地址，上报到测试环境时设置为true，上报到正式环境时设置为false。 -->
+	<bool name="winmess_report_url_test">true</bool>
+	
+	<!--  版本的LC  打包时会替换掉-->
+	<string name="lc">E93A793B3AB80FF3</string>
+	
+	<!--  版本的channel  打包时会替换掉-->
+	<string name="channel">233042</string>
+	    
+	<!-- 上报ID 在http://www.google.com/analytics/注册并创建应用后获取。 -->
+	<string name="google_analytics_tracker">UA-36204478-5</string>
+	
+	<!-- RQD Crash上报到后台的 正式/测试 环境的变量配置。上报到测试环境时设置为true，上报到正式环境时设置为false。 -->
+	<bool name="rqd_debug">true</bool>	
+		
+	<!-- 是否配置正是环境。 拉取后台数据（smart config，消息中心）时使用。true=正是环境-->
+	<bool name="is_formal_env_for_pull_server_data">false</bool>	
+	
+	<!-- 应用中使用的appid,打包时期替换 -->
+	<string name="app_id">537034601</string>
+	
+	<!--  VIP获取会员状态和支付时使用的环境类型。0为开发者环境；1为测试环境；2为正式环境 -->
+	<integer name="vip_env">1</integer>
+	
+	<!--  内置包开关；false为非内置版本；true为内置版本 -->
+	<bool name="built_in_version">false</bool>
+	
+	<!--  是否允许测试人员动态设置上报参数。add by joy 2013.02.22 注：正式发布版本中应该设置为false -->
+	<bool name="test_config_allow">true</bool>
+</resources>

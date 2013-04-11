@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="wrap_content" android:layout_height="wrap_content"
+	android:descendantFocusability="blocksDescendants" android:orientation="vertical">
+
+	<LinearLayout android:background="@drawable/sel_img_common_list_item_bg_1"
+		android:layout_marginTop="1dp" android:layout_marginBottom="1dp"
+		android:layout_width="fill_parent" android:layout_height="wrap_content" android:gravity="center_vertical"
+		android:duplicateParentState="true">
+
+		<FrameLayout android:layout_width="36dp" android:id="@+id/safe_note_list_id"
+			android:layout_marginLeft="16.7dp" android:layout_height="wrap_content"
+			android:layout_centerVertical="true" android:duplicateParentState="true">
+
+			<CheckBox android:id="@+id/safe_note_list_checkbox" style="@style/cb_common_checked"
+				android:layout_width="wrap_content" android:layout_height="wrap_content"
+				android:layout_gravity="center_vertical" android:clickable="false"
+				android:duplicateParentState="true">
+			</CheckBox>
+
+			<TextView android:id="@+id/tv_num" android:layout_width="wrap_content"
+				android:layout_height="wrap_content" android:layout_gravity="center"
+				android:singleLine="true" android:textColor="@drawable/sel_menu_setting_textcolor"
+				android:text="1" android:textSize="18sp" />
+		</FrameLayout>
+
+		<RelativeLayout android:id="@+id/lay_question" android:layout_toRightOf="@+id/safe_note_list_id"
+			android:layout_marginLeft="4dp" android:layout_width="fill_parent"
+			android:layout_height="58dp" android:duplicateParentState="true">
+			<TextView android:id="@+id/tv_text" android:layout_width="wrap_content"
+				android:layout_height="wrap_content" android:layout_marginTop="7dp"
+				android:singleLine="true" android:textColor="@drawable/sel_menu_setting_textcolor"
+				android:text="text" android:textSize="16sp" />
+
+
+			<TextView android:id="@+id/tv_time" android:layout_width="wrap_content"
+				android:layout_height="wrap_content" android:textColor="@drawable/sel_menu_setting_textcolor"
+				android:layout_marginTop="32dp" android:singleLine="true"
+				android:text="time" android:textSize="14sp" />
+
+			<ImageView android:id="@+id/safebox_note_item_arrow_img"
+				android:src="@drawable/sel_menu_setting_left" android:layout_width="wrap_content"
+				android:layout_height="wrap_content" android:layout_centerVertical="true"
+				android:layout_alignParentRight="true" android:duplicateParentState="true"
+				android:paddingRight="30px" />
+		</RelativeLayout>
+	</LinearLayout>
+
+	<ImageView android:layout_width="fill_parent"
+		android:background="@drawable/bg_common_list_separate_line_blue"
+		android:layout_height="wrap_content" android:layout_marginLeft="16.7dp"
+		android:layout_marginRight="16.7dp"></ImageView>
+</LinearLayout>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/bg_common_base"
+    android:orientation="vertical" >
+
+    <include
+        android:id="@+id/menu_help_titlebar"
+        layout="@layout/layout_sub_title_bar" />
+
+    <ImageView
+        android:id="@+id/menu_help_mask"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:src="@drawable/bg_menu_help_fade_mask" />
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/menu_help_titlebar"
+        android:layout_above="@id/menu_help_mask">
+
+        <TextView
+            android:id="@+id/txt_welcome"
+            style="@style/text_common_intro_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="40dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="20dp"
+            android:text="@string/help_welcome" />
+
+        <!-- Tip List -->
+
+        <ListView
+            android:id="@+id/help_list"
+            style="@style/list_style"
+            android:divider="@null"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_below="@id/txt_welcome" >
+        </ListView>
+    </RelativeLayout>
+
+</RelativeLayout>

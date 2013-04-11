@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="58.7dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginBottom="1dp"
+        android:background="@drawable/sel_bg_common_list"
+        android:duplicateParentState="true"
+        android:orientation="horizontal" >
+
+        <ImageView
+            android:id="@+id/auto_boot_iv_icon"
+            android:layout_width="38.3dp"
+            android:layout_height="38.3dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="20dp"
+            android:contentDescription="@string/application_name" />
+
+        <TextView
+            android:id="@+id/auto_boot_tv_name"
+            android:layout_width="0dp"
+            android:layout_height="58.7dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="10.6dp"
+            android:layout_weight="1"
+            android:duplicateParentState="true"
+            android:gravity="left|center_vertical"
+            android:singleLine="true"
+            android:textColor="@drawable/sel_menu_setting_textcolor"
+            android:textSize="@dimen/textsize_14sp" />
+
+        <ImageView
+            android:id="@+id/iv_disable"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/sel_button_auto_start_off"
+            android:contentDescription="@string/application_name"
+            android:duplicateParentState="true" />
+
+        <ImageView
+            android:id="@+id/iv_enabled"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/sel_button_auto_start_on"
+            android:contentDescription="@string/application_name"
+            android:duplicateParentState="true" />
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16.7dp"
+        android:layout_marginRight="16.7dp"
+        android:background="@drawable/bg_common_list_separate_line_blue"
+        android:contentDescription="@string/application_name" />
+
+</LinearLayout>

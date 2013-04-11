@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/com.tencent.onesecurity"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="10dp"
+        android:orientation="horizontal"
+        android:baselineAligned="false" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/desktop_bg"
+            android:orientation="vertical"
+            android:paddingTop="38.66dp" >
+
+            <ImageView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/desktop_line_1"
+                android:contentDescription="@string/desk_assis_switch_title" />
+
+            <com.tencent.onesecurity.deskassistance.MiniProgressBarView
+                android:id="@+id/optimizeMiniProgressBar"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="7dip"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp" />
+
+            <LinearLayout
+                android:id="@+id/layout_optimize_item"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:orientation="horizontal" >
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="10dp"
+                    android:gravity="center"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:id="@+id/deskAssistanceRamUsage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/white_1_fafafa"
+                        android:textSize="@dimen/textsize_18sp"
+                        android:textStyle="bold" >
+                    </TextView>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/ram_of_running_task"
+                        android:textColor="@color/white_1_fafafa"
+                        android:textSize="@dimen/textsize_16sp" >
+                    </TextView>
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="5dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/desktop_line_1"
+                    android:contentDescription="@string/desk_assis_switch_title" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="10dp"
+                    android:gravity="center"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:id="@+id/deskAssistanceRunningAppNum"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/white_1_fafafa"
+                        android:textSize="@dimen/textsize_18sp"
+                        android:textStyle="bold" >
+                    </TextView>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/desktop_running"
+                        android:textColor="@color/white_1_fafafa"
+                        android:textSize="@dimen/textsize_16sp" >
+                    </TextView>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/deskAssistance_buttonlayout"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_weight="0"
+            android:gravity="right" >
+
+            <com.tencent.onesecurity.deskassistance.ButtonView
+                android:id="@+id/btn_desktop_start_optimize"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_centerVertical="true"
+                app:bvbuttontext=""
+                app:bvbuttontype="1"
+                android:scaleType="fitXY" />
+
+            <com.tencent.onesecurity.deskassistance.DeskAssistanceOptimizeResult
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent" >
+
+                <TextView
+                    android:id="@+id/optimizeResult"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/desktop_bg_optimizeresult"
+                    android:gravity="center"
+                    android:textColor="@color/white_1_fafafa"
+                    android:textSize="@dimen/textsize_14sp"
+                    android:visibility="gone" />
+            </com.tencent.onesecurity.deskassistance.DeskAssistanceOptimizeResult>
+        </RelativeLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="14.66dp"
+        android:background="#00000000"
+        android:orientation="horizontal" >
+
+        <ImageButton
+            android:id="@+id/btn_desktop_logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:background="#00000000"
+            android:src="@drawable/desktop_logo_button"
+            android:contentDescription="@string/desk_assis_switch_title" />
+    </LinearLayout>
+
+</FrameLayout>

@@ -1,0 +1,424 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.tencent.onesecurity"
+    android:versionCode="1"
+    android:versionName="2.0" >
+
+    <uses-sdk android:minSdkVersion="8" />
+
+    <application
+        android:name="com.tencent.onesecurity.MainApplication"
+        android:icon="@drawable/os_icon"
+        android:label="@string/application_name"
+        android:taskAffinity="com.tencent.onesecurity"
+        android:theme="@style/theme_activity" >
+
+        <!--
+        RDM, Crash上报用，每个包的UUID不同，以结尾的数字递增001，002... 
+        <meta-data
+            android:name="com.tencent.rdm.uuid"
+            android:value="UuidOfOnesecurityForRQD001" />
+        -->
+        <!-- ==============  Activity  ============== -->
+        <activity
+            android:name="com.tencent.onesecurity.ui.activity.MainActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        
+        <activity
+            android:name="com.tencent.onesecurity.safebox.ui.SharePictureActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:label="@string/safebox_share_photo_label">
+            <intent-filter>
+            <action android:name="android.intent.action.SEND"> </action>
+            <action android:name="android.intent.action.SEND_MULTIPLE"> </action>
+			<category android:name="android.intent.category.DEFAULT"></category>
+			<data android:mimeType="image/*"></data>
+			</intent-filter>
+        </activity>
+        <activity
+            android:name="com.tencent.onesecurity.ui.activity.vip.VipTrialActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.tencent.onesecurity.ui.activity.vip.VipPaymentSuccessActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.tencent.onesecurity.ui.activity.vip.VipPaymentFailedActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.tencent.onesecurity.ui.activity.vip.VipZoneActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.tencent.onesecurity.ui.activity.vip.VipUpgradeActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" >
+        </activity>
+        <activity
+            android:name="com.tencent.onesecurity.ui.activity.vip.VipTrialQuestionnaireActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" >
+        </activity>
+        <activity
+            android:name="com.mindmatics.mopay.android.activity.MopayActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation"
+            android:label="Mopay for Android" >
+        </activity>
+        <!-- 临时用于设置私密箱密码 -->
+
+        <!-- 病毒模块  activity -->
+        <activity
+            android:name="com.tencent.onesecurity.ui.activity.virus.VirusFullScanningActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+                <activity
+            android:name="com.tencent.onesecurity.ui.activity.virus.VirusWhiteListActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.tencent.onesecurity.ui.activity.virus.VirusScanResultActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.tencent.onesecurity.ui.activity.virus.VirusInstallSoftwareDialogActivity"
+            android:screenOrientation="portrait"
+            android:taskAffinity="virus.scan.affinity"
+            android:excludeFromRecents="true"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+        </activity>
+        <!-- 加速模块  activity begin -->
+        <activity
+            android:name="com.tencent.onesecurity.ui.activity.optimize.ManageAppActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity android:name=".ui.activity.optimize.AutoBootActivity" 
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar">
+            
+        </activity>
+        <!-- 加速模块  activity end -->
+        <activity
+            android:name="com.tencent.onesecurity.safebox.ui.SetPwdActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustUnspecified|stateHidden" >
+        </activity>
+        <activity
+            android:name="com.tencent.onesecurity.safebox.ui.SetPwdActivity2"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustUnspecified|stateHidden" >
+        </activity>
+
+        <!-- Menu Begin -->
+        <!-- 设置 -->
+        <activity
+            android:name="com.tencent.onesecurity.ui.activity.menu.SettingActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <!-- About -->
+        <activity
+            android:name="com.tencent.onesecurity.ui.activity.menu.AboutActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <!-- UserGuide -->
+        <activity
+            android:name="com.tencent.onesecurity.ui.activity.UserGuidActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" >
+        </activity>
+        <!-- Feature -->
+        <activity
+            android:name="com.tencent.onesecurity.ui.activity.menu.FeatureActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <!-- Help -->
+        <activity
+            android:name="com.tencent.onesecurity.ui.activity.menu.HelpActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <!-- License -->
+        <activity
+            android:name="com.tencent.onesecurity.ui.activity.menu.LicenseActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <!-- Update -->
+        <activity
+            android:name="com.tencent.onesecurity.ui.activity.menu.UpdateActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <!-- Feedback -->
+        <activity
+            android:name="com.tencent.onesecurity.ui.activity.menu.FeedbackActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <!-- Menu End -->
+        <activity
+            android:name="com.tencent.onesecurity.safebox.ui.QuestionSelectActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <!-- android:permission="com.tencent.tmsecure.permission.RECEIVE_SMS" -->
+        <service android:name="com.tencent.onesecurity.service.SecureService" >
+
+        </service>
+        <service android:name="com.tencent.onesecurity.safebox.service.EncryptConvertService" />
+
+        <activity
+            android:name="com.tencent.onesecurity.ui.activity.menu.NoticeCenterActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" >
+        </activity>
+        <activity
+            android:name="com.tencent.onesecurity.ui.activity.menu.NoticeCenterInformationActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" >
+        </activity>
+
+        <!-- Rabbiy  safebox activity place -->
+        <activity
+            android:name="com.tencent.onesecurity.safebox.ui.AblumGridActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" >
+        </activity>
+        <activity
+            android:name="com.tencent.onesecurity.safebox.ui.PhotoGridActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" >
+        </activity>
+        <activity
+            android:name="com.tencent.onesecurity.safebox.ui.NoteListActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" >
+        </activity>
+        <activity
+            android:name="com.tencent.onesecurity.safebox.ui.NoteEditActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.tencent.onesecurity.safebox.ui.SecurePicGridActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" >
+        </activity>
+        <activity
+            android:name="com.tencent.onesecurity.safebox.ui.viewImage.ImageViewActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:theme="@android:style/Theme.NoTitleBar" >
+        </activity>
+        
+        <activity
+            android:name="com.tencent.onesecurity.safebox.ui.CameraTakeSecurePicActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar">
+        </activity>
+
+        <!-- Rabbiy  safebox service place -->
+        <service android:name="com.tencent.onesecurity.safebox.service.ImportFileService" />
+        <service android:name="com.tencent.onesecurity.service.ScheduleTaskProcessService" />
+        <service android:name="com.tencent.onesecurity.service.ChargeService" />
+        <service android:name="com.tencent.onesecurity.service.MemberTimerService" />
+        <service android:name="com.tencent.onesecurity.usage.qq.ReportService" />
+        <!-- Wiget Service -->
+        <service android:name="com.tencent.onesecurity.service.WidgetService" />
+
+        <!-- ==============  Receiver  ============== -->
+        <!--
+        调试用 
+        <receiver android:name=".receiver.DebugReceiver" >
+            <intent-filter>
+                <action android:name="android.provider.Telephony.SECRET_CODE" />
+
+                <data
+                    android:host="0094"
+                    android:scheme="android_secret_code" />
+                <data
+                    android:host="0095"
+                    android:scheme="android_secret_code" />
+            </intent-filter>
+        </receiver>
+        -->
+        <!-- 开机广播Receiver -->
+        <receiver android:name="com.tencent.onesecurity.receiver.BootReceiver" >
+            <intent-filter android:priority="2147483647" >
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+        <!--
+             接收AlarmService的广播接收器，作为QD定时任务的时钟，
+        				时钟周期为SystemTimerManager.mTimingStep
+        -->
+        <receiver
+            android:name="com.tencent.onesecurity.receiver.SystemAlarmServiceReceiver"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="SYSTEM_TIMER_TRIGGER_ACTION" />
+            </intent-filter>
+        </receiver>
+
+        <!-- 病毒安装监听
+        <receiver android:name="com.tencent.onesecurity.receiver.NewPackageReceiver" >
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_ADDED" >
+                </action>
+
+                <data android:scheme="package" />
+            </intent-filter>
+        </receiver>
+ -->
+ 
+        <!-- 消息中心来新消息监听 -->
+        <receiver android:name="com.tencent.onesecurity.receiver.NoticeCenterNewMessageReceiver" >
+            <intent-filter>
+                <action android:name="android.intent.action.NEW_NOTICE_MESSAGES" />
+            </intent-filter>
+        </receiver>
+
+        <!-- 监视网络状态Receiver -->
+        <receiver android:name="com.tencent.onesecurity.receiver.ConnectionStateChangedReceiver" >
+            <intent-filter android:priority="1000" >
+                <action android:name="android.net.conn.BACKGROUND_DATA_SETTING_CHANGED" />
+                <action android:name="android.net.wifi.STATE_CHANGED" />
+                <action android:name="android.net.wifi.WIFI_STATE_CHANGED" />
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
+
+        <!-- It's work for goole play  campaign analytis , when after install before luncher first -->
+        <receiver
+            android:name="com.tencent.onesecurity.usage.google.ReferralReceiver"
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="com.android.vending.INSTALL_REFERRER" />
+            </intent-filter>
+        </receiver>
+        <!-- sd卡监听 -->
+        <receiver android:name="com.tencent.onesecurity.safebox.service.SDCardListener" >
+            <intent-filter>
+                <action android:name="android.intent.action.MEDIA_EJECT" >
+                </action>
+                <action android:name="android.intent.action.MEDIA_REMOVED" >
+                </action>
+                <action android:name="android.intent.action.MEDIA_BAD_REMOVAL" >
+                </action>
+                <action android:name="android.intent.action.MEDIA_UNMOUNTED" >
+                </action>
+                <action android:name="android.intent.action.MEDIA_MOUNTED" >
+                </action>
+
+                <data android:scheme="file" >
+                </data>
+            </intent-filter>
+        </receiver>
+        <receiver android:name="com.tencent.onesecurity.widget.BoosterWidget" android:icon="@drawable/os_icon" android:label="@string/widget_booster_name">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"></action>
+            </intent-filter>
+            <meta-data android:name="android.appwidget.provider" android:resource="@xml/booster"></meta-data>
+        </receiver>
+        <receiver android:name="com.tencent.onesecurity.widget.ShortcutWidget" android:icon="@drawable/os_icon" android:label="@string/widget_shortcut_name">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"></action>
+            </intent-filter>
+            <intent-filter >
+				<action android:name="UPDATE_BTN_ONE"/>
+				<action android:name="UPDATE_BTN_TWO"/>
+				<action android:name="UPDATE_BTN_THREE"/>
+				<action android:name="UPDATE_BTN_FOUR"/>
+				<action android:name="UPDATE_ORDER"/>
+			</intent-filter>
+            <meta-data android:name="android.appwidget.provider" android:resource="@xml/shortcut"></meta-data>
+        </receiver>
+        <!-- 一键锁屏 -->
+         <activity android:name="com.tencent.onesecurity.widget.shortcut.LockReceiver$Controller" android:theme="@android:style/Theme.Translucent">
+        </activity>
+            <receiver 
+            android:name="com.tencent.onesecurity.widget.shortcut.LockReceiver" 
+            android:permission="android.permission.BIND_DEVICE_ADMIN" > 
+            <meta-data 
+                android:name="android.app.device_admin" 
+                android:resource="@xml/lock_screen" /> 
+            <intent-filter> 
+                <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" /> 
+            </intent-filter> 
+        </receiver> 
+    </application>
+
+    <!-- permission 定义 -->
+    <!-- 启动SDK需要的权限 -->
+    <permission
+        android:name="com.tencent.tmsecure.permission.RECEIVE_SMS"
+        android:protectionLevel="normal" />
+    <!-- 文件所需权限 -->
+
+
+    <!-- 读取本地数据	SDK病毒库所需权限 -->
+    <uses-permission android:name="android.permission.READ_OWNER_DATA" />
+    <uses-permission android:name="android.permission.WRITE_OWNER_DATA" />
+
+    <!-- uses-permission -->
+    <!-- 后台计划任务所需权限 -->
+
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+    <!-- 拦截引擎所需权限 -->
+    <!-- SDK开机启动所需权限 -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <!-- 网络访问 -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <!-- 流量监控所需权限 -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+
+    <!-- 数据更新所需权限 -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" >
+    </uses-permission>
+
+    <!-- 系统优化 -->
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.GET_PACKAGE_SIZE" />
+    <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES" />
+
+    <!-- 防火墙 -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+
+    <!-- 悬浮窗(FloatingService) permission -->
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <!-- 获取用户保存的账户信息 -->
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+
+    <!-- RQD Crash 上报用权限： -->
+    <!-- 拥有该权限的应用会开启log日志功能，没有则关闭该功能 -->
+    <uses-permission android:name="android.permission.READ_LOGS" />
+
+    <!-- 启动Mopay SDK所需权限： -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" ></uses-permission>
+    <uses-permission android:name="android.permission.SEND_SMS" ></uses-permission>
+    <uses-permission android:name="android.permission.READ_SMS" ></uses-permission>
+    <uses-permission android:name="android.permission.RECEIVE_SMS" ></uses-permission>
+    
+    <!-- 加速页面电量管理功能追加开关权限 -->
+    <!-- Wifi开关 -->
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <!-- 2G/3G数据开关 -->
+	<uses-permission android:name="android.permission.CHANGE_NETWORK_STATE"/>
+    <!-- 蓝牙开关 -->
+	<uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <!-- 自动锁屏设置 -->
+    <uses-permission android:name="android.permission.WRITE_SETTINGS"/>
+    <!-- widget同步设置 -->
+    <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
+    <uses-permission android:name="android.permission.READ_SYNC_SETTINGS" />
+</manifest>

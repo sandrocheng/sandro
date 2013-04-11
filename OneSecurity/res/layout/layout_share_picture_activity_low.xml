@@ -1,0 +1,95 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#00000000" >
+
+	<RelativeLayout 
+		android:id="@+id/LayoutSharePictureActivity"
+		android:layout_width="match_parent"
+    	android:layout_height="match_parent"
+    	android:background="@drawable/bg_share_picture_activity">
+    	
+    	<ImageView 
+			android:id="@+id/ImgLogo"
+    		android:layout_width="wrap_content"
+    		android:layout_height="wrap_content"
+			android:layout_alignParentTop="true"
+			android:layout_alignParentLeft="true"
+			android:layout_marginLeft="13.33dp"
+			android:layout_marginTop="13.33dp"
+			android:src="@drawable/img_logo_share_picture_activity"/>
+    	
+    	<RelativeLayout 
+			android:id="@+id/ImgSharedPicture"
+			android:layout_width="wrap_content"
+	    	android:layout_height="wrap_content"
+			android:layout_marginTop="4dp"
+	    	android:layout_centerHorizontal="true"
+	    	android:layout_below="@+id/ImgLogo">
+	    	
+	    	<ImageView 
+				android:id="@+id/ImgPictureBackground"
+	    		android:layout_width="wrap_content"
+	    		android:layout_height="wrap_content"
+				android:src="@drawable/img_bg_share_single_picture"/>
+			
+			<ImageView 
+				android:id="@+id/ImgShownPictures"
+				android:layout_marginTop="23.33dp"
+				android:layout_marginLeft="23.33dp"
+	    		android:layout_width="122.67dp"
+	    		android:layout_height="122.67dp"/>
+	    </RelativeLayout>
+	    
+	    <LinearLayout 
+			android:id="@+id/LayoutTextResult"
+			android:layout_width="wrap_content"
+	    	android:layout_height="wrap_content"
+	    	android:orientation="vertical"
+	    	android:layout_centerHorizontal="true"
+			android:layout_marginTop="7dp"
+	    	android:layout_below="@+id/ImgSharedPicture">
+		    <TextView 
+	    		android:layout_width="fill_parent"
+	    		android:layout_height="wrap_content"
+	    		android:layout_marginLeft="33.33dp"
+	    		android:layout_marginRight="33.33dp"
+				android:text="@string/share_pictures_notification_1"
+				android:textColor="@color/gray_10_616161"
+				android:textSize="@dimen/textsize_14sp"/>
+		</LinearLayout>	
+			
+		<Button 
+			android:id="@+id/BtnOk"
+    		android:layout_width="fill_parent"
+    		android:layout_height="wrap_content"
+	    	android:layout_below="@+id/ImgSharedPicture"
+	    	android:layout_centerInParent="true"
+			android:layout_marginLeft="20dp"
+			android:layout_marginRight="20dp"
+			android:layout_marginTop="77dp"
+			android:text="OK"
+			android:textColor="@color/white_1_fafafa"
+			android:textSize="@dimen/textsize_16sp"
+			android:textStyle="bold"
+	  		android:background="@drawable/sel_bg_button_share_pic_ok"/>
+		
+		<Button 
+			android:id="@+id/BtnCancel"
+    		android:layout_width="fill_parent"
+    		android:layout_height="wrap_content"
+	    	android:layout_below="@+id/BtnOk"
+	    	android:layout_centerInParent="true"
+			android:layout_marginLeft="20dp"
+			android:layout_marginRight="20dp"
+			android:layout_marginTop="10dp"
+			android:text="Cancel"
+			android:textColor="@color/white_1_fafafa"
+			android:textSize="@dimen/textsize_16sp"
+			android:textStyle="bold"
+	  		android:background="@drawable/sel_bg_button_share_pic_cancel"/>
+    	
+	</RelativeLayout>
+
+</FrameLayout>

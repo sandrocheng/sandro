@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.tencent.onesecurity.widget.booster.BoosterRunningAppsLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id="@+id/widget_booster_custom_apps"
+    android:background="@drawable/img_widget_shortcut_bg_alpha"
+    android:orientation="vertical" >
+
+    <GridView
+        android:id="@+id/widget_booster_gv_apps"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:columnWidth="80dp"
+        android:gravity="center"
+        android:numColumns="auto_fit"
+        android:padding="10dp"
+        android:stretchMode="columnWidth"
+        android:verticalSpacing="10dp" >
+    </GridView>
+
+</com.tencent.onesecurity.widget.booster.BoosterRunningAppsLayout>

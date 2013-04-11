@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content" >
+
+    <LinearLayout
+        android:id="@+id/layout_firstChar"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:enabled="false"
+        android:focusable="false" >
+
+        <TextView
+            android:id="@+id/txtFirstChar"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white_1_fafafa"
+            android:paddingLeft="8dp"
+            android:background="@drawable/bg_vip_share_contact_list_title" >
+        </TextView>
+    </LinearLayout>
+
+    <LinearLayout
+    	android:id="@+id/layout_checkBoxAndTextView"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/layout_firstChar"
+        android:clickable="true" 
+        android:background="@drawable/sel_img_common_list_item_bg_white">
+
+	<CheckBox android:id="@+id/chbselect"
+		android:layout_height="53.33dp"
+		android:layout_marginLeft="4dp"
+		android:text=""
+		android:button="@drawable/sel_cb_common_white" android:layout_width="22dp"/>
+
+	<TextView android:id="@+id/checkName" android:layout_width="fill_parent"
+		android:layout_height="53.33dp"
+		android:duplicateParentState="true"
+		android:layout_marginLeft="13.33dp"
+		android:clickable="false"
+		style="@style/text_vip_trial_activity_list_item_transparent_white">
+	</TextView>
+            
+    </LinearLayout>
+
+</RelativeLayout>

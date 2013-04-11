@@ -1,0 +1,71 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	 xmlns:app="http://schemas.android.com/apk/res/com.tencent.onesecurity"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <!-- Share Button Layout -->
+    <LinearLayout
+        android:id="@+id/line_share"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical"
+        android:gravity="bottom|center">
+		
+		<com.tencent.onesecurity.ui.customview.widget.CustomIconButton
+                android:id="@+id/vip_btn_share"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:buttonIcon="@drawable/btn_vip_share"
+                app:buttonIconPress="@drawable/btn_vip_share_press"
+                app:buttonText="@string/vip_trial_send_sms"
+                app:buttonIconDisabled="@drawable/btn_vip_share_disabled"
+ 				app:buttonType="icon_left"
+ 				android:layout_marginTop="21.33dp"
+ 				android:layout_marginBottom="17dp"/>
+		
+		
+		
+        
+    </LinearLayout>
+    
+    <TextView 
+    	android:id="@+id/vip_trial_no_contact"
+    	android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/vip_trial_contact_empty"
+        android:layout_marginTop="26.66dp"
+        android:gravity="center"
+        style="@style/text_vip_trial_activity_list_item_transparent_white"
+    />
+    
+
+    <!-- Contacts List Layout -->
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/line_share" >
+
+        <ListView
+            android:id="@+id/vip_trial_list_contacts"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fastScrollEnabled="true"
+            android:cacheColorHint="#00000000" 
+            android:layout_marginLeft="13.33dp"
+            android:layout_marginRight="13.33dp"
+            android:divider="@drawable/bg_common_list_separate_line_white"
+            android:scrollbarStyle="insideOverlay"
+	        android:scrollbarThumbVertical="@drawable/bg_common_list_scroll_bar"
+	        android:scrollbars="vertical">
+        </ListView>
+
+        <com.tencent.onesecurity.ui.customview.widget.CharIndexView
+            android:id="@+id/char_index_list"
+            android:layout_width="18dp"
+            android:layout_height="fill_parent"
+            android:layout_alignParentRight="true"/>
+    </RelativeLayout>
+
+</RelativeLayout>

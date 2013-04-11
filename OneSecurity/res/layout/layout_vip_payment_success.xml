@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/bg_common_base"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res/com.tencent.onesecurity"
+    android:weightSum="3">
+	
+
+
+	<LinearLayout android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_weight = "1">
+    
+	</LinearLayout>
+
+	<LinearLayout android:layout_width="fill_parent"
+	android:orientation="vertical"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="50dp"
+    android:layout_weight="1"
+    android:layout_gravity="center">
+    	
+    	<LinearLayout android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="vertical"
+	    android:paddingLeft="2.66dp">
+    		<ImageView android:layout_height="wrap_content"
+    	   android:layout_width="wrap_content"
+    	   android:src="@drawable/img_vip_success"
+    	   android:layout_gravity="center"
+    	   ></ImageView>
+		</LinearLayout>
+    	
+    
+     	<LinearLayout
+            	android:id="@+id/vip_zone_activity_layout_time" 
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="horizontal"
+                android:layout_marginTop="24dp">
+                
+                <TextView  android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:text="@string/vip_payment_success_you_got"
+                android:layout_marginRight="3.33dp"
+            	style="@style/text_vip_pay_succ_activity_transparent_white"/>
+                
+                <ImageView
+                    android:id="@+id/image_days_h"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="3dp"
+                    android:src="@drawable/img_vip_main_counter_0" />
+
+                <ImageView
+                    android:id="@+id/image_days_t"
+                    android:layout_marginRight="3dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_toLeftOf="@+id/image_days_h"
+                    android:src="@drawable/img_vip_main_counter_0"/>
+                    
+                <ImageView
+                    android:id="@+id/image_days_b"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="3dp"
+                    android:src="@drawable/img_vip_main_counter_0"
+                    android:layout_toLeftOf="@+id/image_days_t" />
+                    
+               <TextView  android:layout_width="wrap_content"
+                	android:layout_height="wrap_content"
+                	android:layout_gravity="bottom"
+                	android:text="@string/vip_payment_success_days"
+            		style="@style/text_vip_pay_succ_activity_transparent_white"/>
+
+            </LinearLayout>
+    	
+    	<TextView  android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10.66dp"
+				style="@style/text_vip_pay_succ_activity_desc_transparent_white"
+                android:text="@string/vip_payment_success_info"
+                android:gravity="center_vertical|center"/>
+    
+	</LinearLayout>
+  
+  
+  	<LinearLayout android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="vertical"
+        android:gravity="bottom|center"
+		android:layout_alignParentBottom="true"
+    	android:layout_weight = "1">
+ 				
+ 				
+ 	<com.tencent.onesecurity.ui.customview.widget.CustomIconButton
+            android:id="@+id/vip_payment_success_btn_enjoy"
+            android:layout_marginBottom="10dp"
+            android:layout_height="wrap_content"
+            app:buttonIcon="@drawable/btn_vip_main_isvip_nor"
+            app:buttonIconPress="@drawable/btn_vip_main_isvip_press"
+            app:buttonText="@string/vip_payment_success_enjoy_now"
+            app:buttonType="icon_left"
+            android:layout_width="wrap_content"/>
+	</LinearLayout>
+</LinearLayout>
