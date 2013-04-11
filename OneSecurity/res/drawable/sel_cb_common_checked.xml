@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- checkbox：未选中为off，选中为on(对号) -->
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:drawable="@drawable/sel_cb_is_checked" android:state_selected="true"/>
-    <item android:drawable="@drawable/sel_cb_is_checked" android:state_checked="true"/>
-    <item android:drawable="@drawable/sel_cb_is_not_checked" android:state_checked="false"/>
-    <item android:drawable="@drawable/sel_cb_is_not_checked"/>
-</selector>
