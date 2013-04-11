@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- checkbox：未选中为灰色，选中为蓝色(对号) -->
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:drawable="@drawable/rb_common_white_press" android:state_checked="true"/>
-    <item android:drawable="@drawable/rb_common_white_default" android:state_checked="false"/>
-    <item android:drawable="@drawable/rb_common_white_default"/>
-</selector>
