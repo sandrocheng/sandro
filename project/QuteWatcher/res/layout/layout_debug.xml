@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent" android:layout_height="fill_parent"
+	android:orientation="vertical" android:background="@color/background">
+
+	<ScrollView android:orientation="vertical" android:id="@+id/debutView"
+		android:layout_width="fill_parent" android:layout_weight="1"
+		android:layout_height="fill_parent" android:scrollbars="none"
+		android:background="@color/background">
+		<RelativeLayout android:layout_height="fill_parent"
+			android:layout_width="fill_parent" android:paddingBottom="20dip">
+			<TextView android:id="@+id/debugLine"
+				android:layout_below="@+id/helpQuestion1" android:paddingLeft="12dp"
+				android:paddingRight="12dp" android:text=""
+				android:layout_width="wrap_content" android:layout_height="wrap_content"
+				android:textColor="#000000" android:textSize="15sp" />
+
+		</RelativeLayout>
+	</ScrollView>
+</LinearLayout>

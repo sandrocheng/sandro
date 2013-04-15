@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+      package="com.tinyscreen.quteWatcher"
+      android:versionCode="1"
+      android:versionName="1.4.0">
+    <uses-sdk android:minSdkVersion="8" />
+
+    <application android:icon="@drawable/icon" 
+    			 android:name=".MainApp"
+    			 android:label="@string/app_name">
+        <activity android:name=".QuteWatcherActivity"
+                  android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+  
+        <service
+            android:name="com.tinyscreen.quteWatcher.CoreService"
+            android:persistent="true"
+            android:exported="true" >
+        </service>
+  
+        
+		<receiver android:name="com.tinyscreen.quteWatcher.QuteBroadCastReceiver">
+			<intent-filter>
+				<action android:name="com.tinyscreen.quterWatcher.broadcast" />
+			</intent-filter>
+		</receiver>
+		
+		<receiver android:name="com.tinyscreen.quteWatcher.QuteBroadCastReceiver">
+			<intent-filter>
+				<action android:name="com.tinyscreen.quterWatcher.notification.broadcast" />
+			</intent-filter>
+		</receiver>		
+		
+		<!-- 定时alarm receiver -->
+        <receiver android:name="com.tinyscreen.quteWatcher.SystemAlarm" >
+        </receiver>
+    </application>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
+	<uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"></uses-permission>
+    
+    
+</manifest>

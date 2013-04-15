@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hello">Hello World, QuteWatcherActivity!</string>
+    <string name="app_name">QuteWatcher</string>
+    <string name="sendEmail">Send Email</string>
+</resources>
