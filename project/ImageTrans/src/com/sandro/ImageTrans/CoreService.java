@@ -35,7 +35,7 @@ public class CoreService extends Service {
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		if (intent == null) {
-			super.onStartCommand(intent, flags, startId);
+			return super.onStartCommand(intent, flags, startId);
 		}
 		String action = intent.getAction();
 		if(action == null){
