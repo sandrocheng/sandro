@@ -2,11 +2,14 @@ package com.sandro.ImageTrans;
 
 import android.app.Service;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.IBinder;
 
 public class CoreService extends Service {
 
 	public final static String ACTION_START_SINGLE_PAGE = "com.sandro.start.single.page";
+	
+	private ScreenSaverReceiver mSSReceiver = new ScreenSaverReceiver();
 	
 	@Override
 	public IBinder onBind(Intent intent) {
@@ -16,6 +19,11 @@ public class CoreService extends Service {
 	@Override
 	public void onCreate(){
 		super.onCreate();
+		IntentFilter intentFilter = new IntentFilter(
+				Intent.ACTION_SCREEN_ON);
+		intentFilter.addAction(Intent.ACTION_SCREEN_OFF);
+		intentFilter.addAction(ScreenSaverReceiver.ACTION_SCREEN_SAVER_CLOSE);
+		this.registerReceiver(mSSReceiver, intentFilter);
 	}
 	
 	@Override
@@ -36,6 +44,7 @@ public class CoreService extends Service {
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
+		unregisterReceiver(mSSReceiver);
 	}
 	
 }
