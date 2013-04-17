@@ -3,6 +3,9 @@ package com.sandro.custom.view;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
+
+import com.sandro.ImageTrans.R;
 
 /**
  * 屏保view
@@ -16,7 +19,7 @@ public class ScreenSaverView extends FrameLayout{
 	 */
 //	private float mLastMotionX; 
 	
-//	private ImageView iv;
+	private ImageView iv;
 	
 	public ScreenSaverView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
@@ -33,15 +36,19 @@ public class ScreenSaverView extends FrameLayout{
 		init(context);
 	}
 	
-	
+	public void move(int x){
+		if(iv!=null){
+			iv.scrollTo(x, 0);
+		}
+	}
 	
 	@Override
 	protected void onLayout(boolean changed, int left, int top, int right,
 			int bottom) {
 		super.onLayout(changed, left, top, right, bottom);
-//		if(iv == null){
-//			iv = (ImageView)this.findViewById(R.id.iv_content);			
-//		}
+		if(iv == null){
+			iv = (ImageView)this.findViewById(R.id.iv_content);			
+		}
 	}
 
 	private void init(Context context){

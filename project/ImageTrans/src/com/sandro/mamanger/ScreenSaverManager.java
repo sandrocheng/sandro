@@ -3,6 +3,8 @@ package com.sandro.mamanger;
 import android.app.KeyguardManager;
 import android.app.KeyguardManager.OnKeyguardExitResult;
 import android.content.Context;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.WindowManager;
@@ -29,6 +31,22 @@ public class ScreenSaverManager {
 	private WindowManager mWindowManager;
 	
 	private boolean screenShow;
+	
+	private int x = 0;
+	
+	private Handler handler = new Handler(){
+
+		@Override
+		public void handleMessage(Message msg) {
+			if(screenShow && screenSaverView!=null){
+				x++;
+				screenSaverViewParams.x = x*6;
+				mWindowManager.updateViewLayout(screenSaverView, screenSaverViewParams);
+			}
+			super.handleMessage(msg);
+		}
+		
+	};
 	
 	public ScreenSaverManager(){
 		mWindowManager = (WindowManager) MainApp.getContext().getSystemService(Context.WINDOW_SERVICE);
@@ -92,6 +110,21 @@ public class ScreenSaverManager {
 				+ screenSaverViewParams.flags);		
 
 		screenShow = true;
+		
+		new Thread(){
+
+			@Override
+			public void run() {
+				for(int i = 0;i<30;i++){
+					try {
+						Thread.sleep(50);
+					} catch (InterruptedException e) {
+					}
+					handler.sendEmptyMessage(0);
+				}
+			}
+			
+		}.start();
 	}
 
 	public void closeScreenView() {
@@ -99,7 +132,7 @@ public class ScreenSaverManager {
 			mWindowManager.removeView(screenSaverView);
 			mWindowManager.removeView(screenBackSaverView);
 			screenShow = false;
-			
+			x = 0;
 			keyguardManager.exitKeyguardSecurely(new OnKeyguardExitResult() {
 
 				@Override
