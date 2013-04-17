@@ -81,9 +81,7 @@ public class ScreenSaverManager {
 	public void showScreenSaver() {
 		if (screenShow)
 			return;
-		
-
-
+		keyguardLock.disableKeyguard();
 		mWindowManager.addView(screenBackSaverView, screenBackSaverViewParams);
 		Log.i("ScreenSaverManager", "screenBackSaverViewParams  type : "+ screenBackSaverViewParams.type
 				+ " ,flags : " + screenBackSaverViewParams.flags);
@@ -94,8 +92,6 @@ public class ScreenSaverManager {
 				+ screenSaverViewParams.flags);		
 
 		screenShow = true;
-		keyguardLock.disableKeyguard();
-		
 	}
 
 	public void closeScreenView() {
