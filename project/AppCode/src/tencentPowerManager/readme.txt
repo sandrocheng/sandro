@@ -16,19 +16,21 @@ ScreenEventReceiver类：监听屏幕开关的receiver，	PowerManagerApplicatio
 ---- onReceive方法：执行 ac.b()方法 （mark add_saver_views）
                               ----- BatteryChargingWindow.c(); //mark add_BatteryChargingWindow_view
 									使用updateViewLayout添加BatteryChargingWindow，
-									sdk版本号 > 10  type = 2010(TYPE_SYSTEM_ERROR) , flag 0x228
+									sdk版本号 > 10  type = 2010(TYPE_SYSTEM_ERROR) , flag 0x228(552)
 										0x228 -> 1000101000
 											FLAG_NOT_FOCUSABLE ->8 (0x00000008) ->1000
-											FLAG_NOT_TOUCH_MODAL-> 32 (0x00000020)->10000
-											FLAG_LAYOUT_IN_SCREEN -> 256 (0x00000100) -> 1000000000
-									sdk版本号 <= 10 type = 2006(TYPE_SYSTEM_OVERLAY),  flag 0x208
+											FLAG_NOT_TOUCH_MODAL-> 32 (0x00000020)->100000
+											FLAG_LAYOUT_NO_LIMITS -> 512 (0x00000200) -> 1000000000
+									sdk版本号 <= 10 type = 2006(TYPE_SYSTEM_OVERLAY),  flag 0x208(520)
 										0x208 -> 1000001000
 											FLAG_NOT_FOCUSABLE ->8 (0x00000008) ->1000
-											FLAG_LAYOUT_IN_SCREEN -> 256 (0x00000100) -> 1000000000
+											FLAG_LAYOUT_NO_LIMITS -> 512 (0x00000200) -> 1000000000
+											
+											
 							  ----- if(sdk版本号 <= 10) BatteryChargingBehindWindow.b();(mark add_BatteryChargingBehindWindow_view)
 									updateViewLayout flags|=0x200 type = 2010
 										0x200 -> 1000000000:FLAG_LAYOUT_IN_SCREEN -> 256 (0x00000100)
 							  ------ BatteryChargingPrivateWindow.a()(mark add_BatteryChargingPrivateWindow_view)
 									updateViewLayout  type = 2010; flags |= 0x200
-									0x200 -> 1000000000:FLAG_LAYOUT_IN_SCREEN -> 256 (0x00000100)
+									FLAG_LAYOUT_NO_LIMITS -> 512 (0x00000200) -> 1000000000
 										

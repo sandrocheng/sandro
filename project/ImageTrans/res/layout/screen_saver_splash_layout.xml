@@ -2,14 +2,12 @@
 <com.sandro.custom.view.ScreenSaverView 
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:background="@drawable/common_bg"
-    android:duplicateParentState="true">
+    android:layout_height="fill_parent">
     
     <ImageView 
         android:id="@+id/iv_content"
-	    android:layout_width="fill_parent"
-	    android:layout_height="fill_parent"
+	    android:layout_width="100dp"
+	    android:layout_height="100dp"
 	    android:src="@drawable/four">
     </ImageView>
 </com.sandro.custom.view.ScreenSaverView >

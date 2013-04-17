@@ -38,8 +38,10 @@ public class CoreService extends Service {
 			super.onStartCommand(intent, flags, startId);
 		}
 		String action = intent.getAction();
-		if(action == null)
-			super.onStartCommand(intent, flags, startId);
+		if(action == null){
+			return super.onStartCommand(intent, flags, startId);
+		}
+			
 		Log.i("CoreService", "onStartCommand action : " + action);
 		if(action.equals(ACTION_START_SINGLE_PAGE)){
 			intent.setClass(this, SingleScreenActivity.class);
@@ -47,11 +49,11 @@ public class CoreService extends Service {
 			startActivity(intent);
 		}
 		else if (intent.getAction().equals(Intent.ACTION_SCREEN_ON)){
-	
+			screenSaverManager.showScreenSaver();
 		}else if(intent.getAction().equals(Intent.ACTION_SCREEN_OFF)){
-
+			screenSaverManager.closeScreenView();
 		}else if(intent.getAction().equals(ScreenSaverReceiver.ACTION_SCREEN_SAVER_CLOSE)){
-
+			screenSaverManager.closeScreenView();
 		}
 		return super.onStartCommand(intent, flags, startId);
 	}
