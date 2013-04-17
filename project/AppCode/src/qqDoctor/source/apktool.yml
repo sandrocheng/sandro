@@ -1,0 +1,11 @@
+version: 1.5.1
+apkFileName: abc.apk
+isFrameworkApk: false
+usesFramework:
+  ids:
+  - 1
+sdkInfo:
+  minSdkVersion: '3'
+packageInfo:
+  cur_package: com.tencent.qqpimsecure
+  orig_package: com.tencent.qqpimsecure

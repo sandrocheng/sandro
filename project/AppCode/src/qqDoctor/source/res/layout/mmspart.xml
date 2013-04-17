@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <ImageView android:id="@id/defaultimeview" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+    <RelativeLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerInParent="true">
+        <com.tencent.qqpimsecure.uilib.view.imageview.LoadingOutsideView android:layout_gravity="center" android:id="@id/item_outside_loading" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="12.0dip" />
+        <com.tencent.qqpimsecure.uilib.view.imageview.LoadingInsideView android:layout_gravity="center" android:id="@id/item_inside_loading" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="12.0dip" />
+    </RelativeLayout>
+    <ScrollView android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginLeft="20.0dip" android:layout_marginRight="20.0dip" android:layout_centerInParent="true">
+        <LinearLayout android:gravity="center" android:layout_gravity="top" android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content">
+            <TextView android:textSize="20.0dip" android:textColor="@color/black" android:id="@id/summary" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+            <com.tencent.qqpimsecure.uilib.view.InterceptMMSView android:gravity="center" android:id="@id/mms_body" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="15.0dip" style="@style/scrollview" />
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

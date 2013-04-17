@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:background="@color/color_ff2d2d2d" android:layout_width="wrap_content" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <ImageView android:id="@id/captured_face_imageview" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentTop="true" />
+    <LinearLayout android:gravity="center" android:orientation="horizontal" android:id="@id/bottom_operation_button" android:background="@color/transparent" android:layout_width="fill_parent" android:layout_height="48.0dip" android:layout_alignParentBottom="true">
+        <LinearLayout android:gravity="center" android:id="@id/scan_again_button" android:background="@drawable/btn_face_verify_bottom_type2" android:clickable="true" android:layout_width="0.0dip" android:layout_height="48.0dip" android:layout_weight="1.0">
+            <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/face_verify_capture" />
+            <TextView android:textSize="18.0sp" android:textColor="@color/white" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="3.0dip" android:text="@string/face_recognition_scan_again" />
+        </LinearLayout>
+        <LinearLayout android:gravity="center" android:id="@id/finish_button" android:background="@drawable/btn_face_verify_bottom_type1" android:clickable="true" android:layout_width="0.0dip" android:layout_height="48.0dip" android:layout_weight="1.0">
+            <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/face_verify_finish" />
+            <TextView android:textSize="18.0sp" android:textColor="@color/white" android:id="@id/finish_text" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="3.0dip" android:text="@string/face_recognition_finish" />
+        </LinearLayout>
+    </LinearLayout>
+    <TextView android:textSize="18.0sp" android:textColor="@color/color_ff999999" android:gravity="center" android:id="@id/toast_hint_textview" android:background="@drawable/face_verify_toast_hint_bg" android:paddingLeft="20.0dip" android:paddingRight="20.0dip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="3.0dip" android:minHeight="40.0dip" android:text="@string/face_recognition_use_this_picture" android:layout_above="@id/bottom_operation_button" android:layout_centerHorizontal="true" />
+</RelativeLayout>

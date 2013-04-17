@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView android:background="@color/main_bg_color" android:paddingTop="10.0dip" android:paddingBottom="10.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content">
+        <TextView android:textColor="@color/list_item_title_text_color" android:id="@id/about" android:paddingLeft="8.0dip" android:paddingRight="8.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="@string/hint_about" style="@style/text_middle_default" />
+        <TextView android:textColor="@color/list_item_title_text_color" android:textColorHighlight="@color/list_item_title_text_color" android:textColorLink="@color/list_item_right_text_color" android:id="@id/about_link" android:paddingLeft="8.0dip" android:paddingRight="8.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="@string/hint_about_link" style="@style/text_middle_default" />
+        <TextView android:textColor="@color/list_item_title_text_color" android:textColorHighlight="@color/list_item_title_text_color" android:textColorLink="@color/list_item_right_text_color" android:autoLink="all" android:id="@id/wap_link" android:paddingLeft="8.0dip" android:paddingTop="8.0dip" android:paddingRight="8.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="@string/hint_about_contact_info" style="@style/text_middle_default" />
+        <TextView android:textColor="@color/list_item_title_text_color" android:textColorHighlight="@color/list_item_title_text_color" android:textColorLink="@color/list_item_right_text_color" android:autoLink="all" android:id="@id/phone_link" android:paddingLeft="8.0dip" android:paddingRight="8.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="@string/hint_about_tel_info" style="@style/text_middle_default" />
+    </LinearLayout>
+</ScrollView>

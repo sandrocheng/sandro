@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:orientation="vertical" android:clipChildren="true" android:clipToPadding="true" android:layout_width="wrap_content" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <com.tencent.powermanager.uilib.view.CircleBatteryLevelView android:id="@id/item_level_view" android:paddingLeft="40.0dip" android:clipChildren="true" android:clipToPadding="true" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+    <ImageView android:id="@id/icon_charging" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/body_battery_bg_2" />
+    <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/body_battery_bg_1" />
+</FrameLayout>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:background="@drawable/list_bg_all" android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res/com.tencent.qqpimsecure">
+    <LinearLayout android:orientation="horizontal" android:background="@drawable/popup_bg_up" android:layout_width="fill_parent" android:layout_height="wrap_content">
+        <ImageView android:layout_gravity="center_vertical" android:layout_width="30.0dip" android:layout_height="30.0dip" android:src="@drawable/icon" />
+        <TextView android:textSize="15.0sp" android:textColor="@color/white" android:layout_gravity="center_vertical" android:id="@id/title" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="5.0dip" android:text="@string/WEN_XIN_TI_SHI" />
+    </LinearLayout>
+    <LinearLayout android:orientation="vertical" android:background="@drawable/popup_bg_middle" android:paddingLeft="20.0dip" android:paddingTop="5.0dip" android:paddingRight="20.0dip" android:paddingBottom="10.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content">
+        <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent">
+            <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content">
+                <ImageView android:id="@id/image_icon" android:layout_width="40.0dip" android:layout_height="40.0dip" />
+                <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content">
+                    <TextView android:gravity="left" android:layout_gravity="left" android:id="@id/text_message" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="5.0dip" android:minWidth="200.0dip" style="@style/text_middle_default" />
+                    <TextView android:gravity="center" android:layout_gravity="center" android:id="@id/text_permission" android:layout_width="fill_parent" android:layout_height="wrap_content" style="@style/text_big_default" />
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout android:gravity="center" android:orientation="horizontal" android:background="@drawable/bg_login_text_pressed" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="5.0dip">
+                <TextView android:gravity="left" android:layout_gravity="center_vertical" android:id="@id/time_tip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="10.0dip" style="@style/text_middle_default" />
+            </LinearLayout>
+            <LinearLayout android:gravity="center" android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="5.0dip">
+                <com.tencent.qqpimsecure.uilib.view.CheckBoxView android:id="@id/remember_state" android:padding="1.0dip" android:focusable="false" android:layout_width="wrap_content" android:layout_height="wrap_content" app:type="1" />
+                <TextView android:gravity="left" android:layout_gravity="center_vertical" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="5.0dip" android:text="@string/remember_select" style="@style/text_small_default_black" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout android:orientation="vertical" android:id="@id/dialog_space_bar" android:background="@drawable/popup_bg_line" android:layout_width="fill_parent" android:layout_height="2.0dip" />
+    <LinearLayout android:layout_gravity="center_horizontal" android:orientation="horizontal" android:background="@drawable/popup_bg_down" android:padding="5.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content">
+        <com.tencent.qqpimsecure.uilib.view.ButtonView android:layout_gravity="center_vertical" android:id="@id/permit_view" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_weight="1.0" app:buttontype="2" app:buttontext="@string/permission_permit" />
+        <com.tencent.qqpimsecure.uilib.view.ButtonView android:layout_gravity="center_vertical" android:id="@id/forbid_view" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_weight="1.0" app:buttontype="2" app:buttontext="@string/permission_reject" />
+    </LinearLayout>
+</LinearLayout>

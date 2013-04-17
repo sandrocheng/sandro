@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res/com.tencent.qqpimsecure">
+    <com.tencent.qqpimsecure.uilib.view.PinnedHeaderListView android:id="@id/myList" android:layout_width="fill_parent" android:layout_height="0.0dip" android:listSelector="@*android:color/transparent" android:cacheColorHint="#00000000" android:divider="@drawable/list_line" android:layout_weight="1.0" />
+</LinearLayout>

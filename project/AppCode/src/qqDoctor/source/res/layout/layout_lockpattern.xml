@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:background="@drawable/empty_secrecy_drawing_bg" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <ImageView android:layout_gravity="center" android:id="@id/image_anim_background" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/empty_secrecy_drawing" />
+    <FrameLayout android:layout_width="fill_parent" android:layout_height="fill_parent">
+        <LinearLayout android:orientation="vertical" android:id="@id/layout_above" android:layout_width="fill_parent" android:layout_height="wrap_content">
+            <LinearLayout android:orientation="vertical" android:id="@id/layout_header_view" android:background="@color/color_lockpattern" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="wrap_content" />
+            <com.tencent.qqpimsecure.view.privacy.LockPatternBackgroundImage android:id="@id/item_background_above" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/drawing_bg_1" android:scaleType="fitXY" />
+        </LinearLayout>
+        <LinearLayout android:orientation="vertical" android:id="@id/layout_below" android:layout_width="fill_parent" android:layout_height="fill_parent">
+            <com.tencent.qqpimsecure.view.privacy.LockPatternBackgroundImage android:id="@id/item_background_below" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/drawing_bg_2" android:scaleType="fitXY" />
+            <LinearLayout android:orientation="vertical" android:id="@id/layout_footer_view" android:background="@drawable/drawing_bg" android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_weight="1.0" />
+        </LinearLayout>
+    </FrameLayout>
+</FrameLayout>

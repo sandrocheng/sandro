@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <include layout="@layout/list_item_tab" />
+    <ImageView android:id="@id/item_left_top" android:layout_width="30.0dip" android:layout_height="30.0dip" android:src="@drawable/ad_first_appear" />
+</FrameLayout>

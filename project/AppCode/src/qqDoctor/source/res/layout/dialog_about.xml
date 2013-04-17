@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:gravity="center_horizontal" android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <ScrollView android:layout_width="wrap_content" android:layout_height="wrap_content">
+        <LinearLayout android:gravity="center_horizontal" android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent">
+            <TextView android:textAppearance="?android:textAppearanceMedium" android:textColor="@color/black" android:id="@id/version" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="5.0dip" android:text="@string/hint_about_1" />
+            <TextView android:textAppearance="?android:textAppearanceMedium" android:textColor="@color/black" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/hint_about_2" />
+            <TextView android:textAppearance="?android:textAppearanceMedium" android:textColor="@color/black" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="10.0dip" android:text="@string/hint_about_3" />
+        </LinearLayout>
+    </ScrollView>
+    <CheckBox android:textColor="@color/black" android:id="@id/checkbox" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_margin="5.0dip" android:checked="true" android:text="@string/do_not_remind_next_time" />
+</LinearLayout>

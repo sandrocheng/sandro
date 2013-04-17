@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:background="@drawable/list_bg_all" android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res/com.tencent.qqpimsecure">
+    <LinearLayout android:orientation="horizontal" android:background="@drawable/popup_bg_up" android:layout_width="fill_parent" android:layout_height="wrap_content">
+        <ImageView android:layout_gravity="center_vertical" android:layout_width="30.0dip" android:layout_height="30.0dip" android:src="@drawable/icon" />
+        <TextView android:layout_gravity="center_vertical" android:id="@id/title" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="5.0dip" android:text="@string/QQ_AN_QUAN_ZHU_SHOU_TI_XING_NIN" style="@style/text_big_white" />
+    </LinearLayout>
+    <TextView android:id="@id/virus_result" android:background="@drawable/popup_bg_middle" android:layout_width="fill_parent" android:layout_height="wrap_content" style="@style/text_big_default" />
+    <LinearLayout android:background="@drawable/popup_bg_down" android:layout_width="fill_parent" android:layout_height="wrap_content">
+        <com.tencent.qqpimsecure.uilib.view.ButtonView android:gravity="center" android:layout_gravity="center_horizontal" android:id="@id/goto_view" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_weight="1.0" app:buttontype="1" app:buttontext="@string/virus_notification_goto_view" />
+        <com.tencent.qqpimsecure.uilib.view.ButtonView android:gravity="center" android:layout_gravity="center_horizontal" android:id="@id/cancle" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_weight="1.0" app:buttontype="2" app:buttontext="@string/QU_XIAO" />
+    </LinearLayout>
+</LinearLayout>

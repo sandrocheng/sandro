@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:background="@drawable/list_bg_all" android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res/com.tencent.qqpimsecure">
+    <LinearLayout android:orientation="horizontal" android:background="@drawable/popup_bg_up" android:layout_width="fill_parent" android:layout_height="wrap_content">
+        <ImageView android:layout_gravity="center_vertical" android:layout_width="30.0dip" android:layout_height="30.0dip" android:src="@drawable/popup_icon_warning" />
+        <TextView android:textSize="15.0sp" android:textColor="@color/white" android:layout_gravity="center_vertical" android:id="@id/title" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="5.0dip" android:text="@string/warm_tips" />
+    </LinearLayout>
+    <LinearLayout android:orientation="vertical" android:background="@drawable/popup_bg_middle" android:layout_width="fill_parent" android:layout_height="wrap_content">
+        <TextView android:textSize="15.0sp" android:textColor="@color/black" android:id="@id/message" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="@string/screenshot_no_author" />
+    </LinearLayout>
+    <LinearLayout android:orientation="vertical" android:id="@id/dialog_space_bar" android:background="@drawable/popup_bg_line" android:layout_width="fill_parent" android:layout_height="2.0dip" />
+    <LinearLayout android:gravity="center" android:orientation="horizontal" android:background="@drawable/popup_bg_down" android:layout_width="fill_parent" android:layout_height="fill_parent">
+        <com.tencent.qqpimsecure.uilib.view.ButtonView android:gravity="center" android:id="@id/grant_root" android:layout_width="wrap_content" android:layout_height="wrap_content" app:buttontype="1" app:buttontext="@string/grant_root" />
+        <com.tencent.qqpimsecure.uilib.view.ButtonView android:gravity="center" android:id="@id/back" android:layout_width="wrap_content" android:layout_height="wrap_content" app:buttontype="2" app:buttontext="@string/return_back" />
+    </LinearLayout>
+</LinearLayout>

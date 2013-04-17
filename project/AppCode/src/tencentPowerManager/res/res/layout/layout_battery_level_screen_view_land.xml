@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <ImageView android:id="@id/image_batterylevel" android:layout_width="fill_parent" android:layout_height="wrap_content" android:src="@drawable/battery_power_land" />
+    <ImageView android:layout_gravity="bottom" android:id="@id/image_anim" android:layout_width="fill_parent" android:layout_height="wrap_content" android:src="@drawable/battery_light_land" />
+</FrameLayout>

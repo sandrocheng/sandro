@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res/com.tencent.qqpimsecure">
+    <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content">
+        <LinearLayout android:orientation="vertical" android:id="@id/tv_virus_layout" android:paddingLeft="10.0dip" android:paddingTop="5.0dip" android:paddingRight="10.0dip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_weight="1.0">
+            <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content">
+                <TextView android:textSize="13.0sp" android:textColor="@color/black" android:id="@id/tv_soft_name" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+                <TextView android:textSize="13.0sp" android:textColor="@color/black" android:gravity="right" android:id="@id/layout_cleared" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/YI_QING_CHU" android:layout_weight="1.0" />
+            </LinearLayout>
+            <TextView android:textSize="11.0sp" android:id="@id/tv_state" android:paddingTop="5.0dip" android:layout_width="wrap_content" android:layout_height="wrap_content" style="@style/scan_result_content" />
+        </LinearLayout>
+        <TextView android:textSize="13.0sp" android:textColor="@color/black" android:layout_gravity="center_vertical" android:id="@id/state_text" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/YI_QING_CHU" />
+    </LinearLayout>
+    <LinearLayout android:orientation="vertical" android:id="@id/operation_outer_layout" android:layout_width="fill_parent" android:layout_height="wrap_content">
+        <LinearLayout android:background="@drawable/list_line" android:layout_width="fill_parent" android:layout_height="wrap_content" />
+        <com.tencent.qqpimsecure.uilib.view.LinearLayoutView android:gravity="center" android:layout_gravity="center_vertical" android:orientation="horizontal" android:id="@id/operation_layout" android:padding="5.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content">
+            <LinearLayout android:gravity="center" android:layout_gravity="center_vertical" android:orientation="horizontal" android:id="@id/button_clear_layout" android:focusable="false" android:focusableInTouchMode="false" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_weight="1.0">
+                <ImageView android:layout_gravity="center_vertical" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="2.0dip" android:src="@drawable/main_icon_mysoftware_uninstall" />
+                <TextView android:textSize="14.0sp" android:textColor="@color/list_item_title_text_color" android:layout_gravity="center_vertical" android:id="@id/button_clear" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/clear" android:singleLine="true" />
+            </LinearLayout>
+            <LinearLayout android:gravity="center" android:layout_gravity="center_vertical" android:orientation="horizontal" android:id="@id/button_upgrade_layout" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_weight="1.0">
+                <ImageView android:layout_gravity="center_vertical" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="2.0dip" android:src="@drawable/list_shortcutbar_icon_dele" />
+                <TextView android:textSize="14.0sp" android:textColor="@color/list_item_title_text_color" android:layout_gravity="center_vertical" android:id="@id/button_upgrade" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/upgrade" android:singleLine="true" />
+            </LinearLayout>
+        </com.tencent.qqpimsecure.uilib.view.LinearLayoutView>
+    </LinearLayout>
+</LinearLayout>

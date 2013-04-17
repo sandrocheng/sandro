@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView android:id="@id/gprs_traffic_monitor_UI" android:background="@color/list_item_bg_color" android:focusable="false" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout android:orientation="vertical" android:id="@id/gprs_traffic_monitor_layout" android:layout_width="fill_parent" android:layout_height="wrap_content">
+        <LinearLayout android:paddingTop="5.0dip" android:paddingBottom="5.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content">
+            <FrameLayout android:layout_width="wrap_content" android:layout_height="110.0dip" android:layout_marginLeft="12.0dip">
+                <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/bg_network_animation_bg_1" />
+                <com.tencent.qqpimsecure.uilib.view.network.FlowPercentView android:id="@id/gprs_percent_image" android:layout_width="wrap_content" android:layout_height="wrap_content" android:scaleType="fitXY" />
+                <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/bg_network_animation_bg_2" />
+                <LinearLayout android:layout_gravity="center" android:paddingBottom="15.0dip" android:layout_width="wrap_content" android:layout_height="wrap_content">
+                    <TextView android:id="@id/gprs_used_for_month_per" android:layout_width="wrap_content" android:layout_height="wrap_content" style="@style/text_max_big_default_white_with_shadow" />
+                    <TextView android:id="@id/gprs_used_for_month_per_flag" android:layout_width="wrap_content" android:layout_height="wrap_content" style="@style/text_middle_default_white_with_shadow" />
+                </LinearLayout>
+            </FrameLayout>
+            <LinearLayout android:orientation="vertical" android:id="@id/layout_label" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="12.0dip" android:layout_marginTop="8.0dip" android:layout_marginRight="5.0dip">
+                <LinearLayout android:paddingBottom="4.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content">
+                    <ImageView android:id="@id/gprs_hint_icon" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2.0dip" android:layout_marginRight="3.0dip" />
+                    <TextView android:id="@id/gprs_description" android:layout_width="wrap_content" android:layout_height="wrap_content" style="@style/list_header_title_text_style" />
+                </LinearLayout>
+                <ImageView android:background="@drawable/list_line" android:layout_width="fill_parent" android:layout_height="2.0dip" />
+                <LinearLayout android:gravity="center" android:orientation="vertical" android:id="@id/layout_gprs_used_for_month" android:paddingTop="5.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="18.0dip" android:layout_marginRight="12.0dip">
+                    <LinearLayout android:paddingBottom="4.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content">
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/hint_month_used" style="@style/list_header_content_text_style" />
+                        <TextView android:id="@id/gprs_used_for_month" android:layout_width="0.0dip" android:layout_height="wrap_content" android:text="@string/hint_now_reading" android:layout_weight="1.0" style="@style/list_header_content_text_style" />
+                    </LinearLayout>
+                    <LinearLayout android:paddingBottom="4.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content">
+                        <TextView android:id="@id/gprs_retail_for_month_hint" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/hint_month_remain" style="@style/list_header_content_text_style" />
+                        <TextView android:id="@id/gprs_retail_for_month" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/hint_now_reading" style="@style/list_header_content_text_style" />
+                    </LinearLayout>
+                </LinearLayout>
+                <LinearLayout android:orientation="vertical" android:id="@id/tips_not_currect" android:layout_width="fill_parent" android:layout_height="wrap_content">
+                    <ImageView android:background="@drawable/list_line" android:layout_width="fill_parent" android:layout_height="2.0dip" />
+                    <TextView android:gravity="center_vertical" android:id="@id/tips_not_currect_text" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="2.0dip" android:layout_marginTop="8.0dip" android:text="@string/flow_accurate_mark" android:drawableLeft="@drawable/question_mark" android:drawablePadding="5.0dip" style="@style/text_min_small_blue" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+        <ViewStub android:id="@id/viewstub_set_gprs" android:layout="@layout/com_temp_button" android:layout_width="fill_parent" android:layout_height="wrap_content" />
+        <TextView android:gravity="center_vertical" android:background="@drawable/setting_title_bg" android:paddingLeft="10.0dip" android:paddingTop="4.0dip" android:paddingBottom="4.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="@string/today_network_size" style="@style/text_small_default_black" />
+        <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="10.0dip" android:layout_marginTop="4.0dip" android:layout_marginRight="10.0dip" android:layout_marginBottom="4.0dip">
+            <LinearLayout android:paddingBottom="4.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content">
+                <TextView android:id="@id/gprs_used_for_day_title" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/hint_wap" style="@style/text_middle_default" />
+                <TextView android:gravity="right" android:id="@id/gprs_used_for_day" android:layout_width="0.0dip" android:layout_height="wrap_content" android:text="@string/hint_now_reading" android:layout_weight="1.0" style="@style/text_middle_default" />
+            </LinearLayout>
+            <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/hint_wifi" style="@style/text_middle_default" />
+                <TextView android:gravity="right" android:id="@id/wifi_used_for_day" android:layout_width="0.0dip" android:layout_height="wrap_content" android:text="@string/hint_now_reading" android:layout_weight="1.0" style="@style/text_middle_default" />
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout android:id="@id/layout_text" android:background="@drawable/setting_title_bg" android:paddingLeft="10.0dip" android:paddingTop="4.0dip" android:paddingRight="10.0dip" android:paddingBottom="4.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content">
+            <TextView android:layout_width="0.0dip" android:layout_height="wrap_content" android:text="@string/grps_used_day" android:layout_weight="1.0" style="@style/text_small_default_black" />
+            <TextView android:paddingLeft="5.0dip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/hint_total" android:drawableLeft="@drawable/traffic_blue_shape" android:drawablePadding="5.0dip" style="@style/text_small_default_black" />
+            <TextView android:paddingLeft="5.0dip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/hint_over" android:drawableLeft="@drawable/traffic_red_shape" android:drawablePadding="5.0dip" style="@style/text_small_default_black" />
+        </LinearLayout>
+        <HorizontalScrollView android:gravity="center_horizontal" android:layout_gravity="center" android:id="@id/srollGPRSView" android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_marginTop="5.0dip" android:layout_marginBottom="5.0dip" android:layout_weight="10.0">
+            <LinearLayout android:gravity="center_horizontal" android:orientation="vertical" android:id="@id/GPRSFlow" android:focusable="false" android:layout_width="wrap_content" android:layout_height="fill_parent" />
+        </HorizontalScrollView>
+        <ImageView android:background="@drawable/list_line" android:layout_width="fill_parent" android:layout_height="2.0dip" />
+        <ListView android:id="@id/network_manager_tab_list" android:layout_width="fill_parent" android:layout_height="wrap_content" android:listSelector="@*android:color/transparent" android:cacheColorHint="#00000000" android:divider="@null" android:dividerHeight="0.0dip" />
+    </LinearLayout>
+</ScrollView>

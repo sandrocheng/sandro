@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RadioGroup android:gravity="center" android:orientation="horizontal" android:id="@id/regulate_radio_gruop" android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <RadioButton android:id="@id/battery_type_round" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="15.0dip" android:button="@drawable/radiobutton1" android:drawableRight="@drawable/battery_titleicon_ring" />
+    <RadioButton android:id="@id/battery_type_horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="15.0dip" android:button="@drawable/radiobutton1" android:drawableRight="@drawable/battery_titleicon_transverse" />
+</RadioGroup>

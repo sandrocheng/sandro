@@ -1,0 +1,31 @@
+import android.os.Handler;
+import android.os.Message;
+
+final class bdo extends Handler
+{
+  bdo(bdk parambdk)
+  {
+  }
+
+  public final void handleMessage(Message paramMessage)
+  {
+    switch (paramMessage.what)
+    {
+    default:
+    case 0:
+    case 1:
+    }
+    while (true)
+    {
+      return;
+      bdk.f(this.a);
+      continue;
+      bdk.e(this.a);
+    }
+  }
+}
+
+/* Location:           C:\Users\sandrocheng.21KUNPENG\Desktop\classes_dex2jar.jar
+ * Qualified Name:     bdo
+ * JD-Core Version:    0.6.2
+ */

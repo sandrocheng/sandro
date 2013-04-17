@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:background="@color/sync_assisant_bg" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res/com.tencent.qqpimsecure">
+    <ProgressBar android:id="@id/progress" android:layout_width="fill_parent" android:layout_height="5.0dip" android:progressDrawable="@drawable/brower_progress_style" android:layout_centerHorizontal="true" style="?android:attr/progressBarStyleHorizontal" />
+    <WebView android:id="@id/webview" android:background="@color/sync_assisant_bg" android:focusableInTouchMode="true" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_weight="1.0" />
+    <LinearLayout android:orientation="horizontal" android:background="@drawable/brower_toolbar_bg" android:paddingTop="8.0dip" android:paddingBottom="8.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="2.0dip" android:layout_marginRight="2.0dip" android:layout_marginBottom="2.0dip">
+        <ImageView android:id="@id/previous" android:clickable="true" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/brower_icon_previous_disable" android:layout_weight="1.0" />
+        <ImageView android:id="@id/next" android:clickable="true" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/brower_icon_next_disable" android:layout_weight="1.0" />
+        <ImageView android:id="@id/refresh" android:clickable="true" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/brower_refresh_sel" android:layout_weight="1.0" />
+        <ImageView android:id="@id/brower" android:clickable="true" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/brower_brower_sel" android:layout_weight="1.0" />
+    </LinearLayout>
+</LinearLayout>

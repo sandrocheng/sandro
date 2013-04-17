@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:layout_width="wrap_content" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout android:layout_gravity="bottom|right|center" android:orientation="vertical" android:layout_width="wrap_content" android:layout_height="wrap_content">
+        <com.tencent.powermanager.uilib.CircleProgressBarView android:layout_gravity="center_vertical" android:id="@id/circle_bar" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+    </LinearLayout>
+    <ImageView android:id="@id/background_image" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/body_aegis_bg_1" />
+    <ImageView android:layout_gravity="bottom|right|center" android:id="@id/image_light_icon" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/body_aegis_lightning_1" />
+</FrameLayout>

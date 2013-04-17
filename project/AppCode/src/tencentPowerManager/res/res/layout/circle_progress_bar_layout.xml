@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:layout_width="wrap_content" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <ImageView android:id="@id/image_background" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+    <ImageView android:id="@id/progress_bar" android:background="@drawable/body_aegis_energy_1" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+    <ImageView android:id="@id/image_light" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="fill_parent" android:src="@drawable/body_aegis_light_1" />
+</FrameLayout>

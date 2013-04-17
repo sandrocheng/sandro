@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="horizontal" android:background="@drawable/list_item_bg" android:paddingLeft="7.0dip" android:paddingTop="4.0dip" android:paddingRight="4.0dip" android:paddingBottom="7.0dip" android:descendantFocusability="blocksDescendants" android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <TextView android:textSize="15.0dip" android:gravity="center_vertical" android:id="@id/textView_history" android:focusable="false" android:layout_width="fill_parent" android:layout_height="fill_parent" android:text="TextView" android:layout_weight="1.0" />
+    <ImageButton android:id="@id/imageButton_history" android:background="@drawable/list_item_bg" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/search_btn_close" />
+</LinearLayout>

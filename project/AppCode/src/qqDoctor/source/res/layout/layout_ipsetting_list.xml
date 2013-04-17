@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:id="@id/area_all" android:background="@drawable/list_item_bg" android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res/com.tencent.qqpimsecure">
+    <LinearLayout android:layout_gravity="center_vertical" android:orientation="horizontal" android:id="@id/area_body" android:paddingLeft="10.0dip" android:paddingRight="10.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" android:minHeight="54.0dip" android:layout_weight="1.0">
+        <LinearLayout android:layout_gravity="center_vertical" android:orientation="vertical" android:id="@id/info_body" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_weight="1.0">
+            <TextView android:layout_gravity="center_vertical" android:id="@id/title" android:padding="1.0dip" android:layout_width="wrap_content" android:layout_height="wrap_content" style="@style/text_middle_default" />
+            <TextView android:layout_gravity="center_vertical" android:id="@id/summary" android:padding="1.0dip" android:layout_width="wrap_content" android:layout_height="wrap_content" style="@style/text_small_default" />
+        </LinearLayout>
+        <ImageView android:layout_gravity="center_vertical" android:id="@id/more_icon" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/list_icon_more" />
+        <com.tencent.qqpimsecure.uilib.view.CheckBoxView android:layout_gravity="right|center" android:id="@id/item_check" android:padding="1.0dip" android:focusable="false" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" app:type="0" />
+    </LinearLayout>
+    <LinearLayout android:orientation="horizontal" android:id="@id/preference_base_line" android:background="@drawable/list_line" android:layout_width="fill_parent" android:layout_height="wrap_content" />
+</LinearLayout>

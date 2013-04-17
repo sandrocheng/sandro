@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:background="@color/main_bg_color" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:app="http://schemas.android.com/apk/res/com.tencent.qqpimsecure"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <ScrollView android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_weight="1.0">
+        <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent">
+            <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginLeft="14.0dip" android:layout_marginTop="10.0dip" android:layout_marginRight="14.0dip">
+                <TextView android:id="@id/tv_pf_edit1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="12.0dip" android:text="@string/pickproof_phone" style="@style/big_black_text" />
+                <EditText android:id="@id/tv_pf_safe_phone" android:layout_width="fill_parent" android:layout_height="wrap_content" android:singleLine="true" android:maxLength="16" android:digits="0123456789" android:inputType="number" style="@style/edittext_default" />
+                <TextView android:id="@id/tv_pf_edit2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="10.0dip" android:text="@string/pickproof_pwd" style="@style/big_black_text" />
+                <EditText android:id="@id/tv_pf_pwd" android:layout_width="fill_parent" android:layout_height="wrap_content" android:singleLine="true" android:maxLength="16" android:digits="0123456789" android:inputType="number" style="@style/edittext_default" />
+                <com.tencent.qqpimsecure.uilib.view.ButtonView android:layout_gravity="right" android:id="@id/pf_far_sendcmd" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="10.0dip" app:buttontype="1" app:buttontext="@string/pickproof_btn_sendcmd" />
+                <LinearLayout android:background="@drawable/list_line" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="10.0dip" android:layout_marginTop="10.0dip" android:layout_marginRight="10.0dip" />
+                <TextView android:id="@id/tv_pf_far_title1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="10.0dip" style="@style/text_middle_default" />
+                <TextView android:id="@id/tv_pf_far_title2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="10.0dip" style="@style/text_middle_default" />
+                <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="10.0dip">
+                    <ImageView android:layout_gravity="center" android:id="@id/tv_pf_far_title3_icon" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/list_icon_risk" />
+                    <TextView android:textColor="#ffff0000" android:id="@id/tv_pf_far_title3" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/pickproof_delete_title3" style="@style/text_small_default" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

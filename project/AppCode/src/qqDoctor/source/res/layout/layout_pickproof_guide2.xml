@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:background="@color/title_bar_text_color" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:app="http://schemas.android.com/apk/res/com.tencent.qqpimsecure"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <ScrollView android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_weight="1.0">
+        <LinearLayout android:orientation="vertical" android:paddingLeft="20.0dip" android:paddingRight="20.0dip" android:layout_width="fill_parent" android:layout_height="fill_parent">
+            <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:paddingTop="20.0dip" android:paddingBottom="10.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content">
+                <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/security_guide_1" />
+                <TextView android:paddingLeft="10.0dip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/pickproofsettingguidecontent1a" style="@style/standard_list_item_title" />
+            </LinearLayout>
+            <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content">
+                <LinearLayout android:layout_gravity="center_vertical" android:orientation="horizontal" android:id="@id/layout_pf_old_psw" android:background="@drawable/linearlayout_bg" android:visibility="gone" android:clickable="true" android:clipChildren="true" android:clipToPadding="true" android:addStatesFromChildren="true" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="12.0dip">
+                    <TextView android:textSize="18.0sp" android:gravity="center_horizontal" android:layout_gravity="left|center" android:id="@id/tv_pf_old_psw" android:layout_width="90.0dip" android:layout_height="wrap_content" android:text="@string/pickproofsettingguidetv1" style="@style/text_big_default" />
+                    <View android:background="@color/main_bg_color" android:layout_width="1.0dip" android:layout_height="fill_parent" />
+                    <LinearLayout android:layout_gravity="right|center" android:padding="8.0dip" android:clickable="true" android:clipChildren="true" android:clipToPadding="true" android:addStatesFromChildren="true" android:layout_width="fill_parent" android:layout_height="40.0dip" android:layout_marginLeft="0.0dip" android:layout_weight="1.0">
+                        <EditText android:textSize="14.0sp" android:textColor="#ff000000" android:textColorHighlight="#ff5193ff" android:textColorHint="#ffc7c7c7" android:layout_gravity="right|center" android:id="@id/pf_old_psw" android:background="@color/log_white" android:focusable="true" android:focusableInTouchMode="true" android:layout_width="fill_parent" android:layout_height="40.0dip" android:minWidth="140.0dip" android:hint="@string/pickproofsettingguidehint3" android:password="true" android:singleLine="true" android:maxLength="16" android:digits="0123456789" android:layout_weight="1.0" android:inputType="number" />
+                    </LinearLayout>
+                </LinearLayout>
+                <LinearLayout android:layout_gravity="center_vertical" android:orientation="horizontal" android:background="@drawable/linearlayout_bg" android:clickable="true" android:clipChildren="true" android:clipToPadding="true" android:addStatesFromChildren="true" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="12.0dip">
+                    <TextView android:textSize="15.0sp" android:gravity="center_horizontal" android:layout_gravity="left|center" android:id="@id/tv_pf_new_psw" android:layout_width="90.0dip" android:layout_height="wrap_content" android:text="@string/pickproofsettingguidepwd" style="@style/text_big_default" />
+                    <View android:background="@color/main_bg_color" android:layout_width="1.0dip" android:layout_height="fill_parent" />
+                    <LinearLayout android:layout_gravity="right|center" android:paddingLeft="8.0dip" android:paddingRight="8.0dip" android:clickable="true" android:clipChildren="true" android:clipToPadding="true" android:addStatesFromChildren="true" android:layout_width="fill_parent" android:layout_height="40.0dip" android:layout_marginLeft="0.0dip" android:layout_weight="1.0">
+                        <EditText android:textSize="14.0sp" android:textColor="#ff000000" android:textColorHighlight="#ff5193ff" android:textColorHint="#ffc7c7c7" android:layout_gravity="right|center" android:id="@id/pf_new_psw" android:background="@color/log_white" android:focusable="true" android:focusableInTouchMode="true" android:layout_width="fill_parent" android:layout_height="40.0dip" android:minWidth="140.0dip" android:hint="@string/str_passwork_tip" android:password="true" android:singleLine="true" android:maxLength="16" android:digits="0123456789" android:layout_weight="1.0" android:inputType="number" />
+                    </LinearLayout>
+                </LinearLayout>
+                <LinearLayout android:layout_gravity="center_vertical" android:orientation="horizontal" android:background="@drawable/linearlayout_bg" android:clickable="true" android:clipChildren="true" android:clipToPadding="true" android:addStatesFromChildren="true" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="12.0dip">
+                    <TextView android:textSize="15.0sp" android:gravity="center_horizontal" android:layout_gravity="left|center" android:id="@id/tv_pf_con_psw" android:layout_width="90.0dip" android:layout_height="wrap_content" android:text="@string/pickproofsettingguidepwdconf" style="@style/text_big_default" />
+                    <View android:background="@color/main_bg_color" android:layout_width="1.0dip" android:layout_height="fill_parent" />
+                    <LinearLayout android:layout_gravity="right|center" android:paddingLeft="8.0dip" android:paddingRight="8.0dip" android:clickable="true" android:clipChildren="true" android:clipToPadding="true" android:addStatesFromChildren="true" android:layout_width="fill_parent" android:layout_height="40.0dip" android:layout_marginLeft="0.0dip" android:layout_weight="1.0">
+                        <EditText android:textSize="14.0sp" android:textColor="#ff000000" android:textColorHighlight="#ff5193ff" android:textColorHint="#ffc7c7c7" android:layout_gravity="right|center" android:id="@id/pf_corfirm_psw" android:background="@color/log_white" android:focusable="true" android:focusableInTouchMode="true" android:layout_width="fill_parent" android:layout_height="40.0dip" android:minWidth="140.0dip" android:hint="@string/str_passwork_confirm_tip" android:password="true" android:singleLine="true" android:maxLength="16" android:digits="0123456789" android:layout_weight="1.0" android:inputType="number" />
+                    </LinearLayout>
+                </LinearLayout>
+                <LinearLayout android:orientation="horizontal" android:background="@drawable/list_line" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="20.0dip" android:layout_marginBottom="20.0dip" />
+                <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content">
+                    <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/icon_note" />
+                    <TextView android:paddingLeft="5.0dip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/pickproofsettingguidecontent2b" style="@style/help_info_content_text_style" />
+                </LinearLayout>
+                <TextView android:paddingLeft="19.0dip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="6.0dip" android:text="@string/pickproofsettingguidecontent2e" style="@style/help_info_content_text_style" />
+                <TextView android:paddingLeft="19.0dip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="6.0dip" android:text="@string/pickproofsettingguidecontent2c" style="@style/help_info_content_text_style" />
+                <TextView android:paddingLeft="19.0dip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="6.0dip" android:text="@string/pickproofsettingguidecontent2d" style="@style/help_info_content_text_style" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

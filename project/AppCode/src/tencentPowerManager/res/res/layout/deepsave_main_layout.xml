@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <FrameLayout android:background="@color/list_item_bg_color" android:layout_width="fill_parent" android:layout_height="wrap_content">
+        <ImageView android:layout_width="fill_parent" android:layout_height="wrap_content" android:src="@drawable/body_cpu_bg_image" android:scaleType="fitXY" />
+        <ImageView android:id="@id/image_cpu_big" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/body_cpu_bg_1" />
+        <com.tencent.powermanager.uilib.ExpectTimeView android:layout_gravity="right|center" android:id="@id/expect_time" android:visibility="invisible" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="15.0dip" />
+        <com.tencent.powermanager.uilib.CpuButtonView android:layout_gravity="right|center" android:id="@id/btnDeepSave" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="15.0dip" />
+    </FrameLayout>
+    <com.tencent.powermanager.uilib.view.CpuStatuGridView android:id="@id/cpu_grid" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_weight="1.0" />
+    <LinearLayout android:background="@drawable/list_line" android:layout_width="fill_parent" android:layout_height="wrap_content" />
+    <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_margin="10.0dip">
+        <TextView android:textSize="12.0sp" android:textColor="@color/tab_button_below_text_color" android:gravity="center_vertical" android:background="@drawable/tips_bg" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/battery_deep_save" />
+        <TextView android:textSize="14.0sp" android:textColor="@color/color_ff333333" android:padding="5.0dip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/battery_deep_save_tips" />
+    </LinearLayout>
+</LinearLayout>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="horizontal" android:id="@id/button_center_layout" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <FrameLayout android:layout_gravity="center" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="5.0dip">
+        <TextView android:textSize="18.0sp" android:textColor="@color/button_white_belowtext_color" android:ellipsize="start" android:layout_gravity="fill_horizontal" android:id="@id/preposition_below" android:paddingLeft="1.0dip" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="0.5dip" android:layout_marginRight="5.0dip" android:singleLine="true" />
+        <TextView android:textSize="18.0sp" android:textColor="@color/button_white_abovetext_color" android:ellipsize="start" android:layout_gravity="fill_horizontal" android:id="@id/preposition_above" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="5.0dip" android:singleLine="true" />
+    </FrameLayout>
+    <FrameLayout android:layout_gravity="center" android:layout_width="wrap_content" android:layout_height="wrap_content">
+        <TextView android:textSize="18.0sp" android:ellipsize="start" android:gravity="center" android:layout_gravity="center" android:id="@id/text_below" android:paddingLeft="1.0dip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="0.5dip" android:singleLine="true" />
+        <TextView android:textSize="18.0sp" android:ellipsize="start" android:gravity="center" android:layout_gravity="center" android:id="@id/text_above" android:layout_width="wrap_content" android:layout_height="wrap_content" android:singleLine="true" />
+        <ImageView android:gravity="center" android:layout_gravity="center" android:id="@id/content_image" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+    </FrameLayout>
+    <ImageView android:layout_gravity="center_vertical" android:id="@id/check_box_image" android:visibility="gone" android:duplicateParentState="true" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="5.0dip" android:src="@drawable/checkbox_default_2" />
+</LinearLayout>

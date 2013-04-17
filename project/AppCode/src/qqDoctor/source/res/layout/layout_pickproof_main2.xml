@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:background="@color/list_item_bg_color" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:app="http://schemas.android.com/apk/res/com.tencent.qqpimsecure"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <ScrollView android:layout_width="fill_parent" android:layout_height="wrap_content">
+        <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent">
+            <LinearLayout android:gravity="center" android:orientation="vertical" android:id="@id/pf_header" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="10.0dip" android:layout_marginBottom="10.0dip">
+                <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginRight="10.0dip">
+                    <FrameLayout android:layout_gravity="center_horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content">
+                        <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/security_bg" />
+                        <ImageView android:id="@id/security_light" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/security_light" />
+                        <ImageView android:layout_gravity="center_vertical" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/security" />
+                    </FrameLayout>
+                    <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="7.0dip" android:layout_marginRight="10.0dip">
+                        <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content">
+                            <ImageView android:layout_gravity="center_vertical" android:id="@id/title_icon" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="5.0dip" android:src="@drawable/list_icon_security" />
+                            <TextView android:id="@id/title_text" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/pickproof_open_tips_info" style="@style/list_header_title_text_style" />
+                        </LinearLayout>
+                        <LinearLayout android:background="@drawable/popup_bg_line" android:layout_width="fill_parent" android:layout_height="2.0dip" android:layout_marginTop="8.0dip" android:layout_marginBottom="8.0dip" />
+                        <TextView android:ellipsize="end" android:id="@id/tips_info1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:singleLine="true" style="@style/list_header_content_text_style" />
+                        <TextView android:ellipsize="end" android:id="@id/tips_info2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:singleLine="true" style="@style/list_header_content_text_style" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+            <TextView android:gravity="center_vertical" android:background="@drawable/setting_title_bg" android:paddingLeft="14.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="@string/pickproof_title_control_more" style="@style/list_item_tips_bar_text_style" />
+        </LinearLayout>
+    </ScrollView>
+    <ListView android:id="@id/item_tab_list" android:layout_width="fill_parent" android:layout_height="fill_parent" android:listSelector="@*android:color/transparent" android:cacheColorHint="#00000000" android:divider="@null" android:layout_weight="1.0" />
+    <LinearLayout android:gravity="bottom" android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginBottom="10.0dip">
+        <TextView android:textSize="12.0sp" android:textColor="#ffffffff" android:gravity="center_vertical" android:background="@drawable/pickproof_tip_title_bg" android:paddingLeft="25.0dip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="5.0dip" android:layout_marginTop="5.0dip" android:text="@string/pickproof_lost_phone_note" />
+        <LinearLayout android:orientation="vertical" android:id="@id/pick_proof_tip_block" android:background="@drawable/pickproof_tips_bg" android:paddingLeft="10.0dip" android:paddingTop="10.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="6.0dip" android:layout_marginTop="5.0dip" android:layout_marginRight="6.0dip">
+            <LinearLayout android:gravity="center_horizontal" android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="5.0dip" android:weightSum="3.0">
+                <LinearLayout android:gravity="center_horizontal" android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_weight="1.0">
+                    <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/pickproof_tip_location" />
+                    <TextView android:textColor="#ff333333" android:ellipsize="end" android:layout_gravity="center_vertical" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="2.0dip" android:text="@string/pickproof_tip_title1" android:singleLine="true" style="@style/list_header_content_text_style" />
+                </LinearLayout>
+                <LinearLayout android:gravity="center_horizontal" android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_weight="1.0">
+                    <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/pickproof_tip_lock" />
+                    <TextView android:textColor="#ff333333" android:ellipsize="end" android:layout_gravity="center_vertical" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="2.0dip" android:text="@string/pickproof_btn_lock" android:singleLine="true" style="@style/list_header_content_text_style" />
+                </LinearLayout>
+                <LinearLayout android:gravity="center_horizontal" android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_weight="1.0">
+                    <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/pickproof_tip_clean_data" />
+                    <TextView android:textColor="#ff333333" android:ellipsize="end" android:layout_gravity="center_vertical" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="2.0dip" android:text="@string/pickproof_tip_title3" android:singleLine="true" style="@style/list_header_content_text_style" />
+                </LinearLayout>
+            </LinearLayout>
+            <TextView android:textSize="13.0sp" android:textColor="#ff333333" android:layout_gravity="bottom|center" android:id="@id/tip_note_link_text" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="10.0dip" android:text="@string/pickproof_lost_phone_web_link" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

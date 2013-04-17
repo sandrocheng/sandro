@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:background="@color/list_item_bg_color" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:app="http://schemas.android.com/apk/res/com.tencent.qqpimsecure"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <ScrollView android:layout_width="fill_parent" android:layout_height="wrap_content">
+        <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent">
+            <LinearLayout android:gravity="center" android:orientation="vertical" android:id="@id/pf_header" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="10.0dip" android:layout_marginBottom="10.0dip">
+                <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginRight="10.0dip">
+                    <FrameLayout android:layout_gravity="center_horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content">
+                        <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/security_bg" />
+                        <ImageView android:layout_gravity="center_vertical" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/security" />
+                        <ImageView android:layout_gravity="center_horizontal" android:id="@id/security_light" android:visibility="invisible" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/security_light" />
+                    </FrameLayout>
+                    <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginRight="10.0dip">
+                        <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content">
+                            <ImageView android:layout_gravity="center_vertical" android:id="@id/title_icon" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="5.0dip" android:src="@drawable/list_icon_optimization" />
+                            <TextView android:id="@id/title_text" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/pickproof_close_title" style="@style/list_header_title_text_style" />
+                        </LinearLayout>
+                        <LinearLayout android:background="@drawable/popup_bg_line" android:layout_width="fill_parent" android:layout_height="2.0dip" android:layout_marginTop="8.0dip" android:layout_marginBottom="8.0dip" />
+                        <TextView android:id="@id/tips_info" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/pickproofmainbtnopentip" style="@style/list_header_content_text_style" />
+                    </LinearLayout>
+                </LinearLayout>
+                <com.tencent.qqpimsecure.uilib.view.ButtonView android:id="@id/pf_btn_open" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="15.0dip" android:layout_marginTop="5.0dip" android:layout_marginRight="15.0dip" app:buttontype="1" app:buttontext="@string/pickproofmainbtnopen" />
+            </LinearLayout>
+            <TextView android:gravity="center_vertical" android:background="@drawable/setting_title_bg" android:paddingLeft="14.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="@string/pickproof_title_control" style="@style/list_item_tips_bar_text_style" />
+        </LinearLayout>
+    </ScrollView>
+    <ListView android:id="@id/item_tab_list" android:layout_width="fill_parent" android:layout_height="fill_parent" android:listSelector="@*android:color/transparent" android:cacheColorHint="#00000000" android:divider="@null" android:dividerHeight="0.0dip" />
+</LinearLayout>

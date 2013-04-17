@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView android:background="@color/list_item_bg_color" android:scrollbars="none" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res/com.tencent.powermanager">
+    <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent">
+        <FrameLayout android:layout_width="fill_parent" android:layout_height="wrap_content">
+            <ImageView android:layout_width="fill_parent" android:layout_height="wrap_content" android:src="@drawable/body_battery_bg_image" android:scaleType="fitXY" />
+            <com.tencent.powermanager.uilib.view.CircleBatteryView android:id="@id/circle_battery_view" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+            <com.tencent.powermanager.uilib.ExpectTimeView android:layout_gravity="right|center" android:id="@id/expect_time" android:visibility="visible" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="15.0dip" />
+        </FrameLayout>
+        <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_margin="10.0dip">
+            <com.tencent.powermanager.uilib.SwitchButtonView android:id="@id/btn_wifi_status" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_weight="1.0" app:postion="1" app:iconnormal="@drawable/status_icon_wifi_default" app:iconpressed="@drawable/status_icon_wifi_focused" app:name="@string/status_wifi" />
+            <com.tencent.powermanager.uilib.SwitchButtonView android:id="@id/btn_apn_status" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_weight="1.0" app:postion="2" app:iconnormal="@drawable/status_icon_apn_default" app:iconpressed="@drawable/status_icon_apn_focused" app:name="@string/status_gprs" />
+            <com.tencent.powermanager.uilib.SwitchButtonView android:id="@id/btn_flightmode_status" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_weight="1.0" app:postion="2" app:iconnormal="@drawable/status_icon_flightmode_default" app:iconpressed="@drawable/status_icon_flightmode_focused" app:name="@string/status_flightmode_mode" />
+            <com.tencent.powermanager.uilib.SwitchButtonView android:id="@id/btn_ringtone_status" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_weight="1.0" app:postion="2" />
+            <com.tencent.powermanager.uilib.SwitchButtonView android:id="@id/btn_brightness_status" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_weight="1.0" app:postion="3" app:name="@string/status_screen_brightness" />
+        </LinearLayout>
+        <com.tencent.powermanager.uilib.view.BatteryModeSwitchView android:layout_gravity="center_horizontal" android:id="@id/battery_save_mode" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="10.0dip" android:layout_marginRight="10.0dip" android:layout_marginBottom="10.0dip" />
+    </LinearLayout>
+</ScrollView>

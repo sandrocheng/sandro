@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="horizontal" android:id="@id/main_bg_layout" android:background="@drawable/time_bg" android:layout_width="wrap_content" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout android:gravity="bottom" android:layout_gravity="center" android:orientation="horizontal" android:id="@id/time_text" android:paddingBottom="3.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content">
+        <TextView android:textSize="26.0sp" android:textStyle="bold" android:textColor="@color/color_ff333333" android:id="@id/expect_time_hour" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="2.0dip" android:text="00" />
+        <TextView android:textSize="8.0sp" android:textColor="@color/color_ff333333" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="2.0dip" android:text="@string/hours" />
+        <TextView android:textSize="26.0sp" android:textStyle="bold" android:textColor="@color/color_ff333333" android:id="@id/expect_time_min" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="2.0dip" android:text="00" />
+        <TextView android:textSize="8.0sp" android:textColor="@color/color_ff333333" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="2.0dip" android:text="@string/FEN_ZHONG" />
+    </LinearLayout>
+    <TextView android:textSize="20.0sp" android:textColor="@color/color_ff333333" android:layout_gravity="center" android:id="@id/status_text" android:paddingBottom="3.0dip" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="10.0dip" android:text="@string/charging_waterlogging_status" />
+</LinearLayout>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res/com.tencent.qqpimsecure">
+    <ImageView android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginRight="6.0dip" android:layout_marginBottom="9.0dip" android:src="@drawable/desktop_line_1" android:scaleType="fitXY" />
+    <com.tencent.qqpimsecure.uilib.view.MiniProgressBarView android:id="@id/optimizeMiniProgressBar" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginRight="6.0dip" android:layout_marginBottom="7.0dip" />
+    <LinearLayout android:orientation="horizontal" android:id="@id/layout_optimize_item" android:layout_width="fill_parent" android:layout_height="wrap_content">
+        <LinearLayout android:gravity="center" android:orientation="vertical" android:layout_width="70.0dip" android:layout_height="42.0dip">
+            <TextView android:textSize="18.0sp" android:textColor="#ff333333" android:id="@id/deskAssistanceRamUseage" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+            <TextView android:textSize="14.0sp" android:textColor="#ff515151" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/ram_of_running_task" />
+        </LinearLayout>
+        <ImageView android:layout_width="wrap_content" android:layout_height="40.0dip" android:src="@drawable/desktop_line" />
+        <LinearLayout android:gravity="center" android:orientation="vertical" android:id="@id/deskAssistanceRunnApp" android:layout_width="70.0dip" android:layout_height="42.0dip">
+            <LinearLayout android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content">
+                <TextView android:textSize="20.0sp" android:textColor="#ff333333" android:id="@id/deskAssistanceRunningAppNum" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+                <ImageView android:layout_gravity="bottom" android:id="@id/deskAssistanceRunningAppMore" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/process_more" />
+            </LinearLayout>
+            <TextView android:textSize="14.0sp" android:textColor="#ff515151" android:id="@id/deskAssistanceRunningAppLable" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/count_of_running_app" />
+        </LinearLayout>
+        <LinearLayout android:gravity="right|center" android:layout_width="wrap_content" android:layout_height="42.0dip" android:layout_weight="1.0">
+            <com.tencent.qqpimsecure.uilib.view.ButtonView android:gravity="right|center" android:id="@id/btn_desktop_start_optimize" android:layout_width="130.0dip" android:layout_height="wrap_content" android:scaleType="fitXY" app:buttontype="7" app:buttontext="@string/one_key_faster" />
+            <TextView android:textSize="17.0sp" android:textColor="#ff399203" android:gravity="right|center" android:id="@id/optimizeResult" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout android:gravity="center" android:orientation="vertical" android:id="@id/layout_gallery" android:background="@drawable/desktop_switchbg_bg" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="10.0dip">
+        <com.tencent.qqpimsecure.uilib.view.DeskAssistanceGallery android:id="@id/item_gallery" android:fadingEdge="none" android:layout_width="fill_parent" android:layout_height="fill_parent" android:unselectedAlpha="1.0" />
+        <LinearLayout android:gravity="bottom" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="6.0dip">
+            <ImageView android:id="@id/setting1_dot" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginRight="2.0dip" android:src="@drawable/desktop_page_one" />
+            <ImageView android:id="@id/setting2_dot" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginLeft="2.0dip" android:src="@drawable/desktop_page_two" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

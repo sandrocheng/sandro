@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:layout_gravity="center_horizontal" android:orientation="horizontal" android:background="@drawable/popup_bg_down" android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res/com.tencent.qqpimsecure">
+    <com.tencent.qqpimsecure.uilib.view.ButtonView android:gravity="center" android:layout_gravity="center_vertical" android:id="@id/btn_ok" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_weight="1.0" app:buttontype="1" app:buttontext="@string/ok" />
+    <com.tencent.qqpimsecure.uilib.view.ButtonView android:gravity="center" android:layout_gravity="center_vertical" android:id="@id/btn_cancel" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/cancel" android:layout_weight="1.0" app:buttontype="2" app:buttontext="@string/cancel" />
+</LinearLayout>

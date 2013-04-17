@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:background="@color/list_item_bg_color" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res/com.tencent.qqpimsecure">
+    <LinearLayout android:gravity="center_vertical" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="12.0dip" android:layout_marginTop="12.0dip" android:layout_marginRight="12.0dip">
+        <RelativeLayout android:layout_width="wrap_content" android:layout_height="wrap_content">
+            <FrameLayout android:background="@drawable/animate_sms_check_2" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+            <FrameLayout android:id="@id/sms_manager_animation" android:background="@drawable/animate_sms_check_1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="25.0dip" android:layout_marginTop="25.0dip" />
+        </RelativeLayout>
+        <LinearLayout android:layout_gravity="center_vertical" android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="8.0dip" android:layout_weight="1.0">
+            <LinearLayout android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8.0dip">
+                <ImageView android:id="@id/sms_manager_description_icon" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="3.0dip" />
+                <TextView android:textColor="@color/color_ff777777" android:id="@id/sms_check_description" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="4.0dip" android:text="@string/suspected_chargeback_sms_doing" style="@style/list_header_title_text_style" />
+            </LinearLayout>
+            <LinearLayout android:id="@id/list_line_icon" android:background="@drawable/list_line" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="6.0dip" />
+            <TextView android:id="@id/sms_check_description_hint" android:paddingTop="5.0dip" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="5.0dip" android:text="@string/suggest_check_sms" style="@style/list_header_content_text_style" />
+        </LinearLayout>
+    </LinearLayout>
+    <FrameLayout android:gravity="center_vertical" android:orientation="horizontal" android:id="@id/process_cancle_layout" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="10.0dip" android:layout_marginRight="10.0dip">
+        <com.tencent.qqpimsecure.uilib.view.ProgressBarView android:layout_gravity="center_vertical" android:id="@id/sms_check_process" android:background="@drawable/btn_general_default" android:paddingTop="9.0dip" android:paddingRight="95.0dip" android:paddingBottom="9.0dip" android:layout_width="fill_parent" android:layout_height="38.0dip" />
+        <com.tencent.qqpimsecure.uilib.view.ButtonView android:gravity="center" android:layout_gravity="right|center" android:id="@id/sms_cancel_button" android:layout_width="85.0dip" android:layout_height="38.0dip" app:buttontype="2" app:buttontext="@string/cancel_space" />
+    </FrameLayout>
+    <com.tencent.qqpimsecure.uilib.view.ButtonView android:id="@id/month_check_button" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="38.0dip" android:layout_marginLeft="12.0dip" android:layout_marginRight="12.0dip" app:buttontype="1" app:buttontext="@string/BAO_YUE_CHA_XUN" />
+    <LinearLayout android:orientation="vertical" android:id="@id/sms_scan_result_layout" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_weight="1.0">
+        <LinearLayout android:id="@id/sms_result_line" android:background="@drawable/process_animation_up" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="3.0dip" />
+        <TextView android:id="@id/sms_result_text_got" android:paddingLeft="10.0dip" android:paddingTop="5.0dip" android:paddingBottom="5.0dip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="3.0dip" android:text="@string/sms_check_sum_text_got" style="@style/text_small_default_black" />
+        <LinearLayout android:background="@drawable/list_line" android:layout_width="fill_parent" android:layout_height="2.0dip" />
+        <TextView android:gravity="center" android:id="@id/no_sms_found" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="fill_parent" android:text="@string/hint_no_smscheck" style="@style/text_small_default" />
+        <ListView android:id="@id/sms_check_list" android:layout_width="fill_parent" android:layout_height="wrap_content" android:listSelector="@*android:color/transparent" android:cacheColorHint="#00000000" android:divider="@null" android:dividerHeight="0.0dip" />
+    </LinearLayout>
+</LinearLayout>

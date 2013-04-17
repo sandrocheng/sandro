@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:gravity="center_vertical" android:layout_gravity="center_vertical" android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <FrameLayout android:layout_width="fill_parent" android:layout_height="wrap_content">
+        <TextView android:layout_gravity="center_vertical" android:id="@id/infobar_common_bottom_text" android:paddingLeft="1.0dip" android:visibility="visible" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="5.0dip" android:layout_marginBottom="0.5dip" android:singleLine="true" style="@style/info_bar_text_bottom_style" />
+        <TextView android:layout_gravity="center_vertical" android:id="@id/infobar_common_text" android:visibility="visible" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="5.0dip" android:singleLine="true" style="@style/info_bar_text_style" />
+    </FrameLayout>
+</LinearLayout>

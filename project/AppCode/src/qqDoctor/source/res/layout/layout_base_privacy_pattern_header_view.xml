@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout android:orientation="vertical" android:id="@id/container_layout" android:layout_width="fill_parent" android:layout_height="wrap_content">
+        <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_margin="5.0dip">
+            <ImageView android:layout_gravity="left" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/drawing_icon" />
+            <View android:visibility="invisible" android:layout_width="0.0dip" android:layout_height="0.0dip" android:layout_weight="1.0" />
+            <ImageView android:layout_gravity="right" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/drawing_icon" />
+        </LinearLayout>
+        <LinearLayout android:gravity="center" android:orientation="horizontal" android:paddingBottom="18.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="5.0dip">
+            <ImageView android:id="@id/icon_lock" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/drawing_icon_9grids" />
+            <TextView android:textSize="16.0sp" android:textColor="@color/normal_text" android:id="@id/textView1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/draw_unlock_pattern_to_unlock" />
+        </LinearLayout>
+    </LinearLayout>
+    <ImageView android:id="@id/hint_old_pattern_psw_iv" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/privacy_use_old_pattern_psw" android:layout_alignParentTop="true" android:layout_alignParentRight="true" />
+</RelativeLayout>

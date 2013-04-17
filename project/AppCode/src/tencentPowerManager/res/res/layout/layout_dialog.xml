@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView android:orientation="vertical" android:background="@drawable/list_bg_all" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="20.0dip" android:layout_marginRight="20.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout android:orientation="vertical" android:background="@drawable/popup_bg" android:layout_width="fill_parent" android:layout_height="wrap_content">
+        <LinearLayout android:orientation="horizontal" android:id="@id/dialog_title" android:visibility="visible" android:layout_width="fill_parent" android:layout_height="wrap_content">
+            <ImageView android:layout_gravity="clip_vertical" android:padding="15.0dip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="3.0dip" android:layout_marginBottom="3.0dip" android:src="@drawable/popup_icon" />
+        </LinearLayout>
+        <LinearLayout android:id="@id/ll_dialog_line" android:background="@color/dialog_blue" android:visibility="visible" android:layout_width="fill_parent" android:layout_height="2.0dip" android:layout_marginLeft="15.0dip" android:layout_marginRight="15.0dip" />
+        <LinearLayout android:gravity="center" android:layout_gravity="center" android:orientation="horizontal" android:id="@id/dialog_body_layout" android:padding="15.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content">
+            <LinearLayout android:gravity="center" android:layout_gravity="center" android:orientation="horizontal" android:id="@id/dialog_body" android:layout_width="fill_parent" android:layout_height="wrap_content" />
+        </LinearLayout>
+        <ImageView android:id="@id/dialog_space_bar" android:background="@drawable/list_line" android:visibility="invisible" android:layout_width="fill_parent" android:layout_height="wrap_content" />
+        <LinearLayout android:gravity="center" android:orientation="horizontal" android:id="@id/dialog_botton" android:visibility="invisible" android:layout_width="fill_parent" android:layout_height="50.0dip">
+            <LinearLayout android:gravity="center" android:id="@id/dialog_btn_cancle" android:visibility="gone" android:layout_width="0.0dip" android:layout_height="fill_parent" android:layout_weight="1.0" />
+            <LinearLayout android:background="@drawable/body_line_2" android:layout_width="wrap_content" android:layout_height="fill_parent" />
+            <LinearLayout android:gravity="center" android:id="@id/dialog_btn_ok" android:layout_width="0.0dip" android:layout_height="fill_parent" android:layout_weight="1.0" />
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

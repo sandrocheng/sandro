@@ -1,0 +1,1073 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="entries_strange_call_preference">
+        <item>拦截</item>
+        <item>不拦截</item>
+    </string-array>
+    <string-array name="entryvalues_strange_call_preference">
+        <item>unknown_call_block</item>
+        <item>unknown_call_unblock</item>
+    </string-array>
+    <string-array name="entries_strange_message_preference">
+        <item>拦截</item>
+        <item>不拦截</item>
+    </string-array>
+    <string-array name="entryvalues_strange_message_preference">
+        <item>unknown_mms_block</item>
+        <item>unknown_mms_unblock</item>
+    </string-array>
+    <string-array name="entries_holdoff_mode_preference">
+        <item>回复为忙音</item>
+        <item>回复为停机</item>
+        <item>回复为空号</item>
+        <item>回复为关机</item>
+    </string-array>
+    <string-array name="entryvalues_holdoff_mode_preference">
+        <item>holdoff_default</item>
+        <item>holdoff_stop</item>
+        <item>holdoff_invalid</item>
+        <item>holdoff_close</item>
+    </string-array>
+    <string-array name="entries_screen_off_time_preference">
+        <item>15秒</item>
+        <item>30秒</item>
+        <item>1分钟</item>
+        <item>2分钟</item>
+        <item>10分钟</item>
+        <item>从不待机</item>
+    </string-array>
+    <string-array name="value_screen_off_time_preference">
+        <item>15000</item>
+        <item>30000</item>
+        <item>60000</item>
+        <item>120000</item>
+        <item>600000</item>
+        <item>-1</item>
+    </string-array>
+    <string-array name="entries_wifi_auto_close_time_preference">
+        <item>15秒</item>
+        <item>30秒</item>
+        <item>1分钟</item>
+        <item>3分钟</item>
+        <item>5分钟</item>
+    </string-array>
+    <string-array name="value_wifi_auto_close_time_preference">
+        <item>15000</item>
+        <item>30000</item>
+        <item>60000</item>
+        <item>180000</item>
+        <item>300000</item>
+    </string-array>
+    <string-array name="entries_wifi_auto_close_signal_preference">
+        <item>5%</item>
+        <item>15%</item>
+        <item>30%</item>
+        <item>45%</item>
+    </string-array>
+    <string-array name="value_wifi_auto_close_signal_preference">
+        <item>5</item>
+        <item>15</item>
+        <item>30</item>
+        <item>45</item>
+    </string-array>
+    <string-array name="entries_wifi_auto_close_screen_time">
+        <item>15秒</item>
+        <item>30秒</item>
+        <item>1分钟</item>
+        <item>5分钟</item>
+        <item>10分钟</item>
+    </string-array>
+    <string-array name="value_wifi_auto_close_screen_time">
+        <item>15000</item>
+        <item>30000</item>
+        <item>60000</item>
+        <item>300000</item>
+        <item>600000</item>
+    </string-array>
+    <string-array name="entries_bluetooth_check_time">
+        <item>5分钟</item>
+        <item>8分钟</item>
+        <item>10分钟</item>
+        <item>15分钟</item>
+        <item>30分钟</item>
+    </string-array>
+    <string-array name="values_bluetooth_check_time">
+        <item>300000</item>
+        <item>480000</item>
+        <item>600000</item>
+        <item>900000</item>
+        <item>1800000</item>
+    </string-array>
+    <string-array name="entries_bluetooth_setting">
+        <item>若附近没有其他装置则关闭</item>
+        <item>若附近没有已配对装置则关闭</item>
+        <item>若没有连接到其他装置则关闭</item>
+        <item>不停用</item>
+    </string-array>
+    <string-array name="wifi_auto_close_names">
+        <item>连接超时</item>
+        <item>信号低于5%时</item>
+        <item>屏幕关闭时</item>
+    </string-array>
+    <string-array name="wifi_auto_open_names">
+        <item>充电时</item>
+        <item>屏幕点亮时</item>
+    </string-array>
+    <string-array name="network_auto_open_names">
+        <item>充电时</item>
+        <item>屏幕点亮时</item>
+    </string-array>
+    <string-array name="animations_entries">
+        <item>无动画</item>
+        <item>显示部分动画</item>
+        <item>显示所有窗口动画</item>
+    </string-array>
+    <string-array name="animations_values">
+        <item>00</item>
+        <item>01</item>
+        <item>11</item>
+    </string-array>
+    <string-array name="entries_check_update_preference">
+        <item>软件版本</item>
+        <item>归属地</item>
+        <item>智能拦截库</item>
+    </string-array>
+    <string-array name="entryvalues_check_update_preference">
+        <item>check_version</item>
+        <item>check_location</item>
+        <item>check_sms_checker</item>
+    </string-array>
+    <string-array name="select_mode">
+        <item>拦截电话</item>
+        <item>拦截信息</item>
+    </string-array>
+    <string-array name="add_mode">
+        <item>手动添加</item>
+        <item>从联系人列表添加</item>
+        <item>从电话卡联系人添加</item>
+        <item>从通话记录添加</item>
+        <item>从信息列表添加</item>
+        <item>手动添加拦截号码</item>
+        <item>手动添加拦截号码段</item>
+        <item>手动添加白名单号码</item>
+        <item>手动添加白名单号码段</item>
+    </string-array>
+    <string-array name="del_contact">
+        <item>删除所有黑名单联系人</item>
+        <item>删除所有白名单联系人</item>
+        <item>删除所有黑白名单联系人</item>
+    </string-array>
+    <string-array name="entries_attention_mode_preference">
+        <item>无提醒</item>
+        <item>通知栏提醒</item>
+        <item>短信铃声提醒</item>
+        <item>通知栏+短信铃声</item>
+        <item>振动提醒</item>
+        <item>通知栏+振动</item>
+        <item>振动+短信铃声</item>
+        <item>通知栏+振动+短信铃声</item>
+    </string-array>
+    <string-array name="entries_password_valide_preference">
+        <item>1 分钟</item>
+        <item>5 分钟</item>
+        <item>10 分钟</item>
+        <item>30 分钟</item>
+    </string-array>
+    <string-array name="entryvalues_8">
+        <item>60</item>
+        <item>300</item>
+        <item>600</item>
+        <item>1800</item>
+    </string-array>
+    <string-array name="entryvalues_7">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+    </string-array>
+    <string-array name="entryvalues_6">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+    </string-array>
+    <string-array name="entryvalues_4">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+    <string-array name="entryvalues_3">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+    <string-array name="entryvalues_2">
+        <item>0</item>
+        <item>1</item>
+    </string-array>
+    <string-array name="filter_mode_entries_1">
+        <item>接受</item>
+        <item>拦截</item>
+    </string-array>
+    <string-array name="filter_mode_entries_2">
+        <item>接受</item>
+        <item>忽略</item>
+    </string-array>
+    <string-array name="filter_mode_entries_3">
+        <item>开启</item>
+        <item>关闭</item>
+    </string-array>
+    <string-array name="filter_mode_entries_4">
+        <item>拦截</item>
+        <item>忽略</item>
+    </string-array>
+    <string-array name="filter_mode_entries_5">
+        <item>接受</item>
+        <item>拦截</item>
+        <item>智能拦截</item>
+    </string-array>
+    <string-array name="secure_call_mode">
+        <item>正常接听</item>
+        <item>来电挂断</item>
+        <item>来电挂断并回复短信</item>
+    </string-array>
+    <string-array name="secure_call_mode_dualsim">
+        <item>正常接听</item>
+        <item>来电挂断</item>
+    </string-array>
+    <string-array name="secure_call_notice_mode_1">
+        <item>静音</item>
+        <item>电话铃声</item>
+        <item>振动</item>
+    </string-array>
+    <string-array name="secure_call_notice_mode_2">
+        <item>无提醒</item>
+        <item>响一声</item>
+        <item>通知栏提醒</item>
+        <item>通知栏+响一声</item>
+    </string-array>
+    <string-array name="entries_auto_ipcall_preference">
+        <item>拨打长途时</item>
+        <item>拨打所有号码时</item>
+    </string-array>
+    <string-array name="entries_number_mark_preference">
+        <item>51,房产中介</item>
+        <item>52,保险理财</item>
+        <item>53,广告推销</item>
+        <item>54,诈骗电话</item>
+        <item>50,其他骚扰电话</item>
+    </string-array>
+    <string-array name="entryvalues_auto_ipcall_preference">
+        <item>call_long_number</item>
+        <item>call_all_number</item>
+    </string-array>
+    <string-array name="entryvalues_icon">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+    <string-array name="entry_apn_type">
+        <item>Net</item>
+        <item>Wap</item>
+    </string-array>
+    <string-array name="entryvalues_apn_type">
+        <item>0</item>
+        <item>1</item>
+    </string-array>
+    <string-array name="entry_screenshot_type">
+        <item>通知栏截屏</item>
+        <item>摇晃截屏</item>
+    </string-array>
+    <string-array name="entryvalues_screenshot_type">
+        <item>0</item>
+        <item>1</item>
+    </string-array>
+    <string-array name="entry_screenshot_format">
+        <item>PNG</item>
+        <item>JPEG</item>
+    </string-array>
+    <string-array name="entryvalues_screenshot_format">
+        <item>0</item>
+        <item>1</item>
+    </string-array>
+    <string-array name="entry_screenshot_quality">
+        <item>高</item>
+        <item>中</item>
+        <item>低</item>
+    </string-array>
+    <string-array name="entryvalues_screenshot_quality">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+    <string-array name="protect_tip">
+        <item>提示所有操作</item>
+        <item>提示拒绝的操作</item>
+        <item>提示允许的操作</item>
+        <item>只记录，不提示</item>
+    </string-array>
+    <string-array name="second_miao_tip">
+        <item>10秒</item>
+        <item>20秒</item>
+        <item>30秒</item>
+    </string-array>
+    <string-array name="operator">
+        <item>拒绝</item>
+        <item>允许</item>
+    </string-array>
+    <string-array name="timed_task_list">
+        <item>定时拦截模式</item>
+        <item>定时情景模式</item>
+        <item>定时开关软件</item>
+    </string-array>
+    <string-array name="operator_chose">
+        <item>中国移动</item>
+        <item>中国联通</item>
+        <item>中国电信</item>
+    </string-array>
+    <integer-array name="config_virtualKeyVibePattern">
+        <item>0</item>
+        <item>1</item>
+        <item>20</item>
+        <item>21</item>
+    </integer-array>
+    <string-array name="entries_privacy_psw_style">
+        <item>图案密码</item>
+        <item>数字密码</item>
+    </string-array>
+    <string-array name="entryvalues_privacy_psw_style">
+        <item>0</item>
+        <item>1</item>
+    </string-array>
+    <string-array name="entries_secure_psw_style">
+        <item>隐私保护密码</item>
+        <item>隐私信箱独立密码</item>
+    </string-array>
+    <string-array name="entries_secure_psw_face_verifystyle">
+        <item>隐私保护密码</item>
+        <item>隐私信箱独立密码(人脸识别)</item>
+    </string-array>
+    <string-array name="entryvalues_secure_psw_style">
+        <item>0</item>
+        <item>1</item>
+    </string-array>
+    <string-array name="country_code_array">
+        <item>CN,中国,86</item>
+        <item>HK,香港,852</item>
+        <item>MO,澳门,853</item>
+        <item>US,美国,1</item>
+        <item>JP,日本,81</item>
+        <item>KR,韩国,82</item>
+        <item>AL,阿尔巴尼亚,355</item>
+        <item>DZ,阿尔及利亚,213</item>
+        <item>AF,阿富汗,93</item>
+        <item>AR,阿根廷,54</item>
+        <item>AE,阿拉伯联合酋长国,971</item>
+        <item>AW,阿鲁巴岛,297</item>
+        <item>OM,阿曼,968</item>
+        <item>AZ,阿塞拜疆,994</item>
+        <item>AC,阿森松岛,247</item>
+        <item>EG,埃及,20</item>
+        <item>ET,埃塞俄比亚,251</item>
+        <item>IE,爱尔兰,353</item>
+        <item>EE,爱沙尼亚,372</item>
+        <item>AD,安道尔共和国,376</item>
+        <item>AO,安哥拉,244</item>
+        <item>AI,安圭拉岛,1264</item>
+        <item>AG,安提瓜和巴布达,1268</item>
+        <item>AT,奥地利,43</item>
+        <item>AU,澳大利亚,61</item>
+        <item>BB,巴巴多斯,1246</item>
+        <item>PG,巴布亚新几内亚,675</item>
+        <item>BS,巴哈马,1242</item>
+        <item>PK,巴基斯坦,92</item>
+        <item>PY,巴拉圭,595</item>
+        <item>PS,巴勒斯坦,970</item>
+        <item>BH,巴林,973</item>
+        <item>PA,巴拿马,507</item>
+        <item>BR,巴西,55</item>
+        <item>BY,白俄罗斯,375</item>
+        <item>BM,百慕大群岛,1441</item>
+        <item>BG,保加利亚,359</item>
+        <item>MP,北马里亚纳群岛,1670</item>
+        <item>BJ,贝宁,229</item>
+        <item>BE,比利时,32</item>
+        <item>IS,冰岛,354</item>
+        <item>PR,波多黎各,1</item>
+        <item>PL,波兰,48</item>
+        <item>BA,波斯尼亚和黑塞哥维那,387</item>
+        <item>BO,玻利维亚,591</item>
+        <item>BZ,伯利兹,501</item>
+        <item>BW,博茨瓦纳,267</item>
+        <item>BT,不丹,975</item>
+        <item>BF,布基纳法索,226</item>
+        <item>BI,布隆迪,257</item>
+        <item>KP,朝鲜,850</item>
+        <item>DK,丹麦,45</item>
+        <item>DE,德国,49</item>
+        <item>TG,多哥,228</item>
+        <item>DM,多米尼克,1767</item>
+        <item>DO,多明尼加共和国,1809</item>
+        <item>RU,俄罗斯,7</item>
+        <item>EC,厄瓜多尔,593</item>
+        <item>FR,法国,33</item>
+        <item>GF,法属圭亚那,594</item>
+        <item>PH,菲律宾,63</item>
+        <item>FJ,斐济,679</item>
+        <item>FI,芬兰,358</item>
+        <item>CV,佛得角,238</item>
+        <item>GM,冈比亚,220</item>
+        <item>CG,刚果,242</item>
+        <item>CO,哥伦比亚,57</item>
+        <item>CR,哥斯达黎加,506</item>
+        <item>GL,格林兰,299</item>
+        <item>GD,格林纳达,1473</item>
+        <item>GE,格鲁吉亚,995</item>
+        <item>CU,古巴,53</item>
+        <item>GU,关岛,1671</item>
+        <item>GY,圭亚那,592</item>
+        <item>KZ,哈萨克斯坦,7</item>
+        <item>HT,海地,509</item>
+        <item>NL,荷兰,31</item>
+        <item>AN,荷属安的列斯,599</item>
+        <item>ME,黑山共和国,382</item>
+        <item>HN,洪都拉斯,504</item>
+        <item>KI,基里巴斯,686</item>
+        <item>DJ,吉布提,253</item>
+        <item>KG,吉尔吉斯坦,996</item>
+        <item>GN,几内亚,224</item>
+        <item>GW,几内亚比绍共和国,245</item>
+        <item>CA,加拿大,1</item>
+        <item>GH,加纳,233</item>
+        <item>GA,加蓬,241</item>
+        <item>KH,柬埔寨,855</item>
+        <item>CZ,捷克,420</item>
+        <item>ZW,津巴布韦,263</item>
+        <item>CM,喀麦隆,237</item>
+        <item>QA,卡塔尔,974</item>
+        <item>KY,开曼群岛,1345</item>
+        <item>KM,科摩罗,269</item>
+        <item>CI,科特迪瓦,225</item>
+        <item>KW,科威特,965</item>
+        <item>HR,克罗地亚,385</item>
+        <item>KE,肯尼亚,254</item>
+        <item>CK,库克群岛,682</item>
+        <item>LV,拉脱维亚,371</item>
+        <item>LS,莱索托,266</item>
+        <item>LA,老挝,856</item>
+        <item>LB,黎巴嫩,961</item>
+        <item>LT,立陶宛,370</item>
+        <item>LR,利比里亚,231</item>
+        <item>LY,利比亚,218</item>
+        <item>LI,列支敦士登,423</item>
+        <item>LU,卢森堡,352</item>
+        <item>RW,卢旺达,250</item>
+        <item>RO,罗马尼亚,40</item>
+        <item>MG,马达加斯加,261</item>
+        <item>MV,马尔代夫,960</item>
+        <item>MT,马耳他,356</item>
+        <item>MW,马拉维,265</item>
+        <item>MY,马来西亚,60</item>
+        <item>ML,马里,223</item>
+        <item>MP,马里亚那群岛,222</item>
+        <item>MK,马其顿王国,389</item>
+        <item>MH,马绍尔群岛,692</item>
+        <item>MU,毛里求斯,230</item>
+        <item>AS,美属萨摩亚,1684</item>
+        <item>VI,美属维尔京群岛,1340</item>
+        <item>MN,蒙古,976</item>
+        <item>BD,孟加拉国,880</item>
+        <item>PE,秘鲁,51</item>
+        <item>MMR,缅甸,95</item>
+        <item>MD,摩尔多瓦,373</item>
+        <item>MA,摩洛哥,212</item>
+        <item>MC,摩纳哥,377</item>
+        <item>MZ,莫桑比克,258</item>
+        <item>MX,墨西哥,52</item>
+        <item>NA,纳米比亚,264</item>
+        <item>ZA,南非,27</item>
+        <item>NR,瑙鲁,674</item>
+        <item>NP,尼泊尔,977</item>
+        <item>NI,尼加拉瓜,505</item>
+        <item>NE,尼日尔,227</item>
+        <item>NG,尼日利亚,234</item>
+        <item>NO,挪威,47</item>
+        <item>PW,帕劳群岛,680</item>
+        <item>PT,葡萄牙,351</item>
+        <item>SE,瑞典,46</item>
+        <item>CH,瑞士,41</item>
+        <item>SV,萨尔瓦多,503</item>
+        <item>AS,萨摩亚群岛,685</item>
+        <item>RS,塞尔维亚,381</item>
+        <item>SL,塞拉利昂,232</item>
+        <item>SN,塞内加尔,221</item>
+        <item>CY,塞浦路斯,357</item>
+        <item>SC,塞舌尔,248</item>
+        <item>SA,沙特阿拉伯,966</item>
+        <item>ST,圣多美和普林西比,239</item>
+        <item>KN,圣克里斯托弗和尼维斯岛,1869</item>
+        <item>LC,圣卢西亚,1758</item>
+        <item>SM,圣马力诺,378</item>
+        <item>VC,圣文森特岛,1784</item>
+        <item>LK,斯里兰卡,94</item>
+        <item>SK,斯洛伐克,421</item>
+        <item>SI,斯洛文尼亚,386</item>
+        <item>SZ,斯威士兰,268</item>
+        <item>SD,苏丹,249</item>
+        <item>SR,苏里南,597</item>
+        <item>SB,所罗门群岛,677</item>
+        <item>SO,索马里,252</item>
+        <item>TJ,塔吉克斯坦,992</item>
+        <item>TW,台湾省,886</item>
+        <item>TH,泰国,66</item>
+        <item>TZ,坦桑尼亚,255</item>
+        <item>TO,汤加,676</item>
+        <item>TC,特克斯和凯科斯群岛,1649</item>
+        <item>TT,特立尼达和多巴哥,1868</item>
+        <item>TN,突尼斯,216</item>
+        <item>TR,土耳其,90</item>
+        <item>TM,土库曼斯坦,993</item>
+        <item>VU,瓦努阿图,678</item>
+        <item>GT,危地马拉,502</item>
+        <item>VE,委内瑞拉,58</item>
+        <item>BN,文莱,673</item>
+        <item>UG,乌干达,256</item>
+        <item>UA,乌克兰,380</item>
+        <item>UY,乌拉圭,598</item>
+        <item>UZ,乌兹别克斯坦,998</item>
+        <item>ES,西班牙,34</item>
+        <item>GR,希腊,30</item>
+        <item>SG,新加坡,65</item>
+        <item>NC,新喀里多尼亚,687</item>
+        <item>NZ,新西兰,64</item>
+        <item>HU,匈牙利,36</item>
+        <item>SY,叙利亚,963</item>
+        <item>JM,牙买加,1876</item>
+        <item>AM,亚美尼亚,374</item>
+        <item>YE,也门,967</item>
+        <item>IQ,伊拉克,964</item>
+        <item>IR,伊朗,98</item>
+        <item>IL,以色列,972</item>
+        <item>IT,意大利,39</item>
+        <item>IN,印度,91</item>
+        <item>ID,印度尼西亚,62</item>
+        <item>GB,英国,44</item>
+        <item>VG,英属维京群岛,1284</item>
+        <item>JO,约旦,962</item>
+        <item>VN,越南,84</item>
+        <item>ZM,赞比亚,260</item>
+        <item>TD,乍得,235</item>
+        <item>GI,直布罗陀,350</item>
+        <item>CL,智利,56</item>
+        <item>CF,中非共和国,236</item>
+    </string-array>
+    <string-array name="block_modes">
+        <item>标准</item>
+        <item>全拦</item>
+        <item>全开</item>
+        <item>只拦黑名单</item>
+        <item>只开白名单</item>
+    </string-array>
+    <string-array name="audioEnds">
+        <item>.mp3</item>
+        <item>.m4a</item>
+        <item>.wav</item>
+        <item>.amr</item>
+        <item>.awb</item>
+        <item>.wma</item>
+        <item>.ogg</item>
+        <item>.midi</item>
+        <item>.mid</item>
+        <item>.xmf</item>
+        <item>.rtttl</item>
+        <item>.smf</item>
+        <item>.imy</item>
+        <item>.ape</item>
+        <item>.aac</item>
+        <item>.aac+</item>
+        <item>.ota</item>
+        <item>.mxmf</item>
+        <item>.rtx</item>
+    </string-array>
+    <string-array name="videoEnds">
+        <item>.mp4</item>
+        <item>.m4v</item>
+        <item>.3gp</item>
+        <item>.3gpp</item>
+        <item>.3g2</item>
+        <item>.3gpp2</item>
+        <item>.wmv</item>
+        <item>.rm</item>
+        <item>.mkv</item>
+        <item>.flv</item>
+        <item>.avi</item>
+        <item>.rmvb</item>
+        <item>.mov</item>
+    </string-array>
+    <string-array name="imageEnds">
+        <item>.png</item>
+        <item>.gif</item>
+        <item>.jpg</item>
+        <item>.jpeg</item>
+        <item>.bmp</item>
+        <item>.wbmp</item>
+    </string-array>
+    <string-array name="docEnds">
+        <item>.ppt</item>
+        <item>.pptx</item>
+        <item>.doc</item>
+        <item>.docx</item>
+        <item>.txt</item>
+    </string-array>
+    <string-array name="provinces">
+        <item>10,北京</item>
+        <item>20,广东</item>
+        <item>21,上海</item>
+        <item>22,天津</item>
+        <item>23,重庆</item>
+        <item>24,辽宁</item>
+        <item>25,江苏</item>
+        <item>27,湖北</item>
+        <item>28,四川</item>
+        <item>29,陕西</item>
+        <item>311,河北</item>
+        <item>351,山西</item>
+        <item>371,河南</item>
+        <item>431,吉林</item>
+        <item>451,黑龙江</item>
+        <item>471,内蒙古</item>
+        <item>531,山东</item>
+        <item>551,安徽</item>
+        <item>571,浙江</item>
+        <item>591,福建</item>
+        <item>731,湖南</item>
+        <item>771,广西</item>
+        <item>791,江西</item>
+        <item>851,贵州</item>
+        <item>871,云南</item>
+        <item>891,西藏</item>
+        <item>898,海南</item>
+        <item>931,甘肃</item>
+        <item>951,宁夏</item>
+        <item>971,青海</item>
+        <item>991,新疆</item>
+    </string-array>
+    <string-array name="cities_10">
+        <item>10,北京</item>
+    </string-array>
+    <string-array name="cities_20">
+        <item>20,广州</item>
+        <item>755,深圳</item>
+        <item>756,珠海</item>
+        <item>769,东莞</item>
+        <item>760,中山</item>
+        <item>757,佛山</item>
+        <item>660,汕尾</item>
+        <item>662,阳江</item>
+        <item>754,汕头</item>
+        <item>759,湛江</item>
+        <item>753,梅州</item>
+        <item>663,揭阳</item>
+        <item>668,茂名</item>
+        <item>750,江门</item>
+        <item>751,韶关</item>
+        <item>752,惠州</item>
+        <item>758,肇庆</item>
+        <item>768,潮州</item>
+        <item>766,云浮</item>
+        <item>762,河源</item>
+        <item>763,清远</item>
+    </string-array>
+    <string-array name="cities_21">
+        <item>21,上海</item>
+    </string-array>
+    <string-array name="cities_22">
+        <item>22,天津</item>
+    </string-array>
+    <string-array name="cities_23">
+        <item>23,重庆</item>
+    </string-array>
+    <string-array name="cities_24">
+        <item>24,沈阳</item>
+        <item>247,铁岭</item>
+        <item>411,大连</item>
+        <item>412,鞍山</item>
+        <item>245,抚顺</item>
+        <item>414,本溪</item>
+        <item>415,丹东</item>
+        <item>416,锦州</item>
+        <item>417,营口</item>
+        <item>418,阜新</item>
+        <item>419,辽阳</item>
+        <item>421,朝阳</item>
+        <item>427,盘锦</item>
+        <item>429,葫芦岛</item>
+    </string-array>
+    <string-array name="cities_25">
+        <item>25,南京</item>
+        <item>510,无锡</item>
+        <item>511,镇江</item>
+        <item>512,苏州</item>
+        <item>513,南通</item>
+        <item>514,扬州</item>
+        <item>515,盐城</item>
+        <item>516,徐州</item>
+        <item>517,淮安</item>
+        <item>518,连云港</item>
+        <item>519,常州</item>
+        <item>523,泰州</item>
+        <item>527,宿迁</item>
+    </string-array>
+    <string-array name="cities_27">
+        <item>27,武汉</item>
+        <item>710,襄阳</item>
+        <item>711,鄂州</item>
+        <item>712,孝感</item>
+        <item>713,黄冈</item>
+        <item>714,黄石</item>
+        <item>715,咸宁</item>
+        <item>716,荆州</item>
+        <item>717,宜昌</item>
+        <item>718,恩施</item>
+        <item>719,十堰</item>
+        <item>722,随州</item>
+        <item>724,荆门</item>
+        <item>728,江汉</item>
+    </string-array>
+    <string-array name="cities_28">
+        <item>28,成都</item>
+        <item>282,资阳</item>
+        <item>283,眉山</item>
+        <item>812,攀枝花</item>
+        <item>813,自贡</item>
+        <item>816,绵阳</item>
+        <item>817,南充</item>
+        <item>818,达州</item>
+        <item>825,遂宁</item>
+        <item>826,广安</item>
+        <item>827,巴中</item>
+        <item>830,泸州</item>
+        <item>831,宜宾</item>
+        <item>832,内江</item>
+        <item>833,乐山</item>
+        <item>834,凉山彝族自治州</item>
+        <item>835,雅安</item>
+        <item>836,甘孜藏族自治州</item>
+        <item>837,阿坝藏族羌族自治州</item>
+        <item>838,德阳</item>
+        <item>839,广元</item>
+    </string-array>
+    <string-array name="cities_29">
+        <item>29,西安</item>
+        <item>293,咸阳</item>
+        <item>911,延安</item>
+        <item>912,榆林</item>
+        <item>913,渭南</item>
+        <item>914,商洛</item>
+        <item>915,安康</item>
+        <item>916,汉中</item>
+        <item>917,宝鸡</item>
+        <item>919,铜川</item>
+    </string-array>
+    <string-array name="cities_311">
+        <item>311,石家庄</item>
+        <item>310,邯郸</item>
+        <item>312,保定</item>
+        <item>313,张家口</item>
+        <item>314,承德</item>
+        <item>315,唐山</item>
+        <item>316,廊坊</item>
+        <item>317,沧州</item>
+        <item>318,衡水</item>
+        <item>319,邢台</item>
+        <item>335,秦皇岛</item>
+    </string-array>
+    <string-array name="cities_351">
+        <item>351,太原</item>
+        <item>349,朔州</item>
+        <item>350,忻州</item>
+        <item>352,大同</item>
+        <item>353,阳泉</item>
+        <item>354,晋中</item>
+        <item>355,长治</item>
+        <item>356,晋城</item>
+        <item>357,临汾</item>
+        <item>358,吕梁</item>
+        <item>359,运城</item>
+    </string-array>
+    <string-array name="cities_371">
+        <item>371,郑州</item>
+        <item>370,商丘</item>
+        <item>372,安阳</item>
+        <item>373,新乡</item>
+        <item>374,许昌</item>
+        <item>375,平顶山</item>
+        <item>376,信阳</item>
+        <item>377,南阳</item>
+        <item>378,开封</item>
+        <item>379,洛阳</item>
+        <item>391,焦作、济源</item>
+        <item>392,鹤壁</item>
+        <item>393,濮阳</item>
+        <item>394,周口</item>
+        <item>395,漯河</item>
+        <item>396,驻马店</item>
+        <item>398,三门峡</item>
+    </string-array>
+    <string-array name="cities_431">
+        <item>431,长春</item>
+        <item>432,吉林</item>
+        <item>433,延边朝鲜族自治州</item>
+        <item>434,四平</item>
+        <item>435,通化</item>
+        <item>436,白城</item>
+        <item>437,辽源</item>
+        <item>438,松原</item>
+        <item>439,白山</item>
+    </string-array>
+    <string-array name="cities_451">
+        <item>451,哈尔滨</item>
+        <item>452,齐齐哈尔</item>
+        <item>453,牡丹江</item>
+        <item>454,佳木斯</item>
+        <item>455,绥化</item>
+        <item>456,黑河</item>
+        <item>457,大兴安岭</item>
+        <item>458,伊春</item>
+        <item>459,大庆</item>
+        <item>464,七台河</item>
+        <item>467,鸡西</item>
+        <item>468,鹤岗</item>
+        <item>469,双鸭山</item>
+    </string-array>
+    <string-array name="cities_471">
+        <item>471,呼和浩特</item>
+        <item>470,呼伦贝尔盟</item>
+        <item>472,包头</item>
+        <item>473,乌海</item>
+        <item>474,乌兰察布盟</item>
+        <item>475,通辽</item>
+        <item>476,赤峰</item>
+        <item>477,鄂尔多斯</item>
+        <item>478,巴彦淖尔盟</item>
+        <item>479,锡林郭勒盟</item>
+        <item>482,兴安盟</item>
+        <item>483,阿拉善盟</item>
+    </string-array>
+    <string-array name="cities_531">
+        <item>531,济南</item>
+        <item>530,菏泽</item>
+        <item>532,青岛</item>
+        <item>533,淄博</item>
+        <item>534,德州</item>
+        <item>535,烟台</item>
+        <item>536,潍坊</item>
+        <item>537,济宁</item>
+        <item>538,泰安</item>
+        <item>539,临沂</item>
+        <item>543,滨州</item>
+        <item>546,东营</item>
+        <item>631,威海</item>
+        <item>632,枣庄</item>
+        <item>633,日照</item>
+        <item>634,莱芜</item>
+        <item>635,聊城</item>
+    </string-array>
+    <string-array name="cities_551">
+        <item>551,合肥</item>
+        <item>550,滁州</item>
+        <item>552,蚌埠</item>
+        <item>553,芜湖</item>
+        <item>554,淮南</item>
+        <item>555,马鞍山</item>
+        <item>556,安庆</item>
+        <item>557,宿州</item>
+        <item>558,阜阳、亳州</item>
+        <item>559,黄山</item>
+        <item>561,淮北</item>
+        <item>562,铜陵</item>
+        <item>563,宣城</item>
+        <item>564,六安</item>
+        <item>565,巢湖</item>
+        <item>566,池州</item>
+    </string-array>
+    <string-array name="cities_571">
+        <item>571,杭州</item>
+        <item>570,衢州</item>
+        <item>572,湖州</item>
+        <item>573,嘉兴</item>
+        <item>574,宁波</item>
+        <item>575,绍兴</item>
+        <item>576,台州</item>
+        <item>577,温州</item>
+        <item>578,丽水</item>
+        <item>579,金华</item>
+        <item>580,舟山</item>
+    </string-array>
+    <string-array name="cities_591">
+        <item>591,福州</item>
+        <item>592,厦门</item>
+        <item>593,宁德</item>
+        <item>594,莆田</item>
+        <item>595,泉州</item>
+        <item>596,漳州</item>
+        <item>597,龙岩</item>
+        <item>598,三明</item>
+        <item>599,南平</item>
+    </string-array>
+    <string-array name="cities_731">
+        <item>731,长沙</item>
+        <item>730,岳阳</item>
+        <item>734,衡阳</item>
+        <item>735,郴州</item>
+        <item>736,常德</item>
+        <item>737,益阳</item>
+        <item>738,娄底</item>
+        <item>739,邵阳</item>
+        <item>743,湘西州</item>
+        <item>744,张家界</item>
+        <item>745,怀化</item>
+        <item>746,永州</item>
+        <item>7312,株洲</item>
+        <item>7315,湘潭</item>
+    </string-array>
+    <string-array name="cities_771">
+        <item>771,南宁、崇左</item>
+        <item>770,防城港</item>
+        <item>772,柳州、来宾</item>
+        <item>773,桂林</item>
+        <item>774,梧州、贺州</item>
+        <item>775,玉林、贵港</item>
+        <item>776,百色</item>
+        <item>777,钦州</item>
+        <item>778,河池</item>
+        <item>779,北海</item>
+    </string-array>
+    <string-array name="cities_791">
+        <item>791,南昌</item>
+        <item>701,鹰潭</item>
+        <item>790,新余</item>
+        <item>792,九江</item>
+        <item>793,上饶</item>
+        <item>794,抚州</item>
+        <item>795,宜春</item>
+        <item>796,吉安</item>
+        <item>797,赣州</item>
+        <item>798,景德镇</item>
+        <item>799,萍乡</item>
+    </string-array>
+    <string-array name="cities_851">
+        <item>851,贵阳</item>
+        <item>852,遵义</item>
+        <item>853,安顺</item>
+        <item>854,都匀</item>
+        <item>855,凯里</item>
+        <item>856,铜仁</item>
+        <item>857,毕节</item>
+        <item>858,六盘水</item>
+        <item>859,兴义</item>
+    </string-array>
+    <string-array name="cities_871">
+        <item>871,昆明</item>
+        <item>691,西双版纳</item>
+        <item>692,德宏</item>
+        <item>870,昭通</item>
+        <item>872,大理</item>
+        <item>873,红河哈尼族彝族自治州</item>
+        <item>874,曲靖</item>
+        <item>875,保山</item>
+        <item>876,文山</item>
+        <item>877,玉溪</item>
+        <item>878,楚雄</item>
+        <item>879,普洱</item>
+        <item>883,临沧</item>
+        <item>886,怒江</item>
+        <item>887,迪庆</item>
+        <item>888,丽江</item>
+    </string-array>
+    <string-array name="cities_891">
+        <item>891,拉萨</item>
+        <item>892,日喀则</item>
+        <item>893,山南</item>
+        <item>894,林芝</item>
+        <item>895,昌都</item>
+        <item>896,那曲</item>
+        <item>897,阿里</item>
+    </string-array>
+    <string-array name="cities_898">
+        <item>898,海南</item>
+    </string-array>
+    <string-array name="cities_931">
+        <item>931,兰州</item>
+        <item>930,临夏</item>
+        <item>932,定西</item>
+        <item>933,平凉</item>
+        <item>934,庆阳</item>
+        <item>935,金昌、武威</item>
+        <item>936,张掖</item>
+        <item>937,酒泉、嘉峪关</item>
+        <item>938,天水</item>
+        <item>939,陇南</item>
+        <item>941,甘南</item>
+        <item>943,白银</item>
+    </string-array>
+    <string-array name="cities_951">
+        <item>951,银川</item>
+        <item>952,石嘴山</item>
+        <item>953,吴忠</item>
+        <item>954,固原</item>
+        <item>955,中卫</item>
+    </string-array>
+    <string-array name="cities_971">
+        <item>971,西宁</item>
+        <item>970,海北州</item>
+        <item>972,海东</item>
+        <item>973,黄南</item>
+        <item>974,海南州</item>
+        <item>975,果洛</item>
+        <item>976,玉树</item>
+        <item>977,海西州</item>
+        <item>979,格尔木</item>
+    </string-array>
+    <string-array name="cities_991">
+        <item>991,乌鲁木齐</item>
+        <item>901,塔城</item>
+        <item>902,哈密</item>
+        <item>903,和田</item>
+        <item>906,阿勒泰</item>
+        <item>908,克州</item>
+        <item>909,博乐</item>
+        <item>990,克拉玛依</item>
+        <item>992,奎屯</item>
+        <item>993,石河子</item>
+        <item>994,昌吉</item>
+        <item>995,吐鲁番</item>
+        <item>996,库尔勒、巴州</item>
+        <item>997,阿克苏</item>
+        <item>998,喀什</item>
+        <item>999,伊犁</item>
+    </string-array>
+    <string-array name="carries">
+        <item>CMCC,中国移动</item>
+        <item>UNICOM,中国联通</item>
+        <item>TELECOM,中国电信</item>
+    </string-array>
+    <string-array name="brands_cmcc">
+        <item>30000,神州行</item>
+        <item>10000,全球通</item>
+        <item>20000,动感地带</item>
+    </string-array>
+    <string-array name="brands_unicom">
+        <item>50000,联通2G</item>
+        <item>70000,联通3G</item>
+    </string-array>
+    <string-array name="brands_telecom">
+        <item>60000,中国电信</item>
+    </string-array>
+</resources>

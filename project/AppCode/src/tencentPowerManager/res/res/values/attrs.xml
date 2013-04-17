@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="type" format="integer" />
+    <attr name="checked" format="boolean" />
+    <attr name="text" format="string" />
+    <attr name="active" format="boolean" />
+    <attr name="activeicon" format="integer" />
+    <attr name="defaulticon" format="integer" />
+    <attr name="postion" format="integer" />
+    <attr name="iconnormal" format="integer" />
+    <attr name="iconpressed" format="integer" />
+    <attr name="name" format="string" />
+    <attr name="buttontype" format="integer" />
+    <attr name="buttontext" format="string" />
+    <attr name="textsize" format="integer" />
+    <attr name="cputext" format="string" />
+    <attr name="cpuactive" format="boolean" />
+    <attr name="view_gravity" format="string" />
+    <attr name="Level_gravity" format="string" />
+</resources>

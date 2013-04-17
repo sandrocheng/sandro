@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout android:id="@id/text_view_layout" android:layout_width="fill_parent" android:layout_height="wrap_content" android:weightSum="10.0">
+        <TextView android:id="@id/text_view_name" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/REN_WU_MING_CHENG" android:singleLine="true" android:layout_weight="0.01" style="@style/standard_list_item_title" />
+        <TextView android:id="@id/text_view_value1" android:background="@color/list_item_bg_color" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_weight="10.0" style="@style/standard_list_item_title" />
+        <ImageButton android:id="@id/text_view_button" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/header_icon_call" android:layout_weight="0.1" />
+    </LinearLayout>
+</LinearLayout>

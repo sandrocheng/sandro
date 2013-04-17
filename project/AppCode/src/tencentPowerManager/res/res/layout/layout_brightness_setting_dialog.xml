@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res/com.tencent.qqpimsecure">
+    <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content">
+        <SeekBar android:id="@id/seekBar" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_margin="10.0dip" android:max="242" android:layout_weight="1.0" />
+        <TextView android:textColor="@color/list_item_title_text_color" android:id="@id/bgbright" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+    </LinearLayout>
+    <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content">
+        <CheckBox android:layout_gravity="center_vertical" android:id="@id/checkbox_bright_auto" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="8.0dip" />
+        <TextView android:textColor="@color/list_item_title_text_color" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/battery_bgbright_auto" />
+    </LinearLayout>
+</LinearLayout>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:background="@color/title_bar_text_color" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:app="http://schemas.android.com/apk/res/com.tencent.qqpimsecure"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <ScrollView android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_weight="1.0">
+        <LinearLayout android:orientation="vertical" android:paddingLeft="20.0dip" android:paddingRight="20.0dip" android:layout_width="fill_parent" android:layout_height="fill_parent">
+            <LinearLayout android:gravity="top" android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="30.0dip">
+                <ImageView android:id="@id/notice_icon" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="5.0dip" android:src="@drawable/icon_note" />
+                <TextView android:textSize="15.0sp" android:textColor="@color/color_888888" android:id="@id/notice" android:paddingLeft="5.0dip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/pickproof_update_urgent_contact0" />
+            </LinearLayout>
+            <LinearLayout android:orientation="horizontal" android:background="@drawable/linearlayout_bg" android:clickable="true" android:clipChildren="true" android:clipToPadding="true" android:addStatesFromChildren="true" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="15.0dip">
+                <LinearLayout android:layout_gravity="left|center" android:paddingLeft="8.0dip" android:paddingRight="8.0dip" android:clickable="true" android:clipChildren="true" android:clipToPadding="true" android:addStatesFromChildren="true" android:layout_width="fill_parent" android:layout_height="40.0dip" android:layout_marginRight="0.0dip" android:layout_weight="1.0">
+                    <EditText android:textSize="14.0sp" android:textColor="#ff000000" android:textColorHighlight="#ff5193ff" android:textColorHint="#ffc7c7c7" android:layout_gravity="left|center" android:id="@id/pf_mobile" android:background="@color/log_white" android:focusable="true" android:focusableInTouchMode="true" android:layout_width="fill_parent" android:layout_height="40.0dip" android:minWidth="140.0dip" android:hint="@string/pickproofsettingguidecontent3h" android:singleLine="true" android:maxLength="16" android:digits="0123456789+" android:layout_weight="1.0" android:inputType="number" />
+                </LinearLayout>
+                <ImageView android:textSize="18.0sp" android:gravity="center_horizontal" android:layout_gravity="right|center" android:id="@id/tv_pf_mobile_contact" android:background="@drawable/pickproof_contact_sel" android:layout_width="wrap_content" android:layout_height="wrap_content" style="@style/text_big_default" />
+            </LinearLayout>
+            <LinearLayout android:gravity="left|center" android:orientation="horizontal" android:paddingTop="15.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content">
+                <com.tencent.qqpimsecure.uilib.view.CheckBoxView android:layout_gravity="left|center" android:id="@id/sendSms" android:focusable="false" android:layout_width="wrap_content" android:layout_height="wrap_content" app:type="1" />
+                <TextView android:textSize="14.0sp" android:textColor="@color/color_ff333333" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/pickproof_sent_sms_to_urgent_contact_opt" android:layout_weight="1.0" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

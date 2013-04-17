@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:id="@id/layout_desktop_frame_window_for_chang_e" android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <FrameLayout android:layout_width="fill_parent" android:layout_height="wrap_content">
+        <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content">
+            <LinearLayout android:orientation="vertical" android:id="@id/layout_desktop_space1" android:layout_width="fill_parent" android:layout_height="42.0dip" />
+            <LinearLayout android:orientation="vertical" android:background="@drawable/desktop_bg" android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_marginLeft="6.0dip" android:layout_marginRight="6.0dip" android:layout_weight="1.0">
+                <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginBottom="6.0dip">
+                    <TextView android:textSize="16.0sp" android:textColor="#ff333333" android:layout_gravity="left" android:id="@id/taskManagerTitle" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:singleLine="true" />
+                    <LinearLayout android:orientation="horizontal" android:layout_width="0.0dip" android:layout_height="20.0dip" android:layout_weight="1.0" />
+                </LinearLayout>
+                <LinearLayout android:gravity="center" android:orientation="vertical" android:id="@id/layout_gallery" android:layout_width="fill_parent" android:layout_height="wrap_content" />
+            </LinearLayout>
+            <LinearLayout android:orientation="vertical" android:id="@id/layout_desktop_space2" android:layout_width="fill_parent" android:layout_height="42.0dip" />
+        </LinearLayout>
+        <LinearLayout android:orientation="vertical" android:id="@id/layout_desktop_logo_for_normal" android:layout_width="fill_parent" android:layout_height="wrap_content">
+            <LinearLayout android:orientation="vertical" android:id="@id/layout_desktop_space3" android:layout_width="fill_parent" android:layout_height="54.0dip" />
+            <ImageButton android:layout_gravity="left" android:id="@id/btn_desktop_logo_for_normal" android:background="#00000000" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="18.0dip" android:src="@drawable/desktop_logo_button" />
+        </LinearLayout>
+        <LinearLayout android:orientation="vertical" android:id="@id/layout_desktop_set_for_chang_e" android:layout_width="fill_parent" android:layout_height="wrap_content">
+            <LinearLayout android:orientation="vertical" android:id="@id/layout_desktop_space4" android:layout_width="fill_parent" android:layout_height="49.0dip" />
+        </LinearLayout>
+        <LinearLayout android:orientation="vertical" android:id="@id/layout_desktop_set_for_normal" android:layout_width="fill_parent" android:layout_height="wrap_content">
+            <LinearLayout android:orientation="vertical" android:id="@id/layout_desktop_space5" android:layout_width="fill_parent" android:layout_height="53.0dip" />
+            <ImageButton android:layout_gravity="right" android:id="@id/btn_desktop_set_for_normal" android:background="#00000000" android:paddingLeft="10.0dip" android:paddingTop="1.0dip" android:paddingBottom="1.0dip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="20.0dip" android:src="@drawable/desktop_setting_button" />
+        </LinearLayout>
+    </FrameLayout>
+</LinearLayout>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="dialog" parent="@*android:style/Theme.Dialog">
+        <item name="android:windowBackground">@color/null_color</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+    <style name="notification_battery_title_style">
+        <item name="android:textSize">18.0sp</item>
+        <item name="android:textColor">@color/standard_black</item>
+    </style>
+    <style name="notification_battery_content_white_style">
+        <item name="android:textSize">14.0sp</item>
+        <item name="android:textColor">@color/standard_white</item>
+    </style>
+    <style name="notification_battery_content_black_style">
+        <item name="android:textSize">14.0sp</item>
+        <item name="android:textColor">@color/standard_black</item>
+    </style>
+    <style name="edittext_default">
+        <item name="android:textSize">17.0sp</item>
+        <item name="android:textColor">#ff333333</item>
+        <item name="android:background">@drawable/edittext_bg</item>
+        <item name="android:padding">8.0dip</item>
+    </style>
+    <style name="activity_titile">
+        <item name="android:textSize">18.0sp</item>
+        <item name="android:textColor">#ff2f4d61</item>
+    </style>
+    <style name="MyTheme.NoTitleBar.CustomBackground" parent="@*android:style/Theme.Translucent">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowFullscreen">false</item>
+    </style>
+</resources>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RadioGroup android:gravity="center" android:orientation="horizontal" android:id="@id/regulate_radio_gruop" android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res/com.tencent.qqpimsecure">
+    <RadioButton android:id="@id/desk_assis_show_ram_style" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="15.0dip" android:button="@drawable/radiobutton1" android:drawableRight="@drawable/desktop_switchbg_icon_a_1" app:type="1" />
+    <RadioButton android:id="@id/desk_assis_rocket_style" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="15.0dip" android:button="@drawable/radiobutton1" android:drawableRight="@drawable/desktop_switchbg_icon_b_1" app:type="2" />
+</RadioGroup>
