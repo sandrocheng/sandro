@@ -3,18 +3,19 @@ package com.sandro.mamanger;
 import android.app.KeyguardManager;
 import android.app.KeyguardManager.OnKeyguardExitResult;
 import android.content.Context;
-import android.os.Handler;
-import android.os.Message;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.WindowManager;
 
 import com.sandro.ImageTrans.MainApp;
 import com.sandro.ImageTrans.R;
+import com.sandro.ImageTrans.ScreenSaverReceiver;
 import com.sandro.custom.view.ScreenSaverBackView;
 import com.sandro.custom.view.ScreenSaverView;
 
-public class ScreenSaverManager {
+public class ScreenSaverManager implements TouchListener{
 
 	private KeyguardManager keyguardManager;
 	
@@ -31,22 +32,6 @@ public class ScreenSaverManager {
 	private WindowManager mWindowManager;
 	
 	private boolean screenShow;
-	
-	private int x = 0;
-	
-	private Handler handler = new Handler(){
-
-		@Override
-		public void handleMessage(Message msg) {
-			if(screenShow && screenSaverView!=null){
-				x++;
-				screenSaverViewParams.x = x*6;
-				mWindowManager.updateViewLayout(screenSaverView, screenSaverViewParams);
-			}
-			super.handleMessage(msg);
-		}
-		
-	};
 	
 	public ScreenSaverManager(){
 		mWindowManager = (WindowManager) MainApp.getContext().getSystemService(Context.WINDOW_SERVICE);
@@ -108,31 +93,17 @@ public class ScreenSaverManager {
 				+ screenSaverViewParams.type
 				+ " flags : "
 				+ screenSaverViewParams.flags);		
-
+		screenBackSaverView.registTouchListener(this);
 		screenShow = true;
-		
-		new Thread(){
-
-			@Override
-			public void run() {
-				for(int i = 0;i<30;i++){
-					try {
-						Thread.sleep(50);
-					} catch (InterruptedException e) {
-					}
-					handler.sendEmptyMessage(0);
-				}
-			}
-			
-		}.start();
 	}
 
 	public void closeScreenView() {
 		if (screenShow) {
+			screenBackSaverView.unRegistTouchListener();
 			mWindowManager.removeView(screenSaverView);
 			mWindowManager.removeView(screenBackSaverView);
+			screenSaverViewParams.x = 0;
 			screenShow = false;
-			x = 0;
 			keyguardManager.exitKeyguardSecurely(new OnKeyguardExitResult() {
 
 				@Override
@@ -142,6 +113,24 @@ public class ScreenSaverManager {
 				
 			});
 		}
+	}
+
+	@Override
+	public void onBackViewTouch(MotionEvent event) {
+		final int action = event.getAction();
+		final float x = event.getX();
+		Log.i("ScreenSaverBackView", "onTouchEvent action : " + action + " ,x : " + x);
+		switch (action) {
+		case MotionEvent.ACTION_MOVE:
+			screenSaverViewParams.x = (int)x;
+			mWindowManager.updateViewLayout(screenSaverView, screenSaverViewParams);
+			break;
+		case MotionEvent.ACTION_UP:
+			Intent intent = new Intent();
+			intent.setAction(ScreenSaverReceiver.ACTION_SCREEN_SAVER_CLOSE);// 发出自定义广播
+			MainApp.getContext().sendBroadcast(intent);
+			break;
+		}		
 	}
 
 
