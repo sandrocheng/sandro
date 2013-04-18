@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="fill_parent" android:minHeight="?android:listPreferredItemHeight"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <RelativeLayout android:orientation="vertical" android:layout_width="wrap_content" android:layout_height="fill_parent">
+        <TextView android:ellipsize="marquee" android:id="@id/ip_dial_no_use_number_title" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="8.0dip" android:layout_marginTop="10.0dip" android:text="ThemeTitle" android:singleLine="true" style="@style/textLevelMiddle" />
+        <TextView android:ellipsize="marquee" android:id="@id/ip_dial_no_use_number_body" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="8.0dip" android:text="ThemeType" android:singleLine="true" android:layout_below="@id/ip_dial_no_use_number_title" style="@style/textLevelSmall" />
+    </RelativeLayout>
+    <view android:id="@id/list_item_delete" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="5.0dip" android:src="@drawable/ic_delete_btn_selector" android:layout_alignParentRight="true" android:layout_centerVertical="true" class="com.ijinshan.kinghelper.common.DontPressWithParentImageView" />
+</RelativeLayout>

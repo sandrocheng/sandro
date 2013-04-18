@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:id="@id/root_scan" android:background="@color/colorBackground" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout android:orientation="horizontal" android:id="@id/firewall_call_linear_title" android:background="@drawable/traffic_tou_bg_icon" android:layout_width="fill_parent" android:layout_height="wrap_content">
+        <TextView android:gravity="center_vertical" android:id="@id/clean_title" android:layout_width="wrap_content" android:layout_height="fill_parent" android:text="垃圾清理" android:layout_weight="1.0" style="@style/titleBarText" />
+        <Button android:layout_gravity="center_vertical" android:id="@id/clean_click_button" android:background="@drawable/titlebar_button_selector" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="6.0dip" android:text="取消扫描" style="@style/titleBarButton" />
+    </LinearLayout>
+    <RelativeLayout android:orientation="vertical" android:id="@id/layout_scan" android:layout_width="fill_parent" android:layout_height="fill_parent">
+        <RelativeLayout android:orientation="vertical" android:id="@id/layout" android:layout_width="fill_parent" android:layout_height="fill_parent">
+            <FrameLayout android:id="@id/framelayout" android:layout_width="fill_parent" android:layout_height="25.0dip" android:layout_below="@id/layout" android:layout_alignParentTop="true">
+                <ProgressBar android:layout_gravity="center" android:id="@id/progressBar_scan" android:layout_width="fill_parent" android:layout_height="30.0dip" android:max="10000" style="?android:attr/progressBarStyleHorizontal" />
+                <TextView android:textAppearance="@style/pm_top_info_text" android:textColor="@color/textColorPrimary" android:gravity="center_vertical" android:layout_gravity="center_vertical" android:id="@id/tv_scan_info" android:paddingLeft="4.0dip" android:paddingRight="4.0dip" android:layout_width="fill_parent" android:layout_height="30.0dip" android:singleLine="true" />
+            </FrameLayout>
+            <TextView android:id="@id/above_list" android:background="@drawable/traffic_main_divider_icon" android:visibility="visible" android:layout_width="fill_parent" android:layout_height="1.0dip" android:layout_below="@id/framelayout" />
+            <ListView android:id="@*android:id/list" android:layout_width="fill_parent" android:layout_height="wrap_content" android:cacheColorHint="@*android:color/transparent" android:divider="@drawable/traffic_main_divider_icon" android:dividerHeight="1.0dip" android:layout_below="@id/above_list" android:fastScrollEnabled="true" android:headerDividersEnabled="true" android:footerDividersEnabled="true" />
+            <TextView android:background="@drawable/traffic_main_divider_icon" android:visibility="visible" android:layout_width="fill_parent" android:layout_height="1.0dip" android:layout_below="@*android:id/list" />
+        </RelativeLayout>
+    </RelativeLayout>
+    <RelativeLayout android:orientation="vertical" android:id="@id/layout_finish" android:background="@color/colorBackground" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="fill_parent">
+        <TextView android:textColor="@color/textColorPrimary" android:gravity="center" android:id="@id/tv_show_result" android:paddingLeft="4.0dip" android:paddingRight="4.0dip" android:layout_width="fill_parent" android:layout_height="fill_parent" android:text="垃圾文件清理成功" style="@style/textLevelMiddle" />
+    </RelativeLayout>
+</LinearLayout>

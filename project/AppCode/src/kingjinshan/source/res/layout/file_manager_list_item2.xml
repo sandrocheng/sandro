@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_width="fill_parent" android:layout_height="?android:listPreferredItemHeight" android:minHeight="?android:listPreferredItemHeight"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <RelativeLayout android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_toLeftOf="@id/software_btn_uninstall" android:layout_alignParentLeft="true" android:layout_centerVertical="true"
+      xmlns:android="http://schemas.android.com/apk/res/android">
+        <ImageView android:layout_gravity="center" android:id="@id/icon" android:paddingRight="10.0dip" android:layout_width="50.0dip" android:layout_height="50.0dip" android:layout_marginLeft="14.0dip" android:layout_alignParentLeft="true" />
+        <TextView android:textAppearance="@style/item_title" android:ellipsize="end" android:id="@id/title" android:layout_width="200.0dip" android:layout_height="wrap_content" android:layout_marginTop="5.0dip" android:singleLine="true" android:layout_weight="1.0" android:layout_toRightOf="@id/icon" android:layout_alignParentTop="true" />
+        <TextView android:textAppearance="@style/item_content" android:id="@id/software_size" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="4.0dip" android:layout_toRightOf="@id/icon" android:layout_below="@id/title" />
+        <TextView android:textAppearance="@style/item_content" android:gravity="right" android:id="@id/software_storage" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="4.0dip" android:layout_marginRight="4.0dip" android:layout_below="@id/title" android:layout_alignParentRight="true" />
+    </RelativeLayout>
+    <Button android:textSize="14.0dip" android:textColor="@color/function_button_textcolor_selector" android:id="@id/software_btn_uninstall" android:background="@drawable/function_button_selector" android:padding="0.0dip" android:focusable="false" android:layout_width="55.0dip" android:layout_height="35.0dip" android:layout_marginRight="10.0dip" android:text="@string/fm_list_btn_uninstall" android:layout_weight="1.0" android:layout_alignParentRight="true" android:layout_centerVertical="true" />
+</RelativeLayout>

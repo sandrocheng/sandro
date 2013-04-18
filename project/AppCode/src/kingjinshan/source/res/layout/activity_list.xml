@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <include android:id="@id/custom_title" android:layout_alignParentTop="true" layout="@layout/activity_custom_title" />
+    <FrameLayout android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_above="@id/activity_list_firewall_report_layout" android:layout_below="@id/custom_title">
+        <ListView android:id="@*android:id/list" android:background="@drawable/traffic_main_background_2" android:layout_width="fill_parent" android:layout_height="fill_parent" android:cacheColorHint="#00000000" android:divider="@drawable/traffic_main_divider_icon" android:layout_weight="1.0" android:headerDividersEnabled="true" android:footerDividersEnabled="true" />
+        <com.ijinshan.kinghelper.common.NumSortView android:layout_gravity="right" android:id="@id/myNumSortView" android:background="#00000000" android:visibility="invisible" android:layout_width="30.0dip" android:layout_height="fill_parent" android:layout_alignParentRight="true" />
+    </FrameLayout>
+    <LinearLayout android:orientation="vertical" android:id="@*android:id/empty" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerInParent="true">
+        <ProgressBar android:layout_gravity="center" android:id="@id/activity_list_load_progressbar" android:visibility="gone" style="@style/loadingProgressBarStyle" />
+        <TextView android:layout_gravity="center" android:id="@id/activity_list_load_textview" android:paddingTop="20.0dip" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/list_no_data" />
+        <Button android:layout_gravity="center" android:id="@id/activity_list_add_button" android:visibility="visible" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/list_add_data" />
+    </LinearLayout>
+    <LinearLayout android:id="@id/activity_list_firewall_report_layout" android:layout_alignParentBottom="true" style="@style/bottomBar">
+        <Button android:id="@id/firewall_report_ok_or_report_button" android:text="@string/firewall_report_detail" style="@style/bottomButton" />
+        <Button android:id="@id/firewall_report_cancel_button" android:text="@string/firewall_cancel" style="@style/bottomButton" />
+    </LinearLayout>
+</RelativeLayout>

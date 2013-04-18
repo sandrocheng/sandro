@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView android:id="@id/addContactLinearLayout" android:paddingLeft="4.0dip" android:paddingRight="4.0dip" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_margin="4.0dip">
+        <TextView android:id="@id/addContactNameText" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/contact_addcontact_name_text" style="@style/textDialogContent" />
+        <EditText android:id="@id/addContactNameValue" android:layout_width="fill_parent" android:layout_height="wrap_content" android:hint="可以为空" android:selectAllOnFocus="true" />
+        <TextView android:id="@id/addContactPhoneNumberText" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/contact_addcontact_phonenumber_text" style="@style/textDialogContent" />
+        <EditText android:id="@id/addContactPhoneNumberValue" android:layout_width="fill_parent" android:layout_height="wrap_content" android:phoneNumber="true" />
+        <CheckBox android:id="@id/IsImport" android:layout_width="wrap_content" android:layout_height="wrap_content" android:checked="true" android:text="@string/import_confirm_text" style="@style/textDialogCheckContent" />
+    </LinearLayout>
+</ScrollView>

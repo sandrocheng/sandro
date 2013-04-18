@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <TextView android:gravity="center_vertical" android:id="@id/ip_setting_title" android:background="@drawable/traffic_tou_bg_icon" android:layout_width="fill_parent" android:layout_height="43.0dip" android:text="@string/activity_lable_firewall_ip_dial" style="@style/titleBarText" />"
+<include android:layout_marginTop="0.0dip" layout="@layout/custom_pop_view" />
+    <ListView android:id="@*android:id/list" android:layout_width="fill_parent" android:layout_height="wrap_content" android:footerDividersEnabled="true" />
+</LinearLayout>

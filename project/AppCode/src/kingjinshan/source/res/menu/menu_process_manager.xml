@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:icon="@drawable/sw_menu_sort_alphabetically_a" android:id="@id/menu_sort_name" android:title="@string/pm_menu_sort_name" />
+    <item android:icon="@drawable/sw_menu_sort_size_a" android:id="@id/menu_sort_memory" android:title="@string/pm_menu_sort_memory" />
+</menu>

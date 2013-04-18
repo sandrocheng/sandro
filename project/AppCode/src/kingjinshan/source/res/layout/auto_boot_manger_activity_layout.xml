@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <include android:id="@id/boot_manager_title" android:layout_alignParentTop="true" layout="@layout/activity_custom_title" />
+    <LinearLayout android:orientation="vertical" android:id="@id/top_layout" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_below="@id/boot_manager_title">
+        <LinearLayout android:id="@id/boot_manager_top_layout" android:background="@drawable/traffic_firewall_pop_bg" android:visibility="gone" android:clickable="true" android:layout_width="fill_parent" android:layout_height="30.0dip">
+            <TextView android:textAppearance="@style/pm_top_info_text" android:textColor="#ff92700e" android:gravity="left|center" android:id="@id/boot_manager_txt" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginLeft="14.0dip" android:layout_marginRight="14.0dip" android:text="您的手机未获取root权限，无法使用该功能" android:singleLine="true" />
+        </LinearLayout>
+        <RadioGroup android:layout_gravity="center" android:orientation="horizontal" android:id="@id/soft_onboot_tab_radio" android:background="@drawable/main_tab_top_bg" android:layout_width="fill_parent" android:layout_height="37.299988dip" android:layout_marginLeft="10.0dip" android:layout_marginTop="10.0dip" android:layout_marginRight="10.0dip">
+            <RadioButton android:id="@id/radio_onboot" android:tag="radio_total_traffic" android:background="@drawable/main_tab_top_left" android:text="已启用项" style="@style/main_tab_top" />
+            <RadioButton android:id="@id/radio_close" android:tag="radio_2g3g_traffic" android:background="@drawable/main_tab_top_right" android:text="已禁止项" style="@style/main_tab_top" />
+        </RadioGroup>
+    </LinearLayout>
+    <ListView android:id="@*android:id/list" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="fill_parent" android:listSelector="@drawable/list_item_selector" android:cacheColorHint="#00000000" android:divider="@drawable/traffic_main_divider_icon" android:layout_above="@id/close_all" android:layout_below="@id/top_layout" android:headerDividersEnabled="false" android:footerDividersEnabled="true" />
+    <RelativeLayout android:layout_width="fill_parent" android:layout_height="fill_parent">
+        <LinearLayout android:orientation="vertical" android:id="@*android:id/empty" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerInParent="true">
+            <TextView android:textStyle="bold" android:textColor="@color/textColorPrimary" android:layout_gravity="left" android:id="@id/top_text" android:paddingLeft="10.0dip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="70.0dip" android:text="@string/am_auto_close_is_null_text" style="@style/textLevelMiddle" />
+            <TextView android:textStyle="bold" android:textColor="@color/textColorPrimary" android:layout_gravity="left|center" android:id="@id/center_text" android:paddingLeft="10.0dip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="15.0dip" android:text="@string/am_center_text_tips" android:minEms="20" style="@style/textLevelMiddle" />
+            <ProgressBar android:layout_gravity="center_horizontal" android:id="@id/initBar" style="@style/loadingProgressBarStyle" />
+            <TextView android:layout_gravity="center" android:id="@id/initText" android:paddingTop="20.0dip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/am_init_proess_tips" />
+            <TextView android:textAppearance="@style/findPwd" android:textStyle="bold" android:textColor="@color/textColorPrimary" android:autoLink="web" android:layout_gravity="left" android:id="@id/link_text" android:paddingLeft="10.0dip" android:clickable="true" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="20.0dip" android:text="@string/am_enter_bbs_to_root" />
+        </LinearLayout>
+    </RelativeLayout>
+    <Button android:gravity="center" android:id="@id/close_all" android:layout_width="fill_parent" android:layout_height="40.0dip" android:layout_marginLeft="15.0dip" android:layout_marginRight="15.0dip" android:layout_marginBottom="10.0dip" android:text="@string/am_back_button_text" android:layout_alignParentBottom="true" style="@style/bottomButton" />
+</RelativeLayout>

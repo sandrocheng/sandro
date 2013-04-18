@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:background="@color/traffic_background" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <include android:id="@id/custom_title" android:layout_alignParentTop="true" layout="@layout/activity_custom_title" />
+    <LinearLayout android:id="@id/layout_bottom" android:layout_alignParentBottom="true" style="@style/bottomBar">
+        <Button android:id="@id/guide_btn_complete" android:text="@string/protection_first_guide_btn_complete" style="@style/bottomButton" />
+    </LinearLayout>
+    <ScrollView android:background="@drawable/traffic_main_background_2" android:scrollbars="none" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginLeft="5.0dip" android:layout_marginRight="5.0dip" android:layout_marginBottom="2.0dip" android:layout_above="@id/layout_bottom" android:layout_below="@id/custom_title">
+        <LinearLayout android:orientation="vertical" android:background="@drawable/traffic_main_background_2" android:layout_width="fill_parent" android:layout_height="wrap_content">
+            <ImageView android:background="@drawable/kn_protect_guide_third" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="10.0dip" android:layout_marginTop="15.0dip" android:layout_marginRight="10.0dip" android:layout_marginBottom="10.0dip" />
+            <TextView android:textAppearance="@style/textLevelLarge" android:textColor="@color/textColorPrimary" android:id="@id/protection_guide_complete_title_txt" android:layout_width="fill_parent" android:layout_height="30.0dip" android:layout_marginLeft="10.0dip" android:text="@string/protection_guide_complete_title_txt_remote" />
+            <TextView android:textAppearance="@style/textLevelMiddle" android:textColor="@color/textColorPrimary" android:id="@id/protection_guide_complete_suggest" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="10.0dip" android:layout_marginRight="10.0dip" android:text="@string/protection_guide_complete_title_txt_1" />
+            <Button android:textColor="@color/function_button_textcolor_selector" android:id="@id/guide_btn_sms" android:background="@drawable/function_button_selector" android:layout_width="130.0dip" android:layout_height="34.0dip" android:layout_marginLeft="10.0dip" android:layout_marginTop="10.0dip" android:layout_marginRight="10.0dip" android:text="@string/protection_first_guide_btn_sms_1" style="@style/textLevelSmall" />
+            <LinearLayout android:orientation="vertical" android:id="@id/protection_first_visit_content" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="5.0dip" android:layout_marginRight="5.0dip" android:layout_marginBottom="2.0dip">
+                <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="10.0dip" android:layout_weight="1.0">
+                    <TextView android:textAppearance="@style/textLevelMiddle" android:textColor="@color/textColorPrimary" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="5.0dip" android:text="@string/protection_command_xiaohui_title" />
+                    <TextView android:textAppearance="@style/item_content" android:textColor="@color/textColorPrimary" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="2.0dip" android:text="@string/protection_command_xiaohui_command" />
+                </LinearLayout>
+                <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="10.0dip" android:layout_weight="1.0">
+                    <TextView android:textAppearance="@style/textLevelMiddle" android:textColor="@color/textColorPrimary" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="5.0dip" android:text="@string/protection_command_suoding_title" />
+                    <TextView android:textAppearance="@style/item_content" android:textColor="@color/textColorPrimary" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="2.0dip" android:text="@string/protection_command_suoding_command" />
+                </LinearLayout>
+                <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="10.0dip" android:layout_weight="1.0">
+                    <TextView android:textAppearance="@style/textLevelMiddle" android:textColor="@color/textColorPrimary" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="5.0dip" android:text="@string/protection_command_dingwei_title" />
+                    <TextView android:textAppearance="@style/item_content" android:textColor="@color/textColorPrimary" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="2.0dip" android:text="@string/protection_command_dingwei_command" />
+                </LinearLayout>
+                <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="10.0dip" android:layout_weight="1.0">
+                    <TextView android:textAppearance="@style/textLevelMiddle" android:textColor="@color/textColorPrimary" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="5.0dip" android:text="@string/protection_command_baojing_title" />
+                    <TextView android:textAppearance="@style/item_content" android:textColor="@color/textColorPrimary" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="2.0dip" android:text="@string/protection_command_baojing_command" />
+                </LinearLayout>
+                <TextView android:textAppearance="@style/textLevelSmall" android:textColor="@color/textColorPrimary" android:id="@id/protection_command_tip" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="10.0dip" android:layout_marginTop="15.0dip" android:layout_marginRight="10.0dip" android:layout_marginBottom="10.0dip" android:text="@string/protection_command_tip" android:layout_weight="1.0" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

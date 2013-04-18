@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.ijinshan.kpref.PreferenceScreen
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <com.ijinshan.kpref.CheckBoxPreference android:title="@string/desk_sms_start_up_title" android:key="@string/desk_sms_start_up_key" android:widgetLayout="@layout/list_right_checkbox" android:defaultValue="false" android:summaryOn="@string/firewall_settingsk_is_open" android:summaryOff="@string/firewall_settingsk_closed" />
+    <com.ijinshan.kpref.CheckBoxPreference android:title="@string/desk_sms_recv_set_read_title" android:key="@string/desk_sms_recv_set_read_key" android:widgetLayout="@layout/list_right_checkbox" android:dependency="@string/desk_sms_start_up_key" android:defaultValue="true" />
+    <com.ijinshan.kpref.ListPreference android:entries="@array/desk_sms_operat_preference" android:title="@string/desk_sms_operat_title" android:key="@string/desk_sms_operat_key" android:widgetLayout="@layout/list_right_icon" android:defaultValue="0" android:dialogTitle="@string/desk_sms_operat_dialog_title" android:entryValues="@array/desk_sms_operat_preference_values" />
+    <com.ijinshan.kpref.ListPreference android:entries="@array/desk_sms_style_preference" android:title="@string/desk_sms_style_title" android:key="@string/desk_sms_style_key" android:widgetLayout="@layout/list_right_icon" android:defaultValue="0" android:dialogTitle="@string/desk_sms_style_dialog_title" android:entryValues="@array/desk_sms_style_preference_values" />
+</com.ijinshan.kpref.PreferenceScreen>

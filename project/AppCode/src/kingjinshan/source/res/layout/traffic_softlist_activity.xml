@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout android:gravity="center" android:layout_gravity="center" android:orientation="vertical" android:id="@id/traffic_softlist_loading_layout" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content">
+        <ProgressBar style="@style/loadingProgressBarStyle" />
+        <TextView android:paddingTop="20.0dip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/traffic_softlist_init_message" />
+    </LinearLayout>
+    <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent">
+        <RadioGroup android:layout_gravity="center" android:orientation="horizontal" android:id="@id/traffic_softlist_tab_radio" android:background="@drawable/main_tab_top_bg" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="37.299988dip" android:layout_marginLeft="10.0dip" android:layout_marginTop="10.0dip" android:layout_marginRight="10.0dip">
+            <RadioButton android:id="@id/radio_total" android:tag="radio_total_traffic" android:background="@drawable/main_tab_top_left" android:text="总流量" style="@style/main_tab_top" />
+            <RadioButton android:id="@id/radio_today" android:tag="radio_2g3g_traffic" android:background="@drawable/main_tab_top_right" android:text="当日流量" style="@style/main_tab_top" />
+        </RadioGroup>
+        <RelativeLayout android:gravity="center_vertical" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="10.0dip">
+            <TextView android:textStyle="normal" android:textColor="@color/textColorPrimary" android:id="@id/traffic_softlist_tab_summary" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="10.0dip" android:layout_marginTop="2.0dip" android:layout_marginBottom="2.0dip" android:text="累计统计:30天" android:layout_alignParentLeft="true" android:layout_centerVertical="true" style="@style/textLevelSmall" />
+            <TextView android:textStyle="normal" android:textColor="@color/textColorPrimary" android:layout_gravity="right" android:id="@id/traffic_danwei_mb" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2.0dip" android:layout_marginRight="10.0dip" android:layout_marginBottom="2.0dip" android:text="单位:MB" android:layout_alignParentRight="true" style="@style/textLevelSmall" />
+        </RelativeLayout>
+        <RelativeLayout android:id="@id/list_head" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="wrap_content">
+            <TextView android:textColor="@color/tab_pressed_font_color" android:gravity="center" android:id="@id/kn_logo" android:layout_width="wrap_content" android:layout_height="50.0dip" android:layout_marginLeft="14.0dip" android:text="应用列表" style="@style/textLevelMiddle" />
+            <LinearLayout android:gravity="center" android:layout_width="wrap_content" android:layout_height="50.0dip" android:layout_marginRight="5.0dip" android:minHeight="32.0dip" android:layout_alignParentRight="true">
+                <ImageView android:gravity="right" android:layout_width="50.0dip" android:layout_height="wrap_content" android:layout_marginRight="5.0dip" android:src="@drawable/traffic_icon_2g3g" android:width="50.0dip" android:layout_weight="1.0" />
+                <ImageView android:gravity="right" android:layout_width="50.0dip" android:layout_height="wrap_content" android:src="@drawable/traffic_icon_wifi" android:width="50.0dip" android:layout_weight="1.0" />
+            </LinearLayout>
+        </RelativeLayout>
+        <ImageView android:id="@id/list_head_divider" android:background="@drawable/traffic_softlist_head_divider" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="wrap_content" android:src="@null" />
+        <ListView android:id="@*android:id/list" android:layout_width="fill_parent" android:layout_height="fill_parent" android:listSelector="@drawable/list_item_selector" android:cacheColorHint="#00000000" android:divider="@drawable/traffic_main_divider_icon" android:headerDividersEnabled="false" android:footerDividersEnabled="true" />
+        <LinearLayout android:gravity="center_horizontal" android:layout_gravity="center" android:id="@id/linearLayout1" android:paddingTop="160.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content">
+            <TextView android:textColor="@color/textColorPrimary" android:id="@id/traffic_soft_list_not_support" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/kn_traffic_item_info_version_error" style="@style/textLevelMiddle" />
+        </LinearLayout>
+    </LinearLayout>
+</FrameLayout>

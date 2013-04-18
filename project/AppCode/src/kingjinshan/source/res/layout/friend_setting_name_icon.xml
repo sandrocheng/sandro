@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <include android:id="@id/custom_title" android:layout_alignParentTop="true" layout="@layout/activity_custom_title" />
+    <LinearLayout android:gravity="center_vertical" android:id="@id/layout_friend_name_set" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_below="@id/custom_title">
+        <TextView android:id="@id/friendNameText" android:focusable="true" android:focusableInTouchMode="true" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_margin="5.0dip" android:text="@string/friend_setting_name_text" />
+        <EditText android:id="@id/friendNameValue" android:layout_width="180.0dip" android:layout_height="wrap_content" android:singleLine="true" android:maxLength="16" />
+    </LinearLayout>
+    <LinearLayout android:gravity="center_vertical" android:id="@id/layout_friend_image_set" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_below="@id/layout_friend_name_set">
+        <TextView android:id="@id/friendIconText" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_margin="5.0dip" android:text="@string/friend_setting_icon_text" />
+        <ImageView android:id="@id/friendIconView" android:background="@*android:drawable/alert_dark_frame" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/friend_notify_icon" />
+    </LinearLayout>
+    <GridView android:gravity="center" android:id="@id/friendIconDialogGrid" android:layout_width="wrap_content" android:layout_height="wrap_content" android:horizontalSpacing="16.0dip" android:verticalSpacing="16.0dip" android:stretchMode="spacingWidth" android:columnWidth="32.0dip" android:numColumns="auto_fit" android:layout_below="@id/layout_friend_image_set" />
+    <LinearLayout android:id="@id/layout_0001" android:layout_alignParentBottom="true" style="@style/bottomBar">
+        <Button android:id="@id/friend_left_button" android:text="@string/firewall_save" style="@style/bottomButton" />
+        <Button android:id="@id/friend_right_button" android:text="@string/firewall_cancel" style="@style/bottomButton" />
+    </LinearLayout>
+</RelativeLayout>

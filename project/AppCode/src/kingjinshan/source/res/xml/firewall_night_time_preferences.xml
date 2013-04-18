@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.ijinshan.kpref.PreferenceScreen android:key="firewall_night_preferences"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <com.ijinshan.kinghelper.common.RadioButtonPreference android:title="@string/firewall_settingsk_intelligent_mode" android:key="@string/firewall_night_settingsk_intelligent_mode_key" android:summary="@string/firewall_settingsk_auto_mode_summary" />
+    <com.ijinshan.kinghelper.common.RadioButtonPreference android:title="@string/firewall_settingsk_blacklist_mode" android:key="@string/firewall_night_settingsk_blacklist_mode_key" android:summary="@string/firewall_settingsk_only_intercept_blacklist" />
+    <com.ijinshan.kinghelper.common.RadioButtonPreference android:title="@string/firewall_settingsk_Disturb_Mode" android:key="@string/firewall_night_settingsk_Disturb_Mode_key" android:summary="@string/firewall_settingsk_accept_only_whitelist_and_contacts" />
+    <com.ijinshan.kinghelper.common.RadioButtonPreference android:title="@string/firewall_settingsk_whitelist_mode" android:key="@string/firewall_night_settingsk_whitelist_mode_key" android:summary="@string/firewall_settingsk_only_allow_whitelist" />
+    <com.ijinshan.kinghelper.common.RadioButtonPreference android:title="@string/firewall_settingsk_denyall_mode" android:key="@string/firewall_night_settingsk_denyall_mode_key" android:summary="@string/firewall_settingsk_deny_all_summary" />
+    <com.ijinshan.kinghelper.common.RadioButtonPreference android:title="@string/firewall_settingsk_custom_mode" android:key="@string/firewall_night_settingsk_custom_mode_key" android:summary="@string/firewall_settingsk_custom_mode_edit" />
+    <com.ijinshan.kpref.PreferenceScreen android:title="@string/firewall_settingsk_custom_mode_edit" android:key="@string/firewall_night_settingsk_custom_mode_edit_key" android:widgetLayout="@layout/list_right_icon" android:dependency="@string/firewall_night_settingsk_custom_mode_key" />
+</com.ijinshan.kpref.PreferenceScreen>

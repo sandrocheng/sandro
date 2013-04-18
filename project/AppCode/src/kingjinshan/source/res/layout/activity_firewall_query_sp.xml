@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <RelativeLayout android:gravity="center_vertical" android:id="@id/linearLayout7" android:background="@drawable/traffic_tou_bg_icon" android:layout_width="fill_parent" android:layout_height="wrap_content">
+        <TextView android:gravity="center_vertical" android:id="@id/textView2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/firewall_tips_sp_service_query" style="@style/titleBarText" />
+    </RelativeLayout>
+    <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent">
+        <TextView android:textAppearance="@style/item_title" android:gravity="left|center" android:layout_gravity="center_vertical" android:id="@id/textView1" android:paddingLeft="10.0dip" android:paddingTop="30.0dip" android:paddingRight="10.0dip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/firewall_tips_sp_service_query_message" />
+        <Button android:textSize="18.0dip" android:textColor="@color/function_button_textcolor_selector" android:layout_gravity="center" android:id="@id/firewall_query_customized_sp" android:background="@drawable/function_button_selector" android:layout_width="120.0dip" android:layout_height="40.0dip" android:layout_marginTop="30.0dip" android:text="@string/firewall_tips_sp_service_query_btn_text" />
+    </LinearLayout>
+</LinearLayout>

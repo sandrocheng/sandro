@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:layout_width="wrap_content" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout android:orientation="vertical" android:background="@drawable/sys_warning_dlg_bg" android:layout_width="wrap_content" android:layout_height="wrap_content">
+        <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="45.0dip">
+            <ImageView android:layout_gravity="center_vertical" android:layout_width="30.0dip" android:layout_height="30.0dip" android:layout_marginLeft="10.0dip" android:src="@drawable/main_icon" />
+            <TextView android:textSize="18.0sp" android:textColor="#ffffffff" android:layout_gravity="center_vertical" android:id="@id/title" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="5.0dip" android:text="@string/warning_hide_number_call_title" />
+        </LinearLayout>
+        <ImageView android:gravity="fill_horizontal" android:background="@drawable/kn_dialog_divider_horizontal_light" android:layout_width="fill_parent" android:layout_height="1.0dip" android:layout_marginLeft="10.0dip" android:layout_marginRight="10.0dip" android:scaleType="fitXY" />
+        <TextView android:textColor="@color/white" android:gravity="center_vertical" android:id="@id/dialog_message" android:paddingLeft="15.0dip" android:paddingRight="15.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="@string/warning_hide_number_call_message" android:layout_above="@id/btn_linearlayout" style="@style/textLevelLarge" />
+        <LinearLayout android:layout_gravity="center_horizontal" android:orientation="horizontal" android:background="@drawable/kn_bg_dialog_button" android:padding="5.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content">
+            <Button android:textColor="@color/function_button_textcolor_selector" android:id="@id/btn_yes" android:background="@drawable/function_button_selector" android:layout_width="50.0dip" android:layout_height="fill_parent" android:layout_marginRight="2.0dip" android:text="@string/btn_yes" android:layout_weight="1.0" style="@style/textLevelMiddle" />
+            <Button android:textColor="@color/function_button_textcolor_selector" android:id="@id/btn_no" android:background="@drawable/function_button_selector" android:layout_width="50.0dip" android:layout_height="fill_parent" android:layout_marginLeft="2.0dip" android:text="@string/btn_no" android:layout_weight="1.0" style="@style/textLevelMiddle" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

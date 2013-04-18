@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:paddingLeft="10.0dip" android:paddingTop="5.0dip" android:paddingRight="10.0dip" android:paddingBottom="2.0dip" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <ImageView android:layout_gravity="center" android:id="@id/onekey_call_icon" android:paddingRight="10.0dip" android:layout_width="50.0dip" android:layout_height="50.0dip" android:layout_alignParentLeft="true" />
+    <CheckBox android:typeface="monospace" android:id="@id/checkbox" android:padding="8.0dip" android:focusable="false" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentRight="true" />
+    <RelativeLayout android:paddingLeft="10.0dip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_toLeftOf="@id/check" android:layout_toRightOf="@id/onekey_call_icon" android:layout_centerVertical="true"
+      xmlns:android="http://schemas.android.com/apk/res/android">
+        <TextView android:textAppearance="@style/item_title" android:id="@id/onekey_call_name" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentTop="true" />
+        <TextView android:textAppearance="@style/item_content" android:id="@id/onekey_call_num" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_below="@id/onekey_call_name" android:layout_alignParentLeft="true" />
+    </RelativeLayout>
+</RelativeLayout>

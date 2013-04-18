@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="40.0dip">
+        <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="5.0dip" android:layout_marginTop="5.0dip" android:layout_marginRight="10.0dip" android:layout_marginBottom="9.0dip">
+            <ImageView android:background="@drawable/dialog_logo" android:layout_width="24.0dip" android:layout_height="24.0dip" />
+            <TextView android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="5.0dip" android:text="@string/kn_traffic_warning_dialog_title" style="@style/TextAppearanceDialogWindowTitle" />
+        </LinearLayout>
+    </LinearLayout>
+    <ImageView android:gravity="fill_horizontal" android:id="@id/titleDividerTop" android:layout_width="fill_parent" android:layout_height="1.0dip" android:src="@drawable/traffic_main_divider_icon" android:scaleType="fitXY" />
+    <LinearLayout android:orientation="vertical" android:padding="5.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_weight="1.0">
+        <TextView android:id="@id/kn_traffic_warning_dialog_content" android:padding="5.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="本月使用流量已经超过月流量上限,建议关闭网络连接" style="@style/textDialogMessageContent" />
+    </LinearLayout>
+    <LinearLayout android:layout_gravity="center_horizontal" android:orientation="horizontal" android:padding="5.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content">
+        <Button android:textSize="18.0sp" android:textColor="@color/function_greenbutton_textcolor_selector" android:layout_gravity="center_vertical" android:id="@id/kn_traffic_warning_dialog_setting" android:background="@drawable/function_greenbutton_selector" android:layout_width="0.0dip" android:layout_height="wrap_content" android:layout_marginLeft="3.0dip" android:layout_marginRight="3.0dip" android:text="查看详情" android:maxLines="2" android:layout_weight="1.0" />
+        <Button android:textSize="18.0sp" android:textColor="@color/function_whitebutton_textcolor_selector" android:layout_gravity="center_vertical" android:id="@id/kn_traffic_warning_dialog_back" android:background="@drawable/function_button_selector" android:layout_width="0.0dip" android:layout_height="wrap_content" android:layout_marginLeft="3.0dip" android:layout_marginRight="3.0dip" android:text="知道了" android:maxLines="2" android:layout_weight="1.0" />
+    </LinearLayout>
+</LinearLayout>

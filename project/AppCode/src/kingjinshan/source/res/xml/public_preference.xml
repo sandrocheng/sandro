@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.ijinshan.kpref.PreferenceScreen
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <com.ijinshan.kpref.PreferenceCategory android:title="@string/public_pref_function">
+        <com.ijinshan.kpref.CheckBoxPreference android:title="@string/kn_traffis_open_network_notify_key_title" android:key="@string/kn_traffis_open_monitor_tray_key" android:widgetLayout="@layout/list_right_checkbox" android:defaultValue="true" android:summaryOn="@string/timing_one_click_accelerate_started" android:summaryOff="@string/timing_one_click_accelerate_stoped" />
+        <com.ijinshan.kpref.Preference android:title="@string/commumgr_extra_call_title" android:key="IsExtraCallEnable_Main_setting" android:widgetLayout="@layout/list_right_icon" />
+        <com.ijinshan.kpref.ListPreference android:entries="@array/firewall_settingsk_open_hangup_hint_preference" android:title="@string/firewall_settingsk_open_hangup_hint" android:key="@string/firewall_settingsk_open_hangup_hint_key_2" android:widgetLayout="@layout/list_right_icon" android:defaultValue="0" android:dialogTitle="@string/firewall_settingsk_open_hangup_hint_dialog_title" android:entryValues="@array/firewall_settingsk_open_hangup_hint_preference_values" />
+        <com.ijinshan.kpref.Preference android:title="@string/desk_sms" android:key="desk_sms_start_up_key_Main_setting" android:widgetLayout="@layout/list_right_icon" />
+        <com.ijinshan.kpref.CheckBoxPreference android:title="@string/public_pref_cloud_scan" android:key="@string/public_pref_cloud_scan_key" android:widgetLayout="@layout/list_right_checkbox" android:defaultValue="true" android:summaryOn="@string/kn_summary_on" android:summaryOff="@string/kn_summary_off" />
+    </com.ijinshan.kpref.PreferenceCategory>
+    <com.ijinshan.kpref.PreferenceCategory android:title="@string/public_pref_autoupdate">
+        <com.ijinshan.kpref.CheckBoxPreference android:title="@string/public_pref_confirm_startup_autoupdate" android:key="public_preference_startup_autoupdate" android:widgetLayout="@layout/list_right_checkbox" android:defaultValue="true" android:summaryOn="@string/public_pref_confirm_startup_autoupdate_on" android:summaryOff="@string/public_pref_confirm_startup_autoupdate_off" android:disableDependentsState="false" />
+        <com.ijinshan.kpref.CheckBoxPreference android:title="@string/public_pref_startup_autoupdate_in_wifi_model" android:key="public_preference_startup_autoupdate_in_wifi_model" android:widgetLayout="@layout/list_right_checkbox" android:dependency="public_preference_startup_autoupdate" android:defaultValue="true" android:summaryOn="@string/kn_summary_on" android:summaryOff="@string/kn_summary_off" android:disableDependentsState="true" />
+    </com.ijinshan.kpref.PreferenceCategory>
+    <com.ijinshan.kpref.PreferenceCategory android:title="@string/bugfeed_title">
+        <com.ijinshan.kpref.CheckBoxPreference android:title="@string/usage_text" android:key="@string/usage_key" android:widgetLayout="@layout/list_right_checkbox" android:defaultValue="true" android:summaryOn="@string/kn_summary_on" android:summaryOff="@string/kn_summary_off" />
+        <com.ijinshan.kpref.CheckBoxPreference android:title="@string/firewall_settingsk_join_to_security_cloud_plan" android:key="@string/firewall_settingsk_join_to_security_cloud_plan_key" android:widgetLayout="@layout/list_right_checkbox" android:defaultValue="false" android:summaryOn="@string/kn_summary_on_firewall_settingsk_join_to_security_cloud_plan_summary" android:summaryOff="@string/kn_summary_off_firewall_settingsk_join_to_security_cloud_plan_summary" />
+    </com.ijinshan.kpref.PreferenceCategory>
+</com.ijinshan.kpref.PreferenceScreen>

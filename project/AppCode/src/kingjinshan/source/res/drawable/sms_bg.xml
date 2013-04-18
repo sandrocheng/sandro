@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<level-list
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:maxLevel="1">
+        <selector
+          xmlns:android="http://schemas.android.com/apk/res/android">
+            <item android:state_selected="true" android:drawable="@drawable/sms_bg_receive_selected" />
+            <item android:state_pressed="true" android:drawable="@drawable/sms_bg_receive_selected" />
+            <item android:drawable="@drawable/sms_bg_receive_unselected" />
+        </selector>
+    </item>
+    <item android:maxLevel="2">
+        <selector
+          xmlns:android="http://schemas.android.com/apk/res/android">
+            <item android:state_selected="true" android:drawable="@drawable/sms_bg_send_selected" />
+            <item android:state_pressed="true" android:drawable="@drawable/sms_bg_send_selected" />
+            <item android:drawable="@drawable/sms_bg_send_unselected" />
+        </selector>
+    </item>
+</level-list>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.ijinshan.kpref.PreferenceScreen
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <com.ijinshan.kpref.CheckBoxPreference android:title="@string/extra_call_switch_text" android:key="IsExtraCallEnable" android:widgetLayout="@layout/list_right_checkbox" android:defaultValue="true" android:summaryOn="@string/extra_call_switch_text_on" android:summaryOff="@string/extra_call_switch_text_off" />
+    <com.ijinshan.kpref.ListPreference android:entries="@array/extra_call_timeout_preference" android:title="@string/extra_call_timeout_text" android:key="ExtraCallTimeout" android:widgetLayout="@layout/list_right_icon" android:dependency="IsExtraCallEnable" android:defaultValue="15" android:dialogTitle="@string/extra_call_timeout_text" android:entryValues="@array/extra_call_timeout_preference_values" />
+    <com.ijinshan.kpref.PreferenceScreen android:persistent="false" android:title="@string/extra_call_layout_config_text" android:summary="@string/extra_call_layout_config_description" android:widgetLayout="@layout/list_right_icon" android:dependency="IsExtraCallEnable">
+        <intent android:targetPackage="com.ijinshan.mguard" android:action="android.intent.action.MAIN" android:targetClass="com.keniu.security.commumgr.CallLocateLayoutActivity" />
+    </com.ijinshan.kpref.PreferenceScreen>
+    <com.ijinshan.kpref.CheckBoxPreference android:title="@string/locked_call_switch_text" android:key="IsLockedinCalling" android:widgetLayout="@layout/list_right_checkbox" android:dependency="IsExtraCallEnable" android:defaultValue="false" android:summaryOn="@string/extra_call_switch_text_on" android:summaryOff="@string/extra_call_switch_text_off" />
+    <com.ijinshan.kpref.ListPreference android:entries="@array/extra_call_style_preference" android:title="@string/extra_call_style_text" android:key="ExtraCallStyle" android:widgetLayout="@layout/list_right_icon" android:dependency="IsExtraCallEnable" android:defaultValue="0" android:dialogTitle="@string/extra_call_style_text" android:entryValues="@array/extra_call_style_preference_values" />
+</com.ijinshan.kpref.PreferenceScreen>

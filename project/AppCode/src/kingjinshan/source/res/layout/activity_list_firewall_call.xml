@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:orientation="vertical" android:padding="0.0dip" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <RelativeLayout android:gravity="center_vertical" android:id="@id/firewall_whiteorblack_list_title" android:background="@drawable/firewall_calllog_title_background" android:layout_width="fill_parent" android:layout_height="35.0dip" android:layout_marginLeft="4.0dip" android:layout_marginTop="10.0dip" android:layout_marginRight="4.0dip">
+        <TextView android:textColor="@color/tab_pressed_font_color" android:id="@id/firewall_settingsk_add_text" android:paddingLeft="5.0dip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:singleLine="true" android:layout_centerVertical="true" style="@style/textLevelMiddle" />
+        <RelativeLayout android:id="@id/firewall_settingsk_Blocking_settings" android:layout_width="50.0dip" android:layout_height="34.0dip" android:layout_alignParentRight="true">
+            <ImageView android:paddingLeft="16.0dip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/fireall_list_settings_more" android:layout_centerInParent="true" android:layout_centerVertical="true" />
+        </RelativeLayout>
+        <ImageView android:layout_width="wrap_content" android:layout_height="35.0dip" android:layout_marginRight="35.0dip" android:src="@drawable/fireall_list_settings_line" android:scaleType="fitXY" android:layout_alignParentRight="true" />
+    </RelativeLayout>
+    <RelativeLayout android:background="@drawable/firewall_whiteorblack_content_background" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginLeft="5.0dip" android:layout_marginTop="42.0dip" android:layout_marginRight="5.0dip">
+        <ListView android:id="@*android:id/list" android:background="@drawable/traffic_main_background_2" android:layout_width="fill_parent" android:layout_height="fill_parent" android:listSelector="@drawable/list_item_selector" android:cacheColorHint="#00000000" android:divider="@drawable/traffic_main_divider_icon" android:layout_above="@id/activity_list_firewall_bottom_padding" android:headerDividersEnabled="true" android:footerDividersEnabled="true" />
+        <RelativeLayout android:id="@*android:id/empty" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_above="@id/activity_list_firewall_layout1" android:layout_below="@id/firewall_whiteorblack_tab_radio">
+            <LinearLayout android:orientation="vertical" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerInParent="true">
+                <TextView android:textStyle="bold" android:textColor="@color/textColorPrimary" android:layout_gravity="center" android:id="@id/activity_list_load_textview" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/list_no_data" style="@style/textLevelMiddle" />
+            </LinearLayout>
+            <LinearLayout android:orientation="vertical" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerInParent="true">
+                <ImageView android:layout_gravity="center" android:id="@id/activity_list_load_imageview" android:visibility="visible" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+            </LinearLayout>
+            <LinearLayout android:orientation="vertical" android:id="@id/firsttipdiv" android:visibility="gone" android:layout_width="155.0dip" android:layout_height="wrap_content" android:layout_alignParentTop="true" android:layout_alignParentRight="true">
+                <LinearLayout android:orientation="vertical" android:background="@drawable/popup_yellow_window_bg" android:layout_width="wrap_content" android:layout_height="wrap_content">
+                    <TextView android:textSize="14.0sp" android:textColor="@color/black" android:gravity="center" android:id="@id/popupMessageText" android:paddingTop="5.0dip" android:paddingBottom="5.0dip" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+                </LinearLayout>
+            </LinearLayout>
+        </RelativeLayout>
+    </RelativeLayout>
+    <LinearLayout android:orientation="horizontal" android:id="@id/activity_list_firewall_bottom_padding" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="35.0dip" android:layout_alignParentBottom="true" />
+    <LinearLayout android:orientation="horizontal" android:id="@id/activity_list_firewall_layout1" android:padding="0.0dip" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="46.0dip" android:layout_alignParentBottom="true">
+        <Button android:textColor="@color/function_button_textcolor_selector" android:gravity="center" android:id="@id/menu_bar_item_middle" android:layout_width="fill_parent" android:layout_height="fill_parent" android:text="@string/delete" android:layout_weight="1.0" style="@style/textLevelLarge" />
+        <Button android:textColor="@color/function_button_textcolor_selector" android:gravity="center" android:id="@id/menu_bar_item_left" android:layout_width="fill_parent" android:layout_height="fill_parent" android:text="@string/firewall_log_detail_restore2system_call" android:layout_weight="1.0" style="@style/textLevelLarge" />
+    </LinearLayout>
+</RelativeLayout>

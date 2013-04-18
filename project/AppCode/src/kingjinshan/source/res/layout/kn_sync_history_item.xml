@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_width="fill_parent" android:layout_height="?android:listPreferredItemHeight" android:layout_alignParentLeft="true" android:layout_centerVertical="true"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <TextView android:textAppearance="@style/item_title" android:ellipsize="marquee" android:id="@id/time" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="20.0dip" android:layout_marginTop="8.0dip" android:text="时间：2011年10月20日 20：25：30" android:singleLine="true" android:layout_weight="1.0" android:layout_alignParentTop="true" />
+    <TextView android:textAppearance="@style/item_title" android:id="@id/operate" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="20.0dip" android:layout_marginTop="4.0dip" android:text="操作:备份联系人20个，短信300条" android:layout_below="@id/time" />
+</RelativeLayout>

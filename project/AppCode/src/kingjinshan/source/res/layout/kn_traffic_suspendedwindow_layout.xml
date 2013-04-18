@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:layout_width="wrap_content" android:layout_height="16.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout android:gravity="center_vertical" android:background="@drawable/traffic_xuanfuchuang_small_bg" android:paddingRight="1.0dip" android:layout_width="76.0dip" android:layout_height="wrap_content">
+        <ImageView android:id="@id/traffic_liuliang_xuanfuchuang_icon" android:layout_width="16.0dip" android:layout_height="16.0dip" android:scaleType="centerInside" android:layout_centerVertical="true" />
+        <TextView android:textColor="#ffffffff" android:gravity="right|center" android:id="@id/suspend_window_traffic_network" android:layout_width="fill_parent" android:layout_height="16.0dip" android:text="199.4KB/S" android:singleLine="true" style="@style/textLevelSuperSmall" />
+    </LinearLayout>
+</LinearLayout>

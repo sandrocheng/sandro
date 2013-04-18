@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:icon="@drawable/traffic_tab_icon03xml" android:id="@id/menu_traffic_setting" android:orderInCategory="0" android:title="@string/kn_traffis_monitor_settings_title" />
+</menu>

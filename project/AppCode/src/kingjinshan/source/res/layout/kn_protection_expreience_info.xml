@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:background="@color/traffic_background" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <include android:id="@id/custom_title" android:layout_alignParentTop="true" layout="@layout/activity_custom_title" />
+    <RelativeLayout android:id="@id/layout_bottom" android:layout_width="fill_parent" android:layout_height="46.0dip" android:layout_alignParentBottom="true">
+        <LinearLayout android:id="@id/layout_bottom_two" android:layout_alignParentBottom="true" style="@style/bottomBar">
+            <Button android:id="@id/btn_expr" android:text="@string/protection_bnt_expr" style="@style/bottomButton" />
+            <Button android:id="@id/btn_back" android:text="@string/private_list_mulit_chose_cancel" style="@style/bottomButton" />
+        </LinearLayout>
+        <LinearLayout android:id="@id/layout_bottom_one" android:layout_alignParentBottom="true" style="@style/bottomBar">
+            <Button android:id="@id/btn_back_one" android:text="@string/private_list_mulit_chose_cancel" style="@style/bottomButton" />
+        </LinearLayout>
+    </RelativeLayout>
+    <RelativeLayout android:orientation="vertical" android:id="@id/protection_first_visit_content" android:background="@drawable/traffic_main_background_2" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginLeft="5.0dip" android:layout_marginRight="5.0dip" android:layout_marginBottom="2.0dip" android:layout_above="@id/layout_bottom" android:layout_below="@id/custom_title">
+        <TextView android:textAppearance="@style/item_title" android:id="@id/protection_expr_info" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="10.0dip" android:layout_marginTop="20.0dip" android:layout_marginRight="10.0dip" android:layout_alignParentTop="true" />
+        <TextView android:textAppearance="@style/item_content" android:id="@id/protection_expr_tip" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="10.0dip" android:layout_marginTop="20.0dip" android:layout_marginRight="10.0dip" android:layout_below="@id/protection_expr_info" />
+    </RelativeLayout>
+</RelativeLayout>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:background="@color/traffic_background" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <include android:id="@id/custom_title" android:layout_alignParentTop="true" layout="@layout/activity_custom_title" />
+    <ScrollView android:background="@drawable/traffic_main_background_2" android:scrollbars="none" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_below="@id/custom_title">
+        <RelativeLayout android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginBottom="2.0dip">
+            <ListView android:id="@id/protection_experience_list" android:layout_width="fill_parent" android:layout_height="wrap_content" android:listSelector="@drawable/list_item_selector" android:cacheColorHint="@*android:color/transparent" android:divider="@drawable/traffic_main_divider_icon" android:dividerHeight="2.0dip" />
+            <ImageView android:id="@id/divider_below_listview" android:background="@drawable/traffic_main_divider_icon" android:layout_width="fill_parent" android:layout_height="2.0dip" android:layout_marginBottom="5.0dip" android:layout_below="@id/protection_experience_list" />
+            <TextView android:textAppearance="@style/textLevelSmall" android:textColor="@color/textColorSecondary" android:id="@id/sync_main_tip_time_txt" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="20.0dip" android:layout_marginTop="5.0dip" android:layout_marginRight="10.0dip" android:text="@string/sync_main_tip_time" android:layout_below="@id/divider_below_listview" />
+            <TextView android:textAppearance="@style/textLevelSmall" android:textColor="@color/textColorSecondary" android:id="@id/sync_main_tip_contact_txt" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="20.0dip" android:layout_marginTop="15.0dip" android:layout_marginRight="10.0dip" android:text="@string/sync_main_tip_contact" android:layout_below="@id/sync_main_tip_time_txt" />
+            <TextView android:textAppearance="@style/textLevelSmall" android:textColor="@color/textColorSecondary" android:id="@id/sync_main_tip_sms_txt" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="20.0dip" android:layout_marginTop="5.0dip" android:layout_marginRight="10.0dip" android:text="@string/sync_main_tip_sms" android:layout_below="@id/sync_main_tip_contact_txt" />
+            <TextView android:textAppearance="@style/textLevelSmall" android:textColor="@color/textColorSecondary" android:id="@id/sync_main_tip_txt" android:paddingBottom="10.0dip" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="20.0dip" android:layout_marginTop="5.0dip" android:layout_marginRight="10.0dip" android:text="@string/sync_main_tip" android:layout_below="@id/sync_main_tip_sms_txt" />
+        </RelativeLayout>
+    </ScrollView>
+</RelativeLayout>

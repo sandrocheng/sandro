@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:paddingTop="2.0dip" android:paddingRight="4.0dip" android:paddingBottom="2.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <ImageView android:id="@id/SenderPic" android:background="@drawable/sms_user_icon_frame" android:visibility="gone" android:layout_width="65.0dip" android:layout_height="65.0dip" android:src="@drawable/friend_default_pic" android:scaleType="fitCenter" android:adjustViewBounds="true" android:layout_alignParentTop="true" />
+    <ImageView android:id="@id/SelfPic" android:background="@drawable/sms_user_icon_frame" android:visibility="gone" android:layout_width="65.0dip" android:layout_height="65.0dip" android:src="@drawable/self_pic" android:scaleType="fitCenter" android:adjustViewBounds="true" android:layout_alignParentTop="true" android:layout_alignParentRight="true" />
+    <RelativeLayout android:id="@id/SmsFrame" android:background="@drawable/sms_bg" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_toLeftOf="@id/SelfPic" android:layout_toRightOf="@id/SenderPic">
+        <ImageView android:id="@id/StatusPic" android:layout_width="16.0dip" android:layout_height="16.0dip" android:layout_marginLeft="4.0dip" android:layout_marginTop="2.0dip" android:layout_alignParentRight="true" />
+        <TextView android:textAppearance="@style/item_content" android:id="@id/ListSubTitle" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_toLeftOf="@id/StatusPic" android:layout_alignWithParentIfMissing="true" />
+        <TextView android:textAppearance="@style/item_content" android:ellipsize="marquee" android:id="@id/ListTitle" android:layout_width="wrap_content" android:layout_height="wrap_content" android:singleLine="true" android:layout_toLeftOf="@id/ListSubTitle" android:layout_alignParentLeft="true" />
+        <TextView android:textAppearance="@style/item_content" android:id="@id/ListBody" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2.0dip" android:layout_below="@id/ListTitle" android:layout_alignParentLeft="true" />
+    </RelativeLayout>
+</RelativeLayout>

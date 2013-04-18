@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <TextView android:gravity="center_vertical" android:background="@drawable/traffic_tou_bg_icon" android:layout_width="fill_parent" android:layout_height="43.0dip" android:text="@string/activity_lable_firewall_ip_dial" style="@style/titleBarText" />
+    <TextView android:textSize="16.0sp" android:textColor="@color/tab_pressed_font_color" android:paddingLeft="14.0dip" android:paddingTop="10.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="@string/ip_dial_should_not_tip" />
+    <TextView android:textSize="16.0sp" android:textColor="@color/textColorPrimary" android:paddingLeft="20.0dip" android:paddingTop="10.0dip" android:paddingRight="20.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="@string/ip_dial_may_error_items" />"
+</LinearLayout>

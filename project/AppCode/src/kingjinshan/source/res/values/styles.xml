@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="desk_sms_edit_text_style" parent="@*android:style/Widget.EditText">
+        <item name="android:background">@drawable/desk_sms_edit_selector</item>
+    </style>
+    <style name="Preference">
+        <item name="android:layout">@layout/kpref_preference</item>
+    </style>
+    <style name="Preference.Information" parent="@style/Preference">
+        <item name="android:enabled">false</item>
+        <item name="android:layout">@layout/kpref_preference_information</item>
+        <item name="android:shouldDisableView">false</item>
+    </style>
+    <style name="Preference.Category" parent="@style/Preference">
+        <item name="android:layout">@layout/kpref_preference_category</item>
+        <item name="android:selectable">false</item>
+        <item name="android:shouldDisableView">false</item>
+    </style>
+    <style name="Preference.CheckBoxPreference" parent="@style/Preference">
+        <item name="android:widgetLayout">@layout/kpref_preference_widget_checkbox</item>
+    </style>
+    <style name="Preference.PreferenceScreen" parent="@style/Preference" />
+    <style name="Preference.DialogPreference" parent="@style/Preference">
+        <item name="android:widgetLayout">@layout/kpref_preference_dialog</item>
+        <item name="android:positiveButtonText">@*android:string/ok</item>
+        <item name="android:negativeButtonText">@*android:string/cancel</item>
+    </style>
+    <style name="Preference.DialogPreference.YesNoPreference" parent="@style/Preference.DialogPreference">
+        <item name="android:positiveButtonText">@*android:string/yes</item>
+        <item name="android:negativeButtonText">@*android:string/no</item>
+    </style>
+    <style name="Preference.DialogPreference.EditTextPreference" parent="@style/Preference.DialogPreference">
+        <item name="android:dialogLayout">@layout/kpref_preference_dialog_edittext</item>
+    </style>
+    <style name="Preference.RingtonePreference" parent="@style/Preference">
+        <item name="android:widgetLayout">@layout/kpref_preference_dialog</item>
+        <item name="android:ringtoneType">ringtone</item>
+        <item name="android:showDefault">true</item>
+        <item name="android:showSilent">true</item>
+    </style>
+    <style name="my_checkbox_style" parent="@*android:style/Widget.CompoundButton.CheckBox">
+        <item name="android:button">@drawable/my_btn_check</item>
+    </style>
+    <style name="textLargeLight" parent="@*android:style/TextAppearance.Large">
+        <item name="android:textSize">16.0sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/textColorPrimaryDark</item>
+    </style>
+    <style name="textDialogContent">
+        <item name="android:textSize">18.0sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/textColorPrimaryDark</item>
+    </style>
+    <style name="textDialogMessageContent">
+        <item name="android:textSize">18.0sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/textColorPrimary</item>
+    </style>
+    <style name="textDialogCheckContent">
+        <item name="android:textSize">16.0sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/textColorSecondaryDark</item>
+    </style>
+    <style name="textSmallLight" parent="@*android:style/TextAppearance.Small">
+        <item name="android:textSize">14.0sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/textColorSecondaryDark</item>
+    </style>
+    <style name="textLarge" parent="@*android:style/TextAppearance.Large">
+        <item name="android:textSize">16.0sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/k_primary_text_dark</item>
+    </style>
+    <style name="textSmall" parent="@*android:style/TextAppearance.Small">
+        <item name="android:textSize">14.0sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/k_secondary_text_dark</item>
+    </style>
+    <style name="listViewStyle" parent="@*android:style/Widget.ListView">
+        <item name="android:listSelector">@drawable/list_item_selector</item>
+        <item name="android:divider">@drawable/traffic_main_divider_icon</item>
+    </style>
+    <style name="mylistSeparator" parent="@style/android_ListSeparator">
+        <item name="android:textSize">16.0sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/k_primary_text_dark</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:background">@drawable/setting_header_bg</item>
+        <item name="android:paddingLeft">5.0sp</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+    <style name="android_ListSeparator">
+        <item name="android:textSize">14.0sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:paddingLeft">5.0sp</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">25.0dip</item>
+    </style>
+    <style name="main_tab_bottom">
+        <item name="android:textSize">14.0sp</item>
+        <item name="android:textColor">@color/tab_textcolor_selector</item>
+        <item name="android:ellipsize">marquee</item>
+        <item name="android:gravity">center</item>
+        <item name="android:background">@drawable/tab_pressed_xml</item>
+        <item name="android:layout_width">0.0dip</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:button">@null</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:layout_weight">1.0</item>
+    </style>
+    <style name="main_tab_top">
+        <item name="android:textSize">18.0sp</item>
+        <item name="android:textColor">@color/tab_textcolor_selector</item>
+        <item name="android:ellipsize">marquee</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_width">0.0dip</item>
+        <item name="android:layout_height">37.299988dip</item>
+        <item name="android:button">@null</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:layout_weight">1.0</item>
+    </style>
+    <style name="traffic_main_tab_top">
+        <item name="android:textSize">18.0sp</item>
+        <item name="android:textColor">@color/tab_textcolor_selector</item>
+        <item name="android:ellipsize">marquee</item>
+        <item name="android:gravity">center</item>
+        <item name="android:background">@drawable/traffic_top_tab_xml</item>
+        <item name="android:layout_width">0.0dip</item>
+        <item name="android:layout_height">45.0dip</item>
+        <item name="android:button">@null</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:layout_weight">1.0</item>
+    </style>
+    <style name="TextAppearanceDialogWindowTitle">
+        <item name="android:textSize">20.0sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+    <style name="DialogWindowTitle">
+        <item name="android:textAppearance">@style/TextAppearanceDialogWindowTitle</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:scrollHorizontally">true</item>
+    </style>
+    <style name="AliDialog">
+        <item name="android:windowBackground">@drawable/traffic_tanchu</item>
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowIsTranslucent">false</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowTitleStyle">@style/DialogWindowTitle</item>
+        <item name="android:popupBackground">@null</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:windowSoftInputMode">adjustPan</item>
+    </style>
+    <style name="ProgressDialog" parent="@style/AliDialog">
+        <item name="android:windowBackground">@color/tou_ming</item>
+    </style>
+    <style name="KPDProgressDialog" parent="@style/AliDialog" />
+    <style name="transparent">
+        <item name="android:windowBackground">@color/tou_ming</item>
+    </style>
+    <style name="TrafficFirewallDialog" parent="@*android:style/Theme.Dialog">
+        <item name="android:windowBackground">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:padding">5.0dip</item>
+    </style>
+    <style name="titleBarText">
+        <item name="android:textSize">20.0sp</item>
+        <item name="android:textColor">@color/textColorPrimary</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:paddingLeft">14.0dip</item>
+    </style>
+    <style name="titleBarTextR">
+        <item name="android:textSize">20.0dip</item>
+        <item name="android:textColor">@color/textColorPrimary</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+    <style name="trafficSoftListtitleBarTextR">
+        <item name="android:textSize">16.0sp</item>
+        <item name="android:textColor">@color/textColorPrimary</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+    <style name="titleBarButton">
+        <item name="android:textSize">16.0sp</item>
+        <item name="android:textColor">@color/textColorPrimaryDark</item>
+    </style>
+    <style name="title">
+        <item name="android:textSize">14.0dip</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">#ffffffff</item>
+    </style>
+    <style name="title_button">
+        <item name="android:textSize">14.0sp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:background">@drawable/traffic_check_button_bg2</item>
+    </style>
+    <style name="progress">
+        <item name="android:textSize">12.0dip</item>
+        <item name="android:textColor">#ffffffff</item>
+    </style>
+    <style name="alert_dialog" parent="@*android:style/Theme.Dialog">
+        <item name="android:windowNoTitle">true</item>
+    </style>
+    <style name="popup_item_content">
+        <item name="android:textSize">16.0sp</item>
+        <item name="android:textColor">@color/k_primary_text_dark</item>
+    </style>
+    <style name="protection_title">
+        <item name="android:textSize">18.0sp</item>
+        <item name="android:textColor">@color/k_primary_text_dark</item>
+    </style>
+    <style name="item_title">
+        <item name="android:textSize">16.0sp</item>
+        <item name="android:textColor">@color/k_primary_text_dark</item>
+    </style>
+    <style name="item_content">
+        <item name="android:textSize">14.0sp</item>
+        <item name="android:textColor">@color/k_secondary_text_dark</item>
+    </style>
+    <style name="item_copy">
+        <item name="android:textSize">12.0sp</item>
+        <item name="android:textColor">@color/k_secondary_text_dark</item>
+    </style>
+    <style name="small_light_content">
+        <item name="android:textSize">10.0dip</item>
+        <item name="android:textColor">@color/light_bg</item>
+    </style>
+    <style name="middle_light_content">
+        <item name="android:textSize">12.0dip</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+    <style name="normal_light_content">
+        <item name="android:textSize">14.0dip</item>
+        <item name="android:textColor">@color/textColorPrimary</item>
+    </style>
+    <style name="dialog_text_white">
+        <item name="android:textSize">18.0dip</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+    <style name="widget_text">
+        <item name="android:textSize">16.0dip</item>
+        <item name="android:textColor">@color/textColorPrimaryDark</item>
+    </style>
+    <style name="pm_top_info_text">
+        <item name="android:textSize">14.0sp</item>
+        <item name="android:textColor">@color/textColorPrimary</item>
+    </style>
+    <style name="c">
+        <item name="android:textColor">@color/traffic_setting_text_color</item>
+    </style>
+    <style name="net_traffic_setting_disable_text_style">
+        <item name="android:textColor">@color/traffic_setting_text_color</item>
+    </style>
+    <style name="net_traffic_notify_text_style">
+        <item name="android:textColor">#ff000000</item>
+    </style>
+    <style name="main_text_style">
+        <item name="android:textColor">@color/dark_text_color</item>
+    </style>
+    <style name="CustomWindowTitleBackground">
+        <item name="android:background">@drawable/traffic_tou_bg_icon</item>
+    </style>
+    <style name="CustomWindowTitleText" parent="@*android:style/TextAppearance.WindowTitle">
+        <item name="android:textSize">20.0sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+    <style name="WindowTitle">
+        <item name="android:singleLine">true</item>
+        <item name="android:shadowColor">#bb000000</item>
+        <item name="android:shadowRadius">2.75</item>
+    </style>
+    <style name="CustomWindowTitle" parent="@style/WindowTitle">
+        <item name="android:textAppearance">@style/CustomWindowTitleText</item>
+        <item name="android:shadowColor">#bb000000</item>
+        <item name="android:shadowDx">0.0</item>
+        <item name="android:shadowDy">0.0</item>
+        <item name="android:shadowRadius">0.0</item>
+    </style>
+    <style name="TitleBarStyle" parent="@style/FirewallSettingsStyle" />
+    <style name="MainTitleBarStyle" parent="@*android:style/Theme">
+        <item name="android:windowBackground">@color/traffic_background</item>
+        <item name="android:windowTitleSize">40.0dip</item>
+        <item name="android:windowTitleStyle">@style/CustomWindowTitle</item>
+        <item name="android:windowTitleBackgroundStyle">@style/CustomWindowTitleBackground</item>
+    </style>
+    <style name="loadingProgressBarStyle">
+        <item name="android:layout_width">60.0dip</item>
+        <item name="android:layout_height">60.0dip</item>
+    </style>
+    <style name="textLevelLLarge">
+        <item name="android:textSize">22.0sp</item>
+    </style>
+    <style name="textLevelSLarge">
+        <item name="android:textSize">20.0sp</item>
+    </style>
+    <style name="textLevelLarge">
+        <item name="android:textSize">18.0sp</item>
+    </style>
+    <style name="textLevelMiddle">
+        <item name="android:textSize">16.0sp</item>
+    </style>
+    <style name="textLevelSmall">
+        <item name="android:textSize">14.0sp</item>
+    </style>
+    <style name="textLevelSuperSmall">
+        <item name="android:textSize">12.0sp</item>
+    </style>
+    <style name="singleListItemText">
+        <item name="android:textSize">20.0sp</item>
+        <item name="android:textColor">@color/k_primary_text_dark</item>
+    </style>
+    <style name="transparentStyle">
+        <item name="android:windowBackground">@color/half_tou_ming</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowAnimationStyle">@*android:style/Animation.Translucent</item>
+    </style>
+    <style name="findPwd">
+        <item name="android:textSize">16.0sp</item>
+        <item name="android:textColor">@color/link_color</item>
+    </style>
+    <style name="bottomButton">
+        <item name="android:textSize">18.0sp</item>
+        <item name="android:textColor">@color/function_button_textcolor_selector</item>
+        <item name="android:background">@drawable/function_button_selector</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">40.0dip</item>
+        <item name="android:layout_marginLeft">2.0dip</item>
+        <item name="android:layout_marginRight">2.0dip</item>
+        <item name="android:layout_weight">1.0</item>
+    </style>
+    <style name="bottomBar">
+        <item name="android:orientation">horizontal</item>
+        <item name="android:paddingLeft">8.0dip</item>
+        <item name="android:paddingTop">0.0dip</item>
+        <item name="android:paddingRight">8.0dip</item>
+        <item name="android:paddingBottom">6.0dip</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+    <style name="traffic_theme" parent="@style/FirewallSettingsStyle" />
+    <style name="FirewallSettingsStyle" parent="@*android:style/Theme">
+        <item name="android:textColorPrimary">@color/k_primary_text_dark</item>
+        <item name="android:textColorSecondary">@color/k_secondary_text_dark</item>
+        <item name="android:textAppearanceLarge">@style/textLarge</item>
+        <item name="android:textAppearanceSmall">@style/textSmall</item>
+        <item name="android:windowBackground">@color/colorBackground</item>
+        <item name="android:checkboxStyle">@style/my_checkbox_style</item>
+        <item name="android:listViewStyle">@style/listViewStyle</item>
+        <item name="android:preferenceScreenStyle">@style/Preference.PreferenceScreen</item>
+        <item name="android:preferenceCategoryStyle">@style/Preference.Category</item>
+        <item name="android:preferenceInformationStyle">@style/Preference.Information</item>
+        <item name="android:preferenceStyle">@style/Preference</item>
+        <item name="android:checkBoxPreferenceStyle">@style/Preference.CheckBoxPreference</item>
+        <item name="android:yesNoPreferenceStyle">@style/Preference.DialogPreference.YesNoPreference</item>
+        <item name="android:dialogPreferenceStyle">@style/Preference.DialogPreference</item>
+        <item name="android:editTextPreferenceStyle">@style/Preference.DialogPreference.EditTextPreference</item>
+        <item name="android:ringtonePreferenceStyle">@style/Preference.RingtonePreference</item>
+        <item name="android:listSeparatorTextViewStyle">@style/mylistSeparator</item>
+    </style>
+</resources>

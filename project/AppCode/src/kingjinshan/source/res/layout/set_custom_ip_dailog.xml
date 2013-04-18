@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout android:orientation="vertical" android:paddingLeft="4.0dip" android:paddingRight="4.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content">
+        <RadioGroup android:orientation="vertical" android:id="@id/ipdialogRadioGroup" android:layout_width="fill_parent" android:layout_height="fill_parent" android:checkedButton="@id/selected1">
+            <RadioButton android:textSize="16.0sp" android:textColor="@color/black" android:id="@id/selected1" android:paddingLeft="20.0dip" android:paddingRight="5.0dip" android:layout_width="fill_parent" android:layout_height="40.0dip" android:layout_marginTop="5.0dip" android:button="@null" android:text="1111" android:drawableRight="@*android:drawable/btn_radio" />
+            <ImageView android:id="@id/radiobutton_divider01" android:background="@drawable/traffic_main_divider_icon" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="5.0dip" android:layout_marginBottom="5.0dip" />
+            <RadioButton android:textSize="16.0sp" android:textColor="@color/black" android:id="@id/selected2" android:paddingLeft="20.0dip" android:paddingRight="5.0dip" android:layout_width="fill_parent" android:layout_height="40.0dip" android:button="@null" android:text="2222" android:drawableRight="@*android:drawable/btn_radio" />
+            <ImageView android:id="@id/radiobutton_divider02" android:background="@drawable/traffic_main_divider_icon" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="5.0dip" android:layout_marginBottom="5.0dip" />
+            <RadioButton android:textSize="16.0sp" android:textColor="@color/black" android:id="@id/selected3" android:paddingLeft="20.0dip" android:paddingRight="5.0dip" android:layout_width="fill_parent" android:layout_height="40.0dip" android:button="@null" android:text="3333" android:drawableRight="@*android:drawable/btn_radio" />
+            <ImageView android:id="@id/radiobutton_divider03" android:background="@drawable/traffic_main_divider_icon" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="5.0dip" android:layout_marginBottom="5.0dip" />
+            <RadioButton android:textSize="16.0sp" android:textColor="@color/black" android:id="@id/selected4" android:paddingLeft="20.0dip" android:paddingRight="5.0dip" android:layout_width="fill_parent" android:layout_height="40.0dip" android:button="@null" android:text="4444" android:drawableRight="@*android:drawable/btn_radio" />
+        </RadioGroup>
+        <EditText android:id="@id/custom_ip_value" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="wrap_content" android:numeric="integer" />
+    </LinearLayout>
+</ScrollView>

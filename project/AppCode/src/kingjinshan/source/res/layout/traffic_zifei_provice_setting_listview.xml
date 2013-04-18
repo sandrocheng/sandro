@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:gravity="left|center" android:orientation="horizontal" android:id="@id/traffic_settinglistview" android:descendantFocusability="blocksDescendants" android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <RadioButton android:textSize="16.0sp" android:textColor="@color/textColorPrimary" android:gravity="left|center" android:id="@id/provice_name" android:paddingLeft="50.0dip" android:focusable="false" android:clickable="false" android:duplicateParentState="true" android:layout_width="wrap_content" android:layout_height="60.0dip" android:layout_marginLeft="115.0dip" android:checked="false" android:singleLine="true" />
+</LinearLayout>

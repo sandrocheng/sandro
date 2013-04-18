@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:background="@color/traffic_background" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <include android:id="@id/custom_title" android:layout_alignParentTop="true" layout="@layout/activity_custom_title" />
+    <LinearLayout android:id="@id/layout_bottom" android:layout_alignParentBottom="true" style="@style/bottomBar">
+        <Button android:textAppearance="@style/textLevelLarge" android:textColor="@color/function_greenbutton_textcolor_selector" android:id="@id/btn_open" android:background="@drawable/function_greenbutton_selector" android:layout_width="fill_parent" android:layout_height="40.0dip" android:text="@string/protection_first_visit_open_btn" />
+    </LinearLayout>
+    <ScrollView android:id="@id/protection_first_visit_content" android:background="@drawable/traffic_main_background_2" android:scrollbars="none" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginLeft="5.0dip" android:layout_marginRight="5.0dip" android:layout_marginBottom="2.0dip" android:layout_above="@id/layout_bottom" android:layout_below="@id/custom_title">
+        <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent">
+            <TextView android:textAppearance="@style/textLevelLarge" android:textColor="@color/textColorPrimary" android:id="@id/protection_first_visit_title_txt" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="10.0dip" android:layout_marginTop="10.0dip" android:layout_marginRight="10.0dip" android:text="@string/protection_first_visit_content_title_txt" android:layout_weight="1.0" />
+            <LinearLayout android:orientation="horizontal" android:paddingTop="20.0dip" android:paddingBottom="10.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_weight="1.0">
+                <ImageView android:layout_gravity="center_vertical" android:id="@id/dingwei" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="10.0dip" android:src="@drawable/kn_protect_first_dingwei" />
+                <TextView android:textAppearance="@style/textLevelLarge" android:textColor="@color/textColorPrimaryDark" android:gravity="center_vertical" android:background="@drawable/kn_protect_first_txt_bg" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="@string/protection_first_visit_content_dingwei_txt" />
+            </LinearLayout>
+            <LinearLayout android:orientation="horizontal" android:paddingTop="10.0dip" android:paddingBottom="10.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_weight="1.0">
+                <ImageView android:layout_gravity="center_vertical" android:id="@id/dingwei" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="10.0dip" android:src="@drawable/kn_protect_first_suoding" />
+                <TextView android:textAppearance="@style/textLevelLarge" android:textColor="@color/textColorPrimaryDark" android:gravity="center_vertical" android:background="@drawable/kn_protect_first_txt_bg" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="@string/protection_first_visit_content_suoding_txt" />
+            </LinearLayout>
+            <LinearLayout android:orientation="horizontal" android:paddingTop="10.0dip" android:paddingBottom="10.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_weight="1.0">
+                <ImageView android:layout_gravity="center_vertical" android:id="@id/dingwei" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="10.0dip" android:src="@drawable/kn_protect_first_xiaohui" />
+                <TextView android:textAppearance="@style/textLevelLarge" android:textColor="@color/textColorPrimaryDark" android:gravity="center_vertical" android:background="@drawable/kn_protect_first_txt_bg" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="@string/protection_first_visit_content_xiaohui_txt" />
+            </LinearLayout>
+            <LinearLayout android:orientation="horizontal" android:paddingTop="10.0dip" android:paddingBottom="10.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_weight="1.0">
+                <ImageView android:layout_gravity="center_vertical" android:id="@id/dingwei" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="10.0dip" android:src="@drawable/kn_protect_first_huanka" />
+                <TextView android:textAppearance="@style/textLevelLarge" android:textColor="@color/textColorPrimaryDark" android:gravity="center_vertical" android:background="@drawable/kn_protect_first_txt_bg" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="@string/protection_first_visit_content_huanka_txt" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

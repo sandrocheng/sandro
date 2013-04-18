@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_width="wrap_content" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <TextView android:textColor="@color/textColorPrimaryDark" android:id="@id/progress_title" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="5.0dip" android:layout_marginTop="7.0dip" android:layout_marginRight="5.0dip" android:layout_marginBottom="7.0dip" android:text="正在为您更新，请稍候……" />
+    <ProgressBar android:id="@id/progress_bar" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="5.0dip" android:layout_marginRight="5.0dip" android:layout_marginBottom="7.0dip" android:layout_below="@id/progress_title" android:layout_centerHorizontal="true" style="?android:attr/progressBarStyleHorizontal" />
+    <TextView android:textColor="@color/textColorPrimaryDark" android:id="@id/progress_item1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="10.0dip" android:layout_marginRight="5.0dip" android:layout_marginBottom="7.0dip" android:text="10%" android:layout_below="@id/progress_bar" android:layout_alignParentLeft="true" />
+    <TextView android:textColor="@color/textColorPrimaryDark" android:id="@id/progress_item2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="10.0dip" android:layout_marginRight="5.0dip" android:layout_marginBottom="7.0dip" android:text="共需更新文件" android:layout_below="@id/progress_item1" android:layout_alignParentLeft="true" />
+</RelativeLayout>

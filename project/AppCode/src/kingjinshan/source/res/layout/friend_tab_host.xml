@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.keniu.security.commui.CustomTabHost android:id="@*android:id/tabhost" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent">
+        <FrameLayout android:id="@*android:id/tabcontent" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginBottom="0.0dip" android:layout_weight="1.0" />
+        <TabWidget android:id="@*android:id/tabs" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_alignParentBottom="true" />
+        <RadioGroup android:gravity="center" android:layout_gravity="bottom" android:orientation="horizontal" android:id="@id/main_radio" android:background="@drawable/traffic_tab_widget_background" android:layout_width="fill_parent" android:layout_height="wrap_content">
+            <RadioButton android:id="@id/radio_button0" android:tag="radio_button0" android:layout_width="0.0dip" android:text="@string/people_sms_tab_title" android:drawableTop="@drawable/friend_tab_icon_sms_xml" style="@style/main_tab_bottom" />
+            <RadioButton android:id="@id/radio_button1" android:tag="radio_button1" android:layout_width="0.0dip" android:text="@string/people_call_tab_title" android:drawableTop="@drawable/friend_tab_icon_phone_xml" style="@style/main_tab_bottom" />
+            <RadioButton android:id="@id/radio_button2" android:tag="radio_button2" android:layout_width="0.0dip" android:text="@string/friend" android:drawableTop="@drawable/friend_tab_icon_contact_xml" style="@style/main_tab_bottom" />
+            <RadioButton android:id="@id/radio_button3" android:tag="radio_button3" android:layout_width="0.0dip" android:text="@string/contact_setting_text" android:drawableTop="@drawable/friend_tab_icon_setting_xml" style="@style/main_tab_bottom" />
+        </RadioGroup>
+    </LinearLayout>
+</com.keniu.security.commui.CustomTabHost>

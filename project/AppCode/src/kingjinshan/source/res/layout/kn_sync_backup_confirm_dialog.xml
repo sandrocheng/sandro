@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <TextView android:id="@id/sync_backup_comfirm_txt" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="5.0dip" android:layout_marginTop="5.0dip" android:layout_marginRight="5.0dip" android:layout_marginBottom="5.0dip" android:text="@string/sync_re_backup_tip" style="@style/textDialogContent" />
+    <CheckBox android:id="@id/sync_backup_confirm_cb" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="5.0dip" android:checked="true" android:button="@drawable/my_btn_check" android:text="@string/pm_msg_confirm_kill_all2" style="@style/textDialogCheckContent" />
+</LinearLayout>

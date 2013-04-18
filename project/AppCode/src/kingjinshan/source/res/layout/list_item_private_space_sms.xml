@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:paddingTop="4.0dip" android:paddingRight="6.0dip" android:paddingBottom="4.0dip" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <ImageView android:id="@id/ListPic" android:background="@drawable/icon_frame" android:layout_width="80.0dip" android:layout_height="80.0dip" android:src="@drawable/friend_default_pic" android:adjustViewBounds="true" android:maxWidth="80.0dip" android:maxHeight="80.0dip" android:layout_alignParentLeft="true" />
+    <ImageView android:id="@id/AbovePic" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="18.0dip" android:layout_marginBottom="2.0dip" android:layout_alignBottom="@id/ListPic" />
+    <TextView android:id="@id/ListSubTitle2" android:paddingTop="4.0dip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentRight="true" />
+    <TextView android:ellipsize="marquee" android:id="@id/ListSubTitle" android:paddingTop="4.0dip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:singleLine="true" android:layout_toLeftOf="@id/ListSubTitle2" />
+    <TextView android:textAppearance="@style/item_title" android:ellipsize="marquee" android:id="@id/ListTitle" android:paddingTop="4.0dip" android:paddingRight="4.0dip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:singleLine="true" android:layout_toLeftOf="@id/ListSubTitle" android:layout_toRightOf="@id/ListPic" />
+    <TextView android:id="@id/ListSubBody" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_below="@id/ListSubTitle2" android:layout_alignParentRight="true" />
+    <TextView android:ellipsize="marquee" android:id="@id/ListBody" android:layout_width="wrap_content" android:layout_height="wrap_content" android:singleLine="true" android:layout_toLeftOf="@id/ListSubBody" android:layout_toRightOf="@id/ListPic" android:layout_below="@id/ListTitle" />
+    <TextView android:ellipsize="marquee" android:id="@id/ListBody2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:maxLines="2" android:layout_toLeftOf="@id/ListCheckbox1" android:layout_toRightOf="@id/ListPic" android:layout_below="@id/ListBody" />
+    <CheckBox android:id="@id/ListCheckbox1" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentRight="true" android:layout_alignParentBottom="true" />
+</RelativeLayout>

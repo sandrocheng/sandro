@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.ijinshan.kpref.PreferenceScreen
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <com.ijinshan.kpref.CheckBoxPreference android:title="@string/pm_screen_lock_clear_title" android:key="isSceenLockClear" android:widgetLayout="@layout/list_right_checkbox" android:defaultValue="false" android:summaryOn="@string/timing_one_click_accelerate_started" android:summaryOff="@string/timing_one_click_accelerate_stoped" />
+    <com.ijinshan.kpref.Preference android:title="进程白名单" android:key="toProcessWhite" />
+</com.ijinshan.kpref.PreferenceScreen>

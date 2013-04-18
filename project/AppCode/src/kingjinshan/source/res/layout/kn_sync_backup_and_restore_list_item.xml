@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <RelativeLayout android:layout_width="fill_parent" android:layout_height="?android:listPreferredItemHeight" android:layout_alignParentLeft="true" android:layout_centerVertical="true">
+        <ImageView android:id="@id/icon" android:paddingRight="10.0dip" android:layout_width="wrap_content" android:layout_height="fill_parent" android:layout_marginLeft="10.0dip" android:layout_centerVertical="true" />
+        <TextView android:textAppearance="@style/item_title" android:ellipsize="marquee" android:id="@id/title" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8.0dip" android:singleLine="true" android:layout_weight="1.0" android:layout_toRightOf="@id/icon" android:layout_alignParentTop="true" />
+        <TextView android:textAppearance="@style/item_content" android:id="@id/desc" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="4.0dip" android:layout_toRightOf="@id/icon" android:layout_below="@id/title" />
+        <CheckBox android:typeface="monospace" android:id="@id/check" android:focusable="false" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentRight="true" android:layout_centerVertical="true" />
+    </RelativeLayout>
+</RelativeLayout>

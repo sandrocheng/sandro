@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.ijinshan.kpref.PreferenceScreen android:key="block_mode_setting.xml"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <com.ijinshan.kinghelper.common.RadioButtonPreference android:title="@string/firewall_settingsk_hang_up_title" android:key="@string/firewall_settingsk_hang_up_key" android:summary="@string/firewall_settingsk_hang_up_info" />
+    <com.ijinshan.kinghelper.common.RadioButtonPreference android:title="@string/firewall_settingsk_not_on_service_title" android:key="@string/firewall_settingsk_not_on_service_key" android:summary="@string/firewall_settingsk_not_on_service_info" />
+    <com.ijinshan.kinghelper.common.RadioButtonPreference android:title="@string/firewall_settingsk_turned_off_title" android:key="@string/firewall_settingsk_turned_off_key" android:summary="@string/firewall_settingsk_turned_off_info" />
+    <com.ijinshan.kinghelper.common.RadioButtonPreference android:title="@string/firewall_settingsk_is_down_title" android:key="@string/firewall_settingsk_is_down_key" android:summary="@string/firewall_settingsk_is_down_info" />
+</com.ijinshan.kpref.PreferenceScreen>

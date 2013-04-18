@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:background="@color/colorBackground" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <ScrollView android:layout_width="fill_parent" android:layout_height="fill_parent">
+        <LinearLayout android:gravity="center_horizontal" android:orientation="vertical" android:background="@color/colorBackground" android:layout_width="fill_parent" android:layout_height="wrap_content">
+            <RelativeLayout android:gravity="center" android:id="@id/kn_protection_screen_lock_head" android:layout_width="fill_parent" android:layout_height="100.0dip">
+                <ImageView android:id="@id/kn_protection_screen_lock_logo" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/main_icon" android:layout_alignParentLeft="true" android:layout_centerVertical="true" />
+                <TextView android:textAppearance="@style/textLevelLLarge" android:textColor="@color/white" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="20.0dip" android:layout_marginRight="10.0dip" android:text="@string/app_name" android:layout_toRightOf="@id/kn_protection_screen_lock_logo" android:layout_centerVertical="true" />
+            </RelativeLayout>
+            <RelativeLayout android:id="@id/kn_protection_screen_lock_cnt" android:layout_width="fill_parent" android:layout_height="wrap_content">
+                <EditText android:id="@id/input_password" android:layout_width="240.0dip" android:layout_height="55.0dip" android:layout_marginLeft="5.0dip" android:layout_marginTop="5.0dip" android:hint="@string/protection_lock_pwd_tip" android:password="true" android:layout_centerHorizontal="true" android:inputType="text" />
+                <TextView android:textAppearance="@style/findPwd" android:gravity="center" android:id="@id/password_txt" android:clickable="true" android:layout_width="150.0dip" android:layout_height="30.0dip" android:text="@string/protection_btn_find" android:layout_below="@id/input_password" android:layout_alignParentRight="true" />
+            </RelativeLayout>
+            <Button android:textColor="@color/function_button_textcolor_selector" android:id="@id/btn_unlock" android:background="@drawable/function_button_selector" android:layout_width="120.0dip" android:layout_height="46.0dip" android:layout_marginTop="20.0dip" android:text="@string/protection_bnt_lock" style="@style/textLevelLarge" />
+            <Button android:textColor="@color/function_button_textcolor_selector" android:id="@id/btn_back" android:background="@drawable/function_button_selector" android:visibility="gone" android:layout_width="120.0dip" android:layout_height="46.0dip" android:layout_marginTop="30.0dip" android:layout_marginBottom="24.0dip" android:text="@string/protection_bnt_back" style="@style/textLevelLarge" />
+            <SurfaceView android:id="@id/mSurfaceView" android:visibility="gone" android:layout_width="1.0dip" android:layout_height="1.0dip" />
+            <TextView android:textAppearance="@style/textLevelSmall" android:textColor="@color/white" android:id="@id/tip_preview" android:visibility="gone" android:layout_width="240.0dip" android:layout_height="wrap_content" android:layout_marginTop="15.0dip" android:text="@string/protection_experience_screen_suoding_tip" />
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

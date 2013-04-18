@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.ijinshan.kpref.PreferenceScreen android:key="root"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <com.ijinshan.kpref.PreferenceCategory android:title="@string/commumgr_settings_intercept">
+        <com.ijinshan.kpref.ListPreference android:entries="@array/intercept_call_handling_texts" android:title="@string/intercept_call_rule_title" android:key="@string/intercept_call_rule_key" android:defaultValue="0" android:dialogTitle="@string/intercept_call_rule_title" android:entryValues="@array/four_items_values" />
+        <com.ijinshan.kpref.ListPreference android:entries="@array/intercept_sms_handling_texts" android:title="@string/intercept_sms_rule_title" android:key="@string/intercept_sms_rule_key" android:defaultValue="0" android:dialogTitle="@string/intercept_sms_rule_title" android:entryValues="@array/four_items_values" />
+    </com.ijinshan.kpref.PreferenceCategory>
+    <com.ijinshan.kpref.PreferenceCategory android:title="@string/contact_setting_notification_title">
+        <com.ijinshan.kpref.CheckBoxPreference android:title="@string/enable_blacklist_intercept_notify" android:key="@string/enable_blacklist_intercept_notify_key" android:defaultValue="false" />
+        <com.ijinshan.kpref.CheckBoxPreference android:title="@string/enable_dubious_intercept_notify" android:key="@string/enable_dubious_intercept_notify_key" android:defaultValue="true" />
+        <com.ijinshan.kpref.CheckBoxPreference android:title="@string/scm_sp_alert_setting_text" android:key="@string/enable_scm_sp_alert_key" android:defaultValue="false" />
+    </com.ijinshan.kpref.PreferenceCategory>
+    <com.ijinshan.kpref.PreferenceCategory android:title="@string/commumgr_settings_report" android:key="commumgr_settings_report_key">
+        <com.ijinshan.kpref.CheckBoxPreference android:title="@string/commumgr_settings_auto_report_only_wifi" android:key="@string/commumgr_settings_auto_report_only_wifi_key" android:defaultValue="true" />
+        <com.ijinshan.kpref.CheckBoxPreference android:title="@string/commumgr_settings_auto_report_on_intercept" android:key="@string/commumgr_settings_auto_report_on_intercept_key" android:defaultValue="false" />
+        <com.ijinshan.kpref.CheckBoxPreference android:title="@string/commumgr_settings_report_include_message" android:key="@string/commumgr_settings_report_include_message_key" android:defaultValue="true" />
+    </com.ijinshan.kpref.PreferenceCategory>
+</com.ijinshan.kpref.PreferenceScreen>

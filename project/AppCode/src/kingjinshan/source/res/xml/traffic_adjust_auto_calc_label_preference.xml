@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.ijinshan.kpref.PreferenceScreen
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <com.ijinshan.kinghelper.common.RadioButtonPreference android:title="@string/kn_traffis_adjust_auto_calc_item1_title" android:key="@string/kn_traffis_adjust_auto_calc_item1_key" android:summary="@string/kn_traffis_adjust_auto_calc_item1_summary" />
+    <com.ijinshan.kinghelper.common.RadioButtonPreference android:title="@string/kn_traffis_adjust_auto_calc_item2_title" android:key="@string/kn_traffis_adjust_auto_calc_item2_key" android:summary="@string/kn_traffis_adjust_auto_calc_item2_summary" />
+</com.ijinshan.kpref.PreferenceScreen>

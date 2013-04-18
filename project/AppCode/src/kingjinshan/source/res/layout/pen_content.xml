@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:gravity="center" android:orientation="vertical" android:background="@drawable/traffic_main_2g3g_bg" android:layout_width="fill_parent" android:layout_height="100.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <RelativeLayout android:id="@id/click_to_setting" android:clickable="true" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_weight="1.0">
+        <TextView android:textColor="@color/black" android:id="@id/textView1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="25.0dip" android:text="请进行模式设置,达到更好省流效果" android:layout_alignParentLeft="true" android:layout_centerVertical="true" />
+        <ImageView android:id="@id/imageView2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="25.0dip" android:src="@drawable/jiantou1_pressed" android:layout_alignParentRight="true" android:layout_centerVertical="true" />
+    </RelativeLayout>
+    <ImageView android:id="@id/imageView1" android:background="@drawable/traffic_softlist_head_divider" android:layout_width="fill_parent" android:layout_height="wrap_content" />
+    <RadioGroup android:gravity="center" android:orientation="horizontal" android:id="@id/radio_group" android:layout_width="fill_parent" android:layout_height="wrap_content" android:checkedButton="@null" android:layout_weight="1.0">
+        <RadioButton android:textSize="12.0sp" android:textColor="@color/black" android:gravity="center" android:id="@id/radioButton1" android:paddingLeft="0.0dip" android:layout_width="0.0dip" android:layout_height="wrap_content" android:button="@null" android:text="智能省流量" android:singleLine="true" android:drawableTop="@drawable/traffic_radio_button_selector" android:layout_weight="1.0" />
+        <RadioButton android:textSize="12.0sp" android:textColor="@color/black" android:gravity="center" android:id="@id/radioButton2" android:paddingLeft="0.0dip" android:layout_width="0.0dip" android:layout_height="wrap_content" android:button="@null" android:text="锁屏省流量" android:singleLine="true" android:drawableTop="@drawable/traffic_radio_button_selector" android:layout_weight="1.0" />
+        <RadioButton android:textSize="12.0sp" android:textColor="@color/black" android:gravity="center" android:id="@id/radioButton3" android:paddingLeft="0.0dip" android:layout_width="0.0dip" android:layout_height="wrap_content" android:button="@null" android:text="前台省流量" android:singleLine="true" android:drawableTop="@drawable/traffic_radio_button_selector" android:layout_weight="1.0" />
+    </RadioGroup>
+</LinearLayout>

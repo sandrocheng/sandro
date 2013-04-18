@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:orientation="vertical" android:layout_width="wrap_content" android:layout_height="fill_parent" android:minHeight="?android:listPreferredItemHeight"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <TextView android:textColor="#ff000000" android:id="@id/list_item_pick_content" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="8.0dip" android:layout_marginTop="2.0dip" android:layout_marginRight="5.0dip" android:layout_marginBottom="2.0dip" android:text="ThemeTitle" style="@style/textLevelMiddle" />
+    <TextView android:textColor="#ff000000" android:id="@id/list_item_pick_send_date" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="8.0dip" android:text="" android:layout_below="@id/list_item_pick_content" android:layout_alignParentLeft="true" style="@style/textLevelSmall" />
+    <ImageView android:background="@drawable/divider_horizontal_dark" android:layout_width="fill_parent" android:layout_height="wrap_content" />
+</RelativeLayout>
