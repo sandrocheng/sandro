@@ -3,6 +3,11 @@ package com.sandro.ImageTrans;
 import android.app.Activity;
 import android.os.Bundle;
 
+/**
+ * 
+ * @author sandro
+ *
+ */
 public class TextSizeActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState){

@@ -19,6 +19,11 @@ import com.sandro.ImageTrans.R;
 import com.sandro.util.DeviceUtil;
 import com.sandro.util.CartonEngine.CartonCallBackLisener;
 
+/**
+ * 
+ * @author sandro
+ *
+ */
 public class ClipView extends ImageView implements CartonCallBackLisener{
 
 	private Path mPath ;

@@ -4,6 +4,11 @@ import android.app.Dialog;
 import android.content.Context;
 import android.view.View;
 
+/**
+ * 
+ * @author sandro
+ *
+ */
 public class CustomDialog extends Dialog {
 
 	public CustomDialog(Context context, int layout, int style) {

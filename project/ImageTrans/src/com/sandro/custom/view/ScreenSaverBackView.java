@@ -5,6 +5,9 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.widget.LinearLayout;
 
+/**
+ * 背景页面
+ */
 import com.sandro.mamanger.TouchListener;
 
 public class ScreenSaverBackView extends LinearLayout{

@@ -19,6 +19,11 @@ import android.view.View;
 import com.sandro.ImageTrans.R;
 import com.sandro.util.CartonEngine.CartonCallBackLisener;
 
+/**
+ * 
+ * @author sandro
+ *
+ */
 public class VirusView extends View implements CartonCallBackLisener{
 
 	private Bitmap scanser;

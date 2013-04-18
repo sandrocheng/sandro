@@ -1,6 +1,10 @@
 package com.sandro.util;
 
-
+/**
+ * 
+ * @author sandro
+ *
+ */
 public final class LogUtil {
 	
 	public static void d(String tag, Object data){
