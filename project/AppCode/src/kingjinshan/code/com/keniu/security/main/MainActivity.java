@@ -105,7 +105,7 @@ public class MainActivity extends BaseActivity
   private FrameLayout G;
   private TextView H;
   private TextView I;
-  private TextView J;
+  private TextView J;// mark 流量内容textview
   private TextView K;
   private ImageView L;
   private ImageView M;
@@ -359,8 +359,8 @@ public class MainActivity extends BaseActivity
     this.H.setText(Html.fromHtml(bu.a(this)));
     bs localbs1 = bn.a().b(bn.d);
     this.I.setText(Html.fromHtml(localbs1.a("description")));
-    bs localbs2 = bn.a().b(bn.e);
-    this.J.setText(Html.fromHtml(localbs2.a("description")));
+    bs localbs2 = bn.a().b(bn.e);// mark 流量取值
+    this.J.setText(Html.fromHtml(localbs2.a("description")));// mark 主页流量值
     if (com.keniu.security.protection.ui.ag.g(this))
       this.K.setText(2131429602);
     while (true)
