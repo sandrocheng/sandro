@@ -7,9 +7,9 @@ import android.util.Log;
 
 public class ScreenSaverReceiver extends BroadcastReceiver{
 	
-
-	
 	public static final String ACTION_SCREEN_SAVER_CLOSE = "com.sandro.screenSaverClose.action";
+	
+	public static boolean SCREEN_SAVER_SETTING = false;
 	
 	public ScreenSaverReceiver(){
 
@@ -23,6 +23,9 @@ public class ScreenSaverReceiver extends BroadcastReceiver{
 		String action = intent.getAction();
 		Log.i("ScreenSaverReceiver", "action : " + action);
 		
+		if(!SCREEN_SAVER_SETTING){
+			return;
+		}
 		if(action !=null){
 			Intent serviceIntent = new Intent(context, CoreService.class);
 			serviceIntent.setAction(action);

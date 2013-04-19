@@ -20,17 +20,17 @@ public class Test {
 		System.out.println(sub.bbb);
 	}
 	
-	private static final class StaticSub{
-		private StaticSub(int value){
+	public static final class StaticSub{
+		public StaticSub(int value){
 			subValue = value;
 		}
 		private int subValue;
 	};
 	
-	private class Sub{
+	public class Sub{
 		private String bbb = "bbb"; 
 		
-		private Sub(){
+		public Sub(){
 			privateMat();
 		}
 	}

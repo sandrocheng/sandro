@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+    
+    <TextView
+   		android:layout_width="wrap_content"
+    	android:layout_height="wrap_content"
+    	android:id="@+id/text_total_rx"
+    	android:text="总接受流量">
+    </TextView>
+    
+    <TextView
+   		android:layout_width="wrap_content"
+    	android:layout_height="wrap_content"
+    	android:id="@+id/text_total_tx"
+    	android:text="总发送流量">
+    </TextView> 
+    <TextView
+   		android:layout_width="wrap_content"
+    	android:layout_height="wrap_content"
+    	android:id="@+id/text_total_traffic"
+    	android:text="总流量">
+    </TextView>   
+    
+    <TextView
+   		android:layout_width="wrap_content"
+    	android:layout_height="wrap_content"
+    	android:id="@+id/text_mobile_rx"
+    	android:text="GPRS接收流量">
+    </TextView> 
+    <TextView
+   		android:layout_width="wrap_content"
+    	android:layout_height="wrap_content"
+    	android:id="@+id/text_mobile_tx"
+    	android:text="GPRS发送流量">
+    </TextView>  
+    <TextView
+   		android:layout_width="wrap_content"
+    	android:layout_height="wrap_content"
+    	android:id="@+id/text_mobile_total"
+    	android:text="GPRS总流量">
+    </TextView>         
+</LinearLayout>
