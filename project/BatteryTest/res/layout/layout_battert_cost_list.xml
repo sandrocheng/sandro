@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<!-- Fallon listview_item -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent" android:layout_height="wrap_content"
+	android:gravity="left|center" android:minHeight="60dip"
+	android:orientation="vertical"
+	>
+
+
+    <LinearLayout android:layout_width="fill_parent" android:layout_height="fill_parent"
+	    android:gravity="left|center" android:layout_weight="1.0"
+	    android:layout_marginRight="16.7dp">
+	    
+	<ImageView android:id="@+id/battery_cost_icon" android:layout_gravity="center_vertical|left"
+				android:layout_width="wrap_content" android:layout_height="wrap_content" 
+				android:src="@drawable/icon"
+			/>
+	<FrameLayout android:layout_width="fill_parent" android:layout_gravity="center"
+		android:layout_height="wrap_content" android:layout_weight="1.0">
+		
+        <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content"
+        android:orientation="vertical" >
+		<TextView android:id="@+id/battery_cost_name"
+			android:layout_width="wrap_content" android:layout_height="wrap_content"
+			android:gravity="center_vertical|left"
+			android:text="App Name" 
+			android:paddingLeft="10dip" 
+			android:singleLine="true" android:ellipsize="end" android:maxWidth="195dip"
+			android:textSize="15sp" android:textColor="#fafafa" android:layout_marginBottom="2dip"/>
+		
+		<LinearLayout android:layout_width="160dip" android:layout_height="wrap_content" android:layout_marginLeft="10dip"
+        >	
+	    <ImageView android:id="@+id/manage_app_iv_progress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    />
+                    </LinearLayout>
+		</LinearLayout>	
+		<TextView android:layout_gravity="center_vertical|right" android:layout_marginBottom="2dip"
+			android:id="@+id/battery_cost_percent"
+			android:layout_width="wrap_content" android:layout_height="wrap_content"
+			android:gravity="center_vertical|right" android:text="time"
+			android:paddingRight="15dip" 
+			android:textSize="14sp" android:textColor="#fafafa"/>
+	</FrameLayout>
+	<ImageView android:id="@+id/cost_icon"
+		android:layout_width="wrap_content" android:layout_height="wrap_content"
+		android:layout_alignParentRight="true"
+		android:layout_gravity="center_vertical|center"
+		android:src="@drawable/right_arrow_grey" />
+	</LinearLayout>	
+
+    <ImageView
+        android:id="@+id/message_center_iv_separate_line"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16.7dp"
+        android:layout_marginRight="16.7dp"
+        />
+</LinearLayout>

@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:orientation="vertical">
+	<ScrollView
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent">
+		<LinearLayout
+			android:layout_width="fill_parent"
+			android:layout_height="fill_parent"
+			android:orientation="vertical">
+			<Button
+				android:id="@+id/btn_wifi"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content" />
+
+			<Button
+				android:id="@+id/btn_bluetooth"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content" />
+
+			<Button
+				android:id="@+id/btn_mobiledata"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content" />
+
+			<Button
+				android:id="@+id/btn_aireplane"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content" />
+
+			<Button
+				android:id="@+id/btn_feedback"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content" />
+			<Button
+				android:id="@+id/btn_syncinfo"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content" />
+			<Button
+				android:id="@+id/btn_gps"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content" />
+
+			<Button
+				android:id="@+id/btn_rotate"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content" />
+
+			<LinearLayout
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:orientation="horizontal">
+				<Button
+					android:id="@+id/btn_silent"
+					android:layout_weight="1"
+					android:text="静音"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content" />
+				<Button
+					android:id="@+id/btn_vibrate"
+					android:layout_weight="1"
+					android:text="只震动"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content" />
+				<Button
+					android:id="@+id/btn_ring"
+					android:layout_weight="1"
+					android:text="只铃声"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content" />
+				<Button
+					android:id="@+id/btn_vibrateandring"
+					android:layout_weight="1"
+					android:text="铃声+震动"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content" />
+			</LinearLayout>
+
+			<LinearLayout
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:orientation="horizontal"
+				android:gravity="center">
+				<TextView
+					android:text="屏幕超时"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content" />
+				<SeekBar
+					android:layout_weight="1"
+					android:id="@+id/timeout_seekBar"
+					android:layout_height="wrap_content"
+					android:layout_width="wrap_content"
+					android:max="180"></SeekBar>
+				<TextView
+					android:id="@+id/timeout_value"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content" />
+				<Button
+					android:text="确定"
+					android:id="@+id/btn_timeout"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content" />
+
+			</LinearLayout>
+			<LinearLayout
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:orientation="vertical">
+				<LinearLayout
+					android:layout_width="fill_parent"
+					android:layout_height="wrap_content"
+					android:orientation="horizontal">
+					<CheckBox
+						android:id="@+id/screen_brightness_auto_cb"
+						android:layout_marginLeft="5dp"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content" />
+					<TextView
+						android:text="自动调节"
+						android:layout_weight="1"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content" />
+
+					<TextView
+						android:id="@+id/screen_brightness_text"
+						android:text="15 %"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content" />
+					<Button
+						android:text="确定"
+						android:id="@+id/btn_screen_brightness"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content" />
+				</LinearLayout>
+				<SeekBar
+					android:id="@+id/screenBrightness_seekBar"
+					android:layout_width="fill_parent"
+					android:max="85"
+					android:layout_height="wrap_content"></SeekBar>
+			</LinearLayout>
+		</LinearLayout>
+	</ScrollView>
+</LinearLayout>

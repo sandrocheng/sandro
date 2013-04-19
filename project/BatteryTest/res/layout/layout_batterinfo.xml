@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/crurrent_level_lable"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="当前电量" />
+
+        <TextView
+            android:id="@+id/current_level"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/charge_status_lable"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="充电状态" />
+
+        <TextView
+            android:id="@+id/charge_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/charge_time_lable"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="充电时间" />
+
+        <TextView
+            android:id="@+id/charge_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+</LinearLayout>

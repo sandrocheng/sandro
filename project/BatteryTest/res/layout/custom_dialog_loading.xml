@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="horizontal"
+    android:gravity="center"
+    android:layout_margin="30dp"
+    >
+    
+    <FrameLayout 
+        android:id="@+id/fl_progress"
+        android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_margin="20dp"
+        >
+        
+        <ImageView 
+	        android:id="@+id/img_progress_bg"
+	        android:background="@color/yellow"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_gravity="center"
+	        />
+        
+        <ImageView 
+	        android:id="@+id/img_progress_anim"
+	        android:background="@color/yellow"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_gravity="center"
+       		/>
+    </FrameLayout>
+	    
+    <TextView 
+        android:id="@+id/tv_dialog_msg"
+		android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:text="@string/common_loading_tip"
+        android:gravity="center"
+        android:layout_marginRight="30dp"
+        />
+                <!-- 
+        android:textColor="@color/white_1_fafafa"
+        android:textSize="@dimen/textsize_20pixel"
+         -->
+
+</LinearLayout>

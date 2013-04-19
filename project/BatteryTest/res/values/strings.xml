@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hello">Hello World, BatterySDKActivity!</string>
+    <string name="app_name">BatterySDK</string>
+    
+  	<string name="battery_cost_title">软件排行</string>
+	<string name="battery_cost_hardware_title">硬件排行</string>
+	<string name="battery_cost_history_title">历史排行</string>
+	<string name="common_loading_tip">Loading&#8230;</string>
+	<string name="battery_cost_update">更新</string>
+	<string name="power_rank_voice_call">语音通话</string>
+	<string name="power_rank_display">显示屏</string>
+	<string name="power_rank_phone_radio">手机射频</string>
+	<string name="power_rank_phone_idle">手机待机</string>
+	<string name="power_rank_phone_bluetooth">蓝牙</string>
+	<string name="power_rank_wifi">WiFi</string>
+	<string name="power_android_system">Android 系统</string>
+	<string name="power_android_meida">媒体服务</string>
+    
+</resources>

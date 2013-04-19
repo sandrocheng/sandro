@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.tencent.one.battery.demo"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk android:minSdkVersion="8" />
+	<permission android:name = "com.android.permission.RECV_BATTERY_SDK"/>
+    <application
+        android:name=".MainApp"
+        android:icon="@drawable/icon"
+        android:label="@string/app_name" >
+        <activity
+            android:name=".activity.MainActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".activity.powerrank.PowerConsumeChartActivity" >
+        </activity>
+        <activity android:name=".activity.batteryinfo.BatteryInfoActivity" >
+        </activity>
+        <activity android:name=".activity.device.DeviceActivity" >
+        </activity>
+
+        <service
+            android:name="com.tencent.one.battery.demo.service.CoreService"
+            android:persistent="true"
+            android:exported="true" >
+        </service>
+        <service
+            android:name="com.tencent.one.battery.core.batteryinfo.HandleService"
+            android:exported="true"
+            android:launchMode="singleTop" >
+        </service>
+
+        <receiver android:name="com.tencent.one.battery.demo.receivers.DemoReceiver" >
+            <intent-filter>
+                <action android:name="com.tencent.one.battery.POWER_PLUGGED" />
+                <action android:name="com.tencent.one.battery.POWER_UNPLUGGED" />
+                <action android:name="com.tencent.one.battery.CHARG_TIME_RECAL" />
+            </intent-filter>
+        </receiver>
+    </application>
+
+    <!-- 获取电池状态信息 -->
+    <!-- 读写自动同步设置 -->
+    <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
+    <uses-permission android:name="android.permission.READ_SYNC_SETTINGS" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES" >
+    </uses-permission>
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <!-- 设置蓝牙 -->
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <!-- GPS -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+    <!-- 获取电池状态信息 -->
+    <uses-permission android:name="android.permission.BATTERY_STATS" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!-- 自定义广播权限 -->
+    <uses-permission android:name="com.android.permission.RECV_BATTERY_SDK"></uses-permission>
+
+</manifest>
