@@ -1,14 +1,8 @@
 package com.sandro.ImageTrans;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.app.ListActivity;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.net.TrafficStats;
 import android.os.Bundle;
-import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 /**
@@ -69,26 +63,31 @@ public class TrafficStatsActivity extends ListActivity {
 		getAppInfo();
 	}
 
-	private void getAppInfo() {
-		PackageManager pm = MainApp.getContext().getPackageManager();
-		List<PackageInfo> listPackages = pm.getInstalledPackages(0);
-		List<String> processData = new ArrayList<String>();
-		for (PackageInfo pi : listPackages) {
-			int uid = pi.applicationInfo.uid;
-			long total = (TrafficStats.getUidRxBytes(uid) + TrafficStats.getUidTxBytes(uid) )/1024;
-			if(total >0){
-				String appName = (String) pi.applicationInfo.loadLabel(pm);
-				if(appName != null){
-					processData.add(appName + " : " + total + "KB");
-				}
-			}
-
-			
-		}
-		ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(TrafficStatsActivity.this,
-				android.R.layout.simple_list_item_1, processData);
-		setListAdapter(dataAdapter);
-
+	/**
+	 * 使用TrafficStats.getUidRxBytes 和 TrafficStats.getUidTxBytes(uid) 
+	 * 获取流量，但是无法获取gprs流量
+	 */
+//	private void getAppInfo() {
+//		PackageManager pm = MainApp.getContext().getPackageManager();
+//		List<PackageInfo> listPackages = pm.getInstalledPackages(0);
+//		List<String> processData = new ArrayList<String>();
+//		for (PackageInfo pi : listPackages) {
+//			int uid = pi.applicationInfo.uid;
+//			long total = (TrafficStats.getUidRxBytes(uid) + TrafficStats.getUidTxBytes(uid) )/1024;
+//			if(total >0){
+//				String appName = (String) pi.applicationInfo.loadLabel(pm);
+//				if(appName != null){
+//					processData.add(appName + " : " + total + "KB");
+//				}
+//			}
+//		}
+//		ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(TrafficStatsActivity.this,
+//				android.R.layout.simple_list_item_1, processData);
+//		setListAdapter(dataAdapter);
+//	}
+	
+	private void getAppInfo(){
+		
 	}
 
 	private void initView() {
