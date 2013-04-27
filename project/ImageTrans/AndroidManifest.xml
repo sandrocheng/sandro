@@ -18,6 +18,9 @@
         <activity android:name=".PowerActivity"
                   android:screenOrientation="portrait">
         </activity>   
+        <activity android:name=".AnimationActivity"
+                  android:screenOrientation="portrait">
+        </activity> 
         <activity android:name=".TrafficStatsActivity"
                   android:screenOrientation="portrait">
         </activity>          

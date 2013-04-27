@@ -15,6 +15,13 @@
 			android:layout_gravity="center_vertical"			
 		/>		
 		<Button
+			android:id="@+id/animation_activity"
+			android:layout_width="fill_parent" 
+			android:layout_height="wrap_content"
+			android:text="动画test"
+			android:layout_gravity="center_vertical"			
+		/>
+		<Button
 			android:id="@+id/binder_activity"
 			android:layout_width="fill_parent" 
 			android:layout_height="wrap_content"

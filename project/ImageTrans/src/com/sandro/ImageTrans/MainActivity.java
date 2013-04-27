@@ -28,7 +28,8 @@ public class MainActivity extends Activity implements OnClickListener{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         DeviceUtil.initBasicData(this);
-   
+        
+        findViewById(R.id.animation_activity).setOnClickListener(this);
         findViewById(R.id.traffic_stats_activity).setOnClickListener(this);
         findViewById(R.id.binder_activity).setOnClickListener(this);
         findViewById(R.id.single_page).setOnClickListener(this);
@@ -76,6 +77,10 @@ public class MainActivity extends Activity implements OnClickListener{
 	public void onClick(View v) {
 		Intent intent= new Intent();
 		switch (v.getId()){
+		case R.id.animation_activity:
+			intent.setClass(MainActivity.this, AnimationActivity.class);
+			startActivity(intent);	
+			break;
 		case R.id.traffic_stats_activity:
 			intent.setClass(MainActivity.this, TrafficStatsActivity.class);
 			startActivity(intent);	
