@@ -1,38 +1,23 @@
 package example;
 
 public class Test {
-
-	public int x = 0;
 	
-	private StaticSub staticSub1 = new StaticSub(1);
+	private static Test instance;
 	
-	private StaticSub staticSub2 = new StaticSub(2);
+	private int x = 0;
 	
-	private Sub sub = new Sub();
+	private Test(){}
 	
-	private void privateMat(){
-		System.out.println("privateMat");
+	public static synchronized Test getInstance(){
+		if(instance == null){
+			instance = new Test();
+		}
+		return instance;
 	}
 	
-	public void exec(){
-		System.out.println(staticSub1.subValue);
-		System.out.println(staticSub2.subValue);
-		System.out.println(sub.bbb);
-	}
-	
-	public static final class StaticSub{
-		public StaticSub(int value){
-			subValue = value;
-		}
-		private int subValue;
-	};
-	
-	public class Sub{
-		private String bbb = "bbb"; 
-		
-		public Sub(){
-			privateMat();
-		}
+	public synchronized void exec(){
+		x++;
+		System.out.println(x);
 	}
 
 }
