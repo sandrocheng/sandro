@@ -25,10 +25,8 @@ public class SendMailUtil {
 	DataOutputStream dout;
 	DataInputStream din;
 	int tag = 0;
-	// String MAIL_FROM = "garyyuan@21winmess.com";
 	String MAIL_FROM = "382667954@qq.com";
 	String RCPT_TO = "<35192280@qq.com>;<382667954@qq.com>";
-	// String RCPT_TO = "<garyyuan@21winmess.com>";
 	String[] mailArray;
 	int index = 0;
 
@@ -76,14 +74,17 @@ public class SendMailUtil {
 							if (tag == 0 && cmd.contains("220")) {
 								// dout.writeBytes("EHLO pop.qq.com\r\n");
 								dout.writeBytes("EHLO pop.qq.com\r\n");
+								Log.i("SendMailUtil", "tag : " + 0 + " ,cmd : " + 220);
 							} else if (tag == 1) {
 								dout.writeBytes("AUTH LOGIN\r\n");
-
+								Log.i("SendMailUtil", "tag : " +1 );
 							} else if (tag == 2 && cmd.contains("334")) { 
 								dout.writeBytes("");//邮箱用户名加密 如：MzgyNKDICnxedxLmNvbQ==\r\n
+								Log.i("SendMailUtil", "tag : " + 2 + " ,cmd : " + 334);
 
 							} else if (tag == 3 && cmd.contains("334")) { 
 								dout.writeBytes("");//邮箱密码加密 如：veFergSMpIw==\r\n
+								Log.i("SendMailUtil", "tag : " + 3 + " ,cmd : " + 334);
 
 							} else if (tag == 4 && cmd.contains("235")) { // 235
 																			// Authentication
@@ -96,6 +97,7 @@ public class SendMailUtil {
 
 								dout.writeBytes(mailFrom.toString());
 								mailFrom = null;
+								Log.i("SendMailUtil", "tag : " + 4 + " ,cmd : " + 235);
 							} else if (tag >= 5
 									&& tag <= (5 + mailArray.length - 1)
 									&& cmd.contains("250")) { // 250 Mail OK
@@ -108,10 +110,12 @@ public class SendMailUtil {
 
 								mailTo = null;
 								++index;
+								Log.i("SendMailUtil", "tag : " + 5 + " ,cmd : " + 250);
 							} else if (tag == (6 + mailArray.length - 1)
 									&& cmd.contains("250")) { // cmd= 250 Mail
 																// OK
 								dout.writeBytes("DATA\r\n");
+								Log.i("SendMailUtil", "tag : " + 6 + " ,cmd : " + 250);
 							} else if (tag == (7 + mailArray.length - 1)
 									&& cmd.contains("354")) { // 354 Send
 																// message,
@@ -147,6 +151,7 @@ public class SendMailUtil {
 								dout.write(EncodingUtils.getBytes(
 										mailbody.toString(), "GBK"));
 								mailbody = null;
+								Log.i("SendMailUtil", "tag : " + 7 + " ,cmd : " + 354);
 							} else if (tag == (8 + mailArray.length - 1)
 									&& cmd.contains("250")) { // 250 OK, message
 																// accepted for
@@ -160,11 +165,14 @@ public class SendMailUtil {
 																// smtp4,DtGowEDZR0y7fShQ6DZPEg--.1007S2
 																// 1344831074
 								dout.writeBytes("QUIT\r\n");
+								Log.i("SendMailUtil", "tag : " + 8 + " ,cmd : " + 250);
 								break;
 							} else if (tag == (9 + mailArray.length - 1)
 									&& cmd.contains("221")) { // 221 Bye
+								Log.i("SendMailUtil", "tag : " + 9 + " ,cmd : " + 221);
 								break;
 							} else {
+								Log.i("SendMailUtil", "break");
 								break;
 							}
 
