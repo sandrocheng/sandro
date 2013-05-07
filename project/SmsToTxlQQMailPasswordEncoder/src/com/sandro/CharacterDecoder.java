@@ -63,7 +63,7 @@ public abstract class CharacterDecoder
     public void decodeBuffer(InputStream inputstream, OutputStream outputstream)
         throws IOException
     {
-        int j = 0;
+//        int j = 0;
         PushbackInputStream pushbackinputstream = new PushbackInputStream(inputstream);
         decodeBufferPrefix(pushbackinputstream, outputstream);
         try
@@ -75,17 +75,17 @@ public abstract class CharacterDecoder
                 for(i = 0; i + bytesPerAtom() < k; i += bytesPerAtom())
                 {
                     decodeAtom(pushbackinputstream, outputstream, bytesPerAtom());
-                    j += bytesPerAtom();
+//                    j += bytesPerAtom();
                 }
 
                 if(i + bytesPerAtom() == k)
                 {
                     decodeAtom(pushbackinputstream, outputstream, bytesPerAtom());
-                    j += bytesPerAtom();
+//                    j += bytesPerAtom();
                 } else
                 {
                     decodeAtom(pushbackinputstream, outputstream, k - i);
-                    j += k - i;
+//                    j += k - i;
                 }
                 decodeLineSuffix(pushbackinputstream, outputstream);
             } while(true);
@@ -96,7 +96,8 @@ public abstract class CharacterDecoder
         }
     }
 
-    public byte[] decodeBuffer(String s)
+    @SuppressWarnings("deprecation")
+	public byte[] decodeBuffer(String s)
         throws IOException
     {
         byte abyte0[] = new byte[s.length()];
