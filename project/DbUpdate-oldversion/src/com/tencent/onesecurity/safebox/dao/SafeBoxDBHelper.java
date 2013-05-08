@@ -1,11 +1,10 @@
 package com.tencent.onesecurity.safebox.dao;
 
-import com.tencent.onesecurity.MainApplication;
-
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
+
+import com.tencent.onesecurity.MainApplication;
 
 public class SafeBoxDBHelper {
 	
@@ -40,7 +39,7 @@ public class SafeBoxDBHelper {
 	
 	public void createData(){
 		SQLiteDatabase database = mDatabase.getWritableDatabase();
-		for(int i = 0;i<200;i++){
+		for(int i = 0;i<50;i++){
 			ContentValues contentValues = new ContentValues();
 			contentValues.put(DaoConstant.COL_NT_TITLE, new String("title " + i).getBytes());
 			contentValues.put(DaoConstant.COL_NT_CONTENT, new String("content " + i).getBytes());
@@ -59,7 +58,6 @@ public class SafeBoxDBHelper {
 			@Override
 			public void onCreate(SQLiteDatabase db) {
 				db.execSQL(CREATE_TB_NOTE);
-				Log.i("SafeBoxDBHelper", "mDatabase onCreate");
 			}
 
 			/**
@@ -67,10 +65,8 @@ public class SafeBoxDBHelper {
 			 */
 			@Override
 			public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-				Log.i("SafeBoxDBHelper", "mDatabase onUpgrade");
 			}
 		};
-		Log.i("SafeBoxDBHelper", "mDatabase onCreate over");
 		
 		// 不使用线程锁
 		mDatabase.getWritableDatabase().setLockingEnabled(false);

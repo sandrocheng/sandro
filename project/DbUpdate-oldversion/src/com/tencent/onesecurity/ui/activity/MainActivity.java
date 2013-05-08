@@ -10,6 +10,7 @@ import android.os.Message;
 import android.widget.ArrayAdapter;
 
 import com.tencent.onesecurity.R;
+import com.tencent.onesecurity.dao.DBHelper;
 import com.tencent.onesecurity.safebox.dao.SafeBoxDBHelper;
 
 public class MainActivity extends ListActivity{
@@ -52,19 +53,24 @@ public class MainActivity extends ListActivity{
 		}.start();
 	}
 	
-	
+	private void sendHandlerMsg(String str){
+		Message msg = this.mHandler.obtainMessage(100);
+		msg.obj = str;
+		msg.sendToTarget();
+	}
 	
 	private void startCreateDB(){
+		sendHandlerMsg("SafeBoxDB is creating");
 		SafeBoxDBHelper.getInstance().createDB();
 		SafeBoxDBHelper.getInstance().createData();
-		Message msg = this.mHandler.obtainMessage(100);
-		msg.obj = "SafeBoxDB  was created";
-		msg.sendToTarget();
+		sendHandlerMsg("SafeBoxDB  was created");
 
-		
-		Message endMsg = this.mHandler.obtainMessage(100);
-		endMsg.obj = "All DB  were created";
-		endMsg.sendToTarget();
+		sendHandlerMsg("oneSecurityDB is creating");
+		DBHelper.getInstance().createDB();
+		DBHelper.getInstance().createData();
+		sendHandlerMsg("oneSecurityDB was created");
+
+		sendHandlerMsg("allDBs were created");
 	}
 
 	@Override
