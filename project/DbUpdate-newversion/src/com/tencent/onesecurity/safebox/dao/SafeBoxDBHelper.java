@@ -3,11 +3,11 @@ package com.tencent.onesecurity.safebox.dao;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.os.Handler;
 import android.util.Log;
 
 import com.tencent.onesecurity.MainApplication;
 import com.tencent.onesecurity.update.UpdateInterface;
+import com.tencent.onesecurity.update.UpdateManager;
 
 public class SafeBoxDBHelper implements UpdateInterface{
 	
@@ -98,7 +98,15 @@ public class SafeBoxDBHelper implements UpdateInterface{
 	}
 
 	@Override
-	public void update(Handler handler) {
+	public void update(UpdateManager.UpdateRefresh updateRefresh) {
+		int count = this.updateCount();
+		for(int i=0;i<count;i++){
+			try {
+				Thread.sleep(20);
+			} catch (InterruptedException e) {
+			}
+			updateRefresh.sendRefreshCommend();
+		}
 	}
 	
 	/**

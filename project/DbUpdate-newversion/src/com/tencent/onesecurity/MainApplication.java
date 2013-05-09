@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.tencent.onesecurity.service.SecureService;
-import com.tencent.onesecurity.service.UpdateService;
 import com.tencent.onesecurity.update.UpdateManager;
 
 public class MainApplication extends Application{

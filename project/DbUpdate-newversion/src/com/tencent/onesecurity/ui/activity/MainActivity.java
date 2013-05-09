@@ -12,7 +12,7 @@ public class MainActivity extends Activity{
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		if(UpdateManager.getInstance().isNeedUpdate()){
+		if(UpdateManager.getInstance().isNeedToUpdateShow()){
 			Intent intent = new Intent(this,UpdateActivity.class);
 			this.startActivity(intent);
 			finish();

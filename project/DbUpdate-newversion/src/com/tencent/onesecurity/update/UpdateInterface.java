@@ -1,6 +1,6 @@
 package com.tencent.onesecurity.update;
 
-import android.os.Handler;
+import com.tencent.onesecurity.update.UpdateManager.UpdateRefresh;
 
 public interface UpdateInterface {
 
@@ -17,8 +17,8 @@ public interface UpdateInterface {
 	public int updateCount();
 	
 	/**
-	 * 升级，传入的handler可以用来通知Activity更新进度条
+	 * updateRefresh可以用来通知Activity更新进度条
 	 * @param handler
 	 */
-	public void update(Handler handler);
+	public void update(UpdateRefresh updateRefresh);
 }

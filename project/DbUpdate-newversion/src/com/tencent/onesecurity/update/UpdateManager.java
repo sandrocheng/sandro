@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
+import android.os.Message;
 
 import com.tencent.onesecurity.dao.DBHelper;
 import com.tencent.onesecurity.safebox.dao.SafeBoxDBHelper;
@@ -14,7 +16,25 @@ public class UpdateManager {
 
 	private static UpdateManager instance;
 	
-	private boolean needUpdate = false;
+	/**
+	 * updateState状态
+	 * 不需要更新
+	 */
+	private static final int NO_NEED_UPDATE = 0;
+	
+	/**
+	 * updateState状态
+	 * 需要更新
+	 */
+	private static final int NEED_UPDATE = 1;
+	
+	/**
+	 * updateState状态
+	 * 正在更新
+	 */
+	private static final int UPDATEING = 1;
+	
+	private int updateState = NO_NEED_UPDATE;
 	
 	/**
 	 * 保存需要检查的组件
@@ -40,14 +60,21 @@ public class UpdateManager {
 	public boolean checkUpdate(){
 		for(UpdateInterface update: this.updateList){
 			if(update.isNeedUpdate()){
-				needUpdate = true;
+				updateState = NEED_UPDATE;
 			}
 		}
-		return needUpdate;
+		return updateState==NEED_UPDATE;
 	}
 	
-	public boolean isNeedUpdate(){
-		return this.needUpdate;
+	/**
+	 * 用于mainActivity跳转更新页面时判断service是否正在更新
+	 * @return
+	 */
+	public boolean isNeedToUpdateShow(){
+		if(updateState == NEED_UPDATE || updateState == UPDATEING){
+			return true;
+		}
+		return false;
 	}
 	
 	public void startUpdateService(Context context){
@@ -66,6 +93,49 @@ public class UpdateManager {
 			count +=update.updateCount();
 		}
 		return count;
+	}
+	
+	/**
+	 * 组件更新
+	 * @param handler
+	 */
+	public void updateApp(Handler handler){
+		updateState = UPDATEING;
+		UpdateRefresh updateRefresh = new UpdateRefresh(handler);
+		for(UpdateInterface update: this.updateList){
+			update.update(updateRefresh);
+		}
+	}
+	
+	/**
+	 * 更新结束后调用
+	 */
+	public void updateFinish(){
+		updateState = NO_NEED_UPDATE;
+		updateList.clear();
+	}
+	
+	/**
+	 * 用于刷新进度条的类
+	 * @author sandrocheng
+	 *
+	 */
+	public static class UpdateRefresh{
+		private Handler mHandler;
+		private int refreshCount;
+		public UpdateRefresh(Handler handler){
+			this.mHandler = handler;
+			refreshCount = 0;
+		}
+		
+		public void sendRefreshCommend(){
+			if(this.mHandler != null){
+				refreshCount ++;
+				Message msg = this.mHandler.obtainMessage(UpdateService.RESRESH_COUNT);
+				msg.arg1 = refreshCount;
+				msg.sendToTarget();
+			}
+		}
 	}
 	
 }
