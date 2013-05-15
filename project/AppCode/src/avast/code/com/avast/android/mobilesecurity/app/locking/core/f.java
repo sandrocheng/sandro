@@ -55,6 +55,9 @@ final class f extends Thread
               this.c.a(this.b);
               this.c.a(str);
             }
+            /**
+             * mark call com.avast.android.mobilesecurity.app.scanner.o.a()
+             */
             this.d.a(localList, localApplicationInfo, this.b.getPackageManager().getApplicationLabel(localApplicationInfo).toString(), localApp, 2);
             if (!locals.e)
               ((t)ad.a(this.b, t.class)).aw();

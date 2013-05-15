@@ -141,6 +141,13 @@ public class o
     }
   }
 
+  /**
+   * mark jump to VirusShieldActivity
+   * @param paramList
+   * @param paramUri
+   * @param paramInt
+   * @param paramApp
+   */
   private void a(List paramList, Uri paramUri, int paramInt, App paramApp)
   {
     ArrayList localArrayList1;
@@ -219,6 +226,14 @@ public class o
     }
   }
 
+  /**
+   * mark call VirusShieldActivity
+   * @param paramList
+   * @param paramApplicationInfo
+   * @param paramString
+   * @param paramApp
+   * @param paramInt
+   */
   public void a(List paramList, ApplicationInfo paramApplicationInfo, String paramString, App paramApp, int paramInt)
   {
     if ((paramList == null) || (paramList.isEmpty()));

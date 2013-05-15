@@ -134,7 +134,7 @@ final class t extends Thread
             FileShieldService.c(this.a).f(this.h);
             this.h = 0;
           }
-          FileShieldService.h(this.a).a(localList, null, localFile.getAbsolutePath(), null, 8);
+          FileShieldService.h(this.a).a(localList, null, localFile.getAbsolutePath(), null, 8);//mark call com.avast.android.mobilesecurity.app.scanner.o.a()
           this.h = (1 + this.h);
           if (System.currentTimeMillis() > 900000L + this.f)
           {

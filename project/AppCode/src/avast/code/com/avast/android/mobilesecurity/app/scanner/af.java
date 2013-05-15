@@ -216,7 +216,7 @@ public class af extends l
             localScanProgress3.e = ((int)(localScanProgress3.e + localFile1.length() / 1024L));
             this.e.h = ((int)((System.currentTimeMillis() - paramLong) / 1000L));
             List localList = i.a(this.d, Integer.valueOf(this.E), localFile1, null, 0x20 | this.y);
-            this.c.a(localList, null, localFile1.getAbsolutePath(), null, 20);
+            this.c.a(localList, null, localFile1.getAbsolutePath(), null, 20);//mark call com.avast.android.mobilesecurity.app.scanner.o.a()
             if (this.e.f % 1000 != 0)
               break;
             System.gc();

@@ -46,7 +46,7 @@ public class g extends af
     try
     {
       List localList = i.a(this.d, null, new File(localApplicationInfo.sourceDir), localPackageInfo, 0x20 | this.o);
-      this.c.a(localList, localApplicationInfo, localApplicationInfo.loadLabel(this.a).toString(), null, 1);
+      this.c.a(localList, localApplicationInfo, localApplicationInfo.loadLabel(this.a).toString(), null, 1);//mark call com.avast.android.mobilesecurity.app.scanner.o.a()
       this.b.aw();
       localBoolean = Boolean.valueOf(true);
       return localBoolean;
