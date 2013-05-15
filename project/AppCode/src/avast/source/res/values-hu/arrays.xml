@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="feedback_types">
+        <item>Egyéb</item>
+        <item>Hibajelentés</item>
+        <item>Összeomlás-jelentés</item>
+        <item>Javaslat</item>
+    </string-array>
+    <string-array name="avast_account_reporting_frequencies_names">
+        <item>1 percenként</item>
+        <item>5 percenként</item>
+        <item>10 percenként</item>
+        <item>15 percenként</item>
+        <item>30 percenként</item>
+        <item>Óránként</item>
+    </string-array>
+    <string-array name="pref_notification_types">
+        <item>Alapértelmezett</item>
+        <item>Szürkeárnyalatos</item>
+        <item>Semmilyen</item>
+    </string-array>
+</resources>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="titlebar_height">64.0dip</dimen>
+    <dimen name="content_marginHorizontalBig">39.0dip</dimen>
+    <dimen name="content_marginHorizontal">24.0dip</dimen>
+    <dimen name="content_marginHorizontal_inverse">-18.0dip</dimen>
+    <dimen name="content_marginHorizontal_special">75.0dip</dimen>
+    <dimen name="content_marginHorizontal_special_add">50.0dip</dimen>
+    <dimen name="content_marginHorizontalMedium">18.0dip</dimen>
+    <dimen name="content_marginHorizontalSmall">12.0dip</dimen>
+    <dimen name="content_marginHorizontalSmallest">6.0dip</dimen>
+    <dimen name="content_marginVertical_special">18.0dip</dimen>
+    <dimen name="content_lineSeparatorMargin">12.0dip</dimen>
+    <dimen name="content_lineSeparatorShortMargin">24.0dip</dimen>
+    <dimen name="font">16.0sp</dimen>
+    <dimen name="font_title">18.0sp</dimen>
+    <dimen name="font_medium">18.0sp</dimen>
+    <dimen name="font_large">21.0sp</dimen>
+    <dimen name="font_small">15.0sp</dimen>
+    <dimen name="font_smaller">14.0sp</dimen>
+    <dimen name="font_smallest">13.0sp</dimen>
+    <dimen name="global_activity_log_title_size">56.0dip</dimen>
+    <dimen name="side_menu_drag_bezel_width">75.0dip</dimen>
+    <dimen name="side_menu_drag_min_distance">20.0dip</dimen>
+</resources>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:avast="http://schemas.android.com/apk/res/com.avast.android.mobilesecurity">
+    <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content">
+        <LinearLayout android:orientation="vertical" android:background="@drawable/bg_title" android:paddingTop="@dimen/content_marginVertical" android:paddingBottom="@dimen/content_marginVerticalSmall" android:layout_width="fill_parent" android:layout_height="wrap_content">
+            <android.support.v4.app.FragmentBreadCrumbs android:id="@id/breadcrumbs" android:tag="breadcrumbs" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="@dimen/content_marginHorizontal" />
+            <TextView android:textColor="?android:textColorSecondary" android:id="@id/descr" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="@dimen/content_marginHorizontal" android:layout_marginRight="@dimen/content_marginHorizontal" android:text="" style="@style/TextAppearance" />
+        </LinearLayout>
+        <LinearLayout android:orientation="vertical" android:background="@drawable/bg_menu_normal" android:layout_width="fill_parent" android:layout_height="wrap_content">
+            <com.avast.android.generic.ui.widget.CheckBoxRow android:id="@id/r_webshield_enabled" android:layout_width="fill_parent" android:layout_height="wrap_content" avast:rowKey="gSettingsWebshieldEnabled" avast:rowTitle="@string/webshield" avast:rowSubTitle="@string/webshield_checkbox_subtitle" avast:rowDAO="preference" />
+            <include layout="@layout/row_line_separator" />
+            <com.avast.android.generic.ui.widget.CheckBoxRow android:id="@id/shieldcontrol_webshield_phishing" android:layout_width="fill_parent" android:layout_height="wrap_content" avast:rowKey="gSettingsWebshieldPhishingEnabled" avast:rowTitle="@string/l_webshield_phishing" avast:rowDAO="preference" />
+            <include layout="@layout/row_line_separator_short" />
+            <com.avast.android.generic.ui.widget.CheckBoxRow android:id="@id/shieldcontrol_webshield_malware" android:layout_width="fill_parent" android:layout_height="wrap_content" avast:rowKey="gSettingsWebshieldMalwareEnabled" avast:rowTitle="@string/l_webshield_malware" avast:rowDAO="preference" />
+            <include layout="@layout/row_line_separator_short" />
+            <com.avast.android.generic.ui.widget.CheckBoxRow android:id="@id/r_typosquatting_enabled" android:layout_width="fill_parent" android:layout_height="wrap_content" avast:rowKey="gSettingsTyposquattingEnabled" avast:rowTitle="@string/l_typosquatting_settings_checkbox" avast:rowSubTitle="@string/l_typosquatting_settings_checkbox_desc" avast:rowDAO="preference" />
+            <include layout="@layout/row_line_separator_short" />
+            <com.avast.android.generic.ui.widget.CheckBoxRow android:id="@id/r_typosquatting_autocorrect_enabled" android:layout_width="fill_parent" android:layout_height="wrap_content" avast:rowKey="gSettingsTyposquattingAutocorrect" avast:rowTitle="@string/l_typosquatting_settings_autocorrect_checkbox" avast:rowSubTitle="@string/l_typosquatting_settings_autocorrect_checkbox_desc" avast:rowDAO="preference" />
+            <include layout="@layout/row_line_separator" />
+            <com.avast.android.generic.ui.widget.NextRow android:id="@id/r_install_firefox_addin" android:layout_width="fill_parent" android:layout_height="wrap_content" avast:rowTitle="@string/msg_download_addon" avast:rowSubTitle="@string/msg_download_addon_details" avast:rowDAO="none" />
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

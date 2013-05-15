@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:background="@drawable/xml_bg_row_in_container" android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="@dimen/content_marginHorizontal" android:layout_marginRight="@dimen/content_marginHorizontal">
+        <ImageView android:layout_gravity="center_vertical" android:id="@id/icon" android:layout_width="48.0dip" android:layout_height="48.0dip" android:layout_marginRight="8.0dip" android:src="@drawable/ic_app" android:scaleType="fitXY" />
+        <TextView android:layout_gravity="center_vertical" android:layout_width="0.0dip" android:layout_marginLeft="0.0dip" android:text="@string/l_app" android:maxLines="2" android:layout_weight="1.0" style="@style/RowTitle" />
+        <LinearLayout android:layout_gravity="center_vertical" android:orientation="vertical" android:id="@id/trafficInfoWrapper" android:layout_width="wrap_content" android:layout_height="wrap_content">
+            <RelativeLayout android:id="@id/trafficInfoWifiWrapper" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_margin="6.0dip">
+                <ImageView android:id="@id/wifiIcon" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/ic_traffic_wifi" android:layout_centerVertical="true" />
+                <TextView android:textColor="@color/text_subtitle" android:gravity="right" android:id="@id/trafficInfoWifiTotal" android:visibility="gone" android:layout_width="80.0dip" android:layout_height="wrap_content" android:text="@string/l_trafficinfo_zero_traffic" />
+                <LinearLayout android:orientation="vertical" android:id="@id/trafficInfoWifi" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_toRightOf="@id/wifiIcon">
+                    <LinearLayout android:id="@id/topLine" android:layout_width="wrap_content" android:layout_height="wrap_content">
+                        <ImageView android:layout_gravity="center_vertical" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="@dimen/content_marginHorizontalSmall" android:layout_marginRight="@dimen/content_marginHorizontalSmallest" android:src="@drawable/ic_traffic_arrow_up" />
+                        <TextView android:textColor="@color/text_subtitle" android:gravity="right" android:id="@id/traffInfoWifiUp" android:layout_width="75.0dip" android:layout_height="wrap_content" android:text="@string/l_trafficinfo_zero_traffic" />
+                    </LinearLayout>
+                    <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content">
+                        <ImageView android:layout_gravity="center_vertical" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="@dimen/content_marginHorizontalSmall" android:layout_marginRight="@dimen/content_marginHorizontalSmallest" android:src="@drawable/ic_traffic_arrow_down" />
+                        <TextView android:textColor="@color/text_subtitle" android:gravity="right" android:id="@id/traffInfoWifiDown" android:layout_width="75.0dip" android:layout_height="wrap_content" android:text="@string/l_trafficinfo_zero_traffic" />
+                    </LinearLayout>
+                </LinearLayout>
+            </RelativeLayout>
+            <RelativeLayout android:id="@id/trafficInfo3gWrapper" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_margin="6.0dip">
+                <ImageView android:id="@id/mobileIcon" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/ic_traffic_3g" android:layout_centerVertical="true" />
+                <TextView android:textColor="@color/text_subtitle" android:gravity="right" android:id="@id/trafficInfo3gTotal" android:visibility="gone" android:layout_width="80.0dip" android:layout_height="wrap_content" android:text="@string/l_trafficinfo_zero_traffic" />
+                <LinearLayout android:orientation="vertical" android:id="@id/trafficInfo3g" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_toRightOf="@id/mobileIcon">
+                    <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content">
+                        <ImageView android:layout_gravity="center_vertical" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="@dimen/content_marginHorizontalSmall" android:layout_marginRight="@dimen/content_marginHorizontalSmallest" android:src="@drawable/ic_traffic_arrow_up" />
+                        <TextView android:textColor="@color/text_subtitle" android:gravity="right" android:id="@id/traffInfo3gUp" android:layout_width="75.0dip" android:layout_height="wrap_content" android:text="@string/l_trafficinfo_zero_traffic" />
+                    </LinearLayout>
+                    <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content">
+                        <ImageView android:layout_gravity="center_vertical" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="@dimen/content_marginHorizontalSmall" android:layout_marginRight="@dimen/content_marginHorizontalSmallest" android:src="@drawable/ic_traffic_arrow_down" />
+                        <TextView android:textColor="@color/text_subtitle" android:gravity="right" android:id="@id/traffInfo3gDown" android:layout_width="75.0dip" android:layout_height="wrap_content" android:text="@string/l_trafficinfo_zero_traffic" />
+                    </LinearLayout>
+                </LinearLayout>
+            </RelativeLayout>
+            <RelativeLayout android:id="@id/trafficInfoRoamingWrapper" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_margin="6.0dip">
+                <ImageView android:id="@id/roamingIcon" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/ic_traffic_roaming" android:layout_centerVertical="true" />
+                <TextView android:textColor="@color/text_subtitle" android:gravity="right" android:id="@id/trafficInfoRoamingTotal" android:visibility="gone" android:layout_width="80.0dip" android:layout_height="wrap_content" android:text="@string/l_trafficinfo_zero_traffic" />
+                <LinearLayout android:orientation="vertical" android:id="@id/trafficInfoRoaming" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_toRightOf="@id/roamingIcon">
+                    <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content">
+                        <ImageView android:layout_gravity="center_vertical" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="@dimen/content_marginHorizontalSmall" android:layout_marginRight="@dimen/content_marginHorizontalSmallest" android:src="@drawable/ic_traffic_arrow_up" />
+                        <TextView android:textColor="@color/text_subtitle" android:gravity="right" android:id="@id/traffInfoRoamingUp" android:layout_width="75.0dip" android:layout_height="wrap_content" android:text="@string/l_trafficinfo_zero_traffic" />
+                    </LinearLayout>
+                    <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content">
+                        <ImageView android:layout_gravity="center_vertical" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="@dimen/content_marginHorizontalSmall" android:layout_marginRight="@dimen/content_marginHorizontalSmallest" android:src="@drawable/ic_traffic_arrow_down" />
+                        <TextView android:textColor="@color/text_subtitle" android:gravity="right" android:id="@id/traffInfoRoamingDown" android:layout_width="75.0dip" android:layout_height="wrap_content" android:text="@string/l_trafficinfo_zero_traffic" />
+                    </LinearLayout>
+                </LinearLayout>
+            </RelativeLayout>
+            <include android:id="@id/trafficInfoTotalSeparator" android:visibility="gone" layout="@layout/row_line_separator" />
+            <RelativeLayout android:id="@id/trafficInfoTotalWrapper" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_margin="6.0dip">
+                <ImageView android:id="@id/totalIcon" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/ic_traffic_total" android:layout_centerVertical="true" />
+                <TextView android:textColor="@color/text_subtitle" android:gravity="right" android:id="@id/trafficInfoTotalTotal" android:visibility="gone" android:layout_width="80.0dip" android:layout_height="wrap_content" android:text="@string/l_trafficinfo_zero_traffic" />
+                <LinearLayout android:orientation="vertical" android:id="@id/trafficInfoTotal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_toRightOf="@id/totalIcon">
+                    <LinearLayout android:id="@id/topLine" android:layout_width="wrap_content" android:layout_height="wrap_content">
+                        <ImageView android:layout_gravity="center_vertical" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="@dimen/content_marginHorizontalSmall" android:layout_marginRight="@dimen/content_marginHorizontalSmallest" android:src="@drawable/ic_traffic_arrow_up" />
+                        <TextView android:textColor="@color/text_subtitle" android:gravity="right" android:id="@id/traffInfoTotalUp" android:layout_width="75.0dip" android:layout_height="wrap_content" android:text="@string/l_trafficinfo_zero_traffic" />
+                    </LinearLayout>
+                    <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content">
+                        <ImageView android:layout_gravity="center_vertical" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="@dimen/content_marginHorizontalSmall" android:layout_marginRight="@dimen/content_marginHorizontalSmallest" android:src="@drawable/ic_traffic_arrow_down" />
+                        <TextView android:textColor="@color/text_subtitle" android:gravity="right" android:id="@id/traffInfoTotalDown" android:layout_width="75.0dip" android:layout_height="wrap_content" android:text="@string/l_trafficinfo_zero_traffic" />
+                    </LinearLayout>
+                </LinearLayout>
+            </RelativeLayout>
+        </LinearLayout>
+    </LinearLayout>
+    <TextView android:layout_marginTop="0.0dip" android:text="@string/l_lorem_ipsum_paragraph" style="@style/RowTitle.Sub" />
+</LinearLayout>

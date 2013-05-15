@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView android:layout_width="fill_parent" android:layout_height="fill_parent" android:fillViewport="false" style="@style/ScrollView.Transparent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:avast="http://schemas.android.com/apk/res-auto">
+    <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent" android:baselineAligned="false">
+        <LinearLayout android:orientation="horizontal" android:background="@drawable/bg_title" android:layout_width="fill_parent" android:layout_height="@dimen/titlebar_height">
+            <TextView android:layout_gravity="center_vertical" android:id="@id/l_installationfinished_header" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="@dimen/content_marginHorizontal" android:text="@string/l_finished" style="@style/ActivityTitle" />	/>
+</LinearLayout>
+        <LinearLayout android:orientation="vertical" android:background="@drawable/bg_menu_normal" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_weight="1.0">
+            <TextView android:id="@id/l_installationfinished" android:paddingTop="@dimen/content_marginHorizontal" android:paddingBottom="@dimen/content_marginHorizontal" style="@style/Text" />
+        </LinearLayout>
+        <LinearLayout style="@style/ButtonLayout">
+            <Button android:id="@id/b_continue" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginLeft="4.0dip" android:text="@string/l_quit" android:layout_weight="1.0" style="@style/Button.Green" />
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content">
+        <TextView android:text="@string/l_app" android:layout_weight="1.0" style="?rowTitleStyle" />
+        <Button android:layout_gravity="center_vertical" android:id="@id/button" android:background="@drawable/bg_input_normal" android:focusable="false" android:clickable="false" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="@dimen/content_marginHorizontal" android:text="4:00" android:layout_weight="0.0" style="@style/Button.Title.Black" />
+    </LinearLayout>
+    <TextView android:text="@string/l_lorem_ipsum_paragraph" style="?rowSubTitleStyle" />
+</LinearLayout>

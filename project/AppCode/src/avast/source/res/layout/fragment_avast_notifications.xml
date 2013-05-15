@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:layout_gravity="top" android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout android:orientation="horizontal" android:background="@drawable/bg_title" android:layout_width="fill_parent" android:layout_height="@dimen/titlebar_height" android:layout_weight="0.0">
+        <TextView android:layout_gravity="center_vertical" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="@dimen/content_marginHorizontal" android:text="@string/notification_manager" android:layout_weight="1.0" style="@style/ActivityTitle" />
+        <Button android:layout_gravity="center_vertical" android:id="@id/b_clear" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="@dimen/content_marginHorizontal" android:text="@string/l_clear" android:layout_weight="0.0" style="@style/Button.Title" />
+    </LinearLayout>
+    <TextView android:gravity="center_vertical" android:id="@id/tv_header_ongoing" android:background="@drawable/bg_menu_title" android:paddingLeft="@dimen/content_marginHorizontal" android:paddingBottom="4.0dip" android:layout_width="fill_parent" android:layout_height="28.0dip" android:text="@string/l_ongoing" style="@style/ActivityTitle" />
+    <ListView android:id="@id/list_ongoing" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_weight="1.0" />
+    <TextView android:gravity="center_vertical" android:id="@id/tv_header_notifications" android:background="@drawable/bg_menu_title" android:paddingLeft="@dimen/content_marginHorizontal" android:paddingBottom="4.0dip" android:layout_width="fill_parent" android:layout_height="28.0dip" android:text="@string/l_notifications" style="@style/ActivityTitle" />
+    <ListView android:id="@id/list_notifications" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_weight="1.0" />
+    <include layout="@layout/list_item_notification_empty" />
+</LinearLayout>

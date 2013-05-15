@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="feedback_types">
+        <item>Allgemein</item>
+        <item>Fehlerbericht</item>
+        <item>Absturzbericht</item>
+        <item>Vorschlag</item>
+    </string-array>
+    <string-array name="avast_account_reporting_frequencies_names">
+        <item>1 Minute</item>
+        <item>5 Minuten</item>
+        <item>10 Minuten</item>
+        <item>15 Minuten</item>
+        <item>30 Minuten</item>
+        <item>1 Stunde</item>
+    </string-array>
+    <string-array name="pref_notification_types">
+        <item>Standard</item>
+        <item>Graustufen</item>
+        <item>Keine</item>
+    </string-array>
+</resources>

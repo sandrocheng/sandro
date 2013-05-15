@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <TextView android:textColor="?android:textColorSecondary" android:id="@id/descr" android:paddingLeft="@dimen/content_marginHorizontal" android:paddingTop="@dimen/content_marginVerticalSmall" android:paddingRight="@dimen/content_marginHorizontal" android:paddingBottom="@dimen/content_marginVertical" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="@string/msg_privacy_advisor" style="@style/TextAppearance" />
+    <include layout="@layout/row_line_separator" />
+</LinearLayout>

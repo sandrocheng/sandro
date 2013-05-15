@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="feedback_types">
+        <item>その他</item>
+        <item>バグ報告</item>
+        <item>クラッシュ報告</item>
+        <item>新機能の提案</item>
+    </string-array>
+    <string-array name="avast_account_reporting_frequencies_names">
+        <item>1分</item>
+        <item>5分</item>
+        <item>10分</item>
+        <item>15分</item>
+        <item>30分</item>
+        <item>1時間</item>
+    </string-array>
+    <string-array name="pref_notification_types">
+        <item>デフォルト</item>
+        <item>グレー</item>
+        <item>なし</item>
+    </string-array>
+</resources>

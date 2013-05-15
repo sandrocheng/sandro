@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <RelativeLayout android:layout_gravity="center" android:paddingBottom="@dimen/content_marginHorizontalSmall" android:layout_width="fill_parent" android:layout_height="wrap_content">
+        <ImageView android:id="@id/logo" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/ic_app" android:layout_alignParentLeft="true" android:layout_alignParentTop="true" />
+        <TextView android:textAppearance="@style/TextAppearance.Medium" android:textStyle="bold" android:gravity="center_vertical" android:id="@id/campaign_title" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="@dimen/content_marginHorizontal" android:text="@string/campaign_secureline_title" android:layout_toRightOf="@id/logo" android:layout_alignTop="@id/logo" android:layout_alignBottom="@id/logo" />
+    </RelativeLayout>
+    <View android:id="@id/separator" android:background="@drawable/misc_menu_separator" android:layout_width="fill_parent" android:layout_height="2.0px" android:layout_marginTop="@dimen/content_marginVertical" />
+    <TextView android:textAppearance="@style/TextAppearance.Medium" android:id="@id/campaign_text" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/content_marginVertical" android:text="@string/campaign_secureline_text" />
+    <LinearLayout android:orientation="horizontal" android:id="@id/buttons" android:layout_width="fill_parent" android:layout_height="@dimen/button_layout_height" android:layout_marginTop="@dimen/content_marginHorizontal">
+        <Button android:textStyle="bold" android:id="@id/campaign_button_gray" android:paddingLeft="@dimen/button_padding_horizontal_small" android:paddingRight="@dimen/button_padding_horizontal_small" android:layout_width="0.0dip" android:layout_height="fill_parent" android:text="@string/campaign_secureline_button_gray" android:layout_weight="1.0" style="@style/Button.Gray" />
+        <Button android:textStyle="bold" android:id="@id/campaign_button_green" android:paddingLeft="@dimen/button_padding_horizontal_small" android:paddingRight="@dimen/button_padding_horizontal_small" android:layout_width="0.0dip" android:layout_height="fill_parent" android:layout_marginLeft="4.0dip" android:text="@string/campaign_secureline_button_green" android:layout_weight="1.0" style="@style/Button.Green" />
+    </LinearLayout>
+    <View android:background="@drawable/misc_menu_separator" android:layout_width="fill_parent" android:layout_height="2.0px" android:layout_marginTop="@dimen/content_marginHorizontal" android:layout_marginBottom="@dimen/content_marginVerticalSmall" />
+    <CheckBox android:id="@id/campaign_checkbox" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/campaign_secureline_checkbox" />
+</LinearLayout>

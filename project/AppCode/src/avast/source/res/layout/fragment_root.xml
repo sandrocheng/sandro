@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView android:layout_width="fill_parent" android:layout_height="fill_parent" android:fillViewport="false" style="@style/ScrollView.Transparent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:avast="http://schemas.android.com/apk/res-auto">
+    <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent" android:baselineAligned="false">
+        <LinearLayout android:orientation="horizontal" android:background="@drawable/bg_title" android:layout_width="fill_parent" android:layout_height="@dimen/titlebar_height">
+            <TextView android:layout_gravity="center_vertical" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="@dimen/content_marginHorizontal" android:text="@string/l_root" style="@style/ActivityTitle" />
+        </LinearLayout>
+        <LinearLayout android:orientation="vertical" android:background="@drawable/bg_menu_normal" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_weight="1.0">
+            <TextView android:paddingTop="@dimen/content_marginHorizontal" android:paddingBottom="@dimen/content_marginVertical" android:text="@string/l_root_desc" style="@style/Text" />
+            <TextView android:textStyle="bold" android:paddingBottom="@dimen/content_marginHorizontal" android:text="@string/l_root_desc2" style="@style/Text" />
+            <include layout="@layout/row_line_separator" />
+            <com.avast.android.generic.ui.widget.CheckBoxRow android:id="@id/cb_root" android:layout_width="fill_parent" android:layout_height="wrap_content" />
+        </LinearLayout>
+        <LinearLayout style="@style/ButtonLayout">
+            <Button android:id="@id/b_cancel" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginRight="4.0dip" android:text="@string/l_cancel" android:layout_weight="1.0" style="@style/Button.Gray" />
+            <Button android:id="@id/b_continue" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginLeft="4.0dip" android:text="@string/l_continue" android:layout_weight="1.0" style="@style/Button.Green" />
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

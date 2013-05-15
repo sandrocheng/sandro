@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView android:layout_width="fill_parent" android:layout_height="fill_parent" android:fillViewport="false" style="@style/ScrollView.Transparent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:avast="http://schemas.android.com/apk/res-auto">
+    <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content" android:baselineAligned="false">
+        <LinearLayout android:orientation="horizontal" android:id="@id/titlebar" android:background="@drawable/bg_title" android:layout_width="fill_parent" android:layout_height="@dimen/titlebar_height">
+            <TextView android:layout_gravity="center_vertical" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="@dimen/content_marginHorizontal" android:text="@string/l_license" style="@style/ActivityTitle" />
+            <include layout="@layout/part_table_only_logo" />
+        </LinearLayout>
+        <LinearLayout android:orientation="vertical" android:background="@drawable/bg_menu_normal" android:layout_width="fill_parent" android:layout_height="wrap_content">
+            <TextView android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="@dimen/content_marginHorizontal" android:layout_marginTop="@dimen/content_marginHorizontal" android:layout_marginRight="@dimen/content_marginHorizontal" android:text="@string/l_eula" />
+            <TextView android:id="@id/b_display" android:paddingBottom="@dimen/content_marginHorizontal" android:layout_marginTop="@dimen/content_marginHorizontal" android:text="@string/l_eula_show" style="@style/Text" />
+            <TextView android:id="@id/text" android:fadingEdge="horizontal" android:fadingEdgeLength="10.0dip" android:text="@string/l_lorem_ipsum_paragraph_more" style="@style/Text" />
+            <TextView android:id="@id/b_privacy_policy" android:paddingBottom="@dimen/content_marginHorizontalSmall" android:text="@string/l_privacy_policy" style="@style/Text" />
+            <include layout="@layout/row_line_separator" />
+            <com.avast.android.generic.ui.widget.CheckBoxRow android:id="@id/r_communityIQ" android:layout_width="fill_parent" android:layout_height="wrap_content" avast:rowTitle="@string/l_community_iq" avast:rowSubTitle="@string/l_community_iq_desc" avast:rowDefaultValue="true" avast:rowDAO="none" />
+        </LinearLayout>
+        <LinearLayout android:background="@drawable/xml_bg_screen" style="@style/ButtonLayout">
+            <Button android:id="@id/b_dont_agree" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginRight="4.0dip" android:text="@string/l_eula_i_dont_agree" android:layout_weight="1.0" style="@style/Button.Gray" />
+            <Button android:id="@id/b_agree" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginLeft="4.0dip" android:text="@string/l_eula_i_agree" android:layout_weight="1.0" style="@style/Button.Green" />
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

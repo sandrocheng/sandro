@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="rowButtonMarginTop">4.0dip</dimen>
+    <dimen name="rowButtonMarginBottom">10.0dip</dimen>
+</resources>

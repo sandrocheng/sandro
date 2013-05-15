@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="horizontal" android:background="@drawable/bg_widget_normal" android:padding="8.0dip" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_margin="@dimen/widget_margin" android:weightSum="4.0"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <RelativeLayout android:gravity="center" android:orientation="vertical" android:id="@id/widgetButtonAvast" android:background="@drawable/xml_widget_button_left" android:paddingTop="4.0dip" android:paddingBottom="4.0dip" android:focusable="true" android:clickable="true" android:layout_width="0.0dip" android:layout_height="fill_parent" android:layout_weight="1.0">
+        <ImageView android:id="@id/widgetControlLogo" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginBottom="-10.0dip" android:src="@drawable/ic_widget_logo_short" android:scaleType="center" android:layout_above="@id/widgetControlStatus" />
+        <TextView android:gravity="center" android:id="@id/widgetControlStatus" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="@string/widget_status_secured" android:layout_alignParentBottom="true" style="@style/WidgetGreenText" />
+    </RelativeLayout>
+    <ImageView android:layout_width="wrap_content" android:layout_height="fill_parent" android:src="@drawable/misc_widget_separator_vertical" android:scaleType="fitXY" />
+    <RelativeLayout android:gravity="center" android:orientation="vertical" android:id="@id/widgetButtonFirewall" android:background="@drawable/xml_widget_button_middle" android:paddingTop="4.0dip" android:paddingBottom="4.0dip" android:focusable="true" android:clickable="true" android:layout_width="0.0dip" android:layout_height="fill_parent" android:layout_weight="1.0">
+        <ImageView android:id="@id/widgetControlFirewallIcon" android:layout_width="fill_parent" android:layout_height="fill_parent" android:src="@drawable/ic_widget_firewall" android:scaleType="center" android:layout_above="@id/widgetControlFirewall" />
+        <TextView android:gravity="center" android:id="@id/widgetControlFirewall" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="@string/widget_firewall_on" android:layout_alignParentBottom="true" style="@style/WidgetWhiteText" />
+    </RelativeLayout>
+    <ImageView android:layout_width="wrap_content" android:layout_height="fill_parent" android:src="@drawable/misc_widget_separator_vertical" android:scaleType="fitXY" />
+    <RelativeLayout android:gravity="center" android:orientation="vertical" android:id="@id/widgetButtonScan" android:background="@drawable/xml_widget_button_middle" android:paddingTop="4.0dip" android:paddingBottom="4.0dip" android:focusable="true" android:clickable="true" android:layout_width="0.0dip" android:layout_height="fill_parent" android:layout_weight="1.0">
+        <ImageView android:id="@id/widgetControlScanIcon" android:layout_width="fill_parent" android:layout_height="fill_parent" android:src="@drawable/ic_widget_scanner" android:scaleType="center" android:layout_above="@id/widgetControlScan" />
+        <TextView android:gravity="center" android:id="@id/widgetControlScan" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="@string/widget_scan" android:layout_alignParentBottom="true" style="@style/WidgetWhiteText" />
+    </RelativeLayout>
+    <ImageView android:layout_width="wrap_content" android:layout_height="fill_parent" android:src="@drawable/misc_widget_separator_vertical" android:scaleType="fitXY" />
+    <RelativeLayout android:gravity="center" android:orientation="vertical" android:id="@id/widgetButtonInfo" android:background="@drawable/xml_widget_button_right" android:paddingTop="4.0dip" android:paddingBottom="4.0dip" android:focusable="true" android:clickable="true" android:layout_width="0.0dip" android:layout_height="fill_parent" android:layout_weight="1.0">
+        <ImageView android:id="@id/widgetControlInfoIcon" android:layout_width="fill_parent" android:layout_height="fill_parent" android:src="@drawable/ic_widget_info" android:scaleType="center" android:layout_above="@id/widgetControlInfo" />
+        <TextView android:gravity="center" android:id="@id/widgetControlInfo" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="@string/widget_info" android:layout_alignParentBottom="true" style="@style/WidgetWhiteText" />
+    </RelativeLayout>
+</LinearLayout>

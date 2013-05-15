@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="l_and_x_more">
+        <item quantity="other">e mais %d…</item>
+        <item quantity="zero"></item>
+    </plurals>
+    <plurals name="l_filebrowser_selected">
+        <item quantity="other">%s selecionados(as)</item>
+        <item quantity="one">%s selecionados(as)</item>
+        <item quantity="two">%s selecionados(as)</item>
+        <item quantity="few">%s selecionados(as)</item>
+        <item quantity="many">%s selecionados(as)</item>
+    </plurals>
+    <plurals name="num_seconds_ago">
+        <item quantity="other">%d segundos atrás</item>
+        <item quantity="one">1 segundo atrás</item>
+    </plurals>
+    <plurals name="num_minutes_ago">
+        <item quantity="other">%d minutos atrás</item>
+        <item quantity="one">1 minuto atrás</item>
+    </plurals>
+    <plurals name="num_hours_ago">
+        <item quantity="other">%d horas atrás</item>
+        <item quantity="one">1 hora atrás</item>
+    </plurals>
+    <plurals name="last_num_days">
+        <item quantity="other">Últimos %d dias</item>
+    </plurals>
+    <plurals name="num_days_ago">
+        <item quantity="other">%d dias atrás</item>
+        <item quantity="one">ontem</item>
+    </plurals>
+    <plurals name="in_num_seconds">
+        <item quantity="other">em %d segundos</item>
+        <item quantity="one">em 1 segundo</item>
+    </plurals>
+    <plurals name="in_num_minutes">
+        <item quantity="other">em %d minutos</item>
+        <item quantity="one">em 1 minuto</item>
+    </plurals>
+    <plurals name="in_num_hours">
+        <item quantity="other">Em %d horas</item>
+        <item quantity="one">em 1 hora</item>
+    </plurals>
+    <plurals name="in_num_days">
+        <item quantity="other">em %d dias</item>
+        <item quantity="one">amanhã</item>
+    </plurals>
+    <plurals name="abbrev_num_seconds_ago">
+        <item quantity="other">"%d segundos   atrás"</item>
+        <item quantity="one">1 seg. atrás</item>
+    </plurals>
+    <plurals name="abbrev_num_minutes_ago">
+        <item quantity="other">%d minutos atrás</item>
+        <item quantity="one">1 minuto atrás</item>
+    </plurals>
+    <plurals name="abbrev_num_hours_ago">
+        <item quantity="other">%d horas atrás</item>
+        <item quantity="one">1 hora atrás</item>
+    </plurals>
+    <plurals name="abbrev_num_days_ago">
+        <item quantity="other">%d dias atrás</item>
+        <item quantity="one">ontem</item>
+    </plurals>
+    <plurals name="abbrev_in_num_seconds">
+        <item quantity="other">em %d segundos</item>
+        <item quantity="one">em 1 segundo</item>
+    </plurals>
+    <plurals name="abbrev_in_num_minutes">
+        <item quantity="other">em %d minutos</item>
+        <item quantity="one">em 1 minuto</item>
+    </plurals>
+    <plurals name="abbrev_in_num_hours">
+        <item quantity="other">em %d horas</item>
+        <item quantity="one">em 1 hora</item>
+    </plurals>
+    <plurals name="abbrev_in_num_days">
+        <item quantity="other">em %d dias</item>
+        <item quantity="one">amanhã</item>
+    </plurals>
+    <plurals name="l_problems">
+        <item quantity="other">%d problemas</item>
+        <item quantity="one">%d problema</item>
+        <item quantity="few">%d problemas</item>
+    </plurals>
+    <plurals name="l_problems_found">
+        <item quantity="other">%d problemas encontrados</item>
+        <item quantity="one">%d problema encontrado</item>
+        <item quantity="few">%d problemas encontrados</item>
+    </plurals>
+    <plurals name="l_apps_to_uninstall">
+        <item quantity="other">desinstalar %d programas</item>
+        <item quantity="one">desinstalar %d programa</item>
+        <item quantity="few">desinstalar %d programas</item>
+    </plurals>
+    <plurals name="l_files_to_delete">
+        <item quantity="other">excluir %d arquivos</item>
+        <item quantity="one">excluir %d arquivo</item>
+        <item quantity="few">excluir %d arquivos</item>
+    </plurals>
+    <plurals name="l_items_to_ignore">
+        <item quantity="other">ignorar %d itens</item>
+        <item quantity="one">ignorar %d item</item>
+        <item quantity="few">ignorar %d itens</item>
+    </plurals>
+    <plurals name="l_account_status_reporting_frequency">
+        <item quantity="other">A cada %s minutos</item>
+        <item quantity="one">A cada %s minuto(s)</item>
+        <item quantity="few">A cada %s minutos</item>
+    </plurals>
+    <plurals name="l_adrep_addons_found">
+        <item quantity="other">%d files with add-ons found</item>
+        <item quantity="zero">%d files with add-ons found</item>
+        <item quantity="one">%d file with add-ons found</item>
+        <item quantity="few">%d files with add-ons found</item>
+    </plurals>
+</resources>

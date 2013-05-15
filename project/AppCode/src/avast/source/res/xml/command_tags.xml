@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tags>
+    <tag id="@+id/tag_sms">
+        <translation>SMS</translation>
+    </tag>
+    <tag id="@+id/tag_lost">
+        <translation>LOST</translation>
+        <translation>VERLOREN</translation>
+    </tag>
+    <tag id="@+id/tag_found">
+        <translation>FOUND</translation>
+        <translation>GEFUNDEN</translation>
+    </tag>
+    <tag id="@+id/tag_reboot">
+        <translation>REBOOT</translation>
+        <translation>NEUSTART</translation>
+    </tag>
+    <tag id="@+id/tag_lock">
+        <translation>LOCK</translation>
+        <translation>SPERREN</translation>
+    </tag>
+    <tag id="@+id/tag_unlock">
+        <translation>UNLOCK</translation>
+        <translation>ENTSPERREN</translation>
+    </tag>
+    <tag id="@+id/tag_wipe">
+        <translation>WIPE</translation>
+        <translation>LÖSCHEN</translation>
+    </tag>
+    <tag id="@+id/tag_launch">
+        <translation>LAUNCH</translation>
+        <translation>STARTEN</translation>
+    </tag>
+    <tag id="@+id/tag_close">
+        <translation>CLOSE</translation>
+        <translation>BEENDEN</translation>
+    </tag>
+    <tag id="@+id/tag_siren">
+        <translation>SIREN</translation>
+        <translation>SIRENE</translation>
+    </tag>
+    <tag id="@+id/tag_data">
+        <translation>DATA</translation>
+        <translation>DATEN</translation>
+    </tag>
+    <tag id="@+id/tag_update">
+        <translation>LOCATE</translation>
+        <translation>ORTEN</translation>
+    </tag>
+    <tag id="@+id/tag_call">
+        <translation>CALL</translation>
+    </tag>
+    <tag id="@+id/tag_call_de">
+        <translation>RUF</translation>
+    </tag>
+    <tag id="@+id/tag_call_de_2">
+        <translation>AN</translation>
+    </tag>
+    <tag id="@+id/tag_forward">
+        <translation>FORWARD</translation>
+        <translation>WEITERLEITUNG</translation>
+    </tag>
+    <tag id="@+id/tag_get">
+        <translation>GET</translation>
+        <translation>ABFRAGE</translation>
+    </tag>
+    <tag id="@+id/tag_set">
+        <translation>SET</translation>
+        <translation>SETZE</translation>
+    </tag>
+    <tag id="@+id/tag_cc">
+        <translation>CC</translation>
+    </tag>
+    <tag id="@+id/tag_forward_calls">
+        <translation>CALLS</translation>
+        <translation>ANRUFE</translation>
+    </tag>
+    <tag id="@+id/tag_forward_all">
+        <translation>ALL</translation>
+        <translation>ALLE</translation>
+    </tag>
+    <tag id="@+id/tag_get_contacts">
+        <translation>CONTACTS</translation>
+        <translation>KONTAKTE</translation>
+    </tag>
+    <tag id="@+id/tag_get_log">
+        <translation>LOG</translation>
+        <translation>PROTOKOLL</translation>
+    </tag>
+    <tag id="@+id/tag_get_inbox">
+        <translation>INBOX</translation>
+        <translation>EMPFANGENE</translation>
+    </tag>
+    <tag id="@+id/tag_get_sent">
+        <translation>SENT</translation>
+        <translation>GESENDETE</translation>
+    </tag>
+    <tag id="@+id/tag_get_format_html">
+        <translation>HTML</translation>
+    </tag>
+    <tag id="@+id/tag_get_format_xml">
+        <translation>XML</translation>
+    </tag>
+    <tag id="@+id/tag_get_all">
+        <translation>GET_ALL</translation>
+    </tag>
+    <tag id="@+id/tag_get_for">
+        <translation>FOR</translation>
+        <translation>FÜR</translation>
+    </tag>
+    <tag id="@+id/tag_set_owner">
+        <translation>OWNER</translation>
+        <translation>BESITZER</translation>
+    </tag>
+    <tag id="@+id/tag_set_password">
+        <translation>PASSWORD</translation>
+        <translation>PASSWORT</translation>
+        <translation>PIN</translation>
+    </tag>
+    <tag id="@+id/tag_set_friend">
+        <translation>FRIEND</translation>
+        <translation>FREUND</translation>
+    </tag>
+    <tag id="@+id/tag_set_locktext">
+        <translation>LOCKTEXT</translation>
+        <translation>SPERRTEXT</translation>
+    </tag>
+    <tag id="@+id/tag_set_lockmode">
+        <translation>LOCKMODE</translation>
+        <translation>SPERRMODUS</translation>
+    </tag>
+    <tag id="@+id/tag_set_smsauthmode">
+        <translation>ONLYFRIENDS</translation>
+        <translation>NURFREUNDE</translation>
+    </tag>
+    <tag id="@+id/tag_set_system">
+        <translation>PROTECTION</translation>
+        <translation>SCHUTZ</translation>
+    </tag>
+    <tag id="@+id/tag_set_sirenmode">
+        <translation>SIRENMODE</translation>
+        <translation>SIRENENMODUS</translation>
+    </tag>
+    <tag id="@+id/tag_set_wipemode">
+        <translation>WIPEMODE</translation>
+        <translation>LÖSCHMODUS</translation>
+    </tag>
+    <tag id="@+id/tag_set_cdmamode">
+        <translation>CDMAMODE</translation>
+        <translation>CDMAMODUS</translation>
+    </tag>
+    <tag id="@+id/tag_set_debuglockmode">
+        <translation>USBLOCKMODE</translation>
+        <translation>USBSPERRMODUS</translation>
+    </tag>
+    <tag id="@+id/tag_set_forcedatamode">
+        <translation>FORCEDATAMODE</translation>
+        <translation>DATENVERBINDUNGSMODUS</translation>
+    </tag>
+    <tag id="@+id/tag_set_applockmode">
+        <translation>APPLOCKMODE</translation>
+        <translation>ANWENDUNGSSPERRMODUS</translation>
+    </tag>
+    <tag id="@+id/tag_set_autogpsmode">
+        <translation>AUTOGPS</translation>
+    </tag>
+    <tag id="@+id/tag_set_hidegps">
+        <translation>HIDEGPS</translation>
+        <translation>GPSVERSTECKEN</translation>
+    </tag>
+    <tag id="@+id/tag_set_batterymode">
+        <translation>BATTERYMODE</translation>
+        <translation>AKKUMODUS</translation>
+    </tag>
+    <tag id="@+id/tag_set_batterymode_off">
+        <translation>OFF</translation>
+        <translation>AUS</translation>
+    </tag>
+    <tag id="@+id/tag_set_batterymode_on">
+        <translation>ON</translation>
+        <translation>EIN</translation>
+    </tag>
+    <tag id="@+id/tag_set_batterymode_always">
+        <translation>ALWAYS</translation>
+        <translation>IMMER</translation>
+    </tag>
+    <tag id="@+id/tag_on">
+        <translation>ON</translation>
+        <translation>EIN</translation>
+    </tag>
+    <tag id="@+id/tag_off">
+        <translation>OFF</translation>
+        <translation>AUS</translation>
+    </tag>
+    <tag id="@+id/tag_stop">
+        <translation>STOP</translation>
+    </tag>
+    <tag id="@+id/tag_sms">
+        <translation>SMS</translation>
+    </tag>
+    <tag id="@+id/tag_set_sms_sending_allowed">
+        <translation>PORTALSMS</translation>
+    </tag>
+    <tag id="@+id/tag_restore">
+        <translation>RESTORE</translation>
+    </tag>
+    <tag id="@+id/tag_child_protection">
+        <translation>CP</translation>
+    </tag>
+    <tag id="@+id/tag_ping">
+        <translation>PING</translation>
+    </tag>
+    <tag id="@+id/tag_picture">
+        <translation>PICTURE</translation>
+        <translation>BILD</translation>
+    </tag>
+    <tag id="@+id/tag_record">
+        <translation>RECORD</translation>
+        <translation>AUFNAHME</translation>
+    </tag>
+    <tag id="@+id/tag_picture_screen_on">
+        <translation>SCREENON</translation>
+        <translation>BILDEIN</translation>
+    </tag>
+    <tag id="@+id/tag_picture_face_detection">
+        <translation>FACEDETECTION</translation>
+        <translation>GESICHTSERKENNUNG</translation>
+    </tag>
+    <tag id="@+id/tag_picture_front">
+        <translation>FRONT</translation>
+        <translation>VORNE</translation>
+    </tag>
+    <tag id="@+id/tag_message">
+        <translation>MESSAGE</translation>
+        <translation>NACHRICHT</translation>
+    </tag>
+</tags>

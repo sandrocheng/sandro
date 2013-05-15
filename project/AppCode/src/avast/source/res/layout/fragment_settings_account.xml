@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView android:background="@color/bg_edge_color" android:layout_width="fill_parent" android:layout_height="wrap_content" android:fillViewport="false"
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:avast="http://schemas.android.com/apk/res/com.avast.android.mobilesecurity">
+    <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content">
+        <LinearLayout android:orientation="horizontal" android:background="@drawable/bg_title" android:layout_width="fill_parent" android:layout_height="@dimen/titlebar_height">
+            <android.support.v4.app.FragmentBreadCrumbs android:layout_gravity="center_vertical" android:id="@id/breadcrumbs" android:tag="breadcrumbs" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="@dimen/content_marginHorizontal" />
+        </LinearLayout>
+        <LinearLayout android:orientation="vertical" android:background="@drawable/bg_menu_normal" android:layout_width="fill_parent" android:layout_height="wrap_content">
+            <com.avast.android.generic.ui.widget.NextRow android:id="@id/r_account_avast" android:layout_width="fill_parent" android:layout_height="wrap_content" avast:rowTitle="@string/pref_account_avast" avast:rowSubTitle="@string/pref_account_not_connected" />
+            <include layout="@layout/row_line_separator_short" />
+            <com.avast.android.generic.ui.widget.NextRow android:id="@id/r_account_check" android:layout_width="fill_parent" android:layout_height="wrap_content" avast:rowTitle="@string/l_connectioncheck" avast:rowSubTitle="@string/l_connectioncheck_description_short" />
+            <include layout="@layout/row_line_separator_short" />
+            <com.avast.android.generic.ui.widget.CheckBoxRow android:id="@id/r_account_reporting" android:layout_width="fill_parent" android:layout_height="wrap_content" avast:rowTitle="@string/pref_account_status_reporting" avast:rowSubTitle="@string/pref_account_status_reporting_hint" avast:rowDAO="none" />
+            <include layout="@layout/row_line_separator_short" />
+            <com.avast.android.mobilesecurity.ui.widget.ReportFrequencyRow android:id="@id/r_account_reporting_frequency" android:layout_width="fill_parent" android:layout_height="wrap_content" avast:rowTitle="@string/pref_account_status_reporting_frequency" avast:rowSubTitle="@string/pref_account_status_reporting_frequency_hint" avast:rowDAO="none" />
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

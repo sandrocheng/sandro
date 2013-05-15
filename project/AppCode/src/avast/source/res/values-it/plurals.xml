@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="l_and_x_more">
+        <item quantity="other">e %d altro…</item>
+        <item quantity="zero"></item>
+    </plurals>
+    <plurals name="l_filebrowser_selected">
+        <item quantity="other">%s selezionato</item>
+        <item quantity="one">%s selezionato</item>
+        <item quantity="two">%s selezionato</item>
+        <item quantity="few">%s selezionato</item>
+        <item quantity="many">%s selezionato</item>
+    </plurals>
+    <plurals name="num_seconds_ago">
+        <item quantity="other">%d secondi fa</item>
+        <item quantity="one">1 secondo fa</item>
+    </plurals>
+    <plurals name="num_minutes_ago">
+        <item quantity="other">%d minuti fa</item>
+        <item quantity="one">1 minuto fa</item>
+    </plurals>
+    <plurals name="num_hours_ago">
+        <item quantity="other">%d ore fa</item>
+        <item quantity="one">1 ora fa</item>
+    </plurals>
+    <plurals name="last_num_days">
+        <item quantity="other">Ultimi %d giorni</item>
+    </plurals>
+    <plurals name="num_days_ago">
+        <item quantity="other">%d giorni fa</item>
+        <item quantity="one">ieri</item>
+    </plurals>
+    <plurals name="in_num_seconds">
+        <item quantity="other">tra %d secondi</item>
+        <item quantity="one">tra 1 secondo</item>
+    </plurals>
+    <plurals name="in_num_minutes">
+        <item quantity="other">tra %d minuti</item>
+        <item quantity="one">tra 1 minuto</item>
+    </plurals>
+    <plurals name="in_num_hours">
+        <item quantity="other">tra %d ore</item>
+        <item quantity="one">tra 1 ora</item>
+    </plurals>
+    <plurals name="in_num_days">
+        <item quantity="other">tra %d giorni</item>
+        <item quantity="one">domani</item>
+    </plurals>
+    <plurals name="abbrev_num_seconds_ago">
+        <item quantity="other">%d sec fa</item>
+        <item quantity="one">1 sec fa</item>
+    </plurals>
+    <plurals name="abbrev_num_minutes_ago">
+        <item quantity="other">%d min fa</item>
+        <item quantity="one">1 min fa</item>
+    </plurals>
+    <plurals name="abbrev_num_hours_ago">
+        <item quantity="other">%d ore fa</item>
+        <item quantity="one">1 ora fa</item>
+    </plurals>
+    <plurals name="abbrev_num_days_ago">
+        <item quantity="other">%d giorni fa</item>
+        <item quantity="one">ieri</item>
+    </plurals>
+    <plurals name="abbrev_in_num_seconds">
+        <item quantity="other">tra %d sec</item>
+        <item quantity="one">tra 1 sec</item>
+    </plurals>
+    <plurals name="abbrev_in_num_minutes">
+        <item quantity="other">tra %d min</item>
+        <item quantity="one">tra 1 min</item>
+    </plurals>
+    <plurals name="abbrev_in_num_hours">
+        <item quantity="other">tra %d ore</item>
+        <item quantity="one">tra 1 ora</item>
+    </plurals>
+    <plurals name="abbrev_in_num_days">
+        <item quantity="other">tra %d giorni</item>
+        <item quantity="one">domani</item>
+    </plurals>
+    <plurals name="l_problems">
+        <item quantity="other">%d problemi</item>
+        <item quantity="one">%d problema</item>
+        <item quantity="few">%d problemi</item>
+    </plurals>
+    <plurals name="l_problems_found">
+        <item quantity="other">%d problemi rilevati</item>
+        <item quantity="one">%d problema rilevato</item>
+        <item quantity="few">%d problemi rilevati</item>
+    </plurals>
+    <plurals name="l_apps_to_uninstall">
+        <item quantity="other">disinstalla %d applicazioni</item>
+        <item quantity="one">disinstalla %d applicazione</item>
+        <item quantity="few">disinstalla %d applicazioni</item>
+    </plurals>
+    <plurals name="l_files_to_delete">
+        <item quantity="other">elimina %d i file</item>
+        <item quantity="one">elimina %d file</item>
+        <item quantity="few">elimina %d file</item>
+    </plurals>
+    <plurals name="l_items_to_ignore">
+        <item quantity="other">ignora %d oggetti</item>
+        <item quantity="one">ignora %d oggetto</item>
+        <item quantity="few">ignora %d oggetti</item>
+    </plurals>
+    <plurals name="l_account_status_reporting_frequency">
+        <item quantity="other">Ogni %s minuti</item>
+        <item quantity="one">Ogni %s minuto</item>
+        <item quantity="few">Ogni %s minuti</item>
+    </plurals>
+    <plurals name="l_adrep_addons_found">
+        <item quantity="other">%d files with add-ons found</item>
+        <item quantity="zero">%d files with add-ons found</item>
+        <item quantity="one">%d file with add-ons found</item>
+        <item quantity="few">%d files with add-ons found</item>
+    </plurals>
+</resources>

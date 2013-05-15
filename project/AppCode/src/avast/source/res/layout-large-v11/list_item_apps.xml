@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="?android:listPreferredItemHeight"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <ImageView android:layout_gravity="center_vertical" android:id="@id/icon" android:layout_width="48.0dip" android:layout_height="48.0dip" android:layout_marginLeft="@dimen/content_marginHorizontal" android:layout_marginRight="8.0dip" android:src="@drawable/ic_app" android:scaleType="fitXY" />
+    <LinearLayout android:gravity="center_vertical" android:layout_gravity="center_vertical" android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="5.0dip" android:layout_weight="1.0">
+        <TextView android:ellipsize="end" android:id="@id/name" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="@dimen/content_marginHorizontalSmall" android:text="@string/l_app" android:singleLine="true" android:layout_weight="1.0" style="@style/ListTitle" />
+        <LinearLayout android:gravity="center_vertical" android:layout_width="wrap_content" android:layout_height="wrap_content">
+            <ProgressBar android:id="@id/progress" android:padding="0.0dip" android:layout_width="75.0dip" android:layout_height="13.0dip" android:layout_marginRight="7.0dip" android:max="100" android:progress="50" android:indeterminate="false" android:progressDrawable="@drawable/xml_progress_horizontal_small" style="?android:attr/progressBarStyleHorizontal" />
+            <TextView android:id="@id/progressLabel" android:padding="0.0dip" android:layout_width="84.0dip" android:layout_height="wrap_content" android:text="62 MiB" android:includeFontPadding="false" style="@style/ListTitle.Gray" />
+        </LinearLayout>
+    </LinearLayout>
+    <ImageView android:layout_gravity="center_vertical" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="@dimen/content_marginHorizontalMedium" android:layout_marginRight="@dimen/content_marginHorizontal" android:src="@drawable/xml_list_arrow" android:layout_weight="0.0" />
+</LinearLayout>

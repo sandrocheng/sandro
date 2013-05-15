@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RadioGroup android:gravity="center_vertical" android:orientation="horizontal" android:background="@drawable/bg_menu_normal" android:paddingLeft="@dimen/content_marginHorizontal" android:paddingRight="100.0dip" android:layout_width="fill_parent" android:layout_height="?android:listPreferredItemHeight"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <RadioButton android:id="@id/orderByTitle" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/l_am_order_title_short" style="@style/RadioButton" />
+    <LinearLayout android:layout_width="0.0dip" android:layout_height="wrap_content" android:layout_weight="1.0" />
+    <RadioButton android:id="@id/orderByCPU" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="@dimen/content_marginHorizontal" android:layout_marginRight="@dimen/content_marginHorizontal" android:text="@string/l_am_detail_cpu" style="@style/RadioButton" />
+    <RadioButton android:id="@id/orderByMemory" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="@dimen/content_marginHorizontal" android:layout_marginRight="@dimen/content_marginHorizontal" android:text="@string/l_am_detail_memory" style="@style/RadioButton" />
+    <RadioButton android:id="@id/orderBySize" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="@dimen/content_marginHorizontal" android:layout_marginRight="@dimen/content_marginHorizontal" android:text="@string/l_am_detail_size" style="@style/RadioButton" />
+</RadioGroup>

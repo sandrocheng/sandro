@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="sms_block_proposal_message_text_lines">3</integer>
+    <integer name="virus_shield_message_text_lines">3</integer>
+    <integer name="webshield_message_text_lines">3</integer>
+</resources>

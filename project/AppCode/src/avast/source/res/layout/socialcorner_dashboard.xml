@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.avast.android.mobilesecurity.ui.widget.SocialCornerView android:orientation="vertical" android:focusable="false" android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <View android:background="@drawable/misc_menu_separator" android:focusable="false" android:layout_width="fill_parent" android:layout_height="2.0px" />
+    <LinearLayout android:gravity="center" android:orientation="horizontal" android:id="@id/socialcorner" android:layout_width="fill_parent" android:layout_height="wrap_content" style="@style/SocialCorner">
+        <ImageButton android:id="@id/socialcorner_facebook" android:src="@drawable/xml_ic_socialcorner_facebook" style="@style/SocialCornerIcon" />
+        <ImageButton android:id="@id/socialcorner_gplus" android:src="@drawable/xml_ic_socialcorner_gplus" style="@style/SocialCornerIcon" />
+        <ImageButton android:id="@id/socialcorner_twitter" android:src="@drawable/xml_ic_socialcorner_twitter" style="@style/SocialCornerIcon" />
+        <ImageButton android:id="@id/socialcorner_gplay" android:src="@drawable/xml_ic_socialcorner_gplay" style="@style/SocialCornerIcon" />
+    </LinearLayout>
+</com.avast.android.mobilesecurity.ui.widget.SocialCornerView>

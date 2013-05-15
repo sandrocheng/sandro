@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:paddingBottom="@dimen/content_marginHorizontalSmall" android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <TextView android:textStyle="bold" android:textColor="@color/text_problem" android:id="@id/name" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="@dimen/content_marginHorizontal" android:layout_marginTop="@dimen/content_marginHorizontal" android:layout_marginRight="36.0dip" android:text="@string/l_lorem_ipsum_paragraph" android:layout_alignParentLeft="true" android:layout_alignParentTop="true" />
+    <ImageView android:id="@id/iv" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="@dimen/content_marginHorizontal" android:layout_marginRight="@dimen/content_marginHorizontal" android:src="@drawable/xml_list_arrow" android:layout_alignTop="@id/name" android:layout_alignParentRight="true" />
+    <TextView android:id="@id/virus" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/content_marginHorizontalSmall" android:layout_marginRight="@dimen/row_next_marginRight" android:text="@string/l_lorem_ipsum_paragraph" android:layout_below="@id/name" android:textIsSelectable="false" style="@style/Text" />
+</RelativeLayout>

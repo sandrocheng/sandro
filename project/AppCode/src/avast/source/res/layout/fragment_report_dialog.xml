@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView android:background="@color/bg_context" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <RelativeLayout android:layout_width="fill_parent" android:layout_height="fill_parent">
+        <TextView android:visibility="invisible" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="@string/l_lorem_ipsum_paragraph" android:layout_alignParentTop="true" style="@style/TextView.Context" />
+        <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_alignParentTop="true">
+            <TextView android:id="@id/what" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="@dimen/content_marginHorizontal" android:layout_marginTop="@dimen/content_marginHorizontal" android:text="@string/l_website" style="@style/TextView.Context.Title" />
+            <TextView android:textStyle="bold" android:id="@id/name" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="@dimen/content_marginHorizontal" android:layout_marginRight="@dimen/content_marginHorizontal" android:layout_marginBottom="@dimen/content_marginHorizontal" android:text="www.google.com" style="@style/TextView.Context.Title" />
+            <View android:background="@drawable/divider_horizontal_bright" android:layout_width="fill_parent" android:layout_height="1.0px" />
+            <TextView android:id="@id/tv_descr" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="@dimen/content_marginHorizontal" android:layout_marginTop="@dimen/content_marginHorizontal" android:text="@string/l_description" style="@style/TextView.Context" />
+            <EditText android:gravity="top|left|center" android:id="@id/description" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="@dimen/content_marginHorizontal" android:layout_marginTop="@dimen/content_marginHorizontal" android:layout_marginRight="@dimen/content_marginHorizontal" android:layout_marginBottom="@dimen/content_marginHorizontal" android:minLines="2" style="@style/EditText.Context" />
+            <View android:background="@drawable/divider_horizontal_bright" android:layout_width="fill_parent" android:layout_height="1.0px" />
+            <TextView android:id="@id/tv_email" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="@dimen/content_marginHorizontal" android:layout_marginTop="@dimen/content_marginHorizontal" android:text="@string/l_email_optional" style="@style/TextView.Context" />
+            <EditText android:id="@id/email" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="@dimen/content_marginHorizontal" android:layout_marginTop="@dimen/content_marginHorizontal" android:layout_marginRight="@dimen/content_marginHorizontal" android:layout_marginBottom="@dimen/content_marginHorizontal" android:lines="1" android:inputType="textEmailAddress" style="@style/EditText.Context" />
+            <View android:background="@drawable/divider_horizontal_bright" android:layout_width="fill_parent" android:layout_height="1.0px" />
+            <LinearLayout style="@style/ButtonLayout">
+                <Button android:id="@id/b_cancel" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginRight="4.0dip" android:text="@string/l_cancel" android:layout_weight="1.0" style="@style/Button.Gray.Contextual" />
+                <Button android:textStyle="bold" android:id="@id/b_send" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginLeft="4.0dip" android:text="@string/l_send_report" android:layout_weight="1.0" style="@style/Button.Gray.Contextual" />
+            </LinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
+</ScrollView>

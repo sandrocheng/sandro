@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="horizontal" android:paddingRight="@dimen/content_marginHorizontal" android:paddingBottom="@dimen/content_marginVerticalSmall" android:focusable="true" android:clickable="true" android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <ImageView android:id="@id/global_activity_log_icon" android:layout_width="48.0dip" android:layout_height="wrap_content" android:layout_marginLeft="@dimen/content_marginHorizontalSmallest" android:layout_marginRight="@dimen/content_marginHorizontalSmallest" android:src="@drawable/ic_menu_virusscn" android:scaleType="center" android:layout_weight="0.0" />
+    <LinearLayout android:orientation="vertical" android:layout_width="0.0dip" android:layout_height="wrap_content" android:layout_marginTop="@dimen/content_marginVerticalSmall" android:layout_marginBottom="3.0dip" android:layout_weight="1.0">
+        <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content">
+            <TextView android:ellipsize="marquee" android:id="@id/global_activity_log_text_primary" android:layout_width="0.0dip" android:layout_height="wrap_content" android:layout_marginLeft="0.0dip" android:text="@string/l_global_activity_log_title" android:singleLine="true" android:layout_weight="1.0" style="@style/RowTitle" />
+            <TextView android:id="@id/global_activity_log_number_primary" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="0.0dip" android:text="(0)" android:layout_weight="0.0" style="?rowTitleStyle" />
+        </LinearLayout>
+        <TextView android:textSize="@dimen/font" android:textColor="@color/xml_text_subtitle" android:ellipsize="end" android:id="@id/global_activity_log_text_date" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="3.0dip" android:layout_marginBottom="3.0dip" android:text="date" android:singleLine="true" />
+        <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginBottom="3.0dip">
+            <TextView android:textSize="@dimen/font" android:textColor="@color/xml_text_subtitle" android:ellipsize="end" android:id="@id/global_activity_log_text_secondary" android:layout_width="0.0dip" android:layout_height="wrap_content" android:text="secondary" android:layout_weight="1.0" />
+            <TextView android:textSize="@dimen/font" android:textColor="@color/xml_text_subtitle" android:id="@id/global_activity_log_number_secondary" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="@dimen/content_marginHorizontal" android:text="(0)" android:layout_weight="0.0" />
+        </LinearLayout>
+        <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content">
+            <TextView android:textSize="@dimen/font" android:textColor="@color/xml_text_subtitle" android:ellipsize="end" android:id="@id/global_activity_log_text_tertiary" android:layout_width="0.0dip" android:layout_height="wrap_content" android:layout_marginLeft="0.0dip" android:layout_marginTop="3.0dip" android:text="tertiary" android:layout_weight="1.0" />
+            <TextView android:textSize="@dimen/font" android:textColor="@color/xml_text_subtitle" android:id="@id/global_activity_log_number_tertiary" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="@dimen/content_marginHorizontal" android:layout_marginTop="3.0dip" android:text="(0)" android:layout_weight="0.0" />
+        </LinearLayout>
+    </LinearLayout>
+    <ImageView android:layout_gravity="center_vertical" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="16.0dip" android:src="@drawable/xml_list_arrow" android:layout_weight="0.0" />
+</LinearLayout>

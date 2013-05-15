@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="feedback_types">
+        <item>Personalizada</item>
+        <item>Relatório de bug</item>
+        <item>Relatório de falha</item>
+        <item>Solicitação de função</item>
+    </string-array>
+    <string-array name="avast_account_reporting_frequencies_names">
+        <item>1 minuto</item>
+        <item>5 minutos</item>
+        <item>10 minutos</item>
+        <item>15 minutos</item>
+        <item>30 minutos</item>
+        <item>1 hora</item>
+    </string-array>
+    <string-array name="pref_notification_types">
+        <item>Padrão</item>
+        <item>Cinza</item>
+        <item>Nenhum</item>
+    </string-array>
+</resources>

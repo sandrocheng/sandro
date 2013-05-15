@@ -1,0 +1,21 @@
+<html>
+	<head>
+		<noscript>
+			<meta http-equiv="refresh" content="0;url=block.html">	
+		</noscript>
+		<!-- 
+		1) seriously weird, but meta refresh doesn't seem to work when the html is loaded, but
+		works on back button press and vice versa, the javascript works on page load, but not on
+		back button press, javascript probably might not be loaded when the page is taken from cache
+		on back button press
+		2) the onLoad function doesn't seem to work in some cases, therefore a second script
+		inside the body is provided
+		3) window.location.replace doesn't work for an uknown reason - tried on emulator 2.1
+		-->
+	</head>
+	<body onLoad="window.setInterval('window.location.href="block.html"',0)">
+		<script type='text/javascript'>
+			window.setInterval('window.location.href="block.html"',0);	
+		</script>
+	</body>
+</html>

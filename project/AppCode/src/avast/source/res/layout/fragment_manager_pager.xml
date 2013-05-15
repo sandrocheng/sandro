@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout android:gravity="center_vertical" android:layout_gravity="center_vertical" android:orientation="horizontal" android:background="@drawable/bg_title" android:layout_width="fill_parent" android:layout_height="wrap_content" android:minHeight="@dimen/titlebar_height">
+        <android.support.v4.app.FragmentBreadCrumbs android:id="@id/breadcrumbs" android:tag="breadcrumbs" android:layout_width="0.0dip" android:layout_height="wrap_content" android:layout_marginLeft="@dimen/content_marginHorizontal" android:layout_marginRight="@dimen/content_marginHorizontalSmall" android:layout_weight="1.0" />
+        <Button android:layout_gravity="center_vertical" android:id="@id/b_orderBy" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="@dimen/content_marginVerticalSmall" android:layout_marginRight="@dimen/content_marginHorizontalSmall" android:layout_marginBottom="@dimen/content_marginVerticalSmall" android:maxWidth="170.0dip" android:text="@string/l_am_order_title" style="@style/Button.Title" />
+    </LinearLayout>
+    <FrameLayout android:id="@id/manager_indicator_container" android:background="@drawable/bg_menu_normal" android:layout_width="fill_parent" android:layout_height="wrap_content" />
+    <android.support.v4.view.ViewPager android:id="@id/manager_viewpager" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+</LinearLayout>

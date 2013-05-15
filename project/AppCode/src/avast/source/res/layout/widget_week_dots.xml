@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <ImageView android:tag="weekDot0" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_margin="2.0dip" android:src="@drawable/misc_menu_indicator_off" />
+    <ImageView android:tag="weekDot1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_margin="2.0dip" android:src="@drawable/misc_menu_indicator_off" />
+    <ImageView android:tag="weekDot2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_margin="2.0dip" android:src="@drawable/misc_menu_indicator_off" />
+    <ImageView android:tag="weekDot3" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_margin="2.0dip" android:src="@drawable/misc_menu_indicator_off" />
+    <ImageView android:tag="weekDot4" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_margin="2.0dip" android:src="@drawable/misc_menu_indicator_off" />
+    <ImageView android:tag="weekDot5" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_margin="2.0dip" android:src="@drawable/misc_menu_indicator_on" />
+    <ImageView android:tag="weekDot6" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_margin="2.0dip" android:src="@drawable/misc_menu_indicator_on" />
+</LinearLayout>

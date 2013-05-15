@@ -1,0 +1,80 @@
+<html>
+<head>
+<style type="text/css">
+body {
+	color: #555;
+	background-image: url("bg_web.png");
+	background-repeat: repeat;
+	text-shadow: 0px 1px #fff;
+	font-family: sans-serif;
+	font-size: 22px;
+	padding-left: 16px;
+	padding-top: 24px;
+	padding-right: 16px;
+	line-height: .3em;
+}
+
+strong {
+	color: #333;
+	font-weight: bold;
+}
+
+#box {
+	background: #f0f0f0;
+	border-color: #d7d7d7;
+	border-style: solid;
+	border-width: 1px;
+	border-radius: 6px;
+}
+
+#title {
+	border-bottom: 1px #d7d7d7;
+	border-bottom-style: solid;
+}
+
+#logo {
+	margin: 12px 0px 6px 12px;
+}
+
+#problem {
+	float:right; 
+	margin: 20px 18px 0px 0px;
+}
+
+#blocked_url {
+	color: #d21c00;
+	float:right;
+	margin: 38px 12px 0px 0px;
+}
+
+#content {
+	padding-top: 10px;
+	padding-bottom: 20px;
+	padding-left: 30px;
+	padding-right: 30px;
+	text-align: center;
+}
+
+p {
+	padding-top: 6px;
+	line-height: 1.2em;
+}
+
+</style>
+</head>
+<body>
+	<div id="box">
+		<div id="title">
+			<img id="logo" src="logo.png" alt="logo" title="logo" />
+			<img id="problem" src="ic_scanner_result_problem.png" alt="problem" title="problem" />
+			<div id="blocked_url">Blocked URL</div>
+		</div>
+		<div id="content">
+			<div>
+				<p><strong>This site has been blocked.</strong></p>
+				<p id="text">Please close this browser window or type a&nbsp;new URL.</p>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

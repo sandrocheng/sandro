@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:avast="http://schemas.android.com/apk/res/com.avast.android.mobilesecurity">
+    <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content">
+        <LinearLayout android:gravity="center_vertical" android:orientation="vertical" android:background="@drawable/bg_title" android:paddingTop="@dimen/content_marginVertical" android:paddingBottom="@dimen/content_marginVerticalSmall" android:layout_width="fill_parent" android:layout_height="wrap_content" android:minHeight="@dimen/titlebar_height">
+            <android.support.v4.app.FragmentBreadCrumbs android:id="@id/breadcrumbs" android:tag="breadcrumbs" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="@dimen/content_marginHorizontal" />
+            <TextView android:textColor="?android:textColorSecondary" android:id="@id/descr" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="@dimen/content_marginHorizontal" android:layout_marginRight="@dimen/content_marginHorizontal" android:text="@string/msg_shieldcontrol_fileshield_desc" style="@style/TextAppearance" />
+        </LinearLayout>
+        <LinearLayout android:orientation="vertical" android:background="@drawable/bg_menu_normal" android:layout_width="fill_parent" android:layout_height="wrap_content">
+            <com.avast.android.generic.ui.widget.CheckBoxRow android:id="@id/shieldcontrol_storageshield_enable_checkbox" android:layout_width="fill_parent" android:layout_height="wrap_content" avast:rowKey="gSettingsFileShieldEnabled" avast:rowTitle="@string/l_shieldcontrol_fileshield" avast:rowSubTitle="@string/l_shieldcontrol_fileshield_checkbox_subtitle" avast:rowDAO="preference" />
+            <include layout="@layout/row_line_separator" />
+            <com.avast.android.generic.ui.widget.CheckBoxRow android:id="@id/shieldcontrol_storageshield_read" android:layout_width="fill_parent" android:layout_height="wrap_content" avast:rowKey="gSettingsFileShieldReadEnabled" avast:rowTitle="@string/l_shieldcontrol_fileshield_read" avast:rowDAO="preference" />
+            <include layout="@layout/row_line_separator_short" />
+            <com.avast.android.generic.ui.widget.CheckBoxRow android:id="@id/shieldcontrol_storageshield_write" android:layout_width="fill_parent" android:layout_height="wrap_content" avast:rowKey="gSettingsFileShieldWriteEnabled" avast:rowTitle="@string/l_shieldcontrol_fileshield_write" avast:rowDAO="preference" />
+            <include android:visibility="gone" layout="@layout/row_line_separator_short" />
+            <com.avast.android.generic.ui.widget.CheckBoxRow android:id="@id/shieldcontrol_storageshield_mount" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="wrap_content" avast:rowKey="gSettingsFileShieldMountEnabled" avast:rowTitle="@string/l_shieldcontrol_fileshield_mount" avast:rowDAO="preference" />
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

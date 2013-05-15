@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.avast.android.generic.ui.widget.CheckBoxRow android:id="@id/r_enable" android:layout_width="fill_parent" android:layout_height="wrap_content" avast:rowKey="gSettingsAppLockingEnabled" avast:rowTitle="@string/l_applocking_enable" avast:rowSubTitle="@string/l_applocking_enable_hint"
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:avast="http://schemas.android.com/apk/res/com.avast.android.mobilesecurity" />

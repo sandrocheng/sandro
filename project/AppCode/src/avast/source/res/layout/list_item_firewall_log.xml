@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:background="@drawable/xml_bg_row_in_container" android:paddingLeft="@dimen/content_marginHorizontal" android:paddingBottom="@dimen/content_marginVertical" android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <ImageView android:layout_gravity="center_vertical" android:id="@id/icon" android:layout_width="48.0dip" android:layout_height="48.0dip" android:layout_marginTop="@dimen/content_marginVertical" android:layout_marginRight="8.0dip" android:src="@drawable/ic_app" android:scaleType="fitXY" />
+    <TextView android:layout_marginLeft="0.0dip" android:text="@string/l_app" android:maxLines="2" android:layout_toRightOf="@id/icon" style="@style/RowTitle" />
+    <TextView android:id="@id/firewall_log_last_targets" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="0.0dip" android:layout_marginRight="0.0dip" android:layout_below="@id/row_title" android:layout_alignLeft="@id/row_title" android:layout_alignRight="@id/row_title" style="@style/RowTitle.Sub" />
+</RelativeLayout>

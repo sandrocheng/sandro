@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:id="@id/list_item_notification_empty" android:background="@drawable/bg_menu_normal" android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <RelativeLayout android:id="@id/list_item_row" android:background="@drawable/xml_bg_row" android:focusable="true" android:clickable="true" android:layout_width="fill_parent" android:layout_height="?android:listPreferredItemHeight">
+        <ImageView android:id="@id/icon" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="@dimen/content_marginHorizontalSmall" android:src="@drawable/ic_app" android:layout_centerVertical="true" />
+        <ImageView android:id="@id/arrow" android:visibility="visible" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="@dimen/content_marginHorizontal" android:src="@drawable/xml_list_arrow" android:layout_alignParentRight="true" android:layout_centerVertical="true" />
+        <TextView android:ellipsize="end" android:id="@id/title" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="@dimen/content_marginHorizontalSmall" android:layout_marginTop="6.0dip" android:layout_marginRight="@dimen/content_marginHorizontalSmall" android:layout_marginBottom="0.0dip" android:singleLine="true" android:layout_toLeftOf="@id/arrow" android:layout_toRightOf="@id/icon" style="@style/RowTitle" />
+        <TextView android:ellipsize="end" android:id="@id/text" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="0.0dip" android:layout_marginTop="2.0dip" android:layout_marginRight="@dimen/content_marginHorizontalSmall" android:layout_marginBottom="0.0dip" android:singleLine="true" android:layout_below="@id/title" android:layout_alignLeft="@id/title" style="@style/RowTitle.Sub" />
+    </RelativeLayout>
+</LinearLayout>

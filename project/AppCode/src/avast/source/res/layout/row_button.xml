@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:layout_gravity="center_vertical" android:orientation="vertical" android:id="@id/button" android:paddingLeft="@dimen/content_marginHorizontal" android:paddingTop="@dimen/content_marginVertical" android:paddingRight="@dimen/content_marginHorizontal" android:paddingBottom="@dimen/content_marginVertical" android:focusable="true" android:clickable="true" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="@dimen/content_marginHorizontal" android:layout_marginRight="@dimen/content_marginHorizontal"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <TextView android:id="@id/row_title" style="@style/RowButtonTitle" />
+    <TextView android:id="@id/row_subtitle" style="@style/RowButtonTitle.Sub" />
+</LinearLayout>

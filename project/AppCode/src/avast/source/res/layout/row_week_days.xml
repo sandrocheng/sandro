@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:layout_width="fill_parent" android:layout_height="@dimen/content_height"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout android:layout_gravity="center" android:orientation="horizontal" android:paddingLeft="@dimen/content_marginHorizontal" android:paddingRight="@dimen/content_marginHorizontal" android:layout_width="fill_parent" android:layout_height="wrap_content">
+        <ToggleButton android:tag="0" android:layout_width="0.0dip" android:layout_height="wrap_content" android:textOn="@string/l_mon_short" android:textOff="@string/l_mon_short" android:layout_weight="1.0" style="@style/ToggleButton.WeekDay" />
+        <ToggleButton android:tag="1" android:layout_width="0.0dip" android:layout_height="wrap_content" android:layout_marginLeft="@dimen/toggle_button_margin" android:textOn="@string/l_tue_short" android:textOff="@string/l_tue_short" android:layout_weight="1.0" style="@style/ToggleButton.WeekDay" />
+        <ToggleButton android:tag="2" android:layout_width="0.0dip" android:layout_height="wrap_content" android:layout_marginLeft="@dimen/toggle_button_margin" android:textOn="@string/l_wed_short" android:textOff="@string/l_wed_short" android:layout_weight="1.0" style="@style/ToggleButton.WeekDay" />
+        <ToggleButton android:tag="3" android:layout_width="0.0dip" android:layout_height="wrap_content" android:layout_marginLeft="@dimen/toggle_button_margin" android:textOn="@string/l_thu_short" android:textOff="@string/l_thu_short" android:layout_weight="1.0" style="@style/ToggleButton.WeekDay" />
+        <ToggleButton android:tag="4" android:layout_width="0.0dip" android:layout_height="wrap_content" android:layout_marginLeft="@dimen/toggle_button_margin" android:textOn="@string/l_fri_short" android:textOff="@string/l_fri_short" android:layout_weight="1.0" style="@style/ToggleButton.WeekDay" />
+        <ToggleButton android:tag="5" android:layout_width="0.0dip" android:layout_height="wrap_content" android:layout_marginLeft="@dimen/toggle_button_margin" android:textOn="@string/l_sat_short" android:textOff="@string/l_sat_short" android:layout_weight="1.0" style="@style/ToggleButton.WeekDay" />
+        <ToggleButton android:tag="6" android:layout_width="0.0dip" android:layout_height="wrap_content" android:layout_marginLeft="@dimen/toggle_button_margin" android:textOn="@string/l_sun_short" android:textOff="@string/l_sun_short" android:layout_weight="1.0" style="@style/ToggleButton.WeekDay" />
+    </LinearLayout>
+</FrameLayout>

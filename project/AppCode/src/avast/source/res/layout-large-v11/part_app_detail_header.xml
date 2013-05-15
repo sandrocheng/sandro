@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout android:gravity="center_vertical" android:layout_gravity="center_vertical" android:orientation="horizontal" android:id="@id/breadcrumbsRow" android:background="@drawable/bg_title" android:layout_width="fill_parent" android:layout_height="wrap_content" android:minHeight="@dimen/titlebar_height">
+        <android.support.v4.app.FragmentBreadCrumbs android:id="@id/breadcrumbs" android:tag="breadcrumbs" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="@dimen/content_marginHorizontal" />
+    </LinearLayout>
+    <LinearLayout android:orientation="horizontal" android:id="@id/appDetailRow" android:background="@drawable/bg_menu_normal" android:layout_width="fill_parent" android:layout_height="?android:listPreferredItemHeight">
+        <ImageView android:layout_gravity="center_vertical" android:id="@id/app_detail_icon" android:layout_width="48.0dip" android:layout_height="48.0dip" android:layout_marginLeft="@dimen/content_marginHorizontal" android:src="@drawable/ic_app" android:scaleType="fitXY" />
+        <LinearLayout android:layout_gravity="center_vertical" android:orientation="vertical" android:layout_width="0.0dip" android:layout_height="wrap_content" android:layout_marginLeft="5.0dip" android:layout_weight="1.0">
+            <TextView android:ellipsize="end" android:id="@id/app_detail_name" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginRight="@dimen/content_marginHorizontal" android:text="@string/l_app" android:lines="1" android:scrollHorizontally="true" style="@style/ActivityTitle" />
+            <TextView android:textColor="?android:textColorSecondary" android:ellipsize="end" android:id="@id/app_detail_version" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginRight="@dimen/content_marginHorizontal" android:text="@string/l_version" android:lines="1" android:scrollHorizontally="true" style="@style/TextAppearance" />
+        </LinearLayout>
+    </LinearLayout>
+</merge>

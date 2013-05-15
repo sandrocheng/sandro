@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="horizontal" android:duplicateParentState="true" android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <ImageView android:layout_gravity="center_vertical" android:id="@id/icon" android:visibility="gone" android:duplicateParentState="true" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="@dimen/content_marginHorizontalSmall" android:layout_marginTop="@dimen/content_marginHorizontalSmall" android:layout_marginRight="@dimen/content_marginHorizontal_inverse" android:layout_marginBottom="@dimen/content_marginHorizontalSmall" android:layout_weight="0.0" />
+    <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_weight="1.0">
+        <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/content_marginHorizontal" android:layout_marginBottom="@dimen/content_marginHorizontal">
+            <TextView android:layout_height="wrap_content" android:text="@string/l_app" android:layout_weight="1.0" style="?rowTitleStyle" />
+            <ImageView android:layout_gravity="center_vertical" android:id="@id/c_next_arrow" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="16.0dip" android:src="@drawable/xml_list_arrow" android:layout_weight="0.0" />
+        </LinearLayout>
+        <TextView android:text="@string/l_lorem_ipsum_paragraph" style="?rowSubTitleStyle" />
+    </LinearLayout>
+</LinearLayout>

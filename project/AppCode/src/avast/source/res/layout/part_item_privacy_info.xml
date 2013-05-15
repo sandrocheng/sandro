@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <TextView android:id="@id/permission_name" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="Permission Name" style="@style/Text.Header.2" />
+    <TextView android:id="@id/permission_descr" android:paddingBottom="4.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="@string/l_lorem_ipsum_paragraph" style="@style/Text" />
+</LinearLayout>

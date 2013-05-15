@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView android:layout_width="fill_parent" android:layout_height="fill_parent" android:fillViewport="false" style="@style/ScrollView.Transparent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:avast="http://schemas.android.com/apk/res-auto">
+    <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent" android:baselineAligned="false">
+        <LinearLayout android:orientation="horizontal" android:background="@drawable/bg_title" android:layout_width="fill_parent" android:layout_height="@dimen/titlebar_height">
+            <TextView android:layout_gravity="center_vertical" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="@dimen/content_marginHorizontal" android:text="@string/l_appname" style="@style/ActivityTitle" />
+        </LinearLayout>
+        <LinearLayout android:orientation="vertical" android:background="@drawable/bg_menu_normal" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_weight="1.0">
+            <TextView android:paddingTop="@dimen/content_marginHorizontal" android:paddingBottom="@dimen/content_marginHorizontal" android:text="@string/l_appname_desc" style="@style/Text" />
+            <include layout="@layout/row_line_separator" />
+            <com.avast.android.generic.ui.widget.EditTextRow android:id="@id/r_choose_appname" android:layout_width="fill_parent" android:layout_height="wrap_content" />
+            <Button android:orientation="horizontal" android:id="@id/b_generate_name" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginLeft="@dimen/content_marginHorizontal" android:layout_marginRight="@dimen/content_marginHorizontal" android:layout_marginBottom="@dimen/content_marginHorizontal" android:text="@string/l_generate_name" android:layout_weight="1.0" style="@style/Button.Gray" />
+        </LinearLayout>
+        <LinearLayout style="@style/ButtonLayout">
+            <Button android:id="@id/b_cancel" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginRight="4.0dip" android:text="@string/l_back" android:layout_weight="1.0" style="@style/Button.Gray" />
+            <Button android:id="@id/b_continue" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginLeft="4.0dip" android:text="@string/l_continue" android:layout_weight="1.0" style="@style/Button.Green" />
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

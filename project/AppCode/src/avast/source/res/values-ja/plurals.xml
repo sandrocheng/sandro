@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="l_and_x_more">
+        <item quantity="other">あと %d つ…</item>
+        <item quantity="zero"></item>
+    </plurals>
+    <plurals name="l_filebrowser_selected">
+        <item quantity="other">%s 選択済み</item>
+        <item quantity="one">%s 選択済み</item>
+        <item quantity="two">%s 選択済み</item>
+        <item quantity="few">%s 選択済み</item>
+        <item quantity="many">%s 選択済み</item>
+    </plurals>
+    <plurals name="num_seconds_ago">
+        <item quantity="other">%d秒前</item>
+        <item quantity="one">1秒前</item>
+    </plurals>
+    <plurals name="num_minutes_ago">
+        <item quantity="other">%d分前</item>
+        <item quantity="one">1分前</item>
+    </plurals>
+    <plurals name="num_hours_ago">
+        <item quantity="other">%d時間前</item>
+        <item quantity="one">1時間前</item>
+    </plurals>
+    <plurals name="last_num_days">
+        <item quantity="other">過去%d日間</item>
+    </plurals>
+    <plurals name="num_days_ago">
+        <item quantity="other">%d日前</item>
+        <item quantity="one">昨日</item>
+    </plurals>
+    <plurals name="in_num_seconds">
+        <item quantity="other">%d秒後</item>
+        <item quantity="one">1秒後</item>
+    </plurals>
+    <plurals name="in_num_minutes">
+        <item quantity="other">%d分後</item>
+        <item quantity="one">1分後</item>
+    </plurals>
+    <plurals name="in_num_hours">
+        <item quantity="other">%d時間後</item>
+        <item quantity="one">1時間後</item>
+    </plurals>
+    <plurals name="in_num_days">
+        <item quantity="other">%d日後</item>
+        <item quantity="one">明日</item>
+    </plurals>
+    <plurals name="abbrev_num_seconds_ago">
+        <item quantity="other">%d秒前</item>
+        <item quantity="one">1秒前</item>
+    </plurals>
+    <plurals name="abbrev_num_minutes_ago">
+        <item quantity="other">%d分前</item>
+        <item quantity="one">1分前</item>
+    </plurals>
+    <plurals name="abbrev_num_hours_ago">
+        <item quantity="other">%d時間前</item>
+        <item quantity="one">1時間前</item>
+    </plurals>
+    <plurals name="abbrev_num_days_ago">
+        <item quantity="other">%d日前</item>
+        <item quantity="one">昨日</item>
+    </plurals>
+    <plurals name="abbrev_in_num_seconds">
+        <item quantity="other">%d秒後</item>
+        <item quantity="one">1秒後</item>
+    </plurals>
+    <plurals name="abbrev_in_num_minutes">
+        <item quantity="other">%d分後</item>
+        <item quantity="one">1分後</item>
+    </plurals>
+    <plurals name="abbrev_in_num_hours">
+        <item quantity="other">%d時間後</item>
+        <item quantity="one">1時間後</item>
+    </plurals>
+    <plurals name="abbrev_in_num_days">
+        <item quantity="other">%d日後</item>
+        <item quantity="one">明日</item>
+    </plurals>
+    <plurals name="l_problems">
+        <item quantity="other">%d 個の問題</item>
+        <item quantity="one">%d 個の問題</item>
+        <item quantity="few">%d 個の問題</item>
+    </plurals>
+    <plurals name="l_problems_found">
+        <item quantity="other">%d 個の問題が見つかりました</item>
+        <item quantity="one">%d 個の問題が見つかりました</item>
+        <item quantity="few">%d 個の問題が見つかりました</item>
+    </plurals>
+    <plurals name="l_apps_to_uninstall">
+        <item quantity="other">%d 個のアプリを削除</item>
+        <item quantity="one">%d 個のアプリを削除</item>
+        <item quantity="few">%d 個のアプリを削除</item>
+    </plurals>
+    <plurals name="l_files_to_delete">
+        <item quantity="other">%d 個のファイルを削除</item>
+        <item quantity="one">%d 個のファイルを削除</item>
+        <item quantity="few">%d 個のファイルを削除</item>
+    </plurals>
+    <plurals name="l_items_to_ignore">
+        <item quantity="other">%d 個の項目を無視</item>
+        <item quantity="one">%d 個の項目を無視</item>
+        <item quantity="few">%d 個の項目を無視</item>
+    </plurals>
+    <plurals name="l_account_status_reporting_frequency">
+        <item quantity="other">%s 分毎</item>
+        <item quantity="one">%s 分毎</item>
+        <item quantity="few">%s 分毎</item>
+    </plurals>
+    <plurals name="l_adrep_addons_found">
+        <item quantity="other">%d files with add-ons found</item>
+        <item quantity="zero">%d files with add-ons found</item>
+        <item quantity="one">%d file with add-ons found</item>
+        <item quantity="few">%d files with add-ons found</item>
+    </plurals>
+</resources>

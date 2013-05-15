@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="horizontal" android:background="@drawable/xml_bg_list_background_selector" android:layout_width="fill_parent" android:layout_height="@dimen/content_height"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <ImageView android:layout_gravity="center_vertical" android:id="@id/icon" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="@dimen/content_marginHorizontalSmall" android:src="@drawable/ic_menu_virusscn" android:layout_weight="0.0" />
+    <TextView android:ellipsize="end" android:layout_gravity="center_vertical" android:id="@id/name" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="@string/l_app" android:layout_weight="1.0" style="@style/ListTitle" />
+</LinearLayout>

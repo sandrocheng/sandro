@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="l_and_x_more">
+        <item quantity="other">és még %d…</item>
+        <item quantity="zero"></item>
+    </plurals>
+    <plurals name="l_filebrowser_selected">
+        <item quantity="other">%s kijelölve</item>
+        <item quantity="one">%s kijelölve</item>
+        <item quantity="two">%s kijelölve</item>
+        <item quantity="few">%s kijelölve</item>
+        <item quantity="many">%s kijelölve</item>
+    </plurals>
+    <plurals name="num_seconds_ago">
+        <item quantity="other">%d másodperce</item>
+        <item quantity="one">1 másodperce</item>
+    </plurals>
+    <plurals name="num_minutes_ago">
+        <item quantity="other">%d perce</item>
+        <item quantity="one">1 perce</item>
+    </plurals>
+    <plurals name="num_hours_ago">
+        <item quantity="other">%d órája</item>
+        <item quantity="one">1 órája</item>
+    </plurals>
+    <plurals name="last_num_days">
+        <item quantity="other">Elmúlt %d napban</item>
+    </plurals>
+    <plurals name="num_days_ago">
+        <item quantity="other">%d napja</item>
+        <item quantity="one">tegnap</item>
+    </plurals>
+    <plurals name="in_num_seconds">
+        <item quantity="other">%d másodperc múlva</item>
+        <item quantity="one">1 másodperc múlva</item>
+    </plurals>
+    <plurals name="in_num_minutes">
+        <item quantity="other">%d perc múlva</item>
+        <item quantity="one">1 perc múlva</item>
+    </plurals>
+    <plurals name="in_num_hours">
+        <item quantity="other">%d óra múlva</item>
+        <item quantity="one">1 óra múlva</item>
+    </plurals>
+    <plurals name="in_num_days">
+        <item quantity="other">%d nap múlva</item>
+        <item quantity="one">holnap</item>
+    </plurals>
+    <plurals name="abbrev_num_seconds_ago">
+        <item quantity="other">%d másodperce</item>
+        <item quantity="one">1 másodperce</item>
+    </plurals>
+    <plurals name="abbrev_num_minutes_ago">
+        <item quantity="other">%d perce</item>
+        <item quantity="one">1 perce</item>
+    </plurals>
+    <plurals name="abbrev_num_hours_ago">
+        <item quantity="other">%d órája</item>
+        <item quantity="one">1 órája</item>
+    </plurals>
+    <plurals name="abbrev_num_days_ago">
+        <item quantity="other">%d napja</item>
+        <item quantity="one">tegnap</item>
+    </plurals>
+    <plurals name="abbrev_in_num_seconds">
+        <item quantity="other">%d másodperc múlva</item>
+        <item quantity="one">1 másodperc múlva</item>
+    </plurals>
+    <plurals name="abbrev_in_num_minutes">
+        <item quantity="other">%d perc múlva</item>
+        <item quantity="one">1 perc múlva</item>
+    </plurals>
+    <plurals name="abbrev_in_num_hours">
+        <item quantity="other">%d óra múlva</item>
+        <item quantity="one">1 óra múlva</item>
+    </plurals>
+    <plurals name="abbrev_in_num_days">
+        <item quantity="other">%d nap múlva</item>
+        <item quantity="one">holnap</item>
+    </plurals>
+    <plurals name="l_problems">
+        <item quantity="other">%d hiba</item>
+        <item quantity="one">%d hiba</item>
+        <item quantity="few">%d hiba</item>
+    </plurals>
+    <plurals name="l_problems_found">
+        <item quantity="other">%d észlelt hiba</item>
+        <item quantity="one">%d észlelt hiba</item>
+        <item quantity="few">%d észlelt hiba</item>
+    </plurals>
+    <plurals name="l_apps_to_uninstall">
+        <item quantity="other">eltávolítani %d alkalmazást</item>
+        <item quantity="one">eltávolítani %d alkalmazást</item>
+        <item quantity="few">eltávolítani %d alkalmazást</item>
+    </plurals>
+    <plurals name="l_files_to_delete">
+        <item quantity="other">törölni %d fájlt</item>
+        <item quantity="one">törölni %d fájlt</item>
+        <item quantity="few">törölni %d fájlt</item>
+    </plurals>
+    <plurals name="l_items_to_ignore">
+        <item quantity="other">kihagyni %d elemet</item>
+        <item quantity="one">kihagyni %d elemet</item>
+        <item quantity="few">kihagyni %d elemet</item>
+    </plurals>
+    <plurals name="l_account_status_reporting_frequency">
+        <item quantity="other">%s percenként</item>
+        <item quantity="one">%s percenként</item>
+        <item quantity="few">%s percenként</item>
+    </plurals>
+    <plurals name="l_adrep_addons_found">
+        <item quantity="other">%d files with add-ons found</item>
+        <item quantity="zero">%d files with add-ons found</item>
+        <item quantity="one">%d file with add-ons found</item>
+        <item quantity="few">%d files with add-ons found</item>
+    </plurals>
+</resources>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:avast="http://schemas.android.com/apk/res/com.avast.android.mobilesecurity">
+    <com.avast.android.generic.ui.widget.CheckBoxRow android:id="@id/r_firewall_enable" android:layout_width="fill_parent" android:layout_height="wrap_content" avast:rowKey="gSettingsFirewallEnabled" avast:rowTitle="@string/l_firewall_enable" avast:rowDAO="none" />
+    <include layout="@layout/row_line_separator" />
+    <com.avast.android.generic.ui.widget.NextRow android:id="@id/r_open_custom_rules" android:layout_width="fill_parent" android:layout_height="wrap_content" avast:rowTitle="@string/l_firewall_custom_rules" />
+</LinearLayout>

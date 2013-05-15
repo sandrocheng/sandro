@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item type="dimen" name="notification_large_icon_width">@*android:dimen/notification_large_icon_width</item>
+    <item type="dimen" name="notification_large_icon_height">@*android:dimen/notification_large_icon_height</item>
+    <dimen name="notification_icon_marginHorizontal">12.0dip</dimen>
+    <dimen name="notification_icon_marginHorizontal_htc">2.0dip</dimen>
+</resources>
