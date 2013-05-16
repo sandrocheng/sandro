@@ -8,6 +8,11 @@ import android.os.Handler;
 import com.avast.android.mobilesecurity.receiver.ExternalPowerReceiver;
 import java.util.List;
 
+/**
+ * mark loop search activity
+ * @author sandrocheng
+ *
+ */
 class g
   implements Runnable
 {

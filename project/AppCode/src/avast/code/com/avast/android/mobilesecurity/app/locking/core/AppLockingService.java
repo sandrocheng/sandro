@@ -137,7 +137,7 @@ public class AppLockingService extends Service
       if ((this.c == null) || (this.c.getStatus() == AsyncTask.Status.FINISHED))
         this.c = new d(this, getApplicationContext());
       if (this.c.getStatus() == AsyncTask.Status.PENDING)
-      {
+      {//mark logcat moniter
         m.c("ApplockingService: turning on logcat handler");
         b.a(this.c, new Void[0]);
       }
@@ -154,7 +154,7 @@ public class AppLockingService extends Service
       if (this.d == null)
         this.d = new Handler();
       if (this.e == null)
-      {
+      {//mark loop search activity
         m.c("ApplockingService: turning on task handler");
         this.e = new g(this, this);
       }

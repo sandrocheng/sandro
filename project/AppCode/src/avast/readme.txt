@@ -29,3 +29,7 @@ AdvisorScanService
 OnDemandScannerScanService
 ScannerScanService
 WizardScannerScanService
+
+AppLockingService:app启动监控的service,主要有两种方式
+1 监控logcat文件数据，正则表达式匹配(mark logcat moniter)
+2 如果logcat被关闭，则循环查看是否有app启动(mark loop search activity)

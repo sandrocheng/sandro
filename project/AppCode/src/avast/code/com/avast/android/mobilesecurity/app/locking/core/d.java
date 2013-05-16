@@ -10,6 +10,11 @@ import com.avast.android.mobilesecurity.t;
 import java.text.SimpleDateFormat;
 import java.util.regex.Pattern;
 
+/**
+ * mark logcat moniter
+ * @author sandrocheng
+ *
+ */
 class d extends AsyncTask
 {
   private final Pattern b = Pattern.compile("act=([^ ]+)");
