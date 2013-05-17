@@ -55,7 +55,7 @@ public class MainActivity extends ListActivity {
 			case CoreService.MESSAGE_GET_LOG:
 				String log = (String)msg.obj;
 				
-				dataAdapter.add(dataAdapter.getCount() + log);
+				dataAdapter.add("[" + dataAdapter.getCount() + "] " + log);
 				
 				if(dataAdapter.getCount()>1000){
 					dataAdapter.clear();

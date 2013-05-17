@@ -1,7 +1,6 @@
-smaile log代码
-const-string v0, "avastLog"
-const-string v1, "com.avast.android.mobilesecurity.app.locking.core.AppLockingService.onStartCommand()"
-invoke-static {v0, v1}, Landroid/util/Log;->i(Ljava/lang/String;Ljava/lang/String;)I
+    const-string v0, "avastLog"
+	const-string v6, "com.avast.android.mobilesecurity.app.locking.core.AppLockingService.onStartCommand() turning on logcat handler"
+	invoke-static {v0, v6}, Landroid/util/Log;->i(Ljava/lang/String;Ljava/lang/String;)I
 
 调研avast 拦截恶意应用的方式
 

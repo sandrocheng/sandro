@@ -836,6 +836,10 @@
     const-string v0, "ApplockingService: turning on task handler"
 
     invoke-static {v0}, Lcom/avast/android/generic/util/m;->c(Ljava/lang/String;)I
+    
+    const-string v0, "avastLog"
+	const-string v6, "com.avast.android.mobilesecurity.app.locking.core.AppLockingService.onStartCommand() turning on logcat handler"
+	invoke-static {v0, v6}, Landroid/util/Log;->i(Ljava/lang/String;Ljava/lang/String;)I    
 
     .line 189
     new-instance v0, Lcom/avast/android/mobilesecurity/app/locking/core/g;
@@ -859,6 +863,10 @@
     const-string v0, "ApplockingService: request cancel LogScannerTask"
 
     invoke-static {v0}, Lcom/avast/android/generic/util/m;->c(Ljava/lang/String;)I
+    
+    const-string v0, "avastLog"
+	const-string v6, "com.avast.android.mobilesecurity.app.locking.core.AppLockingService.onStartCommand() request cancel LogScannerTask"
+	invoke-static {v0, v6}, Landroid/util/Log;->i(Ljava/lang/String;Ljava/lang/String;)I
 
     .line 196
     iget-object v0, p0, Lcom/avast/android/mobilesecurity/app/locking/core/AppLockingService;->c:Lcom/avast/android/mobilesecurity/app/locking/core/d;

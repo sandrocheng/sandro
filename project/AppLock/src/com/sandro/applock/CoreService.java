@@ -3,6 +3,11 @@ package com.sandro.applock;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import android.app.Service;
@@ -53,6 +58,19 @@ public class CoreService extends Service{
 		logCatThread.stopRead();
 		super.onDestroy();
 	}
+	
+	private void sendLog(String line) {
+		if (clientMessenger != null) {
+			Message clientMsg = Message.obtain(null,
+					MESSAGE_GET_LOG);
+			clientMsg.obj = line;
+			try {
+				clientMessenger.send(clientMsg);
+			} catch (RemoteException e) {
+				clientMessenger = null;
+			}
+		}
+	}
 
 	private class MessengerHandler extends Handler {
 		@Override
@@ -61,7 +79,6 @@ public class CoreService extends Service{
 			case MESSAGE_SAY_HELLO:
 				if (msg.replyTo != null) {
 					clientMessenger = msg.replyTo;
-					Log.i("CoreService", "MESSAGE_SAY_HELLO");
 				}
 				break;
 			default:
@@ -77,6 +94,8 @@ public class CoreService extends Service{
 		private final Pattern cmpPat = Pattern.compile("cmp=([^} ]+)");
 		private final Pattern datPat = Pattern.compile("dat=([^} ]+)");
 		private final Pattern pat = Pattern.compile("([^ ]+)/([^: ]+)");
+		private final static int TIME_LENGTH = 18;
+		private final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM-dd HH:mm:ss.SSS");
 		
 		private static final String LOG_PATTERN = "logcat -v time ActivityManager:I WindowManager:I *:S"; 
 		  
@@ -101,20 +120,40 @@ public class CoreService extends Service{
 				BufferedReader bufferedReader = new BufferedReader(
 						new InputStreamReader(process.getInputStream()));
 				String line = "";
+				Matcher actMatcher = null;
+				Matcher cmpMatcher = null;
 				while (start && (line = bufferedReader.readLine()) != null) {
-					if (clientMessenger != null) {
-						Message clientMsg = Message.obtain(null,
-								MESSAGE_GET_LOG);
-						clientMsg.obj = line;
-						try {
-							clientMessenger.send(clientMsg);
-						} catch (RemoteException e) {
-							clientMessenger = null;
-						}
+					actMatcher = actPat.matcher(line); 
+					cmpMatcher = cmpPat.matcher(line);
+					if(actMatcher.find() && cmpMatcher.find()){
+						handleLog(line, cmpMatcher.group());
 					}
 				}
 			} catch (IOException e) {
 			}
+		}
+
+		private void handleLog(String line, String packageStr) {
+			String timeStr = (String) line.substring(0, TIME_LENGTH);
+			Date date;
+			try {
+				date = simpleDateFormat.parse(timeStr);
+			} catch (ParseException e) {
+				Log.e("CoreService", "handleLog ParseException : " + e.toString());
+				return;
+			}
+			
+			Calendar dateCalHigh = Calendar.getInstance();
+			dateCalHigh.setTime(date);
+			dateCalHigh.add(Calendar.SECOND, 5);
+			
+			Calendar dateCalCur = Calendar.getInstance();
+			dateCalCur.setTime(new Date());
+			
+			sendLog(packageStr);
+			Log.i("CoreService", timeStr + " : " + packageStr);
+			Log.i("CoreService",  " dateCalHigh : " + simpleDateFormat.format(dateCalHigh.getTime())
+					+ " ,dateCur : " + simpleDateFormat.format(new Date()));
 		}
 	}
 
