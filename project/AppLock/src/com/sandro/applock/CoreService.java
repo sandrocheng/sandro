@@ -143,17 +143,35 @@ public class CoreService extends Service{
 				return;
 			}
 			
-			Calendar dateCalHigh = Calendar.getInstance();
-			dateCalHigh.setTime(date);
-			dateCalHigh.add(Calendar.SECOND, 5);
+			Calendar dateCal = Calendar.getInstance();
+			dateCal.setTime(date);
+			dateCal.set(Calendar.YEAR, 2013);
 			
-			Calendar dateCalCur = Calendar.getInstance();
-			dateCalCur.setTime(new Date());
+			Log.i("CoreService", "timeStr : " + timeStr
+					+ " ,format : " + simpleDateFormat.format(dateCal.getTime())
+					+ ",convert : " + dateCal.get(Calendar.YEAR) + " "
+					+ " " + dateCal.get(Calendar.MONTH)
+					+ " " + dateCal.get(Calendar.DAY_OF_MONTH)
+					+ " " + dateCal.get(Calendar.HOUR_OF_DAY)
+					+ " " + dateCal.get(Calendar.MINUTE)
+					+ " " + dateCal.get(Calendar.SECOND));
 			
-			sendLog(packageStr);
-			Log.i("CoreService", timeStr + " : " + packageStr);
-			Log.i("CoreService",  " dateCalHigh : " + simpleDateFormat.format(dateCalHigh.getTime())
-					+ " ,dateCur : " + simpleDateFormat.format(new Date()));
+//			Calendar realDate = Calendar.getInstance();
+//			realDate.set(dateCal.get(Calendar.YEAR), 
+//					dateCal.get(Calendar.MONTH), 
+//					dateCal.get(Calendar.DAY_OF_MONTH), 
+//					dateCal.get(Calendar.HOUR_OF_DAY), 
+//					dateCal.get(Calendar.MINUTE), 
+//					dateCal.get(Calendar.SECOND));
+			
+			
+//			if(dateCalHigh.after(Calendar.getInstance())){
+//				Log.i("CoreService", timeStr + " : " + packageStr);
+//				sendLog(packageStr);
+//			}else{
+//				Log.d("CoreService",  " dateCalHigh : " + simpleDateFormat.format(dateCalHigh.getTime())
+//						+ " ,dateCur : " + simpleDateFormat.format(Calendar.getInstance().getTime()));
+//			}
 		}
 	}
 
