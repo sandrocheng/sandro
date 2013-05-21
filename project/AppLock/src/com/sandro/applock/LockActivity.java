@@ -67,6 +67,7 @@ public class LockActivity extends Activity implements OnClickListener{
 		if(packageName!=null && packageName.trim().length()>0){
 			mActivityManager.killBackgroundProcesses(packageName);
 		}
+		super.onBackPressed();
 	}
 
 	/**

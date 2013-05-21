@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="password">Password</string>
+    <string name="app_name">OSLock</string>
+    <string name="confirm">Confirm</string>
+    <string name="no_empty">Password empty</string>
+    <string name="twice_diff">Two passwords are inconsistent</string>
+    <string name="password_error">Password error</string>
+    <string name="desc">applock Help you protect your privacy</string>
+    <string name="cpright">copy right@ 2013 21kunpeng 2department Lance.Franck</string>
+    <string name="editPw">Change Password</string>
+    <string name="pls_input_pw">Password</string>
+    <string name="started">OSLockStart</string>
+</resources>

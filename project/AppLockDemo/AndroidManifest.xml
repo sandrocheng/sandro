@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.guangli.applock"
+    android:versionCode="1"
+    android:versionName="1.0"
+    
+    >
+ <!-- android:sharedUserId="android.uid.system"  -->
+    <uses-sdk android:minSdkVersion="10" />
+    <uses-permission android:name="android.permission.GET_TASKS"/>
+    <uses-permission android:name="android.permission.BIND_DEVICE_ADMIN"/>
+    　<!-- 开机启动广播的权限 -->
+     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <application
+        android:icon="@drawable/os_icon"
+        android:label="@string/app_name"
+       >
+        <activity
+            android:name=".AppLockActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".PasswordInutActivity" android:screenOrientation="portrait"/>
+        <service android:name=".AppStartListenerService"/>
+        <service android:name=".ForegroundService"/>
+        
+        <receiver android:name=".AppStartReceiver">
+            <intent-filter>
+                <action android:name="com.liuguangli.APP_START"/>
+            </intent-filter>
+        </receiver>
+         <receiver android:name=".KeepAliveReceiver">
+            <intent-filter android:priority="2147483647">
+             <action android:name="android.intent.action.BOOT_COMPLETED"/> 
+             <action android:name="android.intent.action.SCREEN_OFF"/>   
+              <action android:name="android.intent.action.SCREEN_ON"/>   
+            </intent-filter>
+         </receiver>
+    </application>
+
+</manifest>
