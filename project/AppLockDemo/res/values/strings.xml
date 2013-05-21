@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="password">password</string>
+    <string name="app_name">AppLock</string>
+    <string name="confirm">confirm</string>
+    <string name="no_empty">no empty</string>
+    <string name="twice_diff">the twice inputs is\'nt same</string>
+    <string name="password_error">password error</string>
+    <string name="desc">AppLock Help You Protect Your Private</string>
+    <string name="cpright">copy right@ 2013 21kunpeng 2department Lance.Franck</string>
+    <string name="editPw">eidt password</string>
+    <string name="pls_input_pw">password</string>
+    <string name="started">app lock have started</string>
+</resources>

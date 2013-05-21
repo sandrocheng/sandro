@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+  
+   
+
+    <FrameLayout
+        android:id="@+id/frameLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+        <!-- password setting -->
+       
+    <LinearLayout
+        android:id="@+id/passwordlayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+          <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/password" />
+
+    <EditText
+        android:id="@+id/password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword" />
+   <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/confirm" />
+   
+    <EditText
+        android:id="@+id/passwordComfirm"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword" />
+
+    <Button
+        android:id="@+id/btn_confirm"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/confirm" />
+
+    </LinearLayout>
+    <!-- app setting -->
+     <LinearLayout
+        android:id="@+id/applistlayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone" 
+         >
+       <Button
+        android:id="@+id/btn_editPw"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/editPw" />
+        <ListView
+            android:id="@+id/applist"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+        </ListView>
+
+    </LinearLayout>
+     <LinearLayout
+       android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/layoutPwInput"
+        android:visibility="gone"
+        android:layout_marginTop="60dip"
+      >
+      <TextView 
+        android:layout_width="0dip"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_weight="1"
+        android:text="@string/pls_input_pw"/>
+    <EditText
+        android:id="@+id/pw"
+        android:layout_width="0dip"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:inputType="textPassword" >
+        <requestFocus />
+    </EditText>
+
+    <Button
+        android:id="@+id/btn_ok"
+        android:layout_width="0dip"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginRight="5dp"
+        android:text="@string/confirm" />
+   </LinearLayout>
+    </FrameLayout>
+
+ 
+
+</LinearLayout>
