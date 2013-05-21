@@ -97,10 +97,7 @@ public class LockManager {
         				RunningTaskInfo info = rtinfos.get(0);
         				String tempName = info.baseActivity.getPackageName();
         				
-        				count ++;
-        				if(count >10){//如果轮询线程连续10次找到app则关闭logcat线程.
-        					logCatThread.stopRead();
-        				}
+        				
         				
         				
         			}					
