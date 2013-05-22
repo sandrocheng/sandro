@@ -54,28 +54,6 @@ public class ApplicationConfig implements ITMSApplicaionConfig{
 	private static int versionCode;
 	private static String versionName = "";
 	
-	/**
-	 * 上报用加密解密key
-	 */
-	public static String teakey = "DFG#$%^#%$RGHR(&*M<><";
-	
-	public static String secretKey = "6boyv3A6ni";
-	
-	public static String encryptedSecretKey = "F1D3B392478C35C56645BB6C0316FE1E";
-	
-	/**
-	 * Winmess上报用地址
-	 */
-	public static String report_url = "http://qqdrsvr.3g.qq.com/qqd"; // 正式服务器
-	public static String report_url_test = "http://qqdrsvrtest.cs0309.3g.qq.com/qqd"; // 测试服务器
-	
-	//Winmess获取服务器时间戳地址
-	public static String report_winmess_getTimeStamp_url = "http://qqdrsvr.3g.qq.com/GetTimestamp?format=0"; // 正式服务器
-	public static String report_winmess_getTimeStamp_url_test = "http://qqdrsvrtest.cs0309.3g.qq.com/GetTimestamp?format=0"; // 测试服务器
-	
-	//3G数据上报服务器地址
-	public static String report_3G_url_normal = "http://pmir.3g.qq.com"; // 正式服务器地址
-	public static String report_3G_url_test = "http://wuptest.cs0309.3g.qq.com/"; // 测试服务器地址
 	
 	// FIXME 是否允许测试配置上报参数
 	public static boolean isTestConfigAllow = false;
@@ -85,18 +63,6 @@ public class ApplicationConfig implements ITMSApplicaionConfig{
 	 * 建议在MainApplication oncreate中优先调用
 	 */
 	public static void initData(){
-//		EXCEPTIONUPLOAD = MainApp.getContext().getResources().getBoolean(R.bool.send_crash_mail);
-//		WINMESS_REPORT_URL_TEST = MainApplication.getContext().getResources().getBoolean(R.bool.winmess_report_url_test);
-//		DEBUGINFOWINDOW = MainApplication.getContext().getResources().getBoolean(R.bool.debug_info_window);
-//		LC = MainApplication.getContext().getResources().getString(R.string.lc);
-//		CHANNEL =  MainApplication.getContext().getResources().getString(R.string.channel);
-//		versionName = PackageUtil.getVersionName();
-//		versionCode = PackageUtil.getVersionCode();
-//		MY_PACKAGE_NAME = MainApplication.getContext().getPackageName();
-//		APP_ID = MainApplication.getContext().getResources().getString(R.string.app_id);
-//		
-//		// FIXME 为方便测试加入的临时代码 by joy 2013.02.20
-//		isTestConfigAllow = MainApplication.getContext().getResources().getBoolean(R.bool.test_config_allow);
 		if (isTestConfigAllow) {
 			just4Test_preLoad();
 		}
@@ -202,12 +168,7 @@ public class ApplicationConfig implements ITMSApplicaionConfig{
 		map.put(TMSApplication.CON_LOCATION_LIBNAME, "location-1.0.0");
 		map.put(TMSApplication.CON_APOLLO_LIBNAME, "apollo-1.1.2");
 		//【测试环境】http://wuptest.cs0309.3g.qq.com/  【正式环境】http://pmir.3g.qq.com
-		String report_url = null;
-		if (ApplicationConfig.WINMESS_REPORT_URL_TEST) {
-			report_url = ApplicationConfig.report_3G_url_test;
-		} else {
-			report_url = ApplicationConfig.report_3G_url_normal;
-		}
+		String report_url = "";
 		map.put(TMSApplication.CON_HOST_URL, report_url); 
 		map.put(TMSApplication.CON_SU_CMD, "su");
 		map.put(TMSApplication.CON_SOFTVERSION, versionName);//
