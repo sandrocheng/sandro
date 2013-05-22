@@ -66,7 +66,7 @@ public class ApplicationConfig implements ITMSApplicaionConfig{
 					property.put(TEST_KEY_LC, LC);
 					property.put(TEST_KEY_CHANNEL, CHANNEL);
 					
-					property.save(out, "-- OS TEST Setting --");
+					property.save(out, "--  TEST Setting --");
 					
 				} catch (Exception e) {
 					if (out!= null) {
