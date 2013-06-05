@@ -6,14 +6,17 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 
+import com.sandro.mamanger.WindowMonitor;
+import com.sandro.mamanger.WindowMonitor.MonitorListener;
 import com.sandro.util.CustomProgressBarDialog;
 import com.sandro.util.CutstomProgressDialog;
 import com.sandro.util.DeviceUtil;
 
-public class MainActivity extends Activity implements OnClickListener{
+public class MainActivity extends Activity implements OnClickListener,MonitorListener{
 
 	private CustomProgressBarDialog dialog ;
 	
@@ -60,6 +63,7 @@ public class MainActivity extends Activity implements OnClickListener{
                 mProgressHandler.sendEmptyMessageDelayed(0, 100);
             }
         };
+        WindowMonitor.getIntance().registMonitor(this);
     }
     
 	@Override
@@ -70,6 +74,7 @@ public class MainActivity extends Activity implements OnClickListener{
 			intentService.setAction(CoreService.ACTION_START_SINGLE_PAGE);
 			this.startService(intentService);
 		}
+		WindowMonitor.getIntance().unRegistMonitor();
 		super.onDestroy();
 	}
 
@@ -151,6 +156,11 @@ public class MainActivity extends Activity implements OnClickListener{
 			mProgressHandler.sendEmptyMessage(0);
 			break;
 		}
+	}
+
+	@Override
+	public void onScreen(String packageName) {
+		Log.i("MainActivity", "onScreen : " + packageName);
 	}
 
 }
