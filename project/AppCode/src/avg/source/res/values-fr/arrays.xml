@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="entries_freq_preference">
+        <item>Quotidien</item>
+        <item>Hebdomadaire</item>
+        <item>Jamais</item>
+    </string-array>
+    <string-array name="battery_save_screen_timeout_array">
+        <item>15 secondes</item>
+        <item>30 secondes</item>
+        <item>1 minute</item>
+        <item>2 minutes</item>
+        <item>10 minutes</item>
+        <item>Jamais</item>
+    </string-array>
+    <string-array name="battery_save_power_threshold">
+        <item>10 % de charge</item>
+        <item>30 % de charge</item>
+        <item>50 % de charge</item>
+        <item>Off</item>
+    </string-array>
+    <string-array name="battery_save_ringer_options">
+        <item>Silencieux</item>
+        <item>Vibreur uniquement</item>
+        <item>Sonnerie uniquement</item>
+        <item>Sonnerie et vibreur</item>
+    </string-array>
+    <string-array name="traffic_quota_units">
+        <item>Mo</item>
+        <item>Go</item>
+    </string-array>
+    <string-array name="traffic_cycle_units">
+        <item>Jours</item>
+        <item>Semaines</item>
+        <item>Mois</item>
+    </string-array>
+    <string-array name="traffic_refresh_rate_arr">
+        <item>30 secondes</item>
+        <item>1 minute</item>
+        <item>5 minutes</item>
+        <item>15 minutes</item>
+        <item>30 minutes</item>
+    </string-array>
+</resources>

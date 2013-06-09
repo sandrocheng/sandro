@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="file_scanner_file_deleted_body_plurals">
+        <item quantity="other">تم العثور على %d ملفات مريبة</item>
+        <item quantity="one">تم العثور على %d ملف مريب</item>
+    </plurals>
+    <plurals name="file_scanner_file_deleted_header_plurals">
+        <item quantity="other">تم حذف الملفات</item>
+        <item quantity="one">تم حذف الملف</item>
+    </plurals>
+</resources>

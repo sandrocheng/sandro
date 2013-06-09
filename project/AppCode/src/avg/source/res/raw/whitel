@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<map>
+<boolean name="google.com" value="true"/>
+<boolean name="facebook.com" value="true"/>
+<boolean name="avg.com" value="true"/>
+<boolean name="droidsecurity.com" value="true"/>
+<boolean name="avgmobilation.com" value="true"/>
+<boolean name="youtube.com" value="true"/>
+<boolean name="yahoo.com" value="true"/>
+<boolean name="live.com" value="true"/>
+<boolean name="baidu.com" value="true"/>
+<boolean name="wikipedia.org" value="true"/>
+<boolean name="blogger.com" value="true"/>
+<boolean name="msn.com" value="true"/>
+<boolean name="qq.com" value="true"/>
+<boolean name="twitter.com" value="true"/>
+</map>

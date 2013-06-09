@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="dividerHorizontal" format="reference" />
+    <attr name="dividerVertical" format="reference" />
+    <attr name="buttonBarStyle" format="reference" />
+    <attr name="buttonBarButtonStyle" format="reference" />
+    <attr name="dialogTheme" format="reference" />
+    <attr name="alertDialogTheme" format="reference" />
+</resources>

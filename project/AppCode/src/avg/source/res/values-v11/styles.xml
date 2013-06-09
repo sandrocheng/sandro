@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="mytheme" parent="@*android:style/Theme.Holo">
+        <item name="android:buttonStyle">@style/BlueButtonHolo</item>
+        <item name="android:windowBackground">@drawable/bg_blue</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:progressBarStyleHorizontal">@style/progress_bar_horizontal</item>
+    </style>
+</resources>

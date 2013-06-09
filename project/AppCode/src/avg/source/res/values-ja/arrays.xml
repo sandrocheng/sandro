@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="entries_freq_preference">
+        <item>日に 1 回</item>
+        <item>週に 1 回</item>
+        <item>確認しない</item>
+    </string-array>
+    <string-array name="battery_save_screen_timeout_array">
+        <item>15 秒</item>
+        <item>30 秒</item>
+        <item>1 分</item>
+        <item>2 分</item>
+        <item>10 分</item>
+        <item>確認しない</item>
+    </string-array>
+    <string-array name="battery_save_power_threshold">
+        <item>残量 10%</item>
+        <item>残量 30%</item>
+        <item>残量 50%</item>
+        <item>オフ</item>
+    </string-array>
+    <string-array name="battery_save_ringer_options">
+        <item>サイレント</item>
+        <item>バイブレーションのみ</item>
+        <item>着信音のみ</item>
+        <item>着信音とバイブレーション</item>
+    </string-array>
+    <string-array name="traffic_quota_units">
+        <item>MB</item>
+        <item>GB</item>
+    </string-array>
+    <string-array name="traffic_cycle_units">
+        <item>日</item>
+        <item>週</item>
+        <item>ヶ月</item>
+    </string-array>
+    <string-array name="traffic_refresh_rate_arr">
+        <item>30 秒</item>
+        <item>1 分</item>
+        <item>5 分</item>
+        <item>15 分</item>
+        <item>30 分</item>
+    </string-array>
+</resources>

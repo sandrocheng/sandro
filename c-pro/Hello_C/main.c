@@ -7,7 +7,7 @@
 
 #include "hello.h"
 
-int main(void)
+int main()
 {
 	say_hello();
 	return 0;

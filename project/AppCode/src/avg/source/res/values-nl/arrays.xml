@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="entries_freq_preference">
+        <item>Eenmaal per dag</item>
+        <item>Eenmaal per week</item>
+        <item>Nooit</item>
+    </string-array>
+    <string-array name="battery_save_screen_timeout_array">
+        <item>15 seconden</item>
+        <item>30 seconden</item>
+        <item>1 minuut</item>
+        <item>2 minuten</item>
+        <item>10 minuten</item>
+        <item>Nooit</item>
+    </string-array>
+    <string-array name="battery_save_power_threshold">
+        <item>10% batterijvermogen</item>
+        <item>30% batterijvermogen</item>
+        <item>50% batterijvermogen</item>
+        <item>Uit</item>
+    </string-array>
+    <string-array name="battery_save_ringer_options">
+        <item>Stil</item>
+        <item>Alleen trillen</item>
+        <item>Alleen geluid</item>
+        <item>Geluid en trillen</item>
+    </string-array>
+    <string-array name="traffic_quota_units">
+        <item>MB</item>
+        <item>GB</item>
+    </string-array>
+    <string-array name="traffic_cycle_units">
+        <item>Dagen</item>
+        <item>Weken</item>
+        <item>Maanden</item>
+    </string-array>
+    <string-array name="traffic_refresh_rate_arr">
+        <item>30 seconden</item>
+        <item>1 minuut</item>
+        <item>5 minuten</item>
+        <item>15 minuten</item>
+        <item>30 minuten</item>
+    </string-array>
+</resources>
