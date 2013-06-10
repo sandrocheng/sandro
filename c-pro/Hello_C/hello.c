@@ -47,11 +47,19 @@ void say_hello()
 	printf("\n常量\"constNum\"的值为 ：%f" ,constNum);
 
 
-	int x = 0;
-	printf("\n输入一个整形数字赋值给\"x\"，然后按回车键 ：");
-	scanf("%d",&x);
-	printf("input x is : %d ",x);
+//	int x = 0;
+//	printf("\n输入一个整形数字赋值给\"x\"，然后按回车键 ：");
+//	scanf("%d",&x);
+//	printf("input x is : %d ",x);
 
+	printf("\nVariables of type char occupy %d bytes",sizeof(char));
+	printf("\nVariables of type short occupy %d bytes",sizeof(short));
+	printf("\nVariables of type int occupy %d bytes",sizeof(int));
+	printf("\nVariables of type long occupy %d bytes",sizeof(long));
+	printf("\nVariables of type long long occupy %d bytes",sizeof(long long));
+	printf("\nVariables of type float occupy %d bytes",sizeof(float));
+	printf("\nVariables of type double occupy %d bytes",sizeof(double));
+	printf("\nVariables of type long double occupy %d bytes",sizeof(long double));
 }
 
 
