@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="widget_margin">2.0dip</dimen>
+    <dimen name="widget_item_bottom">1.0dip</dimen>
+    <dimen name="text_size">9.0dip</dimen>
+</resources>

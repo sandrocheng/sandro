@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout android:layout_width="wrap_content" android:layout_height="fill_parent" android:layout_margin="5.0dip">
+        <CheckBox android:id="@id/cb_warn_usage" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="@string/traffic_notify" />
+    </LinearLayout>
+    <LinearLayout android:gravity="center_horizontal" android:layout_gravity="center_horizontal" android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_margin="5.0dip">
+        <TextView android:id="@id/tv_data_package_size" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="5.0dip" android:text="@string/traffic_quota" android:layout_weight="1.0" style="@style/TextWhiteLarge" />
+        <EditText android:gravity="center_vertical" android:id="@id/et_quota_size" android:layout_width="wrap_content" android:layout_height="wrap_content" android:ems="4" android:inputType="number" />
+        <TextView android:id="@id/tv_percent" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="%" android:layout_weight="0.0" />
+        <Spinner android:id="@id/sp_quota_units" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+    </LinearLayout>
+</LinearLayout>

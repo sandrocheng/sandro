@@ -62,4 +62,3 @@ void say_hello()
 	printf("\nVariables of type long double occupy %d bytes",sizeof(long double));
 }
 
-

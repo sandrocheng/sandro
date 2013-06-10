@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="entries_freq_preference">
+        <item>פעם ביום</item>
+        <item>פעם בשבוע</item>
+        <item>אף פעם</item>
+    </string-array>
+    <string-array name="battery_save_screen_timeout_array">
+        <item>15 שניות</item>
+        <item>30 שניות</item>
+        <item>1 דקה</item>
+        <item>2 דקות</item>
+        <item>10 דקות</item>
+        <item>אף פעם</item>
+    </string-array>
+    <string-array name="battery_save_power_threshold">
+        <item>נותרו 10% מקיבולת הסוללה</item>
+        <item>נותרו 30% מקיבולת הסוללה</item>
+        <item>נותרו 50% מקיבולת הסוללה</item>
+        <item>כבוי</item>
+    </string-array>
+    <string-array name="battery_save_ringer_options">
+        <item>שקט</item>
+        <item>רטט בלבד</item>
+        <item>צלצול בלבד</item>
+        <item>צלצול ורטט</item>
+    </string-array>
+    <string-array name="traffic_quota_units">
+        <item>MB</item>
+        <item>GB</item>
+    </string-array>
+    <string-array name="traffic_cycle_units">
+        <item>ימים</item>
+        <item>שבועות</item>
+        <item>חודשים</item>
+    </string-array>
+    <string-array name="traffic_refresh_rate_arr">
+        <item>30 שניות</item>
+        <item>1 דקה</item>
+        <item>5 דקות</item>
+        <item>15 דקות</item>
+        <item>30 דקות</item>
+    </string-array>
+</resources>
