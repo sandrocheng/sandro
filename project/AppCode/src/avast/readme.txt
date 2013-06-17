@@ -52,3 +52,7 @@ com.avast.android.generic.util.z类：缓存了com.p1.chompsms等包名
 com.avast.android.generic.ab定义了大量的int数组
 
 
+com.avast.android.mobilesecurity.vps.Interface:asset文件中的apk解压后的类，在com/avast/android/mobilesecurity/engine/internal/s类中使用dexclassloader加载该对象，使用jni中的方法杀毒。
+libavast-vps.so : 使用avast-vps-interface加载了该lib库
+
+
