@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="10.0dip" android:layout_marginTop="20.0dip" android:layout_marginRight="10.0dip" android:layout_marginBottom="20.0dip" style="?android:attr/listViewWhiteStyle">
+        <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="0.0dip" android:layout_weight="1.0">
+            <RelativeLayout android:orientation="horizontal" android:id="@id/pf_updating_percent_complete" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginRight="20.0dip" android:layout_marginBottom="5.0dip">
+                <TextView android:id="@id/pf_tv_scan_type" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/updating" android:layout_alignParentLeft="true" style="@style/TextWhiteLarge" />
+            </RelativeLayout>
+            <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="fill_parent">
+                <ImageView android:layout_gravity="center_horizontal" android:id="@id/pf_status_image" android:paddingRight="10.0dip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="0.0dip" android:src="@drawable/app_landing_no_threats" />
+                <LinearLayout android:gravity="center_vertical" android:layout_gravity="center_vertical" android:orientation="vertical" android:layout_width="wrap_content" android:layout_height="wrap_content">
+                    <TextView android:id="@id/pf_status_tv" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/main_run_first_scan" style="@style/AlertTitle" />
+                    <TextView android:id="@id/pf_sub_status_tv" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/sub_scan_status" style="@style/TextWhiteLarge" />
+                </LinearLayout>
+                <ProgressBar android:layout_gravity="center_vertical" android:id="@id/pf_progress_bar" android:visibility="visible" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="0.0dip" android:layout_marginRight="20.0dip" style="?android:attr/progressBarStyleHorizontal" />
+            </LinearLayout>
+            <TextView android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/app_landing_threats_found" style="@style/TextWhiteLarge" />
+        </LinearLayout>
+        <Button android:gravity="center" android:id="@id/pf_btn_scan" android:background="@drawable/btn_blue_holo_dark" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="@string/testing" android:singleLine="true" android:layout_weight="3.0" />
+    </LinearLayout>
+    <LinearLayout android:id="@id/divider" android:background="@drawable/list_divider" android:layout_width="fill_parent" android:layout_height="1.0px" />
+</LinearLayout>

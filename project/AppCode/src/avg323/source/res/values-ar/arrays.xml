@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="battery_save_screen_timeout_array">
+        <item>15 ثانية</item>
+        <item>30 ثانية</item>
+        <item>1 دقيقة</item>
+        <item>دقيقتان</item>
+        <item>10 دقائق</item>
+        <item>أبداً</item>
+    </string-array>
+    <string-array name="battery_save_power_threshold">
+        <item>10% من طاقة البطارية</item>
+        <item>30% من طاقة البطارية</item>
+        <item>50% من طاقة البطارية</item>
+        <item>إيقاف</item>
+    </string-array>
+    <string-array name="battery_save_ringer_options">
+        <item>صامت</item>
+        <item>اهتزاز فقط</item>
+        <item>الصوت فقط</item>
+        <item>الصوت والاهتزاز</item>
+    </string-array>
+    <string-array name="traffic_quota_units">
+        <item>ميجا بايت</item>
+        <item>جيجا بايت</item>
+    </string-array>
+    <string-array name="traffic_cycle_units">
+        <item>أيام</item>
+        <item>أسابيع</item>
+        <item>شهور</item>
+    </string-array>
+    <string-array name="traffic_refresh_rate_arr">
+        <item>30 ثانية</item>
+        <item>1 دقيقة</item>
+        <item>5 دقائق</item>
+        <item>15 دقيقة</item>
+        <item>30 دقيقة</item>
+    </string-array>
+    <string-array name="entries_freq_preference">
+        <item>مرة في اليوم</item>
+        <item>مرة في الأسبوع</item>
+        <item>أبداً</item>
+    </string-array>
+</resources>

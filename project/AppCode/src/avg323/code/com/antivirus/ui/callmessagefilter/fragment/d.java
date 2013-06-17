@@ -1,0 +1,22 @@
+package com.antivirus.ui.callmessagefilter.fragment;
+
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
+
+class d
+  implements DialogInterface.OnClickListener
+{
+  d(a parama)
+  {
+  }
+
+  public void onClick(DialogInterface paramDialogInterface, int paramInt)
+  {
+    paramDialogInterface.dismiss();
+  }
+}
+
+/* Location:           C:\Users\sandrocheng.21KUNPENG\Desktop\classes_dex2jar.jar
+ * Qualified Name:     com.antivirus.ui.callmessagefilter.fragment.d
+ * JD-Core Version:    0.6.2
+ */

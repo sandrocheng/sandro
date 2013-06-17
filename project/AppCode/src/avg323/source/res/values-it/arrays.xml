@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="battery_save_screen_timeout_array">
+        <item>15 secondi</item>
+        <item>30 secondi</item>
+        <item>1 minuto</item>
+        <item>2 minuti</item>
+        <item>10 minuti</item>
+        <item>Mai</item>
+    </string-array>
+    <string-array name="battery_save_power_threshold">
+        <item>Alimentazione batteria 10%</item>
+        <item>Alimentazione batteria 30%</item>
+        <item>Alimentazione batteria 50%</item>
+        <item>Off</item>
+    </string-array>
+    <string-array name="battery_save_ringer_options">
+        <item>Silenzioso</item>
+        <item>Solo vibrazione</item>
+        <item>Solo suono</item>
+        <item>Suono e vibrazione</item>
+    </string-array>
+    <string-array name="traffic_quota_units">
+        <item>MB</item>
+        <item>GB</item>
+    </string-array>
+    <string-array name="traffic_cycle_units">
+        <item>Giorni</item>
+        <item>Settimane</item>
+        <item>Mesi</item>
+    </string-array>
+    <string-array name="traffic_refresh_rate_arr">
+        <item>30 secondi</item>
+        <item>1 minuto</item>
+        <item>5 minuti</item>
+        <item>15 minuti</item>
+        <item>30 minuti</item>
+    </string-array>
+    <string-array name="entries_freq_preference">
+        <item>Una volta al giorno</item>
+        <item>Una volta alla settimana</item>
+        <item>Mai</item>
+    </string-array>
+</resources>

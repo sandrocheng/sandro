@@ -1,0 +1,3 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CheckedTextView android:textColor="#ffffffff" android:ellipsize="marquee" android:id="@id/text1" android:layout_width="fill_parent" android:layout_height="fill_parent" android:checkMark="@drawable/btn_radio_holo_dark" android:minHeight="48.0dip" android:text="@string/testing" android:singleLine="true" style="?android:attr/spinnerDropDownItemStyle"
+  xmlns:android="http://schemas.android.com/apk/res/android" />

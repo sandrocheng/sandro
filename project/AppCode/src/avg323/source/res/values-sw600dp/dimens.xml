@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="stop_shout_ll_margin_button">350.0dip</dimen>
+    <dimen name="widget_margin">2.0dip</dimen>
+    <dimen name="widget_item_bottom">1.0dip</dimen>
+    <dimen name="text_size">9.0dip</dimen>
+    <dimen name="right_text_padding">4.0dip</dimen>
+</resources>

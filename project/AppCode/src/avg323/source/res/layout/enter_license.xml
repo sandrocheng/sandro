@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:gravity="center_horizontal" android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <ScrollView android:id="@id/scroll_scan_result" android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_weight="1.0">
+        <LinearLayout android:gravity="center_horizontal" android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content">
+            <ImageView android:id="@id/block_image" android:background="@drawable/avg_logo" android:paddingTop="0.0dip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="30.0dip" android:src="@drawable/avg_logo" />
+            <TextView android:layout_gravity="left" android:id="@id/tv_current_license" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="20.0dip" android:layout_marginTop="45.0dip" android:layout_marginRight="20.0dip" android:layout_marginBottom="10.0dip" android:text="@string/current_license" style="@style/TextGreyMedium" />
+            <TextView android:layout_gravity="left" android:id="@id/tv_scan_qr" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="20.0sp" android:layout_marginRight="20.0dip" android:text="@string/enter_unlock_password" style="@style/TextGreyMedium" />
+            <TextView android:layout_gravity="left" android:id="@id/tv_or" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="20.0sp" android:layout_marginRight="20.0dip" android:text="@string/text_view" style="@style/TextGreyMedium" />
+            <TextView android:layout_gravity="left" android:id="@id/tv_enter_manually" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="20.0sp" android:layout_marginRight="20.0dip" android:text="@string/text_view" style="@style/TextGreyMedium" />
+            <LinearLayout android:layout_width="fill_parent" android:layout_height="50.0dip" android:layout_marginLeft="15.0dip" android:layout_marginTop="5.0dip" android:layout_marginRight="15.0dip">
+                <EditText android:id="@id/edit_code" android:layout_width="0.0dip" android:layout_height="fill_parent" android:layout_weight="1.0" android:inputType="textPassword" />
+            </LinearLayout>
+            <Button android:id="@id/btn_scan_qr" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="48.0dip" android:layout_marginLeft="15.0dip" android:layout_marginTop="10.0dip" android:layout_marginRight="15.0dip" android:text="@string/license_scan_qr" />
+            <Button android:id="@id/btn_ok" android:layout_width="fill_parent" android:layout_height="48.0dip" android:layout_marginLeft="15.0dip" android:layout_marginTop="10.0dip" android:layout_marginRight="15.0dip" />
+            <TextView android:textSize="17.0sp" android:textColor="#ff111111" android:gravity="left" android:id="@id/tv_text2" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="0.0dip" android:text="@string/enter_serial_again" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

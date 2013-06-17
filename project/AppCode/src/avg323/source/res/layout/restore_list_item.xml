@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:id="@id/baselayout" android:layout_width="fill_parent" android:layout_height="wrap_content">
+        <ImageView android:id="@id/restorelist_right_image" android:layout_width="48.0dip" android:layout_height="48.0dip" android:layout_marginLeft="10.0dip" android:layout_marginRight="10.0dip" />
+        <TextView android:gravity="left" android:id="@id/restorelist_date" android:paddingLeft="8.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_weight="1.0" style="@style/ListItemTitle" />
+        <CheckBox android:id="@id/restore_checkbox" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_margin="10.0dip" />
+    </LinearLayout>
+    <LinearLayout android:background="@drawable/list_divider" android:layout_width="fill_parent" android:layout_height="1.0px" />
+</LinearLayout>

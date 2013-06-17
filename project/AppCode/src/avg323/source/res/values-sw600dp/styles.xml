@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="AlertTitle" parent="@style/BaseTitle">
+        <item name="android:textSize">21.0sp</item>
+    </style>
+    <style name="ListItemTitle">
+        <item name="android:textSize">19.0sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/text_color_white</item>
+    </style>
+    <style name="ListItemTitleDisable">
+        <item name="android:textSize">19.0sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">#99999999</item>
+    </style>
+    <style name="ListItemBody">
+        <item name="android:textSize">16.0sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">#ffbbbbbb</item>
+    </style>
+    <style name="ListItemMoreInfo" parent="@style/ListItemBodyLight">
+        <item name="android:textSize">16.0sp</item>
+    </style>
+    <style name="ListItemTitleMoreInfo">
+        <item name="android:textSize">15.0sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/blue_note</item>
+    </style>
+    <style name="TextWhiteLarge">
+        <item name="android:textSize">19.0sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/text_color_white</item>
+    </style>
+    <style name="TextGreyMedium">
+        <item name="android:textSize">18.0sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">#ffbbbbbb</item>
+        <item name="android:textColorLink">@color/blue_note</item>
+    </style>
+    <style name="TextGreySmall">
+        <item name="android:textSize">16.0sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">#ffbbbbbb</item>
+    </style>
+    <style name="TextAppearance.Holo" parent="@style/TextAppearance">
+        <item name="android:textSize">18.0sp</item>
+    </style>
+    <style name="TabWidgetAB" parent="@style/TabWidget">
+        <item name="android:textAppearance">@style/TextAppearanceTabWidgetAB</item>
+        <item name="android:paddingTop">0.0dip</item>
+        <item name="android:paddingBottom">0.0dip</item>
+    </style>
+    <style name="TextAppearanceTabWidget">
+        <item name="android:textSize">16.0sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/tab_indicator_text</item>
+    </style>
+    <style name="mytheme" parent="@*android:style/Theme.Holo">
+        <item name="android:textAppearance">@style/TextAppearance.Holo</item>
+        <item name="android:buttonStyle">@style/BlueButtonHolo</item>
+        <item name="android:windowBackground">@drawable/bg_blue</item>
+        <item name="android:progressBarStyleHorizontal">@style/progress_bar_horizontal</item>
+        <item name="android:actionBarSize">60.0dip</item>
+    </style>
+    <style name="TextAppearanceTabWidgetAB" parent="@style/TextAppearanceTabWidget">
+        <item name="android:textSize">16.0sp</item>
+    </style>
+    <style name="TextGreyLarge">
+        <item name="android:textSize">21.0sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">#ffbbbbbb</item>
+        <item name="android:textColorLink">@color/blue_note</item>
+    </style>
+    <style name="ActivationTextWhiteLarge">
+        <item name="android:textSize">21.0sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/text_color_white</item>
+    </style>
+</resources>

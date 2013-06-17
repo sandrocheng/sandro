@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <Button android:id="@id/btn_cancel" android:background="@drawable/ab_btn_cancel" android:layout_width="wrap_content" android:layout_height="fill_parent" android:minWidth="120.0dip" android:text="@string/button" android:drawableLeft="@drawable/ab_ic_btn_cancel_x" android:drawablePadding="5.0dip" android:layout_weight="0.0" />
+    <TextView android:textAppearance="@style/ButtonTextBright" android:gravity="center_vertical" android:layout_gravity="center_vertical" android:id="@id/tv_status" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginLeft="5.0dip" android:text="@string/text_view" android:layout_weight="1.0" />
+    <Button android:id="@id/btn_ok" android:background="@drawable/ab_btn_ok" android:layout_width="wrap_content" android:layout_height="fill_parent" android:minWidth="120.0dip" android:text="@string/button" android:drawablePadding="5.0dip" android:layout_weight="0.0" />
+</LinearLayout>

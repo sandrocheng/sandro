@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:gravity="center_vertical" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout android:orientation="vertical" android:id="@id/ll_selection" android:background="@color/blue_note" android:visibility="gone" android:layout_width="4.0dip" android:layout_height="fill_parent" />
+    <LinearLayout android:gravity="center_vertical" android:id="@id/ll" android:layout_width="fill_parent" android:layout_height="wrap_content" style="@style/BatteryListPadding">
+        <ImageView android:id="@id/icon" android:layout_width="48.0dip" android:layout_height="48.0dip" android:layout_marginRight="10.0sp" android:src="@drawable/avg_icon" />
+        <LinearLayout android:orientation="vertical" android:id="@id/ll_texts" android:layout_width="0.0dip" android:layout_height="wrap_content" android:layout_weight="1.0">
+            <LinearLayout android:id="@id/ll_title" android:layout_width="fill_parent" android:layout_height="wrap_content">
+                <TextView android:id="@id/title" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/testing" android:layout_weight="1.0" style="@style/ListItemTitle" />
+            </LinearLayout>
+            <TextView android:id="@id/summary" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="@string/testing" style="@style/ListItemBody" />
+        </LinearLayout>
+        <ImageView android:id="@id/check" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="5.0dip" android:src="@drawable/btn_check_off" />
+    </LinearLayout>
+</LinearLayout>

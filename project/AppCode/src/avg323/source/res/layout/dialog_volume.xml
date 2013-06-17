@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView android:scrollbarAlwaysDrawVerticalTrack="true" android:id="@id/scrollView1" android:scrollbars="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent" android:fadeScrollbars="false"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout android:scrollbarAlwaysDrawVerticalTrack="true" android:orientation="vertical" android:padding="10.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content">
+        <TextView android:id="@id/textView1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="15.0dip" android:text="@string/ringtone" style="@style/TextWhiteLarge" />
+        <SeekBar android:id="@id/sb_ringtone" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_weight="1.0" />
+        <TextView android:id="@id/textView2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="15.0dip" android:text="@string/media" style="@style/TextWhiteLarge" />
+        <SeekBar android:id="@id/sb_media" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_weight="1.0" />
+        <TextView android:id="@id/textView3" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="15.0dip" android:text="@string/alarm" style="@style/TextWhiteLarge" />
+        <SeekBar android:id="@id/sb_alarm" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_weight="1.0" />
+        <TextView android:id="@id/textView5" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="15.0dip" android:text="@string/system" style="@style/TextWhiteLarge" />
+        <SeekBar android:id="@id/sb_system" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_weight="1.0" />
+        <CheckBox android:textColor="@color/grey_text" android:id="@id/cb_use_ringtone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="15.0dip" android:text="@string/use_ringtone_vol_for_notification" style="@style/TextGreySmall" />
+        <TextView android:id="@id/tv_notification" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="15.0dip" android:text="@string/notification" style="@style/TextWhiteLarge" />
+        <SeekBar android:id="@id/sb_notification" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_weight="1.0" />
+    </LinearLayout>
+</ScrollView>

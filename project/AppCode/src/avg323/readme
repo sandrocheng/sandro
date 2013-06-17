@@ -1,0 +1,38 @@
+avg 3.2.3.180256
+
+
+    const-string v0, "avastLog"
+	const-string v6, "com.avast.android.mobilesecurity.app.locking.core.AppLockingService.onStartCommand() turning on logcat handler"
+	invoke-static {v0, v6}, Landroid/util/Log;->i(Ljava/lang/String;Ljava/lang/String;)I
+	
+		
+	invoke-static {p2}, Ljava/lang/String;->valueOf(I)Ljava/lang/String;
+    move-result-object v2
+    const-string v1, "toolkitF"
+    invoke-static {v1, v2}, Landroid/util/Log;->i(Ljava/lang/String;Ljava/lang/String;)I
+	
+	
+	
+service : AVService extends com.avg.toolkit.f	
+
+PackageAddReceiver:安装包监控receiver
+
+com.avg.toolkit.f:->public void a(Bundle paramBundle, int paramInt)
+com.antivirus.core.scanners.a:b方法,key:2000,卸载走了该方法
+com.avg.toolkit.b.f类，key：4000,安装应用后走了该类方法
+
+com.antivirus.core.scanners包下类说明
+
+com.antivirus.core.scanners.a：com.avg.toolkit.e接口的实现类 ，key值：2000
+~.aa:vo类
+~.ab:ScannerPackagesConfig对象的序列化类
+~.ac:同ab
+~.ad:k的子类:有调用短信和电话数据库的操作，大量的字符串匹配操作
+~.ae:看到一些字符传的操作
+~.af:“/system/bin/su”，“/system/xbin/su”，"/system/sbin/su"三个文件的执行
+~.ag:文件流的读写.
+~.ah:ScannerSmsResult的序列化对象
+~.b:j的实现类
+
+
+

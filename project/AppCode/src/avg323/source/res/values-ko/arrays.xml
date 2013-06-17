@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="battery_save_screen_timeout_array">
+        <item>15초</item>
+        <item>30초</item>
+        <item>1분</item>
+        <item>2분</item>
+        <item>10분</item>
+        <item>안 함</item>
+    </string-array>
+    <string-array name="battery_save_power_threshold">
+        <item>배터리 잔량 10%일 때</item>
+        <item>배터리 잔량 30%일 때</item>
+        <item>배터리 잔량 50%일 때</item>
+        <item>끄기</item>
+    </string-array>
+    <string-array name="battery_save_ringer_options">
+        <item>무음</item>
+        <item>진동만</item>
+        <item>소리만</item>
+        <item>소리 및 진동</item>
+    </string-array>
+    <string-array name="traffic_quota_units">
+        <item>MB</item>
+        <item>GB</item>
+    </string-array>
+    <string-array name="traffic_cycle_units">
+        <item>일</item>
+        <item>주</item>
+        <item>월</item>
+    </string-array>
+    <string-array name="traffic_refresh_rate_arr">
+        <item>30초</item>
+        <item>1분</item>
+        <item>5분</item>
+        <item>15분</item>
+        <item>30분</item>
+    </string-array>
+    <string-array name="entries_freq_preference">
+        <item>하루에 한 번</item>
+        <item>일주일에 한 번</item>
+        <item>안 함</item>
+    </string-array>
+</resources>

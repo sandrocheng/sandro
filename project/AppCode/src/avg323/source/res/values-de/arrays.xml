@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="battery_save_screen_timeout_array">
+        <item>15 Sekunden</item>
+        <item>30 Sekunden</item>
+        <item>1 Minute</item>
+        <item>2 Minuten</item>
+        <item>15 Minuten</item>
+        <item>Nie</item>
+    </string-array>
+    <string-array name="battery_save_power_threshold">
+        <item>10 % Akkubetrieb</item>
+        <item>30 % Akkubetrieb</item>
+        <item>50 % Akkubetrieb</item>
+        <item>Aus</item>
+    </string-array>
+    <string-array name="battery_save_ringer_options">
+        <item>Lautlos</item>
+        <item>Nur Vibration</item>
+        <item>Nur Sound</item>
+        <item>Sound und Vibration</item>
+    </string-array>
+    <string-array name="traffic_quota_units">
+        <item>MB</item>
+        <item>GB</item>
+    </string-array>
+    <string-array name="traffic_cycle_units">
+        <item>Tage</item>
+        <item>Wochen</item>
+        <item>Monate</item>
+    </string-array>
+    <string-array name="traffic_refresh_rate_arr">
+        <item>30 Sekunden</item>
+        <item>1 Minute</item>
+        <item>5 Minuten</item>
+        <item>15 Minuten</item>
+        <item>30 Minuten</item>
+    </string-array>
+    <string-array name="entries_freq_preference">
+        <item>Einmal täglich</item>
+        <item>Einmal wöchentlich</item>
+        <item>Nie</item>
+    </string-array>
+</resources>

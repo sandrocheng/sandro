@@ -1,3 +1,5 @@
+version 2.0.4808
+
     const-string v0, "avastLog"
 	const-string v6, "com.avast.android.mobilesecurity.app.locking.core.AppLockingService.onStartCommand() turning on logcat handler"
 	invoke-static {v0, v6}, Landroid/util/Log;->i(Ljava/lang/String;Ljava/lang/String;)I
@@ -32,3 +34,21 @@ WizardScannerScanService
 AppLockingService:app启动监控的service,主要有两种方式
 1 监控logcat文件数据，正则表达式匹配(mark logcat moniter)
 2 如果logcat被关闭，则循环查看是否有app启动(mark loop search activity)
+
+
+
+病毒扫描
+com.avast.android.mobilesecurity.scan.ScanService
+public void b(Bundle paramBundle):开始扫描
+com.avast.android.generic.util.b:扫描线程
+com.avast.android.mobilesecurity.scan.l 线程任务类继承AsyncTask
+com.avast.android.mobilesecurity.app.scanner.af:com.avast.android.mobilesecurity.scan.l实现类，扫描时使用这个类的对象
+
+
+com.avast.android.mobilesecurity.app.manager.a.b: 使用了“top -s cpu -n 1”命令查看运行的进程。
+com.avast.android.generic.c.b类，对jarFile进行解析
+com.avast.android.generic.c.f类，分别判断了MD5，MD2,SHA,SHA1,RSA,DSA的加密算法。
+com.avast.android.generic.util.z类：缓存了com.p1.chompsms等包名
+com.avast.android.generic.ab定义了大量的int数组
+
+

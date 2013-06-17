@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:gravity="center_horizontal" android:orientation="vertical" android:id="@id/block_root_view" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <include android:id="@id/fragment_title" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="wrap_content" layout="@layout/fragment_title" />
+    <ScrollView android:id="@id/scroll_scan_result" android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_weight="1.0">
+        <LinearLayout android:gravity="center_horizontal" android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content">
+            <ImageView android:id="@id/block_image" android:background="@drawable/avg_logo" android:paddingTop="0.0dip" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="30.0dip" android:src="@drawable/avg_logo" />
+            <TextView android:layout_gravity="left" android:id="@id/tv_current_license" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="20.0dip" android:layout_marginTop="45.0dip" android:layout_marginRight="20.0dip" android:text="@string/current_license" style="@style/TextGreyMedium" />
+            <TextView android:layout_gravity="left" android:id="@id/password_edittext_title" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="20.0sp" android:layout_marginTop="10.0dip" android:layout_marginRight="20.0dip" android:text="@string/app_locker_enter_empty" style="@style/TextGreyMedium" />
+            <LinearLayout android:layout_width="fill_parent" android:layout_height="50.0dip" android:layout_marginLeft="15.0dip" android:layout_marginTop="5.0dip" android:layout_marginRight="15.0dip">
+                <EditText android:id="@id/edit_code" android:layout_width="0.0dip" android:layout_height="fill_parent" android:layout_weight="1.0" android:inputType="textPassword" />
+            </LinearLayout>
+            <Button android:id="@id/ok_button" android:layout_width="fill_parent" android:layout_height="48.0dip" android:layout_marginLeft="15.0dip" android:layout_marginTop="10.0dip" android:layout_marginRight="15.0dip" android:text="@string/ok" />
+            <TextView android:layout_gravity="left" android:id="@id/block_app_locker_recover_password_hyper_link" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="20.0sp" android:text="@string/block_app_locker_recover_password_hyper_link" style="@style/TextGreyMedium" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

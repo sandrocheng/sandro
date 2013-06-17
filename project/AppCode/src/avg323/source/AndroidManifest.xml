@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest android:versionCode="180265" android:versionName="3.2.3" package="com.antivirus"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <supports-screens android:anyDensity="true" android:smallScreens="true" android:normalScreens="true" android:largeScreens="true" android:xlargeScreens="true" />
+    <uses-feature android:name="android.hardware.telephony" android:required="false" />
+    <uses-feature android:name="android.hardware.camera" android:required="false" />
+    <uses-feature android:name="android.hardware.touchscreen" android:required="false" />
+    <uses-feature android:name="android.hardware.location.gps" android:required="false" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_UPDATES" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CLEAR_APP_CACHE" />
+    <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES" />
+    <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
+    <uses-permission android:name="android.permission.MOUNT_FORMAT_FILESYSTEMS" />
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.READ_LOGS" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.READ_SMS" />
+    <uses-permission android:name="android.permission.READ_SYNC_SETTINGS" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.RESTART_PACKAGES" />
+    <uses-permission android:name="android.permission.SUBSCRIBED_FEEDS_WRITE" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.WRITE_CALENDAR" />
+    <uses-permission android:name="android.permission.WRITE_CONTACTS" />
+    <uses-permission android:name="android.permission.WRITE_OWNER_DATA" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="android.permission.WRITE_SMS" />
+    <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
+    <uses-permission android:name="android.permission.WRITE_USER_DICTIONARY" />
+    <uses-permission android:name="com.sec.android.provider.logsprovider.permission.READ_LOGS" />
+    <uses-permission android:name="com.sec.android.provider.logsprovider.permission.WRITE_LOGS" />
+    <uses-permission android:name="com.android.browser.permission.READ_HISTORY_BOOKMARKS" />
+    <uses-permission android:name="com.android.browser.permission.WRITE_HISTORY_BOOKMARKS" />
+    <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT" />
+    <uses-permission android:name="com.android.launcher.permission.UNINSTALL_SHORTCUT" />
+    <uses-permission android:name="com.android.launcher.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="com.htc.launcher.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="com.sonyericsson.homescreen.permission.READ_SETTINGS" />
+    <uses-permission android:name="com.sonyericsson.homescreen.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <permission android:name="com.antivirus.permission.C2D_MESSAGE" android:protectionLevel="signature" />
+    <uses-permission android:name="com.antivirus.permission.C2D_MESSAGE" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <permission android:name="com.antivirus.permission.LG" android:protectionLevel="signature" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <application android:theme="@style/mytheme" android:label="@string/app_name" android:icon="@drawable/avg_icon" android:name="com.antivirus.AvApplication" android:enabled="true">
+        <service android:name="com.antivirus.AVService" android:exported="false">
+            <intent-filter>
+                <action android:name="com.avg.toolkit.TKS_ACTION" />
+            </intent-filter>
+        </service>
+        <service android:name="com.antivirus.apploader.AppLoaderService" android:exported="false" />
+        <service android:name="com.antivirus.applocker.AppBlockService" android:exported="false" />
+        <service android:name="com.antivirus.antitheft.GCMIntentService" />
+        <activity android:theme="@*android:style/Theme.NoTitleBar" android:label="@string/app_name" android:icon="@drawable/avg_icon" android:name="com.antivirus.ui.main.AntivirusMainScreen" android:launchMode="singleTop">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:label="" android:name="com.antivirus.antitheft.LockScreen" />
+        <activity android:theme="@*android:style/Theme.NoTitleBar.Fullscreen" android:name="com.avg.ui.license.qrreader.general.CaptureActivity" android:clearTaskOnLaunch="true" android:stateNotNeeded="true" android:screenOrientation="landscape" android:configChanges="locale|keyboardHidden|orientation" android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity android:label="" android:name="com.avg.tuneup.battery.BatteryStateActivity" android:configChanges="locale|keyboardHidden|orientation" />
+        <activity android:label="" android:name="com.avg.tuneup.battery.BatterySaveSettingsActivity" android:configChanges="locale|keyboardHidden|orientation" />
+        <activity android:label="" android:name="com.avg.tuneup.storage.StorageActivity" android:configChanges="locale|keyboardHidden|orientation" />
+        <activity android:label="" android:name="com.avg.tuneup.traffic.TrafficMeterActivity" android:configChanges="locale|keyboardHidden|orientation" />
+        <activity android:label="" android:name="com.avg.tuneup.traffic.DataPlanSettingsActivity" android:configChanges="locale|keyboardHidden|orientation" />
+        <activity android:label="" android:name="com.antivirus.ui.main.ActivationActivity" android:configChanges="locale|keyboardHidden|orientation" />
+        <activity android:label="" android:name="com.antivirus.ui.main.HandheldMainActivity" />
+        <activity android:label="" android:name="com.antivirus.ui.tablet.DualPaneActivity" android:configChanges="locale|keyboardHidden|orientation" />
+        <activity android:name="com.antivirus.ui.backup.apps.OverLayActivity" />
+        <activity android:name="com.antivirus.ui.backup.apps.BackupMainActivity" android:configChanges="locale|keyboardHidden|orientation" />
+        <activity android:theme="@*android:style/Theme.Translucent.NoTitleBar" android:name="com.antivirus.ui.versionUpdate.VersionUpdateDialog" android:taskAffinity="" android:excludeFromRecents="true" android:configChanges="locale|keyboardHidden|orientation" />
+        <activity android:theme="@*android:style/Theme.Translucent.NoTitleBar" android:name="com.antivirus.ui.versionUpdate.VersionUpdateProgressDialog" android:taskAffinity="" android:excludeFromRecents="true" android:configChanges="locale|keyboardHidden|orientation" />
+        <activity android:label="" android:name="com.antivirus.ui.help.Help" android:configChanges="locale|keyboardHidden|orientation" />
+        <activity android:label="" android:name="com.antivirus.ui.help.HelpTabletActivity" android:configChanges="locale|keyboardHidden|orientation" />
+        <activity android:label="" android:name="com.antivirus.ui.settings.LanguageSelector" />
+        <activity android:label="" android:name="com.avg.ui.license.EnterLicenseActivity" android:configChanges="locale|keyboardHidden|orientation" />
+        <activity android:name="com.antivirus.ui.protection.FileScannerActivity" android:configChanges="locale|keyboardHidden|orientation" />
+        <activity android:label="" android:name="com.antivirus.ui.protection.ProtectionActivity" android:configChanges="locale|keyboardHidden|orientation" />
+        <activity android:label="" android:name="com.antivirus.ui.privacy.PrivacyActivity" android:configChanges="locale|keyboardHidden|orientation" />
+        <activity android:label="" android:name="com.antivirus.ui.performance.AvPerformanceActivity" android:configChanges="locale|keyboard|keyboardHidden|orientation" />
+        <activity android:label="" android:name="com.avg.tuneup.taskkiller.TaskKillerActivity" android:configChanges="keyboard|keyboardHidden|orientation" />
+        <activity android:label="" android:name="com.antivirus.ui.antitheft.AntiTheftLockMessage" />
+        <activity android:label="" android:name="com.antivirus.ui.antitheft.AntiTheftActivity" android:configChanges="locale|keyboardHidden|orientation" />
+        <activity android:label="" android:name="com.antivirus.ui.antitheft.AntiTheftSMSCommandsActivity" android:configChanges="locale|keyboardHidden|orientation" />
+        <activity android:label="" android:name="com.antivirus.ui.antitheft.AntitheftRegisterActivity" android:configChanges="locale|keyboardHidden|orientation" />
+        <activity android:label="" android:name="com.antivirus.ui.antitheft.StopShoutActivity" android:launchMode="singleTop" />
+        <activity android:label="" android:name="com.antivirus.applocker.AppBlockActivity" android:taskAffinity="" android:excludeFromRecents="true" android:configChanges="locale|keyboardHidden|orientation" />
+        <activity android:label="" android:name="com.antivirus.applocker.AppLockerActivity" android:configChanges="locale|keyboardHidden|orientation" android:noHistory="true" />
+        <activity android:label="" android:name="com.antivirus.applocker.LockerBlockActivity" android:configChanges="locale|keyboardHidden|orientation" />
+        <activity android:label="" android:name="com.antivirus.applocker.PasswordConfirmation" android:configChanges="locale|keyboardHidden|orientation" />
+        <activity android:label="" android:name="com.antivirus.wipe.WipeByApp" android:configChanges="locale|keyboardHidden|orientation" />
+        <activity android:label="" android:name="com.antivirus.wipe.WipeSd" />
+        <activity android:label="" android:name="com.antivirus.ui.urlFilter.UrlWarningActivity" android:taskAffinity="" android:excludeFromRecents="true" android:configChanges="locale|keyboardHidden|orientation" />
+        <activity android:label="" android:name="com.antivirus.ui.scan.results.ScanResultsActivity" android:launchMode="singleTask" android:configChanges="locale|keyboardHidden|orientation" />
+        <activity android:name="com.antivirus.ui.scan.UnInstall" android:taskAffinity="" android:excludeFromRecents="true" />
+        <activity android:name="com.antivirus.ui.scan.FileRemover" />
+        <activity android:label="@string/before_install_activity_label" android:name="com.antivirus.ui.scan.ScanBeforeInstallActivity" android:enabled="false" android:excludeFromRecents="true" android:noHistory="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="content" />
+                <data android:scheme="file" />
+                <data android:mimeType="application/vnd.android.package-archive" />
+            </intent-filter>
+        </activity>
+        <activity android:label="Configuration" android:name="com.antivirus.widget.AvWidgetConfigurationActivity" android:exported="false" android:configChanges="locale|keyboardHidden|orientation">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
+            </intent-filter>
+        </activity>
+        <activity android:theme="@*android:style/Theme.Translucent.NoTitleBar" android:name="com.avg.widget.activities.TransparentDummyActivity" android:configChanges="locale|keyboardHidden|orientation" />
+        <activity android:name="com.antivirus.ui.callmessagefilter.CallMessageFilterActivity" android:configChanges="locale|keyboardHidden|orientation" android:windowSoftInputMode="adjustResize" />
+        <activity android:name="com.antivirus.ui.callmessagefilter.contacts.ContactsViewActivity" android:configChanges="locale|keyboardHidden|orientation" android:windowSoftInputMode="stateAlwaysHidden" />
+        <receiver android:name="com.avg.toolkit.RecurringTasks.AlarmReceiver" />
+        <receiver android:name="com.avg.toolkit.RecurringTasks.RecurringTaskAlarmReceiver" />
+        <receiver android:name="com.antivirus.core.receivers.BootReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name="com.antivirus.antitheft.IncomingSmsReceiver">
+            <intent-filter>
+                <action android:name="android.provider.Telephony.SMS_RECEIVED" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name="com.antivirus.core.receivers.PackageAddReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_ADDED" />
+                <data android:scheme="package" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name="com.antivirus.core.receivers.PackageRemovedReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_REMOVED" />
+                <data android:scheme="package" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name="com.avg.toolkit.Marketing.MarketReferrerReceiver">
+            <intent-filter>
+                <action android:name="com.android.vending.INSTALL_REFERRER" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name="com.antivirus.antitheft.GCMReceiver" android:permission="com.google.android.c2dm.permission.SEND">
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+                <category android:name="com.antivirus" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name="com.antivirus.errors.LG" android:permission="com.antivirus.permission.LG" android:exported="true">
+            <intent-filter>
+                <action android:name="com.antivirus.LG" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name="com.avg.tuneup.ShutDownReceiver" android:enabled="false">
+            <intent-filter>
+                <action android:name="android.intent.action.ACTION_SHUTDOWN" />
+                <action android:name="android.intent.action.QUICKBOOT_POWEROFF" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name="com.avg.tuneup.ConnectivityReceiver" android:enabled="true">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name="com.antivirus.apploader.AppLoaderAlarmReceiver">
+            <intent-filter>
+                <action android:name="com.droidsec.apploaderalarm" />
+            </intent-filter>
+        </receiver>
+        <receiver android:label="AVG AntiVirus" android:name="com.antivirus.widget.AvWidgetProvider">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data android:name="android.appwidget.provider" android:resource="@xml/widget_info" />
+        </receiver>
+        <receiver android:name="com.antivirus.callmessagefilter.callblocker.IncomingCallReceiver">
+            <intent-filter android:priority="2147483647">
+                <action android:name="android.intent.action.PHONE_STATE" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name="com.antivirus.callmessagefilter.smsblocker.SMSReceiver">
+            <intent-filter android:priority="2147483647">
+                <action android:name="android.provider.Telephony.SMS_RECEIVED" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name="com.antivirus.callmessagefilter.callblocker.CellNetworkReceiver">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name="com.avg.toolkit.UID.SharedIdReceiver" android:enabled="true">
+            <intent-filter>
+                <action android:name="com.avg.action.send_your_id" />
+                <action android:name="com.avg.action.take_id" />
+            </intent-filter>
+        </receiver>
+    </application>
+</manifest>

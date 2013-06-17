@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="battery_save_screen_timeout_array">
+        <item>15 秒</item>
+        <item>30 秒</item>
+        <item>1 分鐘</item>
+        <item>2 分鐘</item>
+        <item>10 分鐘</item>
+        <item>從不</item>
+    </string-array>
+    <string-array name="battery_save_power_threshold">
+        <item>10% 電池電量</item>
+        <item>30% 電池電量</item>
+        <item>50% 電池電量</item>
+        <item>關閉</item>
+    </string-array>
+    <string-array name="battery_save_ringer_options">
+        <item>靜音</item>
+        <item>僅振動</item>
+        <item>僅響鈴</item>
+        <item>響鈴和振動</item>
+    </string-array>
+    <string-array name="traffic_quota_units">
+        <item>MB</item>
+        <item>GB</item>
+    </string-array>
+    <string-array name="traffic_cycle_units">
+        <item>天</item>
+        <item>週</item>
+        <item>月</item>
+    </string-array>
+    <string-array name="traffic_refresh_rate_arr">
+        <item>30 秒</item>
+        <item>1 分鐘</item>
+        <item>5 分鐘</item>
+        <item>15 分鐘</item>
+        <item>30 分鐘</item>
+    </string-array>
+    <string-array name="entries_freq_preference">
+        <item>每天一次</item>
+        <item>每週一次</item>
+        <item>從不</item>
+    </string-array>
+</resources>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_weight="1.0">
+        <TextView android:textColor="@color/text_color_fragment_sub_title_selector" android:gravity="center_vertical" android:id="@id/fragment_sub_title_text" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="10.0dip" android:layout_marginTop="15.0dip" android:layout_marginBottom="15.0dip" style="@style/FragmentSubTitle" />
+        <TextView android:gravity="center_vertical" android:id="@id/title_separator" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="10.0dip" android:layout_marginTop="15.0dip" android:layout_marginBottom="15.0dip" android:text=">" style="@style/FragmentTitle2" />
+        <TextView android:gravity="center_vertical" android:id="@id/fragment_title_text" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="10.0dip" android:layout_marginTop="15.0dip" android:layout_marginBottom="15.0dip" style="@style/FragmentTitle" />
+        <LinearLayout android:gravity="right|center" android:id="@id/ll_content" android:paddingRight="10.0dip" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+    </LinearLayout>
+    <LinearLayout android:background="#ffffffff" android:layout_width="fill_parent" android:layout_height="1.0dip" />
+</LinearLayout>
