@@ -4,6 +4,9 @@
     android:versionCode="1"
     android:versionName="1.0" >
 
+    <uses-permission android:name="android.permission.RECEIVE_SMS"/> 
+    <uses-permission android:name="android.permission.INTERNET" />
+    
     <uses-sdk
         android:minSdkVersion="8"
         android:targetSdkVersion="8" />
@@ -23,14 +26,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <service android:name="com.sandro.smstotxlqqmail.EmailService" />
-		<receiver android:name="com.sandro.smstotxlqqmail.SmsReceiver" >  
+        <service android:name="com.sandro.smstotxlqqmail.service.EmailService" />
+		<receiver android:name="com.sandro.smstotxlqqmail.receiver.SmsReceiver" >  
             <intent-filter android:priority="1000">   
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />  
             </intent-filter>  
         </receiver>          
     </application>
-    <uses-permission android:name="android.permission.RECEIVE_SMS"></uses-permission> 
-    <uses-permission android:name="android.permission.INTERNET" />
+
 
 </manifest>
