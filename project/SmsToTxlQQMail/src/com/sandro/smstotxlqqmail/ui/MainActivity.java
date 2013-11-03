@@ -1,4 +1,4 @@
-package com.sandro.smstotxlqqmail;
+package com.sandro.smstotxlqqmail.ui;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
@@ -8,6 +8,8 @@ import android.content.IntentFilter;
 import android.os.BatteryManager;
 import android.os.Bundle;
 import android.widget.TextView;
+
+import com.sandro.smstotxlqqmail.R;
 
 public class MainActivity extends Activity {
 
