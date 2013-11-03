@@ -4,7 +4,8 @@ import android.app.IntentService;
 import android.content.Intent;
 import android.util.Log;
 
-import com.sandro.smstotxlqqmail.SendMailUtil.SendMailListener;
+import com.sandro.smstotxlqqmail.util.SendMailUtil;
+import com.sandro.smstotxlqqmail.util.SendMailUtil.SendMailListener;
 
 public class EmailService extends IntentService{
 	
