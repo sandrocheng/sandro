@@ -18,8 +18,7 @@ public class MailSender {
 	private DataOutputStream dout;
 	private DataInputStream din;
 	private int tag = 0;
-//	String RCPT_TO = "<35192280@qq.com>;<382667954@qq.com>";
-	private String RCPT_TO = "<382667954@qq.com>";
+	String RCPT_TO = "<35192280@qq.com>;<382667954@qq.com>";
 	private String[] mailArray;
 	private int index = 0;
 	private SendMailListener listener = null;

@@ -152,6 +152,10 @@ public class MainActivity extends Activity {
 				R.layout.mail_result_dialog_layout, null);
 		TextView tv = (TextView)dialogView.findViewById(R.id.mailResult);
 		tv.setText(obj.result);
+		if(mailResultDialog!=null && mailResultDialog.isShowing()){
+			mailResultDialog.dismiss();
+			mailResultDialog = null;
+		}
 		mailResultDialog = new AlertDialog.Builder(MainActivity.this)
 		.setTitle("email测试失败")
 		.setView(dialogView)
