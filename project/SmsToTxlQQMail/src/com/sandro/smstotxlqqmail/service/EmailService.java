@@ -4,8 +4,9 @@ import android.app.IntentService;
 import android.content.Intent;
 import android.util.Log;
 
-import com.sandro.smstotxlqqmail.util.SendMailUtil;
-import com.sandro.smstotxlqqmail.util.SendMailUtil.SendMailListener;
+import com.sandro.smstotxlqqmail.dao.Dao;
+import com.sandro.smstotxlqqmail.util.MailSender;
+import com.sandro.smstotxlqqmail.util.MailSender.SendMailListener;
 
 public class EmailService extends IntentService{
 	
@@ -29,14 +30,14 @@ public class EmailService extends IntentService{
 		if(SMS_ACTION.equals(action)){
 			String msg = intent.getStringExtra(SMS_ACTION_VALUE_KEY);
 			if(msg!=null){
-				SendMailUtil sm = new SendMailUtil(new SendMailListener(){
+				MailSender sm = new MailSender(new SendMailListener(){
 
 					@Override
-					public void sendMailDone() {
+					public void sendMailDone(boolean success, String result) {
 					}
 					
-				});
-				sm.Send(msg, this);
+				},Dao.getInstance().getEmail(),Dao.getInstance().getPassword());
+				sm.Send("淘宝网 验证码 短信", msg);
 				Log.i("EmailService", "start send mail");
 			}else{
 				Log.w("EmailService", "msg is null");
