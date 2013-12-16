@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:gravity="center" android:layout_gravity="bottom" android:orientation="horizontal" android:background="#ff888888" android:layout_width="fill_parent" android:layout_height="wrap_content"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <Button android:id="@id/private_list_mulit_chose_op" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_margin="2.0dip" android:text="@string/private_list_mulit_chose_op_del" android:layout_weight="1.0" />
-    <Button android:id="@id/private_list_mulit_chose_select_all" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_margin="2.0dip" android:text="@string/private_list_mulit_chose_select_all" android:layout_weight="1.0" />
-    <Button android:id="@id/private_list_mulit_chose_cancel" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_margin="2.0dip" android:text="@string/private_list_mulit_chose_cancel" android:layout_weight="1.0" />
-</LinearLayout>

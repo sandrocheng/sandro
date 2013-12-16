@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<com.tencent.qqpimsecure.uilib.view.desktop.DesktopMovingView android:gravity="center" android:orientation="vertical" android:id="@id/item_moving_layout" android:background="@color/list_item_bg_color_focus" android:layout_width="wrap_content" android:layout_height="wrap_content"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <ImageView android:id="@id/item_image" android:layout_width="wrap_content" android:layout_height="wrap_content" />
-    <TextView android:textSize="11.0sp" android:textColor="@color/list_item_title_text_color" android:gravity="center" android:id="@id/item_text" android:layout_width="fill_parent" android:layout_height="wrap_content" android:singleLine="true" />
-</com.tencent.qqpimsecure.uilib.view.desktop.DesktopMovingView>

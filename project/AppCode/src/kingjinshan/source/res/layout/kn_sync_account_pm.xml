@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout android:background="@color/traffic_background" android:layout_width="fill_parent" android:layout_height="fill_parent"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <include android:id="@id/custom_title" android:layout_alignParentTop="true" layout="@layout/activity_custom_title" />
-    <WebView android:id="@id/webview" android:background="@drawable/traffic_main_background_2" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginLeft="2.0dip" android:layout_marginRight="2.0dip" android:layout_below="@id/custom_title" />
-    <ProgressBar android:id="@id/progress" android:layout_centerInParent="true" style="@style/loadingProgressBarStyle" />
-</RelativeLayout>

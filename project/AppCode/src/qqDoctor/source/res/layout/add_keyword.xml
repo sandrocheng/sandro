@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <TextView android:textAppearance="?android:textAppearanceMedium" android:textColor="@color/memory_bar_text_color" android:gravity="left" android:layout_gravity="center_vertical" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="20.0dip" android:text="@string/keyword_manager" />
-    <EditText android:textAppearance="?android:textAppearanceMedium" android:gravity="fill_horizontal" android:id="@id/add_keyword_name" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="20.0dip" android:layout_marginRight="20.0dip" android:scrollHorizontally="true" android:singleLine="true" android:maxLength="101" android:capitalize="none" android:autoText="false" style="@style/edittext_default" />
-</LinearLayout>

@@ -1,5 +1,0 @@
-Manifest-Version: 1.0
-Implementation-Vendor: Google, Inc.
-Implementation-Title: Google Analytics Android SDK V2
-Created-By: blaze
-

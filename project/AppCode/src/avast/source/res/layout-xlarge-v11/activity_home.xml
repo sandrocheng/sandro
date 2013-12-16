@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="fill_parent"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <fragment android:name="com.avast.android.mobilesecurity.app.home.DashboardFragment" android:id="@id/fragment_dashboard" android:layout_width="0.0dip" android:layout_height="fill_parent" android:layout_weight="25.0" />
-    <FrameLayout android:orientation="horizontal" android:layout_width="0.0dip" android:layout_height="fill_parent" android:layout_weight="75.0">
-        <FrameLayout android:id="@id/fragment_content" android:background="@drawable/xml_bg_screen" android:layout_width="fill_parent" android:layout_height="fill_parent" />
-        <View android:background="@drawable/bg_menu_dashboard_shadow" android:layout_width="4.0dip" android:layout_height="fill_parent" />
-    </FrameLayout>
-</LinearLayout>

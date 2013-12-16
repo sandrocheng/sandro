@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout android:background="@color/color_ff2d2d2d" android:layout_width="wrap_content" android:layout_height="wrap_content"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <ImageView android:id="@id/captured_face_imageview" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentTop="true" />
-    <LinearLayout android:gravity="center" android:orientation="vertical" android:id="@id/prompt_ll" android:background="@drawable/face_verify_black_bg" android:layout_width="fill_parent" android:layout_height="48.0dip" android:layout_alignParentBottom="true">
-        <TextView android:textSize="21.0sp" android:ellipsize="marquee" android:gravity="center" android:layout_gravity="center_horizontal" android:id="@id/prompt_textview" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="@string/face_recognition_verify_ok" android:singleLine="true" />
-        <TextView android:textSize="18.0sp" android:id="@id/tencent_institute_ad_textview" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="3.0dip" android:text="@string/face_recognition_use_pattern_psw" android:singleLine="true" />
-    </LinearLayout>
-</RelativeLayout>

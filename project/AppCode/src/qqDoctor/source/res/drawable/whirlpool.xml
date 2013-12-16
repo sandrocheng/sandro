@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<animation-list android:oneshot="false"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:duration="70" android:drawable="@drawable/desktop_bg_tips_1" />
-    <item android:duration="70" android:drawable="@drawable/desktop_bg_tips_2" />
-</animation-list>

@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:layout_width="fill_parent" android:layout_height="fill_parent"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <com.hoi.widget.HorizontalNumberPickerButton android:id="@id/increment" android:background="@drawable/h_timepicker_up_btn" android:layout_width="46.0dip" android:layout_height="46.0dip" />
-    <EditText android:textSize="28.0sp" android:textColor="@*android:color/primary_text_light" android:gravity="center" android:id="@id/timepicker_input" android:background="@drawable/h_timepicker_input" android:layout_width="80.0dip" android:layout_height="46.0dip" android:singleLine="true" style="?android:attr/textAppearanceLargeInverse" />
-    <com.hoi.widget.HorizontalNumberPickerButton android:id="@id/decrement" android:background="@drawable/h_timepicker_down_btn" android:layout_width="46.0dip" android:layout_height="46.0dip" />
-</LinearLayout>

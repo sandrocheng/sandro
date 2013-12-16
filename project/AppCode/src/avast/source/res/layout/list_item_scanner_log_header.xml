@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout android:paddingBottom="@dimen/content_marginHorizontal" android:layout_width="fill_parent" android:layout_height="wrap_content"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <TextView android:textSize="@dimen/font_medium" android:textColor="@color/text_problem" android:id="@id/title" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="@dimen/content_marginHorizontal" android:layout_marginTop="18.0dip" android:text="@string/l_some_problems_found" android:layout_alignParentLeft="true" android:layout_alignParentTop="true" />
-    <ImageView android:id="@id/icon" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="@dimen/content_marginHorizontal" android:layout_marginRight="@dimen/content_marginHorizontal" android:src="@drawable/ic_scanner_result_problem" android:layout_alignParentRight="true" />
-    <View android:id="@id/separator" android:background="@drawable/misc_menu_separator" android:layout_width="fill_parent" android:layout_height="2.0px" android:layout_marginTop="@dimen/content_marginHorizontal" android:layout_below="@id/icon" android:layout_alignLeft="@id/title" android:layout_alignRight="@id/icon" />
-    <Button android:id="@id/b_resolve_all" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/content_marginHorizontal" android:text="@string/l_resolve_all" android:layout_below="@id/separator" android:layout_alignLeft="@id/title" android:layout_alignRight="@id/icon" style="@style/Button.Red" />
-</RelativeLayout>

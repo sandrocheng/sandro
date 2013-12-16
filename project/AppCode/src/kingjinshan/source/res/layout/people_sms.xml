@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout android:orientation="vertical" android:background="@color/colorBackground" android:layout_width="fill_parent" android:layout_height="fill_parent"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <RelativeLayout android:gravity="center" android:id="@id/smsEdit" android:background="@drawable/sms_edit_bg" android:paddingLeft="2.0dip" android:paddingRight="2.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_alignParentBottom="true">
-        <EditText android:id="@id/sms_body_value" android:layout_width="fill_parent" android:layout_height="wrap_content" android:hint="@string/sms_empty_body_text" android:layout_toLeftOf="@id/send_sms_btn" android:layout_centerVertical="true" />
-        <ImageButton android:id="@id/send_sms_btn" android:background="@drawable/send_sms_btn" android:focusable="false" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentRight="true" android:layout_centerVertical="true" />
-    </RelativeLayout>
-    <ListView android:id="@id/SmsListView" android:paddingLeft="4.0dip" android:paddingRight="4.0dip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:listSelector="@color/colorBackground" android:cacheColorHint="@color/transparent" android:layout_above="@id/smsEdit" />
-</RelativeLayout>

@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:gravity="center" android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <TextView android:gravity="center" android:id="@id/prefix_text" android:layout_width="wrap_content" android:layout_height="wrap_content" style="@style/textLevelSLarge" />
-    <com.hoi.widget.HorizontalNumberPicker android:id="@id/horizontal_number_picker" android:focusable="true" android:focusableInTouchMode="true" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_margin="10.0dip" />
-</LinearLayout>

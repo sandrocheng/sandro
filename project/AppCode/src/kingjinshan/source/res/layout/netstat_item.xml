@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout android:gravity="center_vertical" android:layout_width="wrap_content" android:layout_height="wrap_content"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <RelativeLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_margin="3.0dip">
-        <TextView android:textSize="20.0dip" android:textStyle="bold" android:id="@id/MyListItem_Title" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="title" />
-        <TextView android:id="@id/MyListItem_Text" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="text" android:layout_below="@id/MyListItem_Title" />
-    </RelativeLayout>
-</RelativeLayout>

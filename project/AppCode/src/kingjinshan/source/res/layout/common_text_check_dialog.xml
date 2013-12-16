@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:orientation="vertical" android:layout_width="wrap_content" android:layout_height="wrap_content"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <LinearLayout android:orientation="vertical" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="15.0dip" android:layout_marginTop="5.0dip" android:layout_marginRight="15.0dip" android:layout_marginBottom="5.0dip">
-        <TextView android:id="@id/edittext01" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/firewall_service_sms_group_del_confirm" android:layout_centerHorizontal="true" android:layout_centerVertical="true" style="@style/textDialogContent" />
-        <CheckBox android:textColor="@color/textColorSecondaryDark" android:id="@id/checkBox1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="5.0dip" android:text="@string/firewall_service_sms_group_del_and_from_sys" />
-    </LinearLayout>
-</LinearLayout>

@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<com.ijinshan.kpref.PreferenceScreen
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <com.ijinshan.kinghelper.common.RadioButtonPreference android:title="@string/save_traffic_model_auto_title" android:key="@string/save_traffic_model_auto_key" android:summary="@string/save_traffic_model_auto_summary" />
-    <com.ijinshan.kinghelper.common.RadioButtonPreference android:title="@string/save_traffic_model_screen_off_title" android:key="@string/save_traffic_model_screen_off_key" android:summary="@string/save_traffic_model_screen_off_summary" />
-    <com.ijinshan.kinghelper.common.RadioButtonPreference android:title="@string/save_traffic_model_foreground_title" android:key="@string/save_traffic_model_foreground_key" android:summary="@string/save_traffic_model_foreground_summary" />
-    <com.ijinshan.kpref.Preference android:title="@string/save_trafffic_model_white_title" android:key="@string/save_trafffic_model_white_key" android:widgetLayout="@layout/list_right_icon" />
-    <com.ijinshan.kinghelper.common.RadioButtonPreference android:title="@string/save_traffic_model_close_title" android:key="@string/save_traffic_model_close_key" />
-</com.ijinshan.kpref.PreferenceScreen>

@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="5.0dip" android:layout_marginTop="5.0dip" android:layout_marginRight="5.0dip" android:layout_marginBottom="5.0dip" android:text="@string/firewall_dialog_sms_scanner_message" style="@style/textDialogContent" />
-    <LinearLayout android:gravity="center_vertical" android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content">
-        <CheckBox android:id="@id/join_cloud_checkbox" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="5.0dip" android:button="@drawable/my_btn_check" android:text="@string/firewall_dialog_join_cloud" style="@style/textDialogCheckContent" />
-        <TextView android:textAppearance="@style/findPwd" android:id="@id/cloud_help" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="35.0dip" />
-    </LinearLayout>
-</LinearLayout>

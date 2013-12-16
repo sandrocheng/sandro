@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:orientation="vertical" android:layout_width="wrap_content" android:layout_height="fill_parent" style="@style/WidgetActionBarHoloTab"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <TextView android:layout_gravity="center_horizontal" android:id="@id/title" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/testing" style="@style/TabWidgetAB" />
-    <TextView android:layout_gravity="center_horizontal" android:id="@id/subtitle" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/subtitle" style="@style/TabWidgetSubTitle" />
-    <ImageView android:layout_gravity="center_horizontal" android:id="@id/led" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="12.0dip" android:src="@drawable/ab_tab_led_green" />
-</LinearLayout>

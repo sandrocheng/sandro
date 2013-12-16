@@ -1,3 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<com.tencent.qqpimsecure.uilib.view.SingleFlingGallery android:id="@id/item_gallery" android:layout_width="fill_parent" android:layout_height="fill_parent" android:unselectedAlpha="1.0"
-  xmlns:android="http://schemas.android.com/apk/res/android" />

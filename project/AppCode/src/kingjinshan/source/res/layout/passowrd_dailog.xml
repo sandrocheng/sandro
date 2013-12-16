@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <TextView android:id="@id/password_title" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="10.0dip" android:layout_marginTop="5.0dip" android:layout_marginRight="10.0dip" android:layout_marginBottom="5.0dip" android:text="@string/protection_lock_pwd_tip" style="@style/textDialogContent" />
-    <EditText android:id="@id/password_value" android:layout_width="fill_parent" android:layout_height="50.0dip" android:layout_marginLeft="10.0dip" android:layout_marginRight="10.0dip" android:password="true" android:layout_below="@id/password_title" />
-    <CheckBox android:textColor="@color/link_color" android:id="@id/password_value_show" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="10.0dip" android:layout_marginRight="10.0dip" android:button="@drawable/my_btn_check" android:text="@string/set_password_show" android:layout_below="@id/password_value" style="@style/textDialogCheckContent" />
-    <TextView android:textAppearance="@style/findPwd" android:id="@id/password_txt" android:visibility="gone" android:clickable="true" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="7.0dip" android:layout_marginBottom="5.0dip" android:text="@string/protection_btn_find" android:layout_below="@id/password_value" android:layout_alignRight="@id/password_value" android:layout_centerInParent="true" />
-</RelativeLayout>

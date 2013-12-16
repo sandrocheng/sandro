@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:gravity="center" android:orientation="vertical" android:layout_width="wrap_content" android:layout_height="wrap_content"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <ImageView android:gravity="center_horizontal" android:id="@id/TaskItemImage" android:background="@drawable/process_logo" android:layout_width="42.0dip" android:layout_height="42.0dip" android:layout_marginTop="6.0dip" android:layout_marginBottom="3.0dip" />
-    <TextView android:textSize="12.0sp" android:textColor="#ff999999" android:gravity="center_horizontal" android:id="@id/app_name" android:layout_width="fill_parent" android:layout_height="wrap_content" android:singleLine="true" />
-</LinearLayout>

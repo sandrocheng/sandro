@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:orientation="horizontal" android:background="@color/list_item_bg_color" android:layout_width="fill_parent" android:layout_height="fill_parent"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <ImageView android:layout_gravity="center_vertical" android:id="@id/image_cpu" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="3.0dip" android:src="@drawable/cpu_icon_mini_2" />
-    <LinearLayout android:layout_gravity="center_vertical" android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="3.0dip">
-        <TextView android:textSize="14.0sp" android:textColor="@color/color_ff333333" android:id="@id/cpu_name" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="2.0dip" />
-        <TextView android:textSize="10.0sp" android:textColor="@color/button_white_belowtext_color" android:gravity="center" android:id="@id/cpu_hz" android:background="@drawable/cpu_status_bg_1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:drawableLeft="@drawable/cpu_status_icon_open" />
-    </LinearLayout>
-</LinearLayout>

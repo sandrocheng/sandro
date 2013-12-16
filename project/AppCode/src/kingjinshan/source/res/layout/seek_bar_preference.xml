@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout android:layout_width="140.0dip" android:layout_height="wrap_content"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <SeekBar android:layout_gravity="center_vertical" android:id="@id/seekBar" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="4.0dip" android:layout_marginRight="4.0dip" />
-    <ViewStub android:id="@id/seekBarMaxStub" android:layout="@layout/seek_bar_preference_textview" android:inflatedId="@id/seekBarMax" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_below="@id/seekBar" android:layout_alignParentRight="true" />
-    <ViewStub android:id="@id/seekBarMinStub" android:layout="@layout/seek_bar_preference_textview" android:inflatedId="@id/seekBarMin" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_toLeftOf="@id/seekBarMaxStub" android:layout_below="@id/seekBar" android:layout_alignParentLeft="true" />
-</RelativeLayout>

@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:orientation="horizontal" android:paddingLeft="@dimen/content_marginHorizontalSmall" android:layout_width="wrap_content" android:layout_height="wrap_content"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <TextView android:textSize="@dimen/font" android:textColor="@color/text_ok" android:gravity="center_vertical" android:layout_gravity="center_vertical" android:id="@id/button_top" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="@dimen/content_marginHorizontal" android:text="@string/l_secured" android:drawableRight="@drawable/ic_scanner_result_ok" android:drawablePadding="@dimen/content_marginHorizontalSmall" />
-</LinearLayout>

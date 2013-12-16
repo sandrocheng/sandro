@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="fill_parent"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <ImageView android:layout_gravity="center" android:id="@id/image_icon" android:paddingRight="10.0dip" android:layout_width="50.0dip" android:layout_height="50.0dip" android:layout_marginLeft="14.0dip" android:layout_alignParentLeft="true" src="@drawable/clean_file_icon" />
-    <TextView android:textColor="@color/textColorPrimary" android:gravity="center_vertical" android:layout_gravity="center_vertical" android:id="@id/tv_app_name" android:layout_width="wrap_content" android:layout_height="50.0dip" android:layout_marginLeft="5.0dip" android:layout_weight="1.0" style="@style/textLevelMiddle" />
-    <TextView android:textColor="@color/textColorPrimary" android:gravity="center_vertical" android:layout_gravity="center_vertical" android:id="@id/tv_cache_size" android:layout_width="wrap_content" android:layout_height="wrap_content" style="@style/textLevelSmall" />
-</LinearLayout>

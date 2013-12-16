@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout android:background="@drawable/setting_header_bgxml" android:layout_width="fill_parent" android:layout_height="wrap_content"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <TextView android:textColor="@color/textColorPrimary" android:gravity="left" android:id="@id/software_category" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="5.0dip" android:singleLine="true" android:layout_centerVertical="true" style="@style/textLevelMiddle" />
-    <ImageView android:id="@id/software_category_line" android:visibility="invisible" android:layout_width="wrap_content" android:layout_height="35.0dip" android:layout_marginRight="42.0dip" android:src="@drawable/fireall_list_settings_line" android:scaleType="fitXY" android:layout_alignParentRight="true" />
-    <Button android:id="@id/software_category_popup_btn" android:background="@drawable/fireall_list_settings_more" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="16.0dip" android:layout_alignParentRight="true" android:layout_centerVertical="true" />
-</RelativeLayout>

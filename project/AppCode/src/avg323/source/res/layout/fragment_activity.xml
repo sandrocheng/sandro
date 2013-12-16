@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <include android:id="@id/header" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_alignParentTop="true" layout="@layout/action_bar" />
-    <FrameLayout android:id="@id/middle_part" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_above="@id/lower_part" android:layout_below="@id/header" />
-    <FrameLayout android:gravity="center_horizontal" android:id="@id/lower_part" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_above="@id/banner" android:layout_alignWithParentIfMissing="true" />
-    <com.avg.toolkit.ads.WebViewAdsManager android:id="@id/banner" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_alignParentBottom="true" />
-</RelativeLayout>

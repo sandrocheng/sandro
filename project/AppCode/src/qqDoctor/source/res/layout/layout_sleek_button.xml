@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<FrameLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <ImageView android:layout_gravity="center_vertical" android:id="@id/iamge_icon" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/screensavers_icon_logo_pressed" />
-    <ImageView android:layout_gravity="center_vertical" android:id="@id/iamge_arrow1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="35.0dip" android:src="@drawable/screensavers_icon_jian_default" />
-    <ImageView android:layout_gravity="center_vertical" android:id="@id/iamge_arrow2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="50.0dip" android:src="@drawable/screensavers_icon_jian_default" />
-    <ImageView android:layout_gravity="center_vertical" android:id="@id/iamge_arrow3" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="65.0dip" android:src="@drawable/screensavers_icon_jian_default" />
-</FrameLayout>

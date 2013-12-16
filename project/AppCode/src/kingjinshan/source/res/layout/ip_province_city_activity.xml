@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <include android:id="@id/custom_title" layout="@layout/activity_custom_title" />
-    <ListView android:id="@id/ip_dial_province_city_list" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginBottom="2.0dip" android:cacheColorHint="@*android:color/transparent" android:divider="@drawable/traffic_main_divider_icon" android:dividerHeight="1.0dip" android:fastScrollEnabled="true" />
-</LinearLayout>

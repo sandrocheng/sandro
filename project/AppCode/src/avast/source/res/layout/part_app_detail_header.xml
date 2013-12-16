@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:orientation="horizontal" android:background="@drawable/bg_title" android:layout_width="fill_parent" android:layout_height="?android:listPreferredItemHeight"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <ImageView android:layout_gravity="center_vertical" android:id="@id/app_detail_icon" android:layout_width="48.0dip" android:layout_height="48.0dip" android:layout_marginLeft="@dimen/content_marginHorizontal" android:src="@drawable/ic_app" android:scaleType="fitXY" />
-    <LinearLayout android:layout_gravity="center_vertical" android:orientation="vertical" android:layout_width="0.0dip" android:layout_height="wrap_content" android:layout_marginLeft="5.0dip" android:layout_weight="1.0">
-        <TextView android:ellipsize="end" android:id="@id/app_detail_name" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginRight="@dimen/content_marginHorizontal" android:text="@string/l_app" android:lines="1" android:scrollHorizontally="true" style="@style/ActivityTitle" />
-        <TextView android:textColor="?android:textColorSecondary" android:ellipsize="end" android:id="@id/app_detail_version" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginRight="@dimen/content_marginHorizontal" android:text="@string/l_version" android:singleLine="true" style="@style/TextAppearance" />
-    </LinearLayout>
-</LinearLayout>

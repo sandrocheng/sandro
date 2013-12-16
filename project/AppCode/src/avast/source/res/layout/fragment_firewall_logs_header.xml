@@ -1,3 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<TextView android:paddingLeft="@dimen/content_marginHorizontal" android:paddingTop="@dimen/content_marginVertical" android:paddingRight="@dimen/content_marginHorizontal" android:paddingBottom="@dimen/content_marginVertical" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="@string/l_firewall_log_header"
-  xmlns:android="http://schemas.android.com/apk/res/android" />

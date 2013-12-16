@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:background="@drawable/tool_bar" android:layout_width="fill_parent" android:layout_height="wrap_content"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <Button android:id="@id/home" android:background="@drawable/actionbar_applocker" android:layout_width="wrap_content" android:layout_height="wrap_content" style="@style/ImageButtonHolo" />
-    <TextView android:layout_gravity="center_vertical" android:id="@id/title" android:layout_width="0.0dip" android:layout_height="wrap_content" android:layout_marginLeft="0.0dip" android:layout_marginRight="0.0dip" android:src="@string/app_name" android:singleLine="true" android:layout_weight="1.0" style="@style/ActionbarText" />
-    <LinearLayout android:gravity="right" android:orientation="horizontal" android:id="@id/buttons" android:layout_width="wrap_content" android:layout_height="wrap_content">
-        <Button android:id="@id/options" android:background="@drawable/btn_menu_actionbar" android:layout_width="wrap_content" android:layout_height="wrap_content" style="@style/ImageButtonHolo" />
-    </LinearLayout>
-</LinearLayout>

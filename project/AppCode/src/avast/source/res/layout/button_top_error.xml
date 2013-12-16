@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:orientation="horizontal" android:paddingLeft="@dimen/content_marginHorizontalSmall" android:paddingRight="@dimen/content_marginHorizontal" android:layout_width="wrap_content" android:layout_height="wrap_content"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <Button android:id="@id/button_top" android:background="@drawable/xml_btn_top_error" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/l_malware_found" android:drawableRight="@drawable/xml_ic_top_error" style="@style/Button.Title.Top"
-      xmlns:android="http://schemas.android.com/apk/res/android" />
-</LinearLayout>

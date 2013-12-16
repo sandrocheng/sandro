@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<com.ijinshan.kpref.PreferenceScreen android:key="ipdial_preferences"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <com.ijinshan.kpref.Preference android:title="@string/ip_dial_title" android:key="ip_dial_type" android:widgetLayout="@layout/list_right_icon" />
-    <com.ijinshan.kpref.Preference android:title="@string/local_number_area_title" android:key="local_number_area" android:widgetLayout="@layout/list_right_icon" />
-    <com.ijinshan.kpref.Preference android:title="@string/select_ipdial_header_title" android:key="ip_dial_header" android:widgetLayout="@layout/list_right_icon" android:dialogTitle="@string/select_ipdial_header_title" />
-    <com.ijinshan.kpref.Preference android:title="@string/ip_dial_no_use_numbers_title" android:key="@string/ip_dial_no_use_numbers" android:widgetLayout="@layout/list_right_icon" />
-    <com.ijinshan.kpref.Preference android:title="@string/ip_dial_no_use_numbers_location" android:key="ip_dial_no_use_location" android:widgetLayout="@layout/list_right_icon" />
-</com.ijinshan.kpref.PreferenceScreen>

@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout android:id="@id/contact_bg" android:layout_width="fill_parent" android:layout_height="fill_parent"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <include android:id="@id/custom_title" android:layout_alignParentTop="true" layout="@layout/activity_custom_title" />
-    <RelativeLayout android:gravity="center" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_below="@id/custom_title">
-        <FrameLayout android:id="@id/MainFrame" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_above="@id/BottomBar" android:layout_alignParentTop="true" />
-    </RelativeLayout>
-</RelativeLayout>

@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <LinearLayout android:layout_gravity="right" android:orientation="vertical" android:background="@drawable/list_bubble_bg_2" android:layout_width="wrap_content" android:layout_height="wrap_content">
-        <TextView android:textSize="12.0dip" android:textColor="#ff333333" android:layout_gravity="right" android:id="@id/item_date" android:layout_width="wrap_content" android:layout_height="wrap_content" android:maxWidth="220.0dip" android:text="TextView" />
-        <TextView android:textSize="17.0dip" android:textColor="#ff333333" android:id="@id/item_body" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="2.0dip" android:maxWidth="220.0dip" />
-    </LinearLayout>
-</LinearLayout>
