@@ -66,7 +66,7 @@ public class ScrapView extends View{
 	public void changeView(){
 		
 		if(x<360){
-			x+=5 + random.nextInt(5);
+			x+=10 + random.nextInt(5);
 		}else{
 			x = 1;
 		}
@@ -76,13 +76,13 @@ public class ScrapView extends View{
 //			z = 1f;
 //		}
 		xFun();
-//		yFun();
+		yFun();
 		zFun();
 		this.invalidate();
 	}
 	
 	private void xFun() {
-//		array[0] = (float) Math.cos(x * Math.PI / 180);
+		array[0] = (float) Math.cos(x * Math.PI / 180);
 //		array[1] = -(float) Math.sin(x * Math.PI / 180);
 		
 		array[2] =  200;
@@ -95,7 +95,7 @@ public class ScrapView extends View{
 	
 	private void zFun(){
 //		array[6] = (float) Math.cos(x*Math.PI/180)/100;
-		array[7] = (float) Math.sin(x*Math.PI/180)/100;			
+//		array[7] = (float) Math.sin(x*Math.PI/180)/100;			
 //		array[8] = z;
 	}	
 
