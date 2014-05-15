@@ -12,8 +12,9 @@ void say_hello()
 {
 	printf("HelloWorld! \n");
 	printf("If at first you don\'t succeed,try,try,try again!");
-	printf("\n\"It is a wise father that knows his own child.\"");
-	printf("\nBe careful!!\a");
+	printf("\n\"\tIt is a wise father that knows his own child.\"");
+	printf("\n Be careful!!\a");
+	printf("\n 10%%");
 
 	int salary = 1000L;
 	int month = 1;
@@ -60,5 +61,7 @@ void say_hello()
 	printf("\nVariables of type float occupy %d bytes",sizeof(float));
 	printf("\nVariables of type double occupy %d bytes",sizeof(double));
 	printf("\nVariables of type long double occupy %d bytes",sizeof(long double));
+	printf("\nVariables of type long double occupy %d bytes",sizeof(long double));
+	printf("\n\"汉字\" occupy %d bytes",sizeof("汉字"));
 }
 
