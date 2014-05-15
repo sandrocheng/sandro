@@ -70,11 +70,11 @@ public class ScrapView extends View{
 		}else{
 			x = 1;
 		}
-//		if(z<2f){
-//			z += 0.01; 
-//		}else{
-//			z = 1f;
-//		}
+		if(z<2f){
+			z += 0.01; 
+		}else{
+			z = 1f;
+		}
 		xFun();
 		yFun();
 		zFun();
@@ -83,14 +83,14 @@ public class ScrapView extends View{
 	
 	private void xFun() {
 		array[0] = (float) Math.cos(x * Math.PI / 180);
-//		array[1] = -(float) Math.sin(x * Math.PI / 180);
+		array[1] = -(float) Math.sin(x * Math.PI / 180);
 		
-		array[2] =  200;
+//		array[2] =  200;
 	}
 	
 	private void yFun() {
-//		array[3] = (float) Math.cos(x * Math.PI / 180);
-//		array[4] = (float) Math.sin(x * Math.PI / 180);
+		array[3] = (float) Math.cos(x * Math.PI / 180);
+		array[4] = (float) Math.sin(x * Math.PI / 180);
 	}
 	
 	private void zFun(){
