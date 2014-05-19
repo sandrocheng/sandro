@@ -4,12 +4,11 @@
     android:layout_height="fill_parent"
     android:orientation="horizontal" >
     
-    <FrameLayout
+    <ListView
+        android:id="@+id/res_list"
         android:layout_width="fill_parent"
-        android:layout_height="40dp">
-        <ImageView
-            android:layout_width="300dp"
-            android:layout_height="100dp"
-            android:src="@drawable/rocket_fire"/>
-    </FrameLayout>    
+        android:layout_height="fill_parent"
+        android:fadingEdge="none"
+        android:cacheColorHint="#00000000">
+    </ListView>     
 </LinearLayout>
