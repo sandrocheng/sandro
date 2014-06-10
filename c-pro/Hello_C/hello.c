@@ -4,7 +4,11 @@
  *  Created on: 2013-5-22
  *      Author: sandro
  */
+
 #include "hello.h"
+
+#include <stdio.h>
+
 #define PI 3.14159f;//定义符号 PI,#define语句中，标识符都为大写, 这种方式PI只是一个
 					//字符序列，代码中的所有PI都会被取代
 
@@ -63,5 +67,6 @@ void say_hello()
 	printf("\nVariables of type long double occupy %d bytes",sizeof(long double));
 	printf("\nVariables of type long double occupy %d bytes",sizeof(long double));
 	printf("\n\"汉字\" occupy %d bytes",sizeof("汉字"));
+
 }
 
