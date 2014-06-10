@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.sandro.custom.view.AppScanCircleLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="327.5dip"
+	android:background="@android:color/black"
+    android:layout_height="327.5dip">
+	<ImageView
+	    android:layout_gravity="center_horizontal"
+		android:id="@+id/iv_icon"
+		android:visibility="invisible"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:src="@drawable/app_space" />
+	
+	
+	<com.sandro.custom.view.CircleView
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent"
+	    android:layout_gravity="center"
+	    android:id="@+id/circle_id"/>
+	
+	<Button
+	    android:id="@+id/btn_scan"
+	    android:layout_width="104dp"
+	    android:layout_height="48dp"
+	    android:layout_alignBottom="@+id/iv_icon"
+	    android:layout_centerHorizontal="true"
+	    android:layout_marginBottom="93dp"
+	    android:background="@drawable/scan_button_bg"
+	    android:text="Scan"
+	    android:visibility="invisible"
+	    android:textColor="@color/button_text_color"
+	    android:textSize="24sp" />
+
+	<TextView
+	    android:visibility="invisible"
+	    android:id="@+id/textView1"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_above="@+id/btn_scan"
+	    android:layout_centerHorizontal="true"
+	    android:layout_marginBottom="27dp"
+	    android:text="Apps"
+	    android:textAppearance="?android:attr/textAppearanceLarge"
+	    android:textColor="@color/apps_text_color"
+	    android:textSize="55sp" />	
+</com.sandro.custom.view.AppScanCircleLayout>

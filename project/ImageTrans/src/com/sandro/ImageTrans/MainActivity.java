@@ -31,7 +31,8 @@ public class MainActivity extends Activity implements OnClickListener,MonitorLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         DeviceUtil.initBasicData(this);
-        
+        findViewById(R.id.button_effect).setOnClickListener(this);
+        findViewById(R.id.flash_anim).setOnClickListener(this);
         findViewById(R.id.animation_activity).setOnClickListener(this);
         findViewById(R.id.traffic_stats_activity).setOnClickListener(this);
         findViewById(R.id.binder_activity).setOnClickListener(this);
@@ -82,6 +83,14 @@ public class MainActivity extends Activity implements OnClickListener,MonitorLis
 	public void onClick(View v) {
 		Intent intent= new Intent();
 		switch (v.getId()){
+		case R.id.button_effect:
+			intent.setClass(MainActivity.this, ButtonEffectActivity.class);
+			startActivity(intent);				
+			break;
+		case R.id.flash_anim:
+			intent.setClass(MainActivity.this, FlashActivity.class);
+			startActivity(intent);				
+			break;
 		case R.id.animation_activity:
 			intent.setClass(MainActivity.this, AnimationActivity.class);
 			startActivity(intent);	

@@ -7,7 +7,6 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,8 +44,12 @@ public class CardActivity extends Activity{
 				boolean needReset = false;
 				for (ListEntity entity : entityList) {
 					if (entity.viewHeight > 0) {
-						if (entity.startHeight < entity.viewHeight) {
-							entity.startHeight += 3;
+						if (entity.startHeight < entity.viewHeight && entity.startHeight > 0) {
+							if(entity.dy > 2){
+								entity.dy -= 0.3f;
+							}
+							entity.startHeight += entity.dy;
+							entity.startHeight = entity.startHeight>entity.viewHeight?entity.viewHeight:entity.startHeight;
 							needReset = true;
 						}
 					}else{
@@ -69,12 +72,12 @@ public class CardActivity extends Activity{
 		setContentView(R.layout.card_activity_main);
 		inflater = LayoutInflater.from(this);
 		mListView = (ListView) this.findViewById(R.id.res_list);
-		entityList.add(new ListEntity(R.drawable.img_01,"card 1",70));
-		entityList.add(new ListEntity(R.drawable.img_02,"card 2",80));
-		entityList.add(new ListEntity(R.drawable.img_03,"card 3",150));
+		entityList.add(new ListEntity(R.drawable.img_01,"card 1",30));
+		entityList.add(new ListEntity(R.drawable.img_02,"card 2",40));
+		entityList.add(new ListEntity(R.drawable.img_03,"card 3",-1));
 		mAdapter = new SourceListAdapter();
 		mListView.setAdapter(mAdapter);
-		mHandler.sendMessageDelayed(mHandler.obtainMessage(MSG_ANIM), 1);
+		mHandler.sendMessageDelayed(mHandler.obtainMessage(MSG_ANIM), 3000);
 	}
 
 	@Override
@@ -97,6 +100,7 @@ public class CardActivity extends Activity{
 		private String text;
 		private int startHeight;
 		private int viewHeight;
+		private float dy = 10;
 		private ListEntity(int imageId,String text,int startHeight){
 			this.imageId = imageId;
 			this.text = text;
@@ -135,12 +139,15 @@ public class CardActivity extends Activity{
 			}else{
 				listItemViewHolder = (ListItemViewHolder) convertView.getTag();
 			}
-			AbsListView.LayoutParams p = new AbsListView.LayoutParams(LayoutParams.FILL_PARENT,entity.startHeight);
+			int h = LayoutParams.FILL_PARENT;
+			if(entity.startHeight > 0){
+				h = entity.startHeight;
+			}
+			AbsListView.LayoutParams p = new AbsListView.LayoutParams(LayoutParams.FILL_PARENT,h);
 			convertView.setLayoutParams(p);
 			listItemViewHolder.previewView.setBackgroundResource(entity.imageId);
 			listItemViewHolder.textView.setText(entity.text);
-			entity.viewHeight = listItemViewHolder.previewView.getHeight() + listItemViewHolder.textView.getHeight();
-			Log.i("sandro", position + " , " + entity.viewHeight);			
+			entity.viewHeight = listItemViewHolder.previewView.getHeight() + listItemViewHolder.textView.getHeight();		
 			return convertView;
 		}
 		

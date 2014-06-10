@@ -8,6 +8,20 @@
 		android:layout_width="fill_parent" android:layout_height="fill_parent"
 		android:orientation="vertical">
 		<Button
+			android:id="@+id/button_effect"
+			android:layout_width="fill_parent" 
+			android:layout_height="wrap_content"
+			android:text="效果1"
+			android:layout_gravity="center_vertical"			
+		/>		
+		<Button
+			android:id="@+id/flash_anim"
+			android:layout_width="fill_parent" 
+			android:layout_height="wrap_content"
+			android:text="sweep效果"
+			android:layout_gravity="center_vertical"			
+		/>   
+		<Button
 			android:id="@+id/traffic_stats_activity"
 			android:layout_width="fill_parent" 
 			android:layout_height="wrap_content"

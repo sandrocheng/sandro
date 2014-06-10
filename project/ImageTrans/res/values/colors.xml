@@ -35,4 +35,14 @@
     <!--白色背景Button文字颜色及文字阴影色，文字颜色：浅灰色，文字阴影：白色-->
     <color name="light_gray_button_text">#a8a8a8</color>
     <color name="white_shadow">#ffffff</color>
+    
+    
+    <color name="background">#3e424d</color>
+    <color name="button_text">#50ca12</color>
+    <color name="button_text_press">#9950ca12</color>
+    <color name="apps_text_color">#c6c6c9</color>
+    <color name="disable_text_color">#74767c</color>
+    <color name="size_text_color">#6185ba</color>
+    <color name="divider_color">#d3d3d3</color>
+     <color name="white_text">#FFFFFF</color>    
 </resources>

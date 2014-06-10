@@ -16,7 +16,12 @@
         	      android:launchMode="singleInstance" 
         	      android:screenOrientation="portrait" 
         	      android:configChanges="keyboard|keyboardHidden|orientation" />
-    
+        <activity android:name=".ButtonEffectActivity"
+                  android:screenOrientation="portrait">
+        </activity>  
+        <activity android:name=".FlashActivity"
+                  android:screenOrientation="portrait">
+        </activity>        
         <activity android:name=".PowerActivity"
                   android:screenOrientation="portrait">
         </activity>   
