@@ -9,6 +9,7 @@
 
 int main(void)
 {
-	say_hello();
+//	say_hello();
+	pointer_test();
 	return 0;
 }

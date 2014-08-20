@@ -12,6 +12,13 @@
 #define PI 3.14159f;//定义符号 PI,#define语句中，标识符都为大写, 这种方式PI只是一个
 					//字符序列，代码中的所有PI都会被取代
 
+void pointer_test(){
+	long value = 999L;
+	const long *pValue = &value;
+	printf("pvalue is %ld",*pValue);
+	printf("\npValue's address is %p",pValue);
+}
+
 void say_hello()
 {
 	printf("HelloWorld! \n");
