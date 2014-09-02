@@ -8,15 +8,73 @@
 #include "hello.h"
 
 #include <stdio.h>
+#include <string.h>
 
-#define PI 3.14159f;//定义符号 PI,#define语句中，标识符都为大写, 这种方式PI只是一个
+#define PI 3.14159f//定义符号 PI,#define语句中，标识符都为大写, 这种方式PI只是一个
 					//字符序列，代码中的所有PI都会被取代
+#define STR_LEN 50
 
 void pointer_test(){
 	long value = 999L;
 	const long *pValue = &value;
 	printf("pvalue is %ld",*pValue);
 	printf("\npValue's address is %p",pValue);
+}
+
+void string_test(){
+
+	char destination[] = "This string will be replaced............";
+	char source[] = "This string will be copied ";
+	if(sizeof(source) <= sizeof(destination)){
+		strcpy(destination,source);
+	}
+	printf("%s\n",destination);
+
+	char str1[] = "abcdefg higklmn opqrst uvwxyz";
+	char str2[] = "0123456789";
+	strncpy(str1,str2,strlen(str2));
+	printf("%s\n",str1);
+
+	char str3[] = "123456 那我他";
+	size_t count = 0;
+	count = strlen(str3);
+	printf("\"%s\" has %d chars ,size is %d\n",str3,count,sizeof(str3));
+
+	int len = STR_LEN;
+	char str4[STR_LEN] = "abcdefg ";
+	char str5[STR_LEN] = "hijklmnopqrst";
+	if(len >= strlen(str4) + strlen(str5)){
+		printf("%s",strcat(str4,str5));
+	}
+
+	char str6[] = "abc";
+	char str7[] = "ABC";
+	printf("\n\"%s\" and \"%s\" cmp is %d",str7,str6,strcmp(str7,str6));
+
+	char str8[] = "abc123";
+	char c='c';
+	char *pGot_char = NULL;
+	pGot_char = strchr(str8,c);
+	if(pGot_char != NULL){
+		printf("\n Character found was %C.",*pGot_char);
+	}else{
+		printf("\n not found %c in %s",c , str8);
+	}
+
+	char text1[] = "The words has something 一百";
+	char text2[] = "一百";
+	char text3[] = "abc";
+	char *pFound = NULL;
+	pFound = strstr(text1,text2);
+	if(pFound == NULL){
+		printf("\n \"%s\" is not in \"%s\"",text2,text1);
+	}else{
+		printf("\n \"%s\" is in \"%s\"",text2,text1);
+	}
+	pFound = strstr(text1,text3);
+	if(pFound == NULL){
+		printf("\n \"%s\" is not in \"%s\"",text3,text1);
+	}
 }
 
 void say_hello()

@@ -3,13 +3,14 @@
 // Author      : sandro
 // Version     :
 // Copyright   : Your copyright notice
-// Description : Hello World in C++, Ansi-style
+// Description : write pipe in C++, Ansi-style
 //============================================================================
 
 #include <iostream>
 using namespace std;
 
 int main() {
-	cout << "start write Pipe" << endl; // prints !!!Hello World!!!
+	cout << "start write Pipe" << endl;
+
 	return 0;
 }

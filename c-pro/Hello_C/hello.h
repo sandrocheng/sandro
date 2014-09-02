@@ -12,4 +12,6 @@
 void say_hello();
 
 void pointer_test();
+
+void string_test();
 #endif /* HELLO_H_ */

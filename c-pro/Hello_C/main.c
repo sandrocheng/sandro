@@ -10,6 +10,7 @@
 int main(void)
 {
 //	say_hello();
-	pointer_test();
+//	pointer_test();
+	string_test();
 	return 0;
 }
