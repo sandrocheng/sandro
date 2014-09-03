@@ -7,18 +7,55 @@
 
 #include "hello.h"
 
-#include <stdio.h>
-#include <string.h>
-
 #define PI 3.14159f//定义符号 PI,#define语句中，标识符都为大写, 这种方式PI只是一个
-					//字符序列，代码中的所有PI都会被取代
+					//字符序列，代码中的所有PI在编译前都会被取代
 #define STR_LEN 50
 
+void funArglistTest(){
+
+}
+
+int sum(int a,int b){
+	return a+b;
+}
+
+int bigerNum(int a, int b){
+	return a>b?a:b;
+}
+
 void pointer_test(){
-	long value = 999L;
-	const long *pValue = &value;
-	printf("pvalue is %ld",*pValue);
-	printf("\npValue's address is %p",pValue);
+	short value = 999L;
+	short *pValue = &value;
+	printf("*pValue is %d",*pValue);
+	printf("\n&pValue is %p",&pValue);
+	printf("\npValue is %p",pValue);
+	printf("\n&value is %p",&value);
+	printf("\npValue's size : %d",sizeof(pValue));
+	printf("\nvalue's size : %d\n",sizeof(value));
+
+	*pValue= 888;
+	printf("\nvalue is %d : " ,value);
+	printf("\n*pValue is %d",*pValue);
+	printf("\n&pValue is %p",&pValue);
+	printf("\npValue is %p\n",pValue);
+
+	int (*pFun) (int,int);
+	pFun = sum;
+	printf("\nsum a + b use pFun : %d" , pFun(1,2));
+	pFun = bigerNum;
+	printf("\nbigerNum 40 and 5 use pFun is %d" , pFun(40,5));
+	int (*pFuns[2])(int,int) = {sum,bigerNum};
+	for(int i=0;i<2;i++){
+		printf("\npFuns[%d] is %d ",i,pFuns[i](1,2));
+	}
+
+	for(int i=0;i<2;i++){
+		printf("\nany_func[%d] : %d",i,any_func(pFuns[i],4,55));
+	}
+}
+
+int any_func(int(*_pfun)(int,int),int x,int y){
+	return _pfun(x,y);
 }
 
 void string_test(){
