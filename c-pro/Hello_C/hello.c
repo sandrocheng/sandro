@@ -11,8 +11,24 @@
 					//字符序列，代码中的所有PI在编译前都会被取代
 #define STR_LEN 50
 
-void funArglistTest(){
+/**
+ * 变元个数可变的函数,用0表示为最后一个值
+ */
+void funArglistTest(double v1,double v2, ...){
+	va_list parg;
+	double sum = v1+v2;
+	double value = 0.0;
+	int count = 2;
 
+	va_start(parg,v2);
+	while((double)(value = va_arg(parg,double)) != (double)0){
+		sum +=value;
+		count++;
+		printf("value : %lf\n",value);
+	}
+	va_end(parg);
+	double result = sum / count;
+	printf("\nsum : %lf,count : %d,funArglistTest result : %lf",sum,count,result);
 }
 
 int sum(int a,int b){

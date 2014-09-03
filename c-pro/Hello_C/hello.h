@@ -9,6 +9,7 @@
 #define HELLO_H_
 #include <stdio.h>
 #include <string.h>
+#include <stdarg.h>
 
 void say_hello();
 
@@ -16,10 +17,7 @@ void pointer_test();
 
 void string_test();
 
-/**
- * 变元个数可变的函数
- */
-void funArglistTest();
+void funArglistTest(double v1,double v2, ...);
 
 int sum(int,int);
 
