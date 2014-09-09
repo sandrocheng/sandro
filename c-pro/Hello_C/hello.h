@@ -10,6 +10,11 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdarg.h>
+#include <stdbool.h>
+
+void file_test();
+
+void struct_test();
 
 void say_hello();
 
@@ -22,6 +27,8 @@ void funArglistTest(double v1,double v2, ...);
 int sum(int,int);
 
 int bigerNum(int ,int);
+
+void changePvalue(short *pValue);
 
 int any_func(int(*pfun)(int,int),int x,int y);
 

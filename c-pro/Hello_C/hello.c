@@ -11,6 +11,64 @@
 					//字符序列，代码中的所有PI在编译前都会被取代
 #define STR_LEN 50
 
+struct horse
+{
+	short age;
+	int height;
+	char name[30];
+};
+
+struct horseman{
+	char name[30];
+	short age;
+	struct horse _horse;
+};
+
+struct family{
+	char name[20];
+	int age;
+	char father[20];
+	char mother[20];
+};
+
+void file_test(){
+
+}
+
+void struct_test(){
+	printf("size of horse struct is %d",sizeof(struct horse));
+	struct horse dobbin = {24,17,"dobbin"};
+	struct horse trigger = {22,19,"trigger"};
+	printf("\nage %d height %d name %s",dobbin.age,dobbin.height,dobbin.name);
+
+	trigger.age++;
+	trigger.height--;
+	strcpy(trigger.name,"horse_trigger");
+	printf("\nage %d height %d name %s",trigger.age,trigger.height,trigger.name);
+
+	struct horse *phorse;
+	phorse = &dobbin;
+	printf("\nphorse age %d,height %d,name %s",(*phorse).age,phorse->height,phorse->name);
+
+	struct horseman foo;
+	foo.age=20;
+	strcpy(foo.name,"foo");
+	foo._horse.age= 10;
+	foo._horse.height=100;
+	strcpy(foo._horse.name,"foo\'s horse");
+
+	struct horseman boo;
+	boo.age=21;
+	strcpy(boo.name,"boo");
+	boo._horse = foo._horse;
+	strcpy(boo._horse.name,"boo\'s horse");
+
+	printf("\nfoo.name %s , foo.age %d ,foo._horse.name %s,foo.horse.age %d",foo.name,foo.age,foo._horse.name,foo._horse.age);
+	printf("\nboo.name %s , boo.age %d ,boo._horse.name %s,boo.horse.age %d",boo.name,boo.age,boo._horse.name,boo._horse.age);
+
+
+}
+
 /**
  * 变元个数可变的函数,用0表示为最后一个值
  */
@@ -39,9 +97,14 @@ int bigerNum(int a, int b){
 	return a>b?a:b;
 }
 
+void changePvalue(short *pValue){
+	*pValue = 77;
+}
+
 void pointer_test(){
 	short value = 999L;
 	short *pValue = &value;
+	changePvalue(pValue);
 	printf("*pValue is %d",*pValue);
 	printf("\n&pValue is %p",&pValue);
 	printf("\npValue is %p",pValue);
