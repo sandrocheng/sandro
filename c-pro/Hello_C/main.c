@@ -23,6 +23,7 @@ int main(int argc,char *argv[])
 //	funArglistTest((double)3,(double)3,(double)5,(double)9,(double)0);
 //	struct_test();
 
-	file_test();
+//	file_test();
+	file_test2();
 	return 0;
 }

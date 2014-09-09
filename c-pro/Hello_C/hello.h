@@ -11,8 +11,11 @@
 #include <string.h>
 #include <stdarg.h>
 #include <stdbool.h>
+#include <stdlib.h>
 
 void file_test();
+
+void file_test2();
 
 void struct_test();
 
