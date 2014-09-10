@@ -17,7 +17,7 @@ void file_byte_test();
 
 void file_test();
 
-void file_test2();
+void file_test2(void);
 
 void struct_test();
 
