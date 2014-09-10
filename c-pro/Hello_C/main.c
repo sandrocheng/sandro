@@ -25,6 +25,7 @@ int main(int argc,char *argv[])
 
 //	file_test();
 //	file_test2();
-	file_byte_test();
+//	file_byte_test();
+	file_seek_test();
 	return 0;
 }

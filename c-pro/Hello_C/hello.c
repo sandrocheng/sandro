@@ -32,6 +32,10 @@ struct family {
 
 const int LEN = 80;
 
+void file_seek_test(){
+
+}
+
 void file_byte_test(){
 	char *filename = "/home/sandro/myfile.bin";
 	FILE *pfile= NULL;
