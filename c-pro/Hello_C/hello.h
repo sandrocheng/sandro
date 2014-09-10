@@ -13,6 +13,8 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
+void file_byte_test();
+
 void file_test();
 
 void file_test2();

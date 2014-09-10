@@ -32,6 +32,35 @@ struct family {
 
 const int LEN = 80;
 
+void file_byte_test(){
+	char *filename = "/home/sandro/myfile.bin";
+	FILE *pfile= NULL;
+	if(!(pfile = fopen(filename,"wb"))){
+		printf("opening %s fils error!", filename);
+		exit(1);
+	}
+
+	short pdata[] = {2,4,8,16,32,64,128,256,512,1024};
+	int pdataLen = sizeof(pdata)/sizeof(short);
+	size_t wcount = fwrite(pdata,sizeof(short),pdataLen,pfile);
+	fclose(pfile);
+	printf("save data success , save %d short data",wcount);
+
+	if(!(pfile = fopen(filename,"rb"))){
+		printf("opening %s fils error!", filename);
+		exit(1);
+	}
+
+	short rdata[pdataLen];
+	wcount = fread(rdata,sizeof(short),pdataLen,pfile);
+	printf("\nread %d short data : \n",wcount);
+	for(int i = 0;i<wcount;i++){
+		printf("%d," , rdata[i]);
+	}
+	fclose(pfile);
+	remove(filename);
+}
+
 void file_test2() {
 	char *phrases[]={"1) abcedddd\n",
 			"2) 你妈第三方马赛地方妈的私密发\n",

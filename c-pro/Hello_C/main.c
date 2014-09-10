@@ -24,6 +24,7 @@ int main(int argc,char *argv[])
 //	struct_test();
 
 //	file_test();
-	file_test2();
+//	file_test2();
+	file_byte_test();
 	return 0;
 }
