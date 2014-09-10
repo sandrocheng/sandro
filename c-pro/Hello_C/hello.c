@@ -9,7 +9,8 @@
 
 #define PI 3.14159f//定义符号 PI,#define语句中，标识符都为大写, 这种方式PI只是一个
 //字符序列，代码中的所有PI在编译前都会被取代
-#define STR_LEN 50
+
+const int LEN = 80;
 
 struct horse {
 	short age;
@@ -30,10 +31,56 @@ struct family {
 	char mother[20];
 };
 
-const int LEN = 80;
+struct{
+	char *filename;
+	FILE *pfile;
+}file_global_meta = {"/home/sandro/myfile.bin",NULL};
+
+void get_person(int num,Family *pfamily){
+	pfamily->ma_name[0]= '\0';
+	pfamily->pa_name[0] = '\0';
+	pfamily->name[0]='\0';
+	pfamily->dob.day = num;
+	pfamily->dob.month = num;
+	pfamily->dob.year= num;
+
+	char pex[2];
+	sprintf(pex,"%d",num);
+
+	strcat(pfamily->ma_name,"ma_");
+	strcat(pfamily->ma_name,pex);
+
+	strcat(pfamily->pa_name,"par_");
+	strcat(pfamily->pa_name,pex);
+
+	strcat(pfamily->name,"name_");
+	strcat(pfamily->name,pex);
+}
 
 void file_seek_test(){
+	Family member;
+	if(!(file_global_meta.pfile = fopen(file_global_meta.filename,"wb"))){
+		printf("unable us wb fopen func with name %s",file_global_meta.filename);
+		exit(1);
+	}
 
+	for(int i = 0;i<9;i++){
+		get_person(i,&member);
+		fwrite(&member,sizeof member,1,file_global_meta.pfile);
+	}
+	fclose(file_global_meta.pfile);
+	printf("\nfile save success! start to read file");
+
+	if(!(file_global_meta.pfile = fopen(file_global_meta.filename,"rb"))){
+		printf("unable us rb fopen func with name %s",file_global_meta.filename);
+		exit(1);
+	}
+	while(fread(&member,sizeof member,1,file_global_meta.pfile)){
+		printf("\n name : %s ",member.name);
+	}
+	fclose(file_global_meta.pfile);
+	remove(file_global_meta.filename);
+	printf("\n\n read over");
 }
 
 void file_byte_test(){

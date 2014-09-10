@@ -13,6 +13,23 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
+#define STR_LEN 50
+
+struct Date{
+	int day;
+	int month;
+	int year;
+};
+
+typedef struct familyMeta{
+	struct Date dob;
+	char name[STR_LEN];
+	char pa_name[STR_LEN];
+	char ma_name[STR_LEN];
+}Family;
+
+void get_person(int num,Family *pfamily);
+
 void file_seek_test();
 
 void file_byte_test();
