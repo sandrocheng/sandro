@@ -33,7 +33,54 @@ struct family {
 const int LEN = 80;
 
 void file_test2() {
+	char *phrases[]={"1) abcedddd\n",
+			"2) 你妈第三方马赛地方妈的私密发\n",
+			"3) 1234123123213",
+			" 阿德发（。。。）『---』!@#$%\n"
+	};
 
+	char more[LEN];
+	FILE *pfile = NULL;
+	char *filename = "/home/sandro/myfile.txt";
+
+	if(!(pfile = fopen(filename,"w"))){
+		printf("opening %s fils error!", filename);
+		exit(1);
+	}
+
+	int count = sizeof phrases/sizeof phrases[0];
+	for(int i=0;i<count;i++){
+		fputs(phrases[i],pfile);
+	}
+	fclose(pfile);
+	printf("\n%s file save success! ",filename);
+
+	if(!(pfile = fopen(filename,"a"))){
+		printf("opening %s fils error!", filename);
+		exit(1);
+	}
+	printf("enter new phrase add in %s ,\"\\n\" to quit \n",filename);
+	while(true){
+		fgets(more,LEN,stdin);
+		if(more[0]== '\n'){
+			break;
+		}
+		fputs(more,pfile);
+	}
+	fclose(pfile);
+	printf("enter phase is add into file\n");
+
+	if(!(pfile = fopen(filename,"r"))){
+		printf("opening %s fils error!", filename);
+		exit(1);
+	}
+	printf("\n The phrases in file are :\n");
+	while(fgets(more,LEN,pfile)){
+		printf("%s",more);
+	}
+	fclose(pfile);
+	remove(filename);
+	printf("\n%s is removed.",filename);
 }
 
 void file_test() {
