@@ -46,18 +46,23 @@ void get_person(int num,Family *pfamily){
 
 	char pex[2];
 	sprintf(pex,"%d",num);
-
-	strcat(pfamily->ma_name,"ma_");
-	strcat(pfamily->ma_name,pex);
-
-	strcat(pfamily->pa_name,"par_");
-	strcat(pfamily->pa_name,pex);
-
 	strcat(pfamily->name,"name_");
 	strcat(pfamily->name,pex);
+
+	if (num % 2 == 0 && num >= 2) {
+		pex[0]='\0';
+		sprintf(pex, "%d", num - 2);
+		strcat(pfamily->pa_name, "name_");
+		strcat(pfamily->pa_name, pex);
+		pex[0]='\0';
+		sprintf(pex, "%d", num - 1);
+		strcat(pfamily->ma_name, "name_");
+		strcat(pfamily->ma_name, pex);
+	}
+//	printf("\n name : %s ,pa name : %s ,ma name %s",pfamily->name,pfamily->pa_name,pfamily->ma_name);
 }
 
-void file_seek_test(){
+void saveFile(){
 	Family member;
 	if(!(file_global_meta.pfile = fopen(file_global_meta.filename,"wb"))){
 		printf("unable us wb fopen func with name %s",file_global_meta.filename);
@@ -75,12 +80,77 @@ void file_seek_test(){
 		printf("unable us rb fopen func with name %s",file_global_meta.filename);
 		exit(1);
 	}
+}
+
+void addDate(char *pStr,int year,int month,int day){
+	char pex[5];
+	strcat(pStr,"(");
+	sprintf(pex,"%d",year);
+	strcat(pStr,pex);
+	strcat(pStr,"-");
+
+	pex[0]='\0';
+	sprintf(pex,"%d",month);
+	strcat(pStr,pex);
+	strcat(pStr,"-");
+
+	pex[0]='\0';
+	sprintf(pex,"%d",month);
+	strcat(pStr,pex);
+	strcat(pStr,")");
+}
+
+void get_parent_birthday(Family *pmember,char *pStr){
+	Family relative;
+	if(strlen(pmember->pa_name) > 0){
+		strcat(pStr,",papa is ");
+		strcat(pStr,pmember->pa_name);
+
+		rewind(file_global_meta.pfile);
+		while(fread(&relative,sizeof(Family),1,file_global_meta.pfile)){
+			if(strcmp(pmember->pa_name,relative.name)==0){
+				addDate(pStr,relative.dob.year,relative.dob.month,relative.dob.day);
+			}
+		}
+	}
+	if(strlen(pmember->ma_name) > 0){
+		strcat(pStr," ,mama is ");
+		strcat(pStr, pmember->ma_name);
+		rewind(file_global_meta.pfile);
+		while(fread(&relative,sizeof(Family),1,file_global_meta.pfile)){
+			if(strcmp(pmember->ma_name,relative.name)==0){
+				addDate(pStr,relative.dob.year,relative.dob.month,relative.dob.day);
+			}
+		}
+	}
+}
+
+void readFile(){
+	Family member;
+    char *presult = (char *)calloc(256,sizeof(char));
+    if(presult == NULL){
+    	exit(1);
+    }
+    fpos_t current;
 	while(fread(&member,sizeof member,1,file_global_meta.pfile)){
-		printf("\n name : %s ",member.name);
+		presult[0]='\0';
+		strcat(presult,"name is ");
+		strcat(presult,member.name);
+		strcat(presult,", ");
+		fgetpos(file_global_meta.pfile,&current);
+		get_parent_birthday(&member,presult);
+		fsetpos(file_global_meta.pfile,&current);
+		printf("\n%s",presult);
 	}
 	fclose(file_global_meta.pfile);
-	remove(file_global_meta.filename);
+	free(presult);
 	printf("\n\n read over");
+}
+
+void file_seek_test(){
+	saveFile();
+	readFile();
+	remove(file_global_meta.filename);
 }
 
 void file_byte_test(){

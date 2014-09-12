@@ -28,6 +28,14 @@ typedef struct familyMeta{
 	char ma_name[STR_LEN];
 }Family;
 
+void addDate(char *pStr,int year,int month,int day);
+
+void saveFile();
+
+void readFile();
+
+void get_parent_birthday(Family *pmember,char *pStr);
+
 void get_person(int num,Family *pfamily);
 
 void file_seek_test();
