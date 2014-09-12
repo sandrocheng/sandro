@@ -44,19 +44,16 @@ void get_person(int num,Family *pfamily){
 	pfamily->dob.month = num;
 	pfamily->dob.year= num;
 
-	char pex[2];
-	sprintf(pex,"%d",num);
-	strcat(pfamily->name,"name_");
+	char pex[16];
+	sprintf(pex,"name_%d",num);
 	strcat(pfamily->name,pex);
 
 	if (num % 2 == 0 && num >= 2) {
 		pex[0]='\0';
-		sprintf(pex, "%d", num - 2);
-		strcat(pfamily->pa_name, "name_");
+		sprintf(pex, "name_%d", num - 2);
 		strcat(pfamily->pa_name, pex);
 		pex[0]='\0';
-		sprintf(pex, "%d", num - 1);
-		strcat(pfamily->ma_name, "name_");
+		sprintf(pex, "name_%d", num - 1);
 		strcat(pfamily->ma_name, pex);
 	}
 //	printf("\n name : %s ,pa name : %s ,ma name %s",pfamily->name,pfamily->pa_name,pfamily->ma_name);
@@ -83,21 +80,9 @@ void saveFile(){
 }
 
 void addDate(char *pStr,int year,int month,int day){
-	char pex[5];
-	strcat(pStr,"(");
-	sprintf(pex,"%d",year);
-	strcat(pStr,pex);
-	strcat(pStr,"-");
-
-	pex[0]='\0';
-	sprintf(pex,"%d",month);
-	strcat(pStr,pex);
-	strcat(pStr,"-");
-
-	pex[0]='\0';
-	sprintf(pex,"%d",month);
-	strcat(pStr,pex);
-	strcat(pStr,")");
+	char result[32];
+	sprintf(result,"(%d月%d日)",(month+1),(day + 1));
+	strcat(pStr,result);
 }
 
 void get_parent_birthday(Family *pmember,char *pStr){
