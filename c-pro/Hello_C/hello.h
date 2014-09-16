@@ -12,6 +12,7 @@
 #include <stdarg.h>
 #include <stdbool.h>
 #include <stdlib.h>
+#include <time.h>
 
 #define STR_LEN 50
 
@@ -27,6 +28,8 @@ typedef struct familyMeta{
 	char pa_name[STR_LEN];
 	char ma_name[STR_LEN];
 }Family;
+
+void c_date_time_test();
 
 void addDate(char *pStr,int year,int month,int day);
 

@@ -291,6 +291,56 @@ void struct_test() {
 
 }
 
+void c_date_time_test(){
+	clock_t start,end;
+	time_t calendar_start = time(NULL);
+	printf("calendar_start is %lu",(long)calendar_start);
+	double cpu_time;
+	start = clock();
+	while(true){
+		end = clock();
+		cpu_time = (double)(end-start)/CLOCKS_PER_SEC;
+		if(cpu_time >= 3){
+			break;
+		}
+	}
+	printf("\nstart : %lf ,end : %lf ,cpu_time : %lf"
+			,(double)start,(double)end,cpu_time);
+	time_t calendar_end = time(NULL);
+	printf("\ncalendar_end is %lu",(long)calendar_end);
+	printf("\ncalendar diffitme %lf",difftime(calendar_end,calendar_start));
+	printf("\ndate : %s ", ctime(&calendar_end));
+
+	struct tm *time_data;
+	time_data = localtime(&calendar_end);
+	const char *days[] = {"周日","周一","周二","周三","周四","周五","周六"};
+	const char *months[] = {"一月","二月","三月","四月","五月","六月"
+			,"七月","八月","九月","十月","十一月","十二月"};
+	printf("%d 年 %s %d 日 ，%s,%d 点 %d 分 %d 秒",
+			(time_data->tm_year + 1900),
+			months[time_data->tm_mon],
+			time_data->tm_mday,
+			days[time_data->tm_wday],
+			time_data->tm_hour,
+			time_data->tm_min,
+			time_data->tm_sec);
+
+	struct tm birthday;
+	birthday.tm_hour = birthday.tm_min = 0;
+	birthday.tm_sec = 0;
+	birthday.tm_isdst = -1;
+
+	birthday.tm_mon = 11 - 1;
+	birthday.tm_mday = 8;
+	birthday.tm_year = 1980 - 1900;
+
+	if(mktime(&birthday) == (time_t) - 1){
+		printf("\nOperation failed.");
+		return ;
+	}
+	printf("\nbithday 1980-11-8 is %s",days[birthday.tm_wday]);
+}
+
 /**
  * 变元个数可变的函数,用0表示为最后一个值
  */
@@ -473,7 +523,7 @@ void say_hello() {
 			sizeof(long double));
 	printf("\nVariables of type long double occupy %d bytes",
 			sizeof(long double));
-	printf("\n\"汉字\" occupy %d bytes", sizeof("汉字"));
-
+	printf("\n\"汉字\" occupy %d bytes", sizeof("汉字1"));
+	printf("\n Program last compiled at time %s on date %s",__TIME__,__DATE__);
 }
 

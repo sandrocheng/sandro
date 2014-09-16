@@ -26,6 +26,7 @@ int main(int argc,char *argv[])
 //	file_test();
 //	file_test2();
 //	file_byte_test();
-	file_seek_test();
+//	file_seek_test();
+	c_date_time_test();
 	return 0;
 }
