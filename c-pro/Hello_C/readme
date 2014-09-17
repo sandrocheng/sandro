@@ -1,2 +1,7 @@
+linux 命令行编译、运行
 1 编译 ：gcc -std=c99 -o mainC hello.c hello.h main.c
 2 运行：./mainC
+
+makefile命令编译、运行
+make编译文件
+makeclean清理编译文件
