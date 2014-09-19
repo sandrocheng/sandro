@@ -7,9 +7,10 @@
 //============================================================================
 
 #include <iostream>
+#include "MyClass.h"
 using namespace std;
 
 int main() {
-	cout << "!!!Hello World!!!" << endl; // prints !!!Hello World!!!
+	std::cout << "3+2=" << 3 + 2 << std::endl;
 	return 0;
 }

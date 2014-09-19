@@ -1,0 +1,14 @@
+<resources>
+
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    
+    <!-- Size of the fastscroll hint letter -->
+    <dimen name="fastscroll_overlay_size">104dp</dimen>
+    <!-- Width of the fastscroll thumb -->
+    <dimen name="fastscroll_thumb_width">64dp</dimen>
+    <!-- Height of the fastscroll thumb -->
+    <dimen name="fastscroll_thumb_height">52dp</dimen>
+
+</resources>

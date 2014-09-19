@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.tencent.widget.PinnedHeaderExpandableListView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/elv_buddies"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/common_list_overscoll_top_bg"
+    android:cacheColorHint="#00000000"
+    android:divider="@drawable/divider"
+    android:childDivider="@drawable/divider"
+    android:dividerHeight="1px"
+    android:footerDividersEnabled="false"
+    android:indicatorLeft="16dp"
+    android:indicatorRight="28dp"
+    android:scrollingCache="false" />
