@@ -5,7 +5,7 @@
     android:versionName="1.0"
     
     >
- <!-- android:sharedUserId="android.uid.system"  -->
+ <!-- android:sharedUserId="android.uid.system"-->
     <uses-sdk android:minSdkVersion="10" />
     <uses-permission android:name="android.permission.GET_TASKS"/>
     <uses-permission android:name="android.permission.BIND_DEVICE_ADMIN"/>
