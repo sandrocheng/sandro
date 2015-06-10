@@ -37,7 +37,7 @@ public class EmailService extends IntentService{
 					}
 					
 				},Dao.getInstance().getEmail(),Dao.getInstance().getPassword());
-				sm.Send("淘宝网 验证码 短信", msg);
+				sm.sendEmail("淘宝网 验证码 短信", msg);
 				Log.i("EmailService", "start send mail");
 			}else{
 				Log.w("EmailService", "msg is null");

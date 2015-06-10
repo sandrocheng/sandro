@@ -192,7 +192,7 @@ public class MainActivity extends Activity {
 					mHandler.sendMessage(msg);
 				}
 			},mail,password);
-			sm.Send("test", "test");
+			sm.sendEmail("test", "test");
     	}
     }
 

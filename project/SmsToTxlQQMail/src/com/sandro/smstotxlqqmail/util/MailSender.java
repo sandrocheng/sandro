@@ -65,7 +65,7 @@ public class MailSender {
 	 * @param title
 	 * @param body
 	 */
-	public void Send(String title,String body) {
+	public void sendEmail(String title,String body) {
 		boolean success = false;
 		String result = "email is not setting!";
 		boolean initNet = initNet();
