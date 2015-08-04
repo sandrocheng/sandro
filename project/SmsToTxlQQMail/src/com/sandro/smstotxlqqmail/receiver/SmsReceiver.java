@@ -13,6 +13,7 @@ public class SmsReceiver extends BroadcastReceiver {
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
+		Log.i("RConReceive", "get message");
 		// 第一步、获取短信的内容和发件人
 		StringBuilder body = new StringBuilder();// 短信内容
 		Bundle bundle = intent.getExtras();
@@ -35,9 +36,9 @@ public class SmsReceiver extends BroadcastReceiver {
 				serviceintent.putExtra(EmailService.SMS_ACTION_VALUE_KEY,
 						smsBody);
 				context.startService(serviceintent);
-				Log.i("SmsReceiver", "get taobao message");
+				Log.i("RConReceive", "get taobao message");
 			} else {
-				Log.w("SmsReceiver", "it is not taobao message");
+				Log.w("RConReceive", "it is not taobao message");
 			}
 		}
 	}
