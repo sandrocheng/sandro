@@ -2,6 +2,5 @@
 
 using namespace std;
 
-
 void CobjectTest();
 
