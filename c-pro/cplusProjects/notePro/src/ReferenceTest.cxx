@@ -13,7 +13,7 @@ void ReferenceTest(){
 
 	b =100;
 	cout << "a = " << a << " , b = " << b << endl;
-	cout << "a addr is " << &a << ", b addr : " << &b << endl;
+	cout << "a addr is " << &a << ",   b addr : " << &b << endl;
 
 	cout << "----------ReferenceTest end------------"<<endl;
 }

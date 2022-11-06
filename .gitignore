@@ -1,4 +1,40 @@
 #################
+## anjuta
+#################
+*.cxx~
+.anjuta/
+*.anjuta_sym_db.db
+c-pro/cplusProjects/notePro/AUTHORS
+c-pro/cplusProjects/notePro/COPYING
+c-pro/cplusProjects/notePro/ChangeLog
+c-pro/cplusProjects/notePro/INSTALL
+c-pro/cplusProjects/notePro/Makefile.am
+c-pro/cplusProjects/notePro/Makefile.in
+c-pro/cplusProjects/notePro/NEWS
+c-pro/cplusProjects/notePro/README
+c-pro/cplusProjects/notePro/aclocal.m4
+c-pro/cplusProjects/notePro/autogen.sh
+c-pro/cplusProjects/notePro/autom4te.cache/
+c-pro/cplusProjects/notePro/compile
+c-pro/cplusProjects/notePro/config.guess
+c-pro/cplusProjects/notePro/config.h.in
+c-pro/cplusProjects/notePro/config.sub
+c-pro/cplusProjects/notePro/configure
+c-pro/cplusProjects/notePro/configure.ac
+c-pro/cplusProjects/notePro/cplusnote.anjuta
+c-pro/cplusProjects/notePro/depcomp
+c-pro/cplusProjects/notePro/install-sh
+c-pro/cplusProjects/notePro/intltool-extract.in
+c-pro/cplusProjects/notePro/intltool-merge.in
+c-pro/cplusProjects/notePro/intltool-update.in
+c-pro/cplusProjects/notePro/ltmain.sh
+c-pro/cplusProjects/notePro/missing
+c-pro/cplusProjects/notePro/po/
+c-pro/cplusProjects/notePro/src/Makefile.am
+c-pro/cplusProjects/notePro/src/Makefile.in
+
+
+#################
 ## Eclipse
 #################
 
