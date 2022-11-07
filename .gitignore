@@ -2,6 +2,9 @@
 ## anjuta
 #################
 *.cxx~
+*.h~
+*.cc~
+*.c~
 .anjuta/
 *.anjuta_sym_db.db
 c-pro/cplusProjects/notePro/AUTHORS

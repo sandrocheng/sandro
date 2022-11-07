@@ -27,6 +27,12 @@
 #include "LinkArray.h"
 #include "Cobject.h"
 #include "ReferenceTest.h"
+#include "InnerFun.h"
+#include "FunOverride.h"
+#include "FunDefaultArgs.h"
+#include "PlaceholderArgs.h"
+#include "externC.h"
+#include "ClassTest.h"
 using namespace std;
 
 //全局变量可以提前声明
@@ -115,6 +121,13 @@ int main(int argc,char *argv[])
 	linkArrayTest();
 	CobjectTest();
 	ReferenceTest();
+	InnerFunTest();
+	FunOverrideTest();
+	FunDefaultArgs();
+	PlaceholderArgsTest();
+	externCTest01();
+	cout << "externCTest02(3,4) " << externCTest02(3,4)<<endl;
+	classTest();
 	return 0;
 }
 
