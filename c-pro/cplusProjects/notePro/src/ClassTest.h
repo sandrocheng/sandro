@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string.h>
+#include "class-student.h"
 
 using namespace std;
 
@@ -47,3 +48,4 @@ class Person{
 
 void classTest();
 static bool isSamePer(Person &p1,Person &p2);
+static ClassStudent createCS();

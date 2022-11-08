@@ -2,12 +2,12 @@
 /*
  * class-student.cc
  * Copyright (C) 2022 sandro <sandro@sandro-Lenovo-XiaoXin-V4000>
- *
+	 *
  * notePro is free software: you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
  * Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+	 * 
  * notePro is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
@@ -32,11 +32,11 @@ void ClassStudent::init(int _age,char* _name){
 	setName(_name);
 }
 
-char* ClassStudent::getName(){
-	return name;
+char* ClassStudent::getName() const{
+	return (char *) name;
 }
 
-int ClassStudent::getAge(){
+int ClassStudent::getAge() const {
 	return age;
 }
 
@@ -45,7 +45,9 @@ void ClassStudent::setName(char* _name){
 }
 
 void ClassStudent::printPer(){
-	cout << "ClassStudent object name : " << getName() <<" , age : " << getAge() << endl;
+	cout << "ClassStudent object name : " << name <<" , age : " << getAge() << " , addr : " << addr 
+		<< " , his : " << score.getHis() << " , math : " << score.getMath() 
+		<< " , lastmath : " << lastscore.getMath () << " , lasthis : "<< lastscore.getHis () << endl;
 }
 
 bool ClassStudent::isSamePer(ClassStudent &p2){
@@ -55,16 +57,42 @@ bool ClassStudent::isSamePer(ClassStudent &p2){
 	return getAge() == p2.getAge();
 }
 
+void ClassStudent::createMem(){
+	addr = new char[32];
+}
+
+void ClassStudent::setAddr(char *_addr){
+	strcpy(addr,_addr);
+}
+
+ClassStudent::ClassStudent(const ClassStudent &ob){
+	createMem();
+	init(ob.getAge (),ob.getName ());
+	setAddr((char *)"--copy--");
+}
+
 //构造函数实现
+
+ClassStudent::ClassStudent(int _age,char* _name,int math,int his,int lastmath,int lasthis):score(math,his),lastscore(lastmath,lasthis){
+	createMem();
+	init(_age,_name);
+	setAddr((char *)"--score2--");
+}
+
 ClassStudent::ClassStudent(){
-	char name[] = "-";
-	setName(name);
-	setAge (0);
+	createMem();
+	init(0,(char *)"--null--");
+	setAddr((char *)"--null--");
 }
 
-ClassStudent::ClassStudent(int _age){
-	char tempName[] = "-";
-	init(_age,tempName);
+ClassStudent::ClassStudent(int _age,char* _name){
+	createMem();
+	init(_age,_name);
+	setAddr((char *)"--null--");
 }
 
+ClassStudent::~ClassStudent(){
+	delete [] addr;
+	cout << "ClassStudent 析构函数调用 " << name << " " << age << endl; 
+}
 
