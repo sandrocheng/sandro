@@ -38,7 +38,7 @@ ClassSingleTon * ClassSingleTon::getInstance(){
 }
 
 void ClassSingleTon::setCount(int _count){
-	count += _count;
+	this->count += _count;
 }
 
 int ClassSingleTon::getCount(){

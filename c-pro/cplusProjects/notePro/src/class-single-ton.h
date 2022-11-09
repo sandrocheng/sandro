@@ -27,12 +27,13 @@ class ClassSingleTon
 		 //3 获得唯一的实例地址
 		 static ClassSingleTon* getInstance();
 
+		 //4、用户功能函数
 		 void setCount(int count);
 		 int getCount();
 	 protected:
 
 	 private:
-		 //1 私有化构造函数 拷贝构造 析构函数
+		 //1 私有化构造函数 拷贝构造 析构函数，防止外部调用
 		 ClassSingleTon();
 		 ClassSingleTon(const ClassSingleTon &ob);
 		 ~ClassSingleTon();

@@ -46,7 +46,7 @@ void classTest(){
 	//linux 编译时会优化这个操作，createCS创造的对象在返回时 因为返回给了cs5，相当于cs5接管了createCS中的对象，相当于给createCS中
 	//创建的cs对象（栈区对象）直接改名了。这种操作会根据编译器不同，略有差别。有的是接管return时拷贝到临时栈区中的匿名对象(visual studio)，
 	//有的是直接接管方法中创建对象的栈区内存中的对象（linux）
-	cout << "ClassStudent cs5 = createCS() ====="<<endl;
+	cout << "ClassStudent cs5 = createCS() ====="<<endl;;
 	ClassStudent cs5 = createCS();
 	cs5.printPer ();
 	cout << "cs6  ====="<<endl;
@@ -54,7 +54,7 @@ void classTest(){
 	cs6.printPer ();
 	cout << "cs7  ====="<<endl;
 	ClassStudent cs7(11,(char*)"cs7",90,93,99,100); 
-	cs7.printPer ();
+	cs7.printfData(0).printfData (1).printfData (2).printfData (3);
 
 	cout << "ClassStudent arr  ====="<<endl;
 	//对象数组，每个元素都会自动调用构造函数和析构函数

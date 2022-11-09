@@ -24,24 +24,25 @@ void ClassStudent::setAge(int _age){
 		cout << "age should <100 and >0"<< endl;
 		return;
 	}
-	age = _age;
+	this->age = _age;
 }
 
 void ClassStudent::init(int _age,char* _name){
-	setAge(_age);
-	setName(_name);
+	this->setAge(_age);
+	this->setName(_name);
 }
 
 char* ClassStudent::getName() const{
-	return (char *) name;
+	return (char *) this->name;
 }
 
 int ClassStudent::getAge() const {
-	return age;
+	//temp = 4; temp是 mutabel的，则可以在const函数中修改，否则不能修改
+	return this->age;
 }
 
 void ClassStudent::setName(char* _name){
-	strcpy(name,_name);
+	strcpy(this->name,_name);
 }
 
 void ClassStudent::printPer(){
@@ -54,45 +55,58 @@ bool ClassStudent::isSamePer(ClassStudent &p2){
 	if(strcmp(getName(),p2.getName()) != 0){
 		return false;
 	}
-	return getAge() == p2.getAge();
+	return this->getAge() == p2.getAge();
 }
 
 void ClassStudent::createMem(){
-	addr = new char[32];
+	this->addr = new char[32];
 }
 
 void ClassStudent::setAddr(char *_addr){
-	strcpy(addr,_addr);
+	strcpy(this->addr,_addr);
 }
 
 ClassStudent::ClassStudent(const ClassStudent &ob){
-	createMem();
-	init(ob.getAge (),ob.getName ());
-	setAddr((char *)"--copy--");
+	this->createMem();
+	this->init(ob.getAge (),ob.getName ());
+	this->setAddr((char *)"--copy--");
 }
+
+ClassStudent& ClassStudent::printfData(int type){
+	if(type == 0){
+		cout << "ClassStudent name : " << this->name << endl;
+	}else if(type == 1){
+		cout << "ClassStudent age : " << this->age << endl;
+	}else if(type == 2){
+		cout << "ClassStudent score , " << this->score.getLog () << endl;
+	}else{
+        cout << "ClassStudent lastscore , " << this->lastscore.getLog () << endl;
+	}
+	return *this;//返回该实例的引用
+} 
 
 //构造函数实现
 
 ClassStudent::ClassStudent(int _age,char* _name,int math,int his,int lastmath,int lasthis):score(math,his),lastscore(lastmath,lasthis){
-	createMem();
-	init(_age,_name);
-	setAddr((char *)"--score2--");
+	this->createMem();
+	this->init(_age,_name);
+	this->setAddr((char *)"--score2--");
 }
 
 ClassStudent::ClassStudent(){
-	createMem();
-	init(0,(char *)"--null--");
-	setAddr((char *)"--null--");
+	this->createMem();
+	this->init(0,(char *)"--null--");
+	this->setAddr((char *)"--null--");
 }
 
 ClassStudent::ClassStudent(int _age,char* _name){
-	createMem();
-	init(_age,_name);
-	setAddr((char *)"--null--");
+	this->createMem();
+	this->init(_age,_name);
+	this->setAddr((char *)"--null--");
 }
 
 ClassStudent::~ClassStudent(){
-	delete [] addr;
+	delete [] this->addr;
 //	cout << "ClassStudent 析构函数调用 " << name << " " << age << endl; 
 }
 

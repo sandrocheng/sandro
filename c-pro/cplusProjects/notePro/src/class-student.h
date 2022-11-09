@@ -26,6 +26,13 @@
 
 using namespace std;
 
+//C++类中的变量和函数分开存储
+//内存为类实例开辟的空间是 各成员变量空间的总和（不包括static 变量的大小，static变量保存在另一个共享的空间中）
+//this指针指向当前实例的内存地址，所以this指针只能作用于 非static的变量，this指针隐含于每个非static函数中
+//静态成员函数里没有this指针，所以静态成员函数不能操作非静态成员变量
+//用const修饰的成员函数时：
+//   例： char* getName() const;
+//   const修饰this指针指向的内存区域，成员函数体内不可以修改本类中的任何普通变量，当成员变量类型符前用mutable修饰除外
 class ClassStudent
 {
 	 private :
@@ -80,12 +87,20 @@ class ClassStudent
 		 bool isSamePer(ClassStudent &p2);
 
 		 void setAddr(char *_addr);
+
+		 // type
+		 // 0: 打印用户姓名
+		 // 1: 打印用户年龄
+		 // 其他：打印 score 中的成绩
+		 //通过返回自身实例的引用实现一个链式操作
+		 ClassStudent& printfData(int type);
 	 protected:
 
 	 private:
 		 int age;
 		 char name[32];
 		 char *addr;
+		 mutable int temp;//mutable修饰的变量可以在 const修饰的函数中修改
 
 		 //对象成员
 		 //初始化的时候先调用成员函数的构造函数，再调用本身的构造函数
