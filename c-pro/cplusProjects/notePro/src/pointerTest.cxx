@@ -133,13 +133,14 @@ static void printOneDimenArray(int *array,int arraylen){
 //数组指针
 static void arrayPointer(){
 	cout << "ArrayPointer====="<< endl;
-	int arr[3] = {11,22,33};
+	const int l = 7;
+	int arr[l] = {11,22,33,44,55,66,77};
 	int *q = (int *)(&arr + 1);
 	int arrlen = q - arr;
 	cout << "arr 首地址 ：" << &arr << " , 数组尾地址 ：" << q << " , 数组长度 ： " << arrlen
 		<<endl;
 
-	int (*p)[3] = NULL;//数组指针 本质是指针变量，只是该变量存储的是数组的首地址,数组指针必须定义长度
+	int (*p)[l] = NULL;//数组指针 本质是指针变量，只是该变量存储的是数组的首地址,数组指针必须定义长度
     cout << "sizeof(p) = " << sizeof(p)<<endl;
 	cout << "p = " << p <<endl;
 	cout << "p + 1 = " << p + 1 << endl;//p + 1 表示 该指针指向的跳过整个数组的地址（单位 字节）

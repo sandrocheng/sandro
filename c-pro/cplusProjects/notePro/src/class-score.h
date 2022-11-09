@@ -20,10 +20,20 @@
 #ifndef _CLASS_SCORE_H_
 #define _CLASS_SCORE_H_
 
+#include <sstream>
+#include <string.h>
+#include <iostream>
+
+using namespace std;
+
 class ClassScore
 {
 	 public:
+		 ~ClassScore();
+		 
 		 ClassScore();
+
+		 ClassScore(const ClassScore &ob);
 
 		 //赋值方式的隐式转换
 		 // 单参数(或者除了第一个参数外其余参数都有默认值)的构造函数在构造的时候可以使用下面的语法
@@ -35,15 +45,27 @@ class ClassScore
 
 		 ClassScore(int math,int his);
 
-			 void setMath(int math);
-		 int getMath();
+		 void setMath(int math);
+		 int getMath() const;
 		 void setHis(int his);
-		 int getHis();
+		 int getHis() const;
+
+		 char* getLog();
+
+
+		 static int GET_COURSE();
 	 protected:
 
 	 private:
 		 int mMath;
 		 int mHis;
+		 char *log = NULL;
+
+		 //静态成员 定义类的时候，必须分配空间
+		 //静态成员数据 必须类中定义，类外初始化
+		 //静态成员数据，所有对象都共享
+		 //静态成员数据可以直接使用类名称访问 如 ： ClassScore::course
+		 static int course;		 
  };
 
 #endif // _CLASS_SCORE_H_

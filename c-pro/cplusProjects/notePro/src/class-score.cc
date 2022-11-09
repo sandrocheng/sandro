@@ -18,11 +18,12 @@
  */
 
 #include "class-score.h"
-
+int ClassScore::course = 2;//不用加static
 
 ClassScore::ClassScore(){ 
 	mMath = -1;
 	mHis = -1;
+	cout << "ClassScore create" << endl;
 }
 
 ClassScore::ClassScore(int _math){
@@ -34,11 +35,45 @@ ClassScore::ClassScore(int _math,int _his){
 	setHis(_his);
 }
 
+ClassScore::ClassScore(const ClassScore &ob){
+	log = new char[128];
+	mHis = ob.getHis ();
+	mMath = ob.getMath ();
+}
+
+ClassScore::~ClassScore(){ 
+	if(log != NULL){
+		delete []log; 
+	}
+}
+
+int ClassScore::GET_COURSE(){
+	return course;
+}
+
+char* ClassScore::getLog(){
+	if(log == NULL){
+		log = new char[128];
+	}
+
+	ostringstream strMath;
+	strMath << mMath;
+
+	ostringstream strHis;
+	strHis << mHis;
+
+	strcpy(log,"math :");
+	strcat(log,strMath.str().data());
+	strcat(log," , his : ");
+	strcat(log,strHis.str().data());
+	return log;
+}
+
 void ClassScore::setMath(int math){
 	mMath = math;
 }
 
-int ClassScore::getMath(){
+int ClassScore::getMath() const{
 	return mMath;
 }
 
@@ -46,7 +81,7 @@ void ClassScore::setHis(int his){
 	mHis = his;
 }
 
-int ClassScore::getHis(){
+int ClassScore::getHis() const {
 	return mHis;
 }
 

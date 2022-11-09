@@ -70,7 +70,43 @@ void classTest(){
 	for(int i = 0;i<len ;i++){
 		arr2[i].printPer ();
 	}
+	dynamicObject();
+
+	cout<<"static var========"<<endl;
+
+	cout<< "static ClassScore.course : " << ClassScore::GET_COURSE() << endl;	
+
+	cout << "singleton======"<<endl;
+	ClassSingleTon::getInstance ()->setCount (1);
+	ClassSingleTon::getInstance ()->setCount (2);
+	ClassSingleTon::getInstance ()->setCount (3);
+	cout << "ClassSingleTon::getInstance ()->getCount() : " << ClassSingleTon::getInstance()->getCount () << endl;
 	cout << "-----------classTest end-------------" << endl;
+}
+
+static void dynamicObject(){
+	cout << "dynamicObject============" << endl;
+	ClassScore *sc = new ClassScore(78,89);
+	cout << "[score sc] " << sc->getLog () << endl;
+	delete sc;
+
+	ClassScore *sc2 = new ClassScore;
+	cout << "[score sc2] " << sc->getLog () << endl; 
+	delete sc2;
+
+	const int arraylen = 4;
+	//可以指定有参构造，初始化数组，没有制定的使用无参构造
+	ClassScore *scArr = new ClassScore[arraylen]{ClassScore(1,1),ClassScore(2,2)};
+	cout << "arraylen : " << arraylen << endl;
+
+	ClassScore *scArrlastMeta = scArr + 1;
+	
+	cout << "scArr first addr is " <<  scArr << " ,scArrlastMeta : " << scArrlastMeta << endl;
+	for(int i=0;i<arraylen;i++){ 
+		cout << "[score scArr] " << " " << i << " - " << scArr[i].getLog() << " , addr : " << &scArr[i] << endl; 
+	}
+	delete [] scArr;
+	
 }
 
 static ClassStudent createCS(){

@@ -93,6 +93,6 @@ ClassStudent::ClassStudent(int _age,char* _name){
 
 ClassStudent::~ClassStudent(){
 	delete [] addr;
-	cout << "ClassStudent 析构函数调用 " << name << " " << age << endl; 
+//	cout << "ClassStudent 析构函数调用 " << name << " " << age << endl; 
 }
 
