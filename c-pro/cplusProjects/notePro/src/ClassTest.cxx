@@ -81,7 +81,66 @@ void classTest(){
 	ClassSingleTon::getInstance ()->setCount (2);
 	ClassSingleTon::getInstance ()->setCount (3);
 	cout << "ClassSingleTon::getInstance ()->getCount() : " << ClassSingleTon::getInstance()->getCount () << endl;
+
+	cout << "friend test======"<<endl;
+	Person persontemp;
+	persontemp.init(21,(char*)"tony");
+	visitPerson(persontemp);
+
+	ClassStudent cs8(10,(char*)"cs8",88,77); 
+	cs8.printPer ();
+	ClassTeacher tc(30);
+	cs8.getScore ().printf (tc);
+
+	Data data2;
+	data.setA(700);
+	data.c = 500;
+	Person per2;
+	per2.init(21,(char *)"lily");
+	per2.printPer();
+	per2.printData (data);
+	classAarrayTest();
 	cout << "-----------classTest end-------------" << endl;
+}
+
+static void classAarrayTest(){
+	cout << "ClassAarrayTest===========" << endl;
+	ClassArray ca(5);
+	ca.printf ();
+	ca.addData (11);
+	ca.addData (22);
+	ca.addData (33);
+	ca.addData (44);
+	ca.addData (55);
+	ca.addData (66);
+	ca.addData (77);
+	ca.printf ();
+	ca.delBack ();
+	ca.printf ();
+
+	int pos = 4;
+	int x = ca.at (pos);
+	if(x!=ClassArray::ERROR){
+		cout << "pos " << pos << " is " << x << endl;
+	}
+
+	pos = 11;
+	x = ca.at (pos);
+	if(x!=ClassArray::ERROR){
+		cout << "pos " << pos << " is " << x << endl;
+	}
+
+	pos = 3;
+	x = ca.at (pos);
+	if(x!=ClassArray::ERROR){
+		cout << "pos " << pos << " is " << x << endl;
+		ca.at (pos) = 123;
+	}
+	ca.printf ();
+}
+//普通全局函数 实现Person内部中的 有元函数声明
+void visitPerson(Person &per){
+	cout << "per.age : " << per.age << " ,per.name : " <<per.name<<endl;
 }
 
 static void dynamicObject(){
@@ -100,13 +159,13 @@ static void dynamicObject(){
 	cout << "arraylen : " << arraylen << endl;
 
 	ClassScore *scArrlastMeta = scArr + 1;
-	
+
 	cout << "scArr first addr is " <<  scArr << " ,scArrlastMeta : " << scArrlastMeta << endl;
 	for(int i=0;i<arraylen;i++){ 
 		cout << "[score scArr] " << " " << i << " - " << scArr[i].getLog() << " , addr : " << &scArr[i] << endl; 
 	}
 	delete [] scArr;
-	
+
 }
 
 static ClassStudent createCS(){
@@ -148,6 +207,10 @@ void Person::setName(char* _name){
 
 void Person::printPer(){
 	cout << "person name : " << getName() <<" , age : " << getAge() << endl;
+}
+
+void Person::printData(Data &data){
+	cout<<"data a = " << data.a << " ,b = " << data.b << " ,c = " << data.c << endl;
 }
 
 bool Person::isSamePer(Person &p2){

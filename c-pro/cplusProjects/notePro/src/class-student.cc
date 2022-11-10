@@ -51,6 +51,10 @@ void ClassStudent::printPer(){
 		<< " , lastmath : " << lastscore.getMath () << " , lasthis : "<< lastscore.getHis () << endl;
 }
 
+ClassScore ClassStudent::getScore(){
+	return this->score;
+}
+
 bool ClassStudent::isSamePer(ClassStudent &p2){
 	if(strcmp(getName(),p2.getName()) != 0){
 		return false;

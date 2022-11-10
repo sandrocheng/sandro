@@ -85,4 +85,13 @@ int ClassScore::getHis() const {
 	return mHis;
 }
 
+void ClassScore::printf(ClassTeacher &teacher){
+	cout << "teacher name : " << teacher.name << " , age : " << teacher.age << endl; 
+}
+
+ClassTeacher::ClassTeacher(int age, char *name ){
+	this->age = age;
+	strcpy(this->name,name);
+}
+
 

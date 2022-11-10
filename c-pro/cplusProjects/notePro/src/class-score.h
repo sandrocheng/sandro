@@ -24,10 +24,13 @@
 #include <string.h>
 #include <iostream>
 
+
 using namespace std;
 
+class ClassTeacher;
 class ClassScore
 {
+	 
 	 public:
 		 ~ClassScore();
 		 
@@ -54,6 +57,8 @@ class ClassScore
 
 
 		 static int GET_COURSE();
+
+		 void printf(ClassTeacher &teacher);
 	 protected:
 
 	 private:
@@ -67,6 +72,16 @@ class ClassScore
 		 //静态成员数据可以直接使用类名称访问 如 ： ClassScore::course
 		 static int course;		 
  };
+
+class ClassTeacher{
+	//ClassScore作为ClassTeacher的有元，当ClassScore调用printf 的时候就可以直接访问ClassTeacher的私有变量
+	friend void ClassScore::printf(ClassTeacher &teacher);
+	private :
+		int age;
+		char name[32];
+	public :
+		ClassTeacher(int age=0 , char *name = (char *)"--null--");
+};
 
 #endif // _CLASS_SCORE_H_
 
