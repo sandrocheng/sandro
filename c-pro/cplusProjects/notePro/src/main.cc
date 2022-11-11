@@ -33,6 +33,8 @@
 #include "PlaceholderArgs.h"
 #include "externC.h"
 #include "ClassTest.h"
+#include "OperatorOverride.h"
+#include "InheritTest.h"
 using namespace std;
 
 //全局变量可以提前声明
@@ -128,6 +130,8 @@ int main(int argc,char *argv[])
 	externCTest01();
 	cout << "externCTest02(3,4) " << externCTest02(3,4)<<endl;
 	classTest();
+	OperOverride();
+	inheritTest();
 	return 0;
 }
 

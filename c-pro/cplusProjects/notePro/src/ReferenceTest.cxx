@@ -9,6 +9,9 @@ static void argsReference();
 static void swap01(int *p1,int *p2);
 static void swap02(int &r1,int &r2);
 
+// 引用
+// 注意 局部变量的引用不能返回给外部
+
 namespace RT{
 	//返回值类型作为引用，可以完成链式操作
 	//value是常量的别名，定义这样的参数可以避免函数内部修改外部的值
