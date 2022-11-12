@@ -35,6 +35,7 @@
 #include "ClassTest.h"
 #include "OperatorOverride.h"
 #include "InheritTest.h"
+#include "polymorhpismTest.h"
 using namespace std;
 
 //全局变量可以提前声明
@@ -132,6 +133,7 @@ int main(int argc,char *argv[])
 	classTest();
 	OperOverride();
 	inheritTest();
+	polymorphismTest::exec();
 	return 0;
 }
 
