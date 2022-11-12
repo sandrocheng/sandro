@@ -44,59 +44,97 @@ using namespace std;
 
 
 namespace polymorphismTest{
-		 void exec();
+	 void exec();
 
-		 class Animal{
-			 public:
-				 void speak(void){
-					 cout << "Animal speak"<<endl;
-				 }
-		 };
+	 class Animal{
+		 public:
+			 void speak(void){
+				 cout << "Animal speak"<<endl;
+			 }
+	 };
 
-		 class Dog : public Animal{
-			 public:
-				 void speak(void){
-					 cout << "Dog speak"<<endl;
-				 }
-		 };
+	 class Dog : public Animal{
+		 public:
+			 void speak(void){
+				 cout << "Dog speak"<<endl;
+			 }
+	 };
 
 
-		 class Base{
-			 public :
-				 //父类方法定义虚函数
-				 virtual void baseFun(){
-					 cout << "baseFun() exec done!"<<endl;
-				 }
+	 class Base{
+		 public :
+			 Base(){
+				 cout << "Base() exec done!"<<endl;
+			 }
+			 //父类方法定义虚函数
+			 virtual void baseFun(){
+				 cout << "baseFun() exec done!"<<endl;
+			 }
 
-				 //纯虚函数
-				 //  子类一定会重写该函数
-				 //  不会直接使用父类对象调用该函数
-				 virtual void baseVirFunc(void) = 0;
-		 };
+			 //纯虚函数
+			 //  子类一定会重写该函数
+			 //  不会直接使用父类对象调用该函数
+			 virtual void baseVirFunc(void) = 0;
 
-		 class SonA:public Base{
-			 public :
-				 //子类重写 父类的虚函数：函数名，返回值类型、参数的类型、个数、顺序必须完全一致
-				 void baseFun(){
-					 cout << "SonA::baseFun() exec done!"<<endl;
-				 }
+			 //虚析构，保证通过父类指针释放所有子类空间
+			 //一旦base类被子类继承，子类会复制父类的vftable（虚函数表），并且增加析构函数地址为子类析构函数地址（编译器自动执行）
+			 //这样当子类是父类指针指向的时候，父类指针从虚函数表找到的是子类析构函数指针
+			 //子类释放时编译器会自动继续释放成员对象，然后执行父类析构。
+			 //多态情况下，一般父类析构函数都是虚析构函数
 
-				 void baseVirFunc(void){
-					 cout << "SonA::baseVirFunc() exec done!"<<endl;
-				 }
-		 };
+			 //虚析构 ：virtual 修饰，有函数体，不会导致父类为抽象
+			 //纯虚析构：virtual修饰 ，函数体必须类外实现，会导致父类为抽象类
+			 virtual ~Base(){
+				 cout << "~Base() exec done!"<<endl;
+			 }
 
-		 class SonB:public Base{
-			 public :
-				 void baseFun(){
-					 cout << "SonB::baseFun() exec done!"<<endl;
-				 }
+			 //纯虚析构
+			 //纯虚析构函数必须在类外实现，
+			 //类中声明，类外实现
+			 //实现例子：
+			 // Base: ~Base(){....};
+			 //virtual ~Base()=0;
+	 };
 
-				 void baseVirFunc(void){
-					 cout << "SonB::baseVirFunc() exec done!"<<endl;
-				 }
-		 };
-	 }
+	 class SonA:public Base{
+		 public :
+			 SonA(){
+				 cout << "SonA() exec done!"<<endl;
+			 }			 
+			 //子类重写 父类的虚函数：函数名，返回值类型、参数的类型、个数、顺序必须完全一致
+			 void baseFun(){
+				 cout << "SonA::baseFun() exec done!"<<endl;
+			 }
+
+			 void baseVirFunc(void){
+				 cout << "SonA::baseVirFunc() exec done!"<<endl;
+			 }
+
+			 ~SonA(){
+				 cout << "~SonA() exec done!"<<endl;
+			 }
+	 };
+
+	 class SonB:public Base{
+		 public :
+
+			 SonB(){
+				 cout << "SonB() exec done!"<<endl;
+			 }	
+			 
+			 void baseFun(){
+				 cout << "SonB::baseFun() exec done!"<<endl;
+			 }
+
+			 void baseVirFunc(void){
+				 cout << "SonB::baseVirFunc() exec done!"<<endl;
+			 }
+
+			 ~SonB(){
+				 cout << "~SonB() exec done!"<<endl;
+			 }
+	 };
+ }
 
 //虚函数测试
 static void vitualFunTest();

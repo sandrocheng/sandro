@@ -23,5 +23,9 @@ static void vitualFunTest(){
 static void BaseFuncExec(polymorphismTest::Base *base){
 	base->baseFun();
 	base->baseVirFunc();
+
+	//由于当前指针指向的是base，而外部传递的是子类的指针，
+	//所以 delete的指针，实际上只能释放子类中 父类构造的空间
+	//为了避免内存泄漏，需要使用虚析构函数，保证子类完整释放
 	delete base;
 }
