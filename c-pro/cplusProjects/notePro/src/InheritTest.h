@@ -6,6 +6,9 @@ void inheritTest();
 static void inheritBaseTest();
 static void inheritSameNameTest();
 static void samenameFunTest();
+static void mutiInheritTest();
+static void diamonInherTest();
+static void virtualInherTest();
 
 //所有父类私有成员在子类中都不可访问
 // public 继承 ： 所有成员保持不变

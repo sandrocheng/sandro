@@ -1,10 +1,44 @@
 #include "InheritTest.h"
+#include "mutiInherit.h"
+#include "DiamonInher.h"
+#include "VirtualInher.h"
 void inheritTest(){
 	cout << "--------inheritTest start------------" << endl;
 	inheritBaseTest();
 	inheritSameNameTest();
 	samenameFunTest();
+	mutiInheritTest();
+	diamonInherTest();
+	virtualInherTest();
 	cout << "--------inheritTest end  ------------" << endl;
+}
+
+static void virtualInherTest(){
+	cout << "virtualInherTest=====" << endl;
+	Mule mule;
+	cout<<"mule.eatGrass : " << mule.eatGrass <<endl;
+}
+
+static void diamonInherTest(){
+	cout << "diamonInherTest=====" << endl;
+	Liger liger;
+	//cout << liger.legs;//二义性错误 error: request for member ‘legs’ is ambiguous
+	cout << "liger.Tiger::legs is " << liger.Tiger::legs <<endl;
+	cout << "liger.Lion::legs is "<< liger.Lion::legs <<endl;
+}
+
+static void mutiInheritTest(){
+	cout << "mutiInheritTest=====" << endl;
+	MultiSon son(100,200,300);
+	cout << "son.varBase1 : " <<son.varBase1
+		<< " ,son.varBase2 : " << son.varBase2
+		<< " ,son.varMultiSon : " << son.varMultiSon
+		<<endl;
+	cout << "son.varSame: " <<son.varSame
+		<< " ,son.MultiBase1::varSame : " << son.MultiBase1::varSame
+		<< " ,son.MultiBase2::varSame : " << son.MultiBase2::varSame
+		<<endl;
+	
 }
 
 static void samenameFunTest(){
@@ -44,5 +78,5 @@ static void inheritBaseTest(){
 
 	cout<<"有参构造==="<<endl;
 	SonA sonA2(1,2,3);
-    sonA2.print();
+	sonA2.print();
 }
