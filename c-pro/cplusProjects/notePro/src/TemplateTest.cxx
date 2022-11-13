@@ -4,7 +4,41 @@ void MyTemplate::exec(){
 	cout<<"-------------MyTemplate::exec() start---------------"<<endl;
 	funTemplateTest();
 	templateOverride();
+	classTemplateTest();
+
+
 	cout<<"-------------MyTemplate::exec() end-----------------"<<endl;
+}
+
+void classTemplateTest(){
+	cout<<"classTemplateTest====="<<endl;
+	int a = 1;
+	char* b = (char*)"string";
+	MyTemplate::Data<int,char*> data(a,b);//必须要显示的指定参数类型
+	data.showData ();
+
+	MyTemplate::Data<char*,int> data2((char*)"hello",100);//必须要显示的指定参数类型
+	data2.showData ();
+
+	ClassTemplate<int,int> templateData(5,3);
+	templateData.showData ();
+
+	TemplateClass<char*,char*> tc((char*)"hello",(char*)"world");
+	tc.showData();
+}
+
+static void friendTemplateTest(){
+	cout << "friendTemplateTest============"<<endl;
+	MyTemplate::Data<int,int> data3(1,2);
+	MyTemplate::myPrintData(data3);
+
+	MyTemplate::Data<int,char*> data4(1,(char*)"hello world!");
+	MyTemplate::myPrintData(data4);
+}
+
+template<typename P,typename Q> 
+void MyTemplate::myPrintData(MyTemplate::Data<P,Q> &ob){
+	cout << "gloab friend func myPrintData , a : " << ob.a << " ,b : "<< ob.b << endl;
 }
 
 void templateOverride(){

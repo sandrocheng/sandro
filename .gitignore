@@ -5,6 +5,7 @@
 *.h~
 *.cc~
 *.c~
+*.hpp~
 .anjuta/
 *.anjuta_sym_db.db
 c-pro/cplusProjects/notePro/AUTHORS
