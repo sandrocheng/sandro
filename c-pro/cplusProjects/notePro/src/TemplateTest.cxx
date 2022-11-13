@@ -5,9 +5,47 @@ void MyTemplate::exec(){
 	funTemplateTest();
 	templateOverride();
 	classTemplateTest();
-
+	arrTemplateTest();
 
 	cout<<"-------------MyTemplate::exec() end-----------------"<<endl;
+}
+
+void arrTemplateTest(){
+	cout<<"arrTemplateTest====="<<endl;
+	ArrTemplate<int> intArr;
+	intArr.push(10);
+	intArr.push(30);
+	intArr.push(20);
+	intArr.push(50);
+	intArr.push(5);
+	intArr.push(3);
+	intArr.sortArr();
+	cout<<intArr<<endl;
+	
+	ArrTemplate<char> charArr(5);
+	charArr.push ('c');
+	charArr.push('z');
+	charArr.push('x');
+	charArr.push('p');
+	charArr.push('t');
+	charArr.push('a');
+	charArr.sortArr();
+	cout << charArr << endl;
+
+	ArrTemplate<PersonA> perArr(5);
+	perArr.push (PersonA(1,(char*)"bob",55));
+	perArr.push (PersonA(2,(char*)"cici",44));
+	perArr.push (PersonA(3,(char*)"tom",22));
+	perArr.push (PersonA(4,(char*)"tony",77));
+	perArr.push (PersonA(5,(char*)"cindy",65));
+	perArr.push (PersonA(6,(char*)"sunny",66));
+	perArr.sortArr ();
+	cout << perArr<<endl;
+}
+
+ostream& operator<<(ostream &out,PersonA p){
+	cout<<"[" << p.num << " , " << p.name << " , " << p.score << "]";
+	return out;
 }
 
 void classTemplateTest(){

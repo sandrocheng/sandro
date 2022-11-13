@@ -39,6 +39,7 @@
  */
 
 #include <iostream>
+#include <string>
 
 //template 类声明（.h文件）和类定义（.cc .cpp .cxx）分离的情况下，一定要把声明文件和定义文件都引用过来
 //原因是模板第二次编译时需要找到新生成的对应函数，而这个函数所在文件没有再次引用。
@@ -46,52 +47,74 @@
 #include "class-template.h"
 #include "class-template.cc"
 #include "TemplateClass.hpp"
+#include "ArrTemplate.hpp"
 
 using namespace std;
 
+class PersonA{
+	friend ostream& operator<<(ostream &out,PersonA p);
+	private:
+		int num;
+		char* name;
+		float score;
+	public :
+		PersonA(){}
+		PersonA(int num,char* name,float score){
+			this->num = num;
+			this->name = name;
+			this->score = score;
+		}
+		bool operator>(PersonA ob){
+			return this->score > ob.score;
+		}
+
+};
+
 namespace MyTemplate{
-	 void exec();
+	void exec();
 
-	 //函数模板 T只对当前函数有效
-	 //函数调用时根据实参的类型 会自动推导T的类型
-	 template<typename T> void swapAll(T &a,T&b);
+	//函数模板 T只对当前函数有效
+	//函数调用时根据实参的类型 会自动推导T的类型
+	template<typename T> void swapAll(T &a,T&b);
 
-	 void swapAll(double &a,double &b);
+	void swapAll(double &a,double &b);
 
-	 template<typename T> void print(T &a,T&b); 
-	 template<typename T> void print(T &a); 
+	template<typename T> void print(T &a,T&b); 
+	template<typename T> void print(T &a); 
 
-	 template<class T,class K>class Data{
+	template<class T,class K>class Data{
 
-		 //声明函数模板为有元
-		 template<typename P,typename Q> 
-			 friend void myPrintData(MyTemplate::Data<P,Q> &ob);
+		//声明函数模板为有元
+		template<typename P,typename Q> 
+			friend void myPrintData(MyTemplate::Data<P,Q> &ob);
 
-		 private:
-			 T a;
-			 K b;
-		 public:
-			 Data(){
-			 }
+		private:
+			T a;
+			K b;
+		public:
+			Data(){
+			}
 
-			 Data(T a,K b){
-				 this->a = a;
-				 this->b = b;
-			 }
+			Data(T a,K b){
+				this->a = a;
+				this->b = b;
+			}
 
-			 //注意，因为使用了cout<< 运算符，如果 T K 是自定义类，或者数组等，会出现问题
-			 //通过 运算符重载 或者 函数模板具体化的方式去解决
-			 void showData(){
-				 cout << "(T)a is " << a << ", (K)b is " << b << endl;
-			 }
-	 };
+			//注意，因为使用了cout<< 运算符，如果 T K 是自定义类，或者数组等，会出现问题
+			//通过 运算符重载 或者 函数模板具体化的方式去解决
+			void showData(){
+				cout << "(T)a is " << a << ", (K)b is " << b << endl;
+			}
+	};
 
-	 //函数模板作为类模板的有元
-	 //只能放在同一个namespace下面，放在namespace外面gcc编译失败。。。。
-	 template<typename P,typename Q> 
-		 void myPrintData(MyTemplate::Data<P,Q> &ob);
- }
+	//函数模板作为类模板的有元
+	//只能放在同一个namespace下面，放在namespace外面gcc编译失败。。。。
+	template<typename P,typename Q> 
+		void myPrintData(MyTemplate::Data<P,Q> &ob);
+}
 
+ostream& operator<<(ostream &out,PersonA p);
+static void arrTemplateTest();
 static void friendTemplateTest();
 static void classTemplateTest();
 static void funTemplateTest();
