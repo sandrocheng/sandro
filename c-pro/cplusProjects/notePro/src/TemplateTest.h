@@ -111,9 +111,48 @@ namespace MyTemplate{
 	//只能放在同一个namespace下面，放在namespace外面gcc编译失败。。。。
 	template<typename P,typename Q> 
 		void myPrintData(MyTemplate::Data<P,Q> &ob);
+
+	//类模板 父类
+	template<class T,class K>
+		class Base{
+			private :
+				T a;
+				K b;
+			public :
+				Base(){};
+				Base(T a,K b){
+					this->a = a;
+					this->b = b;
+				}
+				void showData(){
+					cout << "base a : " << a << " , b : " << b <<endl;
+				}
+		};
+	
+	//类模板派生的普通子类，
+	//继承的时候需要具体指定类型，不能再使用泛型
+	class SonA:public Base<int,char>{
+		public :
+			int c;
+			SonA(int a,char b,int c):Base<int ,char>(a,b){
+				this->c = c;
+			}
+	};
+
+	//类模板派生的子类也是类模板
+	template<class T,class K,class O>
+		class SonB:public Base<T,K>{
+			public :
+				O c;
+				SonB(T a,K b,O c):Base<T,K>(a,b){
+					this->c = c;
+				}
+		};
+
 }
 
 ostream& operator<<(ostream &out,PersonA p);
+static void templateInheritTest();
 static void arrTemplateTest();
 static void friendTemplateTest();
 static void classTemplateTest();

@@ -6,8 +6,19 @@ void MyTemplate::exec(){
 	templateOverride();
 	classTemplateTest();
 	arrTemplateTest();
-
+	templateInheritTest();
 	cout<<"-------------MyTemplate::exec() end-----------------"<<endl;
+}
+
+void templateInheritTest(){
+	cout<<"arrTemplateTest====="<<endl;
+	MyTemplate::SonA sonA(100,'a',200);
+	sonA.showData();
+	cout << "SonA enity sonA.c is " << sonA.c<<endl;
+
+	MyTemplate::SonB<char ,char ,char> sonB('a','b','c');
+	sonB.showData();
+	cout << "SonB enity sonB.c is " << sonB.c<<endl;
 }
 
 void arrTemplateTest(){
@@ -21,7 +32,7 @@ void arrTemplateTest(){
 	intArr.push(3);
 	intArr.sortArr();
 	cout<<intArr<<endl;
-	
+
 	ArrTemplate<char> charArr(5);
 	charArr.push ('c');
 	charArr.push('z');
