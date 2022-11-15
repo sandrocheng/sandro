@@ -80,6 +80,7 @@ class ClassTeacher{
 		int age;
 		char name[32];
 	public :
+		ClassTeacher();
 		ClassTeacher(int age=0 , char *name = (char *)"--null--");
 };
 

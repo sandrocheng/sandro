@@ -37,6 +37,7 @@
 #include "InheritTest.h"
 #include "polymorhpismTest.h"
 #include "TemplateTest.h"
+#include "TypeConversionTest.h"
 using namespace std;
 
 //全局变量可以提前声明
@@ -136,6 +137,7 @@ int main(int argc,char *argv[])
 	inheritTest();
 	polymorphismTest::exec();
 	MyTemplate::exec();
+	TypeConversionTest::exec();
 	return 0;
 }
 
