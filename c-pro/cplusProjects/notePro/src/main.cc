@@ -39,6 +39,7 @@
 #include "TemplateTest.h"
 #include "TypeConversionTest.h"
 #include "ExceptionTest.h"
+#include "STLTest.h"
 using namespace std;
 
 //全局变量可以提前声明
@@ -140,6 +141,7 @@ int main(int argc,char *argv[])
 	MyTemplate::exec();
 	TypeConversionTest::exec();
 	ExceptionTest::exec();
+	STLTest::exec();
 	return 0;
 }
 
