@@ -25,6 +25,7 @@
 #include <iostream>
 
 
+
 using namespace std;
 
 class ClassTeacher;
@@ -82,6 +83,8 @@ class ClassTeacher{
 	public :
 		ClassTeacher();
 		ClassTeacher(int age=0 , char *name = (char *)"--null--");
+		int getAge();
+		char* getName();
 };
 
 #endif // _CLASS_SCORE_H_

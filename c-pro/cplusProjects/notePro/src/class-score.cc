@@ -94,4 +94,11 @@ ClassTeacher::ClassTeacher(int age, char *name ){
 	strcpy(this->name,name);
 }
 
+int ClassTeacher::getAge(){
+	return this->age;
+}
+char* ClassTeacher::getName(){
+	return this->name;
+}
+
 

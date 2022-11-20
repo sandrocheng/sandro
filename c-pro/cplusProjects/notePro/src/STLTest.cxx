@@ -4,6 +4,7 @@
 void STLTest::exec(){
 	cout << "------STLTest::exec() start-------"<<endl;
 	startSTLExample(new StlString());
+	startSTLExample(new StlVector());
 	cout << "------STLTest::exec() end---------"<<endl;
 }
 

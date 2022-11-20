@@ -16,6 +16,7 @@
 #include <iostream>
 #include "stl-start-base.h"
 #include "stl-string.h"
+#include "stl-vector.h"
 using namespace std;
 
 namespace STLTest{
