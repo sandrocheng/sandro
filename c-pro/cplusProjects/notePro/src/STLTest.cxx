@@ -7,6 +7,7 @@ void STLTest::exec(){
 	startSTLExample(new StlVector());
 	startSTLExample(new StlDeque());
 	startSTLExample(new StlStackAndQueue());
+	startSTLExample(new StdList());
 	cout << "------STLTest::exec() end---------"<<endl;
 }
 
