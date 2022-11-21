@@ -101,4 +101,11 @@ char* ClassTeacher::getName(){
 	return this->name;
 }
 
+float ClassTeacher::getSalary(){
+	return this->salary;
+}
+void ClassTeacher::setSalary(float salary){
+	this->salary = salary;
+}
+
 

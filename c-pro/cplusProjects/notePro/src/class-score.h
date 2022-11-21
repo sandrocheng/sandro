@@ -80,11 +80,14 @@ class ClassTeacher{
 	private :
 		int age;
 		char name[32];
+		float salary = 0;
 	public :
 		ClassTeacher();
 		ClassTeacher(int age=0 , char *name = (char *)"--null--");
 		int getAge();
 		char* getName();
+		float getSalary();
+		void setSalary(float salary);
 };
 
 #endif // _CLASS_SCORE_H_

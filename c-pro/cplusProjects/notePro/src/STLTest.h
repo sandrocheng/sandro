@@ -17,6 +17,7 @@
 #include "stl-start-base.h"
 #include "stl-string.h"
 #include "stl-vector.h"
+#include "stl-deque.h"
 using namespace std;
 
 namespace STLTest{
