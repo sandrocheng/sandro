@@ -20,6 +20,7 @@
 #include "stl-deque.h"
 #include "stl-stack-and-queue.h"
 #include "std-list.h"
+#include "std-set-multiset.h"
 using namespace std;
 
 namespace STLTest{

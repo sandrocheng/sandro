@@ -94,14 +94,14 @@ ClassTeacher::ClassTeacher(int age, char *name ){
 	strcpy(this->name,name);
 }
 
-int ClassTeacher::getAge(){
+int ClassTeacher::getAge() const{
 	return this->age;
 }
-char* ClassTeacher::getName(){
-	return this->name;
+char* ClassTeacher::getName() const{
+	return (char *)this->name;
 }
 
-float ClassTeacher::getSalary(){
+float ClassTeacher::getSalary() const{
 	return this->salary;
 }
 void ClassTeacher::setSalary(float salary){

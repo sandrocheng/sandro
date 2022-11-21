@@ -84,9 +84,9 @@ class ClassTeacher{
 	public :
 		ClassTeacher();
 		ClassTeacher(int age=0 , char *name = (char *)"--null--");
-		int getAge();
-		char* getName();
-		float getSalary();
+		int getAge() const;
+		char* getName() const;
+		float getSalary() const;
 		void setSalary(float salary);
 };
 

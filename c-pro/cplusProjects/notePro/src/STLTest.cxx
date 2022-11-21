@@ -8,6 +8,7 @@ void STLTest::exec(){
 	startSTLExample(new StlDeque());
 	startSTLExample(new StlStackAndQueue());
 	startSTLExample(new StdList());
+	startSTLExample(new StdSetMultiset());
 	cout << "------STLTest::exec() end---------"<<endl;
 }
 
