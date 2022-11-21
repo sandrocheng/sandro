@@ -5,7 +5,7 @@
 #include "stl-vector.h"
 
 void StlVector::start(){
-	cout << "=======StlVector::start()=========" << endl;
+	cout << "=======StlVector::start=========" << endl;
 	vectorBase();
 	vectorAssign();
 	vecotrSize();
@@ -15,7 +15,7 @@ void StlVector::start(){
 	vectorNest();
 	sortVector();
 	customObjVector();
-	cout << "=======StlVector::end()=========" << endl;
+	cout << "=======StlVector::end=========" << endl;
 }
 
 void StlVector::customObjVector(){

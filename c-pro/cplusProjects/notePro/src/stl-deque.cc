@@ -5,10 +5,10 @@
 #include "stl-deque.h"
 
 void StlDeque::start(){
-	cout << "=======StlDeque::start()=========" << endl;
+	cout << "=======StlDeque::start=========" << endl;
 	dequeBase();
 	practice();
-	cout << "=======StlDeque::end()=========" << endl;
+	cout << "=======StlDeque::end=========" << endl;
 }
 
 void StlDeque::practice(){

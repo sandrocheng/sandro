@@ -18,6 +18,7 @@
 #include "stl-string.h"
 #include "stl-vector.h"
 #include "stl-deque.h"
+#include "stl-stack-and-queue.h"
 using namespace std;
 
 namespace STLTest{

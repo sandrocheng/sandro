@@ -6,7 +6,7 @@
 #include "stl-string.h"
 
 void StlString::start(){
-	cout << "=======StlString::start()=========" << endl;
+	cout << "=======StlString::start=========" << endl;
 	stringBase();
 	strBuild();
 	strassign();
@@ -17,7 +17,7 @@ void StlString::start(){
 	stringSubstr();
 	stringAD();
 	cStyle();
-	cout << "=======StlString::end()=========" << endl;
+	cout << "=======StlString::end=========" << endl;
 }
 void StlString::cStyle(){
 	cout << "StlString::cStyle::::" << endl;

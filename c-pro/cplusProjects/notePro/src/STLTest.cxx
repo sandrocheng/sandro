@@ -6,6 +6,7 @@ void STLTest::exec(){
 	startSTLExample(new StlString());
 	startSTLExample(new StlVector());
 	startSTLExample(new StlDeque());
+	startSTLExample(new StlStackAndQueue());
 	cout << "------STLTest::exec() end---------"<<endl;
 }
 
