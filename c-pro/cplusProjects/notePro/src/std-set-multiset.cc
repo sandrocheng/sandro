@@ -10,7 +10,25 @@ void StdSetMultiset::start(){
 	setBasic();
 	setCustom();
 	setFindApi();
+	multisetBasic();
 	cout << "=======StdSetMultiset::end========="<<endl;
+}
+
+void StdSetMultiset::multisetBasic(){
+	cout << "multisetBasic:::::::"<<endl;
+	multiset<int> ms;
+	ms.insert(10);
+	ms.insert(22);
+	ms.insert(10);
+	ms.insert(55);
+	ms.insert(10);
+	ms.insert(40);
+
+	multiset<int> :: iterator it = ms.begin();
+	for(;it!=ms.end();it++){
+		cout << *it << " , ";
+	}
+	cout << endl;
 }
 
 void StdSetMultiset::setFindApi(){

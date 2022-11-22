@@ -48,6 +48,7 @@ class StdSetMultiset: public StlStartBase
 		void setCustom();
 		void printSetClassTeacher(set<ClassTeacher,MySetClassTeacherSort> &st);
 		void setFindApi();
+		void multisetBasic();
 };
 
 #endif // _STD_SET_MULTISET_H_

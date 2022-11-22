@@ -9,6 +9,7 @@ void STLTest::exec(){
 	startSTLExample(new StlStackAndQueue());
 	startSTLExample(new StdList());
 	startSTLExample(new StdSetMultiset());
+	startSTLExample (new StdPair());
 	cout << "------STLTest::exec() end---------"<<endl;
 }
 
