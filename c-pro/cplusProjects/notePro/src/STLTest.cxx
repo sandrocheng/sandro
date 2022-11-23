@@ -10,6 +10,7 @@ void STLTest::exec(){
 	startSTLExample(new StdList());
 	startSTLExample(new StdSetMultiset());
 	startSTLExample (new StdPair());
+	startSTLExample (new StdMap());
 	cout << "------STLTest::exec() end---------"<<endl;
 }
 

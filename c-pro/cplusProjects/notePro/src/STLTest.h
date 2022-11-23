@@ -22,6 +22,7 @@
 #include "std-list.h"
 #include "std-set-multiset.h"
 #include "std-pair.h"
+#include "std-map.h"
 using namespace std;
 
 namespace STLTest{
