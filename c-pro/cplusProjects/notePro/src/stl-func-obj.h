@@ -14,12 +14,20 @@
  *		函数对象超出普通函数的概念，函数对象可以有自己的状态
  *      函数对象可内联编译，性能号。函数指针几乎不可能
  *      模板函数对象使函数对象具有通用性，这也是他的优势之一
+ * 
+ * 谓词：返回值为bool的普通函数或者仿函数 都叫谓词
+ * 		如果谓词有一个参数叫 一元谓词
+ * 		如果谓词有两个参数叫 二元谓词
+ * 	  
+ * 
  */
 
 #ifndef _STL_FUNC_OBJ_H_
 #define _STL_FUNC_OBJ_H_
 #include <iostream>
 #include "stl-start-base.h"
+#include <algorithm>
+#include <vector>
 
 using namespace std;
 
@@ -29,7 +37,7 @@ class StlFuncObj: public StlStartBase
 		virtual void start();
 
 	private:
-
+		 void predicateTest();//谓词函数测试
 };
 
 class StlFuncObjTest{
@@ -39,5 +47,20 @@ class StlFuncObjTest{
 		}
 };
 
+class StlFuncObjMoreThan6{
+	public:
+		bool operator()(int value){
+			return value > 6;
+		}
+};
+
+class StlFuncObjSort{
+	public:
+		bool operator()(int v1,int v2){
+			return v1 > v2;
+		}
+};
+
+static bool moreThan4(int value);
 #endif // _STL_FUNC_OBJ_H_
 
