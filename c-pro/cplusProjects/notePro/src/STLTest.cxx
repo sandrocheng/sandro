@@ -11,6 +11,7 @@ void STLTest::exec(){
 	startSTLExample(new StdSetMultiset());
 	startSTLExample (new StdPair());
 	startSTLExample (new StdMap());
+	startSTLExample (new StlFuncObj());
 	cout << "------STLTest::exec() end---------"<<endl;
 }
 
