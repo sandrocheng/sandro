@@ -3,15 +3,16 @@
 
 void STLTest::exec(){
 	cout << "------STLTest::exec() start-------"<<endl;
-	startSTLExample(new StlString());
-	startSTLExample(new StlVector());
-	startSTLExample(new StlDeque());
-	startSTLExample(new StlStackAndQueue());
-	startSTLExample(new StdList());
-	startSTLExample(new StdSetMultiset());
+	startSTLExample (new StlString());
+	startSTLExample (new StlVector());
+	startSTLExample (new StlDeque());
+	startSTLExample (new StlStackAndQueue());
+	startSTLExample (new StdList());
+	startSTLExample (new StdSetMultiset());
 	startSTLExample (new StdPair());
 	startSTLExample (new StdMap());
 	startSTLExample (new StlFuncObj());
+	startSTLExample (new StlClassInside());
 	cout << "------STLTest::exec() end---------"<<endl;
 }
 
