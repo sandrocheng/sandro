@@ -28,11 +28,12 @@ class StdMap: public StlStartBase
 {
 	public:
 		virtual void start();
-	protected:
-		void mapBasic();
 	private:
+		void mapBasic();
 		void printMap(map<int,ClassTeacher> &m);
-
+		void multimapExample();
+		void printMultiMap(multimap<int,ClassTeacher> &m);
+		void printMultiMapByAge(multimap<int,ClassTeacher> &m,int age);
 };
 
 #endif // _STD_MAP_H_
