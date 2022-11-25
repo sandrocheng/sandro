@@ -13,6 +13,7 @@ void STLTest::exec(){
 	startSTLExample (new StdMap());
 	startSTLExample (new StlFuncObj());
 	startSTLExample (new StlClassInside());
+	startSTLExample (new StlAdpter());
 	cout << "------STLTest::exec() end---------"<<endl;
 }
 

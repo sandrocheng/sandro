@@ -30,6 +30,7 @@
 #include "stl-func-obj.h"
 #include "std-map.h"
 #include "stl-class-inside.h"
+#include "stl-adpter.h"
 using namespace std;
 
 namespace STLTest{

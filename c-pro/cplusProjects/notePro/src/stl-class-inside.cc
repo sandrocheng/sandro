@@ -17,6 +17,8 @@ void StlClassInside::start(){
 	printVectorInt(v);
 
 	vector<int> :: iterator it;
+	//返回第一个小于30的值
+	//使用适配器，把less仿函数 和 30 绑定起来
 	it = find_if(v.begin(),v.end(),bind2nd(less<int>(),30));
 	if(it!=v.end()){
 		cout << "get num : " << *it << endl;
