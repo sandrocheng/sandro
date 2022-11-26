@@ -62,10 +62,10 @@ void StlVector::sortVector(){
 	v.push_back(2);
 	v.push_back(77);
 	v.push_back(54);
-	printIntVector(v);
+	BasePrintVectorInt(v);
 
 	sort(v.begin(),v.end());
-	printIntVector(v);
+	BasePrintVectorInt(v);
 }
 
 void StlVector::vectorNest(){
@@ -83,7 +83,7 @@ void StlVector::vectorNest(){
 	vector<vector<int>>::iterator it = v.begin();
 	for(;it!=v.end();it++){
 		vector<int> tempV = *it;
-		printIntVector(tempV);
+		BasePrintVectorInt(tempV);
 	}
 	
 }
@@ -115,16 +115,16 @@ void StlVector::vectorAD(){
 	v.push_back(4);
 	v.push_back(5);
 	v.pop_back();//尾部删除
-	printIntVector(v);
+	BasePrintVectorInt(v);
 	vector<int>::iterator it = v.begin() + 2;//获取第3位迭代器
 	v.insert(it,2,100);//在迭代器it的位置后面插入 2个 100
-	printIntVector(v);
+	BasePrintVectorInt(v);
 
 	v.erase(v.begin() + 2,v.begin() + 4);//删除从第3位到第5位前的数据，不包括第五位。
-	printIntVector(v);
+	BasePrintVectorInt(v);
 
 	v.erase(it);
-	printIntVector(v);
+	BasePrintVectorInt(v);
 
 	v.clear();
 	cout << "size : " << v.size() << " capacity : " << v.capacity()<< endl;
@@ -142,7 +142,7 @@ void StlVector::vectorElemAccess(){
 		<<endl;
 	v[0] = 100;
 	v.at(3) = 400;
-	printIntVector(v);
+	BasePrintVectorInt(v);
 
 	try{
 		v.at(100) = 6; //at方法会抛出异常
@@ -166,40 +166,40 @@ void StlVector::vecotrSize(){
 	}
 	v.assign(3,100);
 	cout << "v.size() : " << v.size() << " , v.capacity() : " << v.capacity() <<endl;
-	printIntVector(v);
+	BasePrintVectorInt(v);
 	v.resize(15);//重新指定vector长度为num，如果容器变长，则以默认值填充新位置，如果容器变短，则末尾超出长度的元素将被删除
 	cout << "after resize(15) v.size() : " << v.size() << " , v.capacity() : " << v.capacity() <<endl;
-	printIntVector(v);
+	BasePrintVectorInt(v);
 	v.resize(3);
 	cout << "after resize(3) v.size() : " << v.size() << " , v.capacity() : " << v.capacity() <<endl;
-	printIntVector(v);	
+	BasePrintVectorInt(v);	
 
 	v.resize(5,-1);//重新指定vector长度为5，如果容器变长，则以"-1"填充新位置，如果容器变短，则末尾超出长度的元素将被删除
 	cout << "after resize(5,-1) v.size() : " << v.size() << " , v.capacity() : " << v.capacity() <<endl;
-	printIntVector(v);		
+	BasePrintVectorInt(v);		
 }
 
 void StlVector::vectorAssign(){
 	cout << "vectorAssign::::::"<<endl;
 	vector<int> v(5,100);//构造 5 个 内容是100 的vector
-	printIntVector(v);
+	BasePrintVectorInt(v);
 
 	vector<int> v2;
 	v2.assign(v.begin(),v.end());//区间赋值
 	vector<int> v3 = v2;//重载=号赋值
 	v3.push_back(200);
 	
-	printIntVector(v2);
-	printIntVector(v3);
+	BasePrintVectorInt(v2);
+	BasePrintVectorInt(v3);
 
 	v3.assign(3,300);//v3被重新赋值3 个 100，注意旧数据会被丢弃
 	cout << "v3.assign(3,300)" << endl;
-	printIntVector(v3);
+	BasePrintVectorInt(v3);
 
 	v3.swap(v2);//将v3和v2的内容交换
 	cout << "v3.swap(v2)" << endl;
-	printIntVector(v2);
-	printIntVector(v3);
+	BasePrintVectorInt(v2);
+	BasePrintVectorInt(v3);
 }
 
 void StlVector::vectorBase(){
@@ -217,8 +217,8 @@ void StlVector::vectorBase(){
 	vector<int> v2(v.begin(),v.end());//用一个老的vector中的数据初始化一个新的vector，将[v.begin(),v.end()]中的元素拷贝到当前vector
 	v2.push_back(6);
 
-	printIntVector(v);
-	printIntVector(v2);
+	BasePrintVectorInt(v);
+	BasePrintVectorInt(v2);
 
 	vector<char> v3(3,'b');//用3个 'b' 构造一个char类型的vector
 	vector<char> v4(v3);//拷贝构造函数
@@ -261,10 +261,3 @@ void StlVector::vectorBase(){
 	}
 }
 
-void StlVector::printIntVector(vector<int> &v){
-	for(vector<int>::iterator it = v.begin();it != v.end();it ++){
-		//*it代表vector中类型的数据，但是他不是指针，是经过重载的表示方法。
-		cout<<*it <<" , ";
-	}
-	cout << endl;
-}

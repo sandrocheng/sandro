@@ -16,6 +16,7 @@ void STLTest::exec(){
 	startSTLExample (new StlAdpter());
 	startSTLExample (new StlTraversal());	
 	startSTLExample (new StlFindAlgo());
+	startSTLExample (new StlSort());
 	cout << "------STLTest::exec() end---------"<<endl;
 }
 

@@ -14,7 +14,7 @@ void StlClassInside::start(){
 	v.push_back(11);
 	v.push_back(56);
 	v.push_back(6);
-	printVectorInt(v);
+	BasePrintVectorInt(v);
 
 	vector<int> :: iterator it;
 	//返回第一个小于30的值
@@ -25,19 +25,11 @@ void StlClassInside::start(){
 	}
 
 	sort(v.begin(),v.end(),greater<int>());
-	printVectorInt(v);
+	BasePrintVectorInt(v);
 
 	sort(v.begin(),v.end());
-	printVectorInt(v);
+	BasePrintVectorInt(v);
 	
 	cout << "==========StlClassInside::end===========" << endl;	
 }
 
-void StlClassInside::printVectorInt(vector<int> &v){
-	cout << "show vector ,size : " << v.size() << endl; 
-	vector<int> :: iterator it = v.begin();
-	for(;it != v.end();it ++){
-		cout << *it << " , ";
-	}
-	cout << endl;
-}

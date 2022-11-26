@@ -42,7 +42,6 @@ class StlVector: public StlStartBase
 
 		 //赋值
 		 void vectorAssign();
-		 void printIntVector(vector<int> &v);
 		 void vecotrSize();
 
 		 //元素读取

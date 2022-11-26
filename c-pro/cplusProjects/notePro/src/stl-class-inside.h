@@ -40,9 +40,6 @@ class StlClassInside: public StlStartBase
 	public:	
 		virtual void start();
 
-	private:
-		void printVectorInt(vector<int> &v);
-
 };
 
 #endif // _STL_CLASS_INSIDE_H_

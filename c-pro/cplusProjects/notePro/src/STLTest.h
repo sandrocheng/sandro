@@ -33,6 +33,7 @@
 #include "stl-adpter.h"
 #include "stl-traversal.h"
 #include "stl-find-algo.h"
+#include "stl-sort.h"
 
 using namespace std;
 
