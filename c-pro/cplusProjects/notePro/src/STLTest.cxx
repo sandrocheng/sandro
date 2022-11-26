@@ -14,6 +14,8 @@ void STLTest::exec(){
 	startSTLExample (new StlFuncObj());
 	startSTLExample (new StlClassInside());
 	startSTLExample (new StlAdpter());
+	startSTLExample (new StlTraversal());	
+	
 	cout << "------STLTest::exec() end---------"<<endl;
 }
 

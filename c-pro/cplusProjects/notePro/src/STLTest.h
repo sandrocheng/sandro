@@ -31,6 +31,7 @@
 #include "std-map.h"
 #include "stl-class-inside.h"
 #include "stl-adpter.h"
+#include "stl-traversal.h"
 using namespace std;
 
 namespace STLTest{
