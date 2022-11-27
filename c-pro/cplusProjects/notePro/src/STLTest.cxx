@@ -20,6 +20,7 @@ void STLTest::exec(){
 	startSTLExample (new StlCopy());
 	startSTLExample (new StlAccumulate());
 	startSTLExample (new StlCollenction());
+	startSTLExample (new StlExercises());
 	cout << "------STLTest::exec() end---------"<<endl;
 }
 

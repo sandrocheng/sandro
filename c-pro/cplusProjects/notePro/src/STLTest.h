@@ -37,6 +37,7 @@
 #include "stl-copy.h"
 #include "stl-accumulate.h"
 #include "stl-collenction.h"
+#include "stl-exercises.h"
 
 using namespace std;
 
