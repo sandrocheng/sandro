@@ -34,6 +34,7 @@
 #include "stl-traversal.h"
 #include "stl-find-algo.h"
 #include "stl-sort.h"
+#include "stl-copy.h"
 
 using namespace std;
 
