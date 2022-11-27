@@ -13,5 +13,13 @@ void StlStartBase::BasePrintVectorInt(vector<int> &v){
 	cout << endl;
 }
 
+void StlStartBase::BasePrintVectorInt(const vector<int>::iterator &startIt,const vector<int>::iterator &endIt){
+	vector<int>::iterator it = startIt;
+	for(;it!=endIt;it++){
+		cout<< *it << " ,";
+	}
+	cout << endl;
+}
+
 
 

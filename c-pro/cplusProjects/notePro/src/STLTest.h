@@ -35,6 +35,8 @@
 #include "stl-find-algo.h"
 #include "stl-sort.h"
 #include "stl-copy.h"
+#include "stl-accumulate.h"
+#include "stl-collenction.h"
 
 using namespace std;
 

@@ -18,6 +18,8 @@ void STLTest::exec(){
 	startSTLExample (new StlFindAlgo());
 	startSTLExample (new StlSort());
 	startSTLExample (new StlCopy());
+	startSTLExample (new StlAccumulate());
+	startSTLExample (new StlCollenction());
 	cout << "------STLTest::exec() end---------"<<endl;
 }
 

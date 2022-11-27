@@ -14,6 +14,7 @@ class StlStartBase
 	public:
 		virtual void start(){};
 		void BasePrintVectorInt(vector<int> &v);
+		void BasePrintVectorInt(const vector<int>::iterator &startIt,const vector<int>::iterator &endIt);
 };
 
 #endif // _STL_START_BASE_H_
