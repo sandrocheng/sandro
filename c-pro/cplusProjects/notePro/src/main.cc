@@ -120,7 +120,7 @@ int main(int argc,char *argv[])
 	MF_arraytest();
 //	charArrayTest();
 	test();
-	mf3_test();
+	defineFunc();
 	pointerTest();
 	memoryTest();
 	strTest();
