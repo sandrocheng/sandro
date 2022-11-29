@@ -11,7 +11,8 @@ public class MainApp extends Application {
     public void onCreate() {
         Log.d("MainApp","onCreate");
         super.onCreate();
-        NativeAgent.getInstance().firstNdkAcess();
+        NativeAgent.getInstance().basicJavaTypeToJniTest();
+        NativeAgent.getInstance().stringToJni("word from java wrold! 成功1");
     }
 
 
