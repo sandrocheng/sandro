@@ -13,6 +13,7 @@ public class MainApp extends Application {
         super.onCreate();
         NativeAgent.getInstance().basicJavaTypeToJniTest();
         NativeAgent.getInstance().stringToJni("word from java wrold! 成功1");
+        NativeAgent.getInstance().readBasicDataFromJni();
     }
 
 

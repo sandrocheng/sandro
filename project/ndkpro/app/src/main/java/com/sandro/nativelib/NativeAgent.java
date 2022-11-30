@@ -30,10 +30,21 @@ public class NativeAgent {
         basicJavaTypeToJni(argBoolean, argByte, argChar, argShort, argInt, argLong, argfloat, argDouble);
     }
 
+    public void readBasicDataFromJni(){
+        android.util.Log.d("NativeAgent","----------readBasicDataFromJni start---------");
+        android.util.Log.d("NativeAgent","byteFromJNI : " + byteFromJNI());
+        android.util.Log.d("NativeAgent","shortFromJNI : " + shortFromJNI());
+        android.util.Log.d("NativeAgent","intFromJNI : " + intFromJNI());
+        android.util.Log.d("NativeAgent","longFromJNI : " + longFromJNI());
+        android.util.Log.d("NativeAgent","floatFromJNI : " + floatFromJNI());
+        android.util.Log.d("NativeAgent","doubleFromJNI : " + doubleFromJNI());
+        android.util.Log.d("NativeAgent","charFromJNI : " + charFromJNI());
+        android.util.Log.d("NativeAgent","booleanFromJNI : " + booleanFromJNI());
+
+        android.util.Log.d("NativeAgent","----------readBasicDataFromJni end -----------");
+    }
+
     public native void stringToJni(String str);
-
-    public native String stringFromJNI();
-
     private native void basicJavaTypeToJni(boolean argBoolean,
                                            byte argByte,
                                            char argChar,
@@ -42,4 +53,14 @@ public class NativeAgent {
                                            long argLong,
                                            float argFloat,
                                            double argDouble);
+
+    public native String stringFromJNI();
+    private native byte byteFromJNI();
+    private native short shortFromJNI();
+    private native int intFromJNI();
+    private native long longFromJNI();
+    private native float floatFromJNI();
+    private native double doubleFromJNI();
+    private native char charFromJNI();
+    private native boolean booleanFromJNI();
 }

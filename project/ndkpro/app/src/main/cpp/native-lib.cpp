@@ -12,7 +12,7 @@
  *                         long long (32位系统的情况下使用long long 转换 jlong的值 64 bits)
  * float    -> jfloat   -> float (signed 32 bits)
  * double   -> jdouble  -> doubel (sigend 64 bits)
- *
+ * String   -> jstring  -> char * (str::string.c_str())
  *
  */
 
@@ -33,17 +33,6 @@
 #define LOGW(...)   __android_log_print(ANDROID_LOG_WARN, TAG, __VA_ARGS__)
 #define LOGE(...)   __android_log_print(ANDROID_LOG_ERROR, TAG, __VA_ARGS__)
 #endif
-
-/*
- * 返回字符串
- */
-extern "C" JNIEXPORT jstring JNICALL
-Java_com_sandro_nativelib_NativeAgent_stringFromJNI(
-        JNIEnv* env,
-        jobject /* this */) {
-    std::string hello = "Hello from C++!";
-    return env->NewStringUTF(hello.c_str());
-}
 
 /*
  * jni 接收java String
@@ -71,7 +60,6 @@ Java_com_sandro_nativelib_NativeAgent_stringToJni(JNIEnv* env, jobject thiz,jstr
     if(wordBuff == NULL){
         LOGD("GetStringUtfChars error");
     }else{
-        //释放word指向的字符串，释放后word指向的字符串为NULL。但是word保存的地址不变
         LOGD("get java str by GetStringUTFRegion ：%s",wordBuff);
     }
 
@@ -122,5 +110,103 @@ Java_com_sandro_nativelib_NativeAgent_basicJavaTypeToJni(
     LOGD("----------basicJavaTypeToJni end-------------");
 }
 
+/*
+ * 返回字符串
+ */
+extern "C" JNIEXPORT jstring JNICALL
+Java_com_sandro_nativelib_NativeAgent_stringFromJNI(
+        JNIEnv* env,
+        jobject /* this */) {
+    std::string hello = "Hello from C++!" ;
+    return env->NewStringUTF(hello.c_str());
+}
+
+/*
+ * 返回byte
+ */
+extern "C" JNIEXPORT jbyte JNICALL
+Java_com_sandro_nativelib_NativeAgent_byteFromJNI(
+        JNIEnv* env,
+        jobject /* this */) {
+    char dataByte = 120;
+    return dataByte;
+}
+
+/*
+ * 返回short
+ */
+extern "C" JNIEXPORT jshort JNICALL
+Java_com_sandro_nativelib_NativeAgent_shortFromJNI(
+        JNIEnv* env,
+        jobject /* this */) {
+    short dataShort = 10240;
+    return dataShort;
+}
+
+/*
+ * 返回int
+ */
+extern "C" JNIEXPORT jint JNICALL
+Java_com_sandro_nativelib_NativeAgent_intFromJNI(
+        JNIEnv* env,
+        jobject /* this */) {
+    int dataInt = 204800;
+    return dataInt;
+}
+
+/*
+ * 返回long
+ */
+extern "C" JNIEXPORT jlong JNICALL
+Java_com_sandro_nativelib_NativeAgent_longFromJNI(
+        JNIEnv* env,
+        jobject /* this */) {
+    long dataLong = 4096000;
+    return dataLong;
+}
+
+/*
+ * 返回float
+ */
+extern "C" JNIEXPORT jfloat JNICALL
+Java_com_sandro_nativelib_NativeAgent_floatFromJNI(
+        JNIEnv* env,
+        jobject /* this */) {
+    float dataFloat = 1024.1024f;
+    return dataFloat;
+}
+
+/*
+ * 返回double
+ */
+extern "C" JNIEXPORT jdouble JNICALL
+Java_com_sandro_nativelib_NativeAgent_doubleFromJNI(
+        JNIEnv* env,
+        jobject /* this */) {
+    double dataDouble = 2048.20482;
+    return dataDouble;
+}
+
+/*
+ * 返回char
+ */
+extern "C" JNIEXPORT jchar JNICALL
+Java_com_sandro_nativelib_NativeAgent_charFromJNI(
+        JNIEnv* env,
+        jobject /* this */) {
+    unsigned short dataChar = 'Z';
+    return dataChar;
+}
+
+/*
+ * 返回boolean
+ */
+extern "C" JNIEXPORT jboolean JNICALL
+Java_com_sandro_nativelib_NativeAgent_booleanFromJNI(
+        JNIEnv* env,
+        jobject /* this */) {
+    unsigned char dataBoolean = 1;//0->false,1->true
+    return dataBoolean;
+}
 
 
