@@ -3,7 +3,10 @@ package com.sandro.nativelib;
 
 public class NativeAgent {
     static {
+        //加载android apk libs目录下的so 库
         System.loadLibrary("native-lib");
+//      加载文件目录中具体的so库，也可以是一个url从网络下再一个so库文件
+//      System.load("/sdcard/a/xx.so");
     }
 
     private static NativeAgent mInstance;
@@ -55,6 +58,7 @@ public class NativeAgent {
                                            double argDouble);
 
     public native String stringFromJNI();
+    public native String stringFromCJNI();
     private native byte byteFromJNI();
     private native short shortFromJNI();
     private native int intFromJNI();
@@ -63,4 +67,5 @@ public class NativeAgent {
     private native double doubleFromJNI();
     private native char charFromJNI();
     private native boolean booleanFromJNI();
+
 }

@@ -14,9 +14,14 @@
  * double   -> jdouble  -> doubel (sigend 64 bits)
  * String   -> jstring  -> char * (str::string.c_str())
  *
+ * JNIEXPORT : jni关键字，标记为外部该方法可以被外部调用
+ * JNICALL : jni关键字，可以不填，相当于一个标记，代表该方法是jni调用的
+ * JNIEnv : 上下文环境，是c和java相互调用的桥梁
+ * jobject thiz : java 传递下来的调用类的对象，也可能是jclass(java中定义的是static方法时，这里是jclass,jobject和jclass没有区别，只是标记不同)，
+ *                可以用这个对象回调java中的接口
  */
 
-
+//避免重复引用导致的多次copy代码
 #ifndef NDKPRO_NATIVE_LIB_H
 #define NDKPRO_NATIVE_LIB_H
 #include <jni.h>
