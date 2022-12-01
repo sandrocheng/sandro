@@ -175,4 +175,13 @@ Java_com_sandro_nativelib_NativeAgent_getStringArrayFromJNI(
         JNIEnv* env,
         jobject thiz);
 
+/*
+ * 从NDK中返回一个Person对象
+ */
+extern "C" JNIEXPORT jobject JNICALL
+Java_com_sandro_nativelib_NativeAgent_getPersonFromJNI(
+        JNIEnv* env,
+        jobject thiz,
+        jobject personOBJ);
+
 #endif //NDKPRO_NATIVE_LIB_H

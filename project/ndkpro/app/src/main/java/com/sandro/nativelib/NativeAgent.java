@@ -31,6 +31,17 @@ public class NativeAgent {
         return mInstance;
     }
 
+    public void getObjectFromJNI() {
+        android.util.Log.d("NativeAgent", "----------getObjectFromJNI start---------");
+        Person lily = new Person(17,"lily");
+        lily.setScore(9.8f);
+        Person per = getPersonFromJNI(lily);
+        android.util.Log.d("NativeAgent", "person age is " + per.getAge()
+                + " , name is " + per.getName()
+                + " , score is " + per.getScore());
+        android.util.Log.d("NativeAgent", "----------getObjectFromJNI end-----------");
+    }
+
     /**
      * 给jni调用的方法 求和
      * @param num1
@@ -175,5 +186,11 @@ public class NativeAgent {
      * 访问java方法
      */
     private native void accessJavaMethod();
+
+    /**
+     * 从NDK中返回一个Person对象
+     * @return
+     */
+    private native Person getPersonFromJNI(Person person);
 
 }

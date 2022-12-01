@@ -5,7 +5,11 @@ public class Person {
     private String name;
     private int age;
 
-    Person(int age , String name){
+    private float score;
+
+    public Person(){}
+
+    public Person(int age , String name){
         this.age = age;
         this.name = name;
     }
@@ -26,4 +30,11 @@ public class Person {
         this.age = age;
     }
 
+    public float getScore() {
+        return score;
+    }
+
+    public void setScore(float score) {
+        this.score = score;
+    }
 }

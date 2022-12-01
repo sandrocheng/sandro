@@ -300,3 +300,35 @@ Java_com_sandro_nativelib_NativeAgent_accessJavaMethod(
     LOGD("----------accessJavaMethod end---------------");
 
 }
+
+extern "C" JNIEXPORT jobject JNICALL
+Java_com_sandro_nativelib_NativeAgent_getPersonFromJNI(
+        JNIEnv* env,
+        jobject thiz,
+        jobject personOBJ){
+    jclass jc = env->FindClass("com/sandro/nativelib/Person");
+    //通过构造函数生成person对象，使用"<init>",代表当前构造函数，签名代表参数
+    jmethodID jmid = env->GetMethodID(jc,(char*)"<init>",(char*)"(ILjava/lang/String;)V");
+    std::string name = "bob";
+    jobject person = env->NewObject(jc,jmid,(jint)15,env->NewStringUTF(name.c_str()));
+
+    jmethodID setScoremid = env->GetMethodID(jc,(char*)"setScore",(char*)"(F)V");
+    env->CallVoidMethod(person,setScoremid,(jfloat)8.5);
+
+
+    jmethodID midGetAge = env->GetMethodID(jc,(char*)"getAge","()I");
+    jmethodID midGetScore = env->GetMethodID(jc,(char*)"getScore","()F");
+    jmethodID midGetName = env->GetMethodID(jc,(char*)"getName","()Ljava/lang/String;");
+    jint age = env->CallIntMethod(personOBJ,midGetAge);
+    jfloat score = env->CallFloatMethod(personOBJ,midGetScore);
+    jstring jname = (jstring)env->CallObjectMethod(personOBJ,midGetName);
+
+    jsize strlen = env->GetStringLength(jname);
+    LOGD("jname len : %d",strlen);
+
+    char personName[(int)strlen];
+
+    env->GetStringUTFRegion(jname,0,strlen,personName);
+    LOGD("personOBJ from java ,name : \"%s\" , age : %d , score : %F",personName,(int)age,(float)score);
+    return person;
+}
