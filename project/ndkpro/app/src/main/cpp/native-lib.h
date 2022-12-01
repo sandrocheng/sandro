@@ -159,4 +159,20 @@ Java_com_sandro_nativelib_NativeAgent_accessJavaMethod(
         JNIEnv* env,
         jobject thiz);
 
+/*
+ * c层返回int数组
+ */
+extern "C" JNIEXPORT jintArray JNICALL
+Java_com_sandro_nativelib_NativeAgent_getIntArrayFromJNI(
+        JNIEnv* env,
+        jobject thiz);
+
+/*
+ * c层返回string数组
+ */
+extern "C" JNIEXPORT jobjectArray JNICALL
+Java_com_sandro_nativelib_NativeAgent_getStringArrayFromJNI(
+        JNIEnv* env,
+        jobject thiz);
+
 #endif //NDKPRO_NATIVE_LIB_H

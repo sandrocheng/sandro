@@ -16,6 +16,7 @@ public class MainApp extends Application {
         NativeAgent.getInstance().readBasicDataFromJni();
         NativeAgent.getInstance().startAccessJavaAttrAndMethod();
         NativeAgent.getInstance().javaArrayTypeToJniTest();
+        NativeAgent.getInstance().arrayFromJNI();
     }
 
 

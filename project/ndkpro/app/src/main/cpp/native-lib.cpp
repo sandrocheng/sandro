@@ -183,6 +183,38 @@ Java_com_sandro_nativelib_NativeAgent_booleanFromJNI(
     return dataBoolean;
 }
 
+/*
+ * c层返回int数组
+ */
+extern "C" JNIEXPORT jintArray JNICALL
+Java_com_sandro_nativelib_NativeAgent_getIntArrayFromJNI(
+        JNIEnv* env,
+        jobject thiz){
+    jsize len = 5;
+    jintArray array = env->NewIntArray(len);
+    jint *arr = env->GetIntArrayElements(array,JNI_FALSE);
+    for(int i = 0;i<len;i++){
+        arr[i] = (jint)(100 * i);
+    }
+    env->ReleaseIntArrayElements(array,arr,0);
+    return array;
+}
+
+extern "C" JNIEXPORT jobjectArray JNICALL
+Java_com_sandro_nativelib_NativeAgent_getStringArrayFromJNI(
+        JNIEnv* env,
+        jobject thiz){
+    jsize len = 4;
+    jclass jc = env->FindClass((char*)"java/lang/String");
+    jobjectArray jarray = env->NewObjectArray(len,jc,env->NewStringUTF(""));
+    for(int i = 0;i<len;i++){
+        std::string temp = "word_";
+        temp.append(std::to_string(i));
+        env->SetObjectArrayElement(jarray,(jsize)i,env->NewStringUTF(temp.c_str()));
+    }
+    return jarray;
+}
+
 extern "C" JNIEXPORT void JNICALL
 Java_com_sandro_nativelib_NativeAgent_accessJavaAttr(
         JNIEnv* env,

@@ -76,6 +76,26 @@ public class NativeAgent {
         accessJavaMethod();
     }
 
+    public void arrayFromJNI(){
+        android.util.Log.d("NativeAgent","----------arrayFromJNI start---------");
+        int[] intArr = getIntArrayFromJNI();
+        android.util.Log.d("NativeAgent","getIntArrayFromJNI size is " + intArr.length);
+        String log = "getIntArrayFromJNI array : ";
+        for(int i : intArr){
+            log += i + " , ";
+        }
+        android.util.Log.d("NativeAgent",log);
+
+        String strArr[] = getStringArrayFromJNI();
+        android.util.Log.d("NativeAgent","getStringArrayFromJNI size is " + strArr.length);
+        log = "getStringArrayFromJNI array : ";
+        for(String str : strArr){
+            log += str + " , ";
+        }
+        android.util.Log.d("NativeAgent",log);
+        android.util.Log.d("NativeAgent","----------arrayFromJNI end-----------");
+    }
+
     /**
      * 向c层传递java基本类型数据
      */
@@ -143,6 +163,8 @@ public class NativeAgent {
     private native double doubleFromJNI();
     private native char charFromJNI();
     private native boolean booleanFromJNI();
+    private native int[] getIntArrayFromJNI();
+    private native String[] getStringArrayFromJNI();
 
     /**
      * c层访问java对象中的属性
