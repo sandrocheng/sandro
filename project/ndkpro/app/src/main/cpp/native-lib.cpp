@@ -322,12 +322,9 @@ Java_com_sandro_nativelib_NativeAgent_getPersonFromJNI(
     jint age = env->CallIntMethod(personOBJ,midGetAge);
     jfloat score = env->CallFloatMethod(personOBJ,midGetScore);
     jstring jname = (jstring)env->CallObjectMethod(personOBJ,midGetName);
-
-    jsize strlen = env->GetStringLength(jname);
-    LOGD("jname len : %d",strlen);
-
-    char personName[(int)strlen];
-
+    int strlen = env->GetStringLength(jname);
+    char personName[strlen + 1];
+    std::memset(&personName,0,sizeof(personName));
     env->GetStringUTFRegion(jname,0,strlen,personName);
     LOGD("personOBJ from java ,name : \"%s\" , age : %d , score : %F",personName,(int)age,(float)score);
     return person;
