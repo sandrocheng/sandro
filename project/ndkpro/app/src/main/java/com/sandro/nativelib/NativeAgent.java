@@ -2,6 +2,16 @@ package com.sandro.nativelib;
 
 
 public class NativeAgent {
+    public String agentName = "cur agentName is init by java";
+    public static int VERSION = 101;
+    public boolean agentBoolAttr = false;
+    public byte agentByteAttr = 11;
+    public short agentShortAttr = 22;
+    public long agentLongAttr = 3333333;
+    public float agentFloatAttr = 444.444f;
+    public double agentDoubleAttr = 555555.55555d;
+    public char agentCharAttr = 'D';
+
     static {
         //加载android apk libs目录下的so 库
         System.loadLibrary("native-lib");
@@ -21,6 +31,31 @@ public class NativeAgent {
         return mInstance;
     }
 
+    public void startAccessJavaAttr(){
+        accessJavaAttr();
+        android.util.Log.d("NativeAgent",
+                "after accessJavaAttr attr agentName is \"" + agentName + "\"");
+        android.util.Log.d("NativeAgent",
+                "after accessJavaAttr static attr VERSION is " + VERSION );
+        android.util.Log.d("NativeAgent",
+                "after accessJavaAttr attr agentBoolAttr is " + agentBoolAttr );
+        android.util.Log.d("NativeAgent",
+                "after accessJavaAttr attr agentByteAttr is " + agentByteAttr );
+        android.util.Log.d("NativeAgent",
+                "after accessJavaAttr attr agentShortAttr is " + agentShortAttr );
+        android.util.Log.d("NativeAgent",
+                "after accessJavaAttr attr agentLongAttr is " + agentLongAttr );
+        android.util.Log.d("NativeAgent",
+                "after accessJavaAttr attr agentFloatAttr is " + agentFloatAttr );
+        android.util.Log.d("NativeAgent",
+                "after accessJavaAttr attr agentDoubleAttr is " + agentDoubleAttr );
+        android.util.Log.d("NativeAgent",
+                "after accessJavaAttr attr agentCharAttr is " + agentCharAttr );
+    }
+
+    /**
+     * 向c层传递java基本类型数据
+     */
     public void basicJavaTypeToJniTest() {
         boolean argBoolean = false;
         byte argByte = 98;
@@ -33,6 +68,9 @@ public class NativeAgent {
         basicJavaTypeToJni(argBoolean, argByte, argChar, argShort, argInt, argLong, argfloat, argDouble);
     }
 
+    /**
+     * 从c层读取基本类型
+     */
     public void readBasicDataFromJni(){
         android.util.Log.d("NativeAgent","----------readBasicDataFromJni start---------");
         android.util.Log.d("NativeAgent","byteFromJNI : " + byteFromJNI());
@@ -57,7 +95,15 @@ public class NativeAgent {
                                            float argFloat,
                                            double argDouble);
 
+    /**
+     * @return c++返回一个字符串
+     */
     public native String stringFromJNI();
+
+    /**
+     *
+     * @return c返回一个字符串
+     */
     public native String stringFromCJNI();
     private native byte byteFromJNI();
     private native short shortFromJNI();
@@ -67,5 +113,10 @@ public class NativeAgent {
     private native double doubleFromJNI();
     private native char charFromJNI();
     private native boolean booleanFromJNI();
+
+    /**
+     * c层访问java对象中的属性
+     */
+    private native void accessJavaAttr();
 
 }

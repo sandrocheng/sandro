@@ -148,4 +148,64 @@ Java_com_sandro_nativelib_NativeAgent_booleanFromJNI(
     return dataBoolean;
 }
 
+extern "C" JNIEXPORT void JNICALL
+Java_com_sandro_nativelib_NativeAgent_accessJavaAttr(
+        JNIEnv* env,
+        jobject thiz){
+    //获取当前java对象的jclass
+    jclass jc = env->GetObjectClass(thiz);
+    //"Ljava/lang/String;" 是agentName(String类型)的方法签名，可以通过javap -p -s xxx.class 查看
+    //类文件在android studio 编译目录中（app/build/intermediates/javac/debug/classes/....）
+    jfieldID jfid = env->GetFieldID(jc, (char*)"agentName", (char*)"Ljava/lang/String;");
+    //获取NativeAgent对象中agentName属性
+    jstring agentName = (jstring)env->GetObjectField(thiz,jfid);
+    jsize strlen = env->GetStringLength(agentName);
+    char agentNameBuff[strlen];
+    env->GetStringUTFRegion(agentName,0,strlen,agentNameBuff);
+    LOGD("NativeAgent.agentName is \"%s\"" , agentNameBuff);
+    std::string newAgentName = "cur agentName is modify by c++" ;
+    env->SetObjectField(thiz,jfid,env->NewStringUTF(newAgentName.c_str()));
+
+    jfieldID versionFID = env->GetStaticFieldID(jc,(char*)"VERSION","I");
+    jint versionAttr = env->GetStaticIntField(jc,versionFID);
+    LOGD("NativeAgent static attr VERSION is %d",(int)versionAttr);
+    env->SetStaticIntField(jc,versionFID,(jint)200);
+
+    jfieldID jfAgentBoolAttr = env->GetFieldID(jc,(char*)"agentBoolAttr","Z");
+    jboolean agentBoolAttr = env->GetBooleanField(thiz,jfAgentBoolAttr);
+    LOGD("NativeAgent attr agentBoolAttr is %d",(unsigned char)agentBoolAttr);
+    env->SetBooleanField(thiz,jfAgentBoolAttr,true);
+
+    jfieldID  jfAgentByteAttr = env->GetFieldID(jc,(char*)"agentByteAttr","B");
+    jbyte agentByteAttr = env->GetByteField(thiz,jfAgentByteAttr);
+    LOGD("NativeAgent attr agentByteAttr is %d",(char)agentByteAttr);
+    env->SetByteField(thiz,jfAgentByteAttr,(jbyte)100);
+
+    jfieldID  jfAgentShortAttr = env->GetFieldID(jc,(char*)"agentShortAttr","S");
+    jshort agentShortAttr = env->GetShortField(thiz,jfAgentShortAttr);
+    LOGD("NativeAgent attr agentShortAttr is %d",(short)agentShortAttr);
+    env->SetShortField(thiz,jfAgentShortAttr,(short)200);
+
+    jfieldID  JFagentLongAttr = env->GetFieldID(jc,(char*)"agentLongAttr","J");
+    jlong agentLongAttr = env->GetLongField(thiz,JFagentLongAttr);
+    LOGD("NativeAgent attr agentLongAttr is %d",(long)agentLongAttr);
+    env->SetLongField(thiz,JFagentLongAttr,(jlong)30000000);
+
+    jfieldID  JFagentFloatAttr = env->GetFieldID(jc,(char*)"agentFloatAttr","F");
+    jfloat agentFloatAttr = env->GetFloatField(thiz,JFagentFloatAttr);
+    LOGD("NativeAgent attr agentFloatAttr is %f",(float)agentFloatAttr);
+    env->SetFloatField(thiz,JFagentFloatAttr,(jfloat)123.123);
+
+
+    jfieldID  JFagentDoubleAttr = env->GetFieldID(jc,(char*)"agentDoubleAttr","D");
+    jdouble agentDoubleAttr = env->GetDoubleField(thiz,JFagentDoubleAttr);
+    LOGD("NativeAgent attr agentDoubleAttr is %lf",(double)agentDoubleAttr);
+    env->SetDoubleField(thiz,JFagentDoubleAttr,(jdouble)1234.1234);
+
+    jfieldID  JFagentCharAttr = env->GetFieldID(jc,(char*)"agentCharAttr","C");
+    jchar agentCharAttr = env->GetCharField(thiz,JFagentCharAttr);
+    LOGD("NativeAgent attr agentCharAttr is %c",(unsigned short)agentCharAttr);
+    env->SetCharField(thiz,JFagentCharAttr,(unsigned short)'z');
+}
+
 

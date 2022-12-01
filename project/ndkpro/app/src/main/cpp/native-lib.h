@@ -133,4 +133,12 @@ Java_com_sandro_nativelib_NativeAgent_booleanFromJNI(
         JNIEnv* env,
         jobject /* this */);
 
+/*
+ * c层访问java对象中的属性
+ */
+extern "C" JNIEXPORT void JNICALL
+Java_com_sandro_nativelib_NativeAgent_accessJavaAttr(
+        JNIEnv* env,
+        jobject thiz);
+
 #endif //NDKPRO_NATIVE_LIB_H
