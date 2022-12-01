@@ -31,7 +31,28 @@ public class NativeAgent {
         return mInstance;
     }
 
-    public void startAccessJavaAttr(){
+    /**
+     * 给jni调用的方法 求和
+     * @param num1
+     * @param num2
+     * @return
+     */
+    public int addByJni(int num1,int num2){
+        return num1 + num2;
+    }
+
+    /**
+     * 给jni调用的方法 将两个整形合并成一个字符串
+     * @param num1
+     * @param num2
+     * @return
+     */
+    public static String addStringByJni(int num1,int num2){
+        String str = num1 + "_" + num2;
+        return str;
+    }
+
+    public void startAccessJavaAttrAndMethod(){
         accessJavaAttr();
         android.util.Log.d("NativeAgent",
                 "after accessJavaAttr attr agentName is \"" + agentName + "\"");
@@ -51,6 +72,8 @@ public class NativeAgent {
                 "after accessJavaAttr attr agentDoubleAttr is " + agentDoubleAttr );
         android.util.Log.d("NativeAgent",
                 "after accessJavaAttr attr agentCharAttr is " + agentCharAttr );
+
+        accessJavaMethod();
     }
 
     /**
@@ -118,5 +141,10 @@ public class NativeAgent {
      * c层访问java对象中的属性
      */
     private native void accessJavaAttr();
+
+    /**
+     * 访问java方法
+     */
+    private native void accessJavaMethod();
 
 }

@@ -208,4 +208,28 @@ Java_com_sandro_nativelib_NativeAgent_accessJavaAttr(
     env->SetCharField(thiz,JFagentCharAttr,(unsigned short)'z');
 }
 
+extern "C" JNIEXPORT void JNICALL
+Java_com_sandro_nativelib_NativeAgent_accessJavaMethod(
+        JNIEnv* env,
+        jobject thiz){
+    LOGD("----------accessJavaMethod start-------------");
 
+    jclass jc = env->GetObjectClass(thiz);
+    jmethodID jmid = env->GetMethodID(jc,(char*)"addByJni",(char*)"(II)I");
+    jint result = env->CallIntMethod(thiz,jmid,jint(100),jint(100));
+    LOGD("accessJavaMethod addByJni() return : %d",(int)result);
+
+    jmid = env->GetStaticMethodID(jc,(char*)"addStringByJni",(char*)"(II)Ljava/lang/String;");
+    jstring  result2 = (jstring)env->CallStaticObjectMethod(jc,jmid,jint(100),jint(100));
+    jsize strlen = env->GetStringLength(result2);
+    char wordBuff[strlen];
+    env->GetStringUTFRegion(result2,0,strlen,wordBuff);
+    if(wordBuff == NULL){
+        LOGD("accessJavaMethod addStringByJni() error ,GetStringUtfChars error");
+    }else{
+        LOGD("accessJavaMethod addStringByJni() return : %s",wordBuff);
+    }
+
+    LOGD("----------accessJavaMethod end---------------");
+
+}

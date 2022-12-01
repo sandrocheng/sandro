@@ -141,4 +141,12 @@ Java_com_sandro_nativelib_NativeAgent_accessJavaAttr(
         JNIEnv* env,
         jobject thiz);
 
+/*
+ * c层访问java方法
+ */
+extern "C" JNIEXPORT void JNICALL
+Java_com_sandro_nativelib_NativeAgent_accessJavaMethod(
+        JNIEnv* env,
+        jobject thiz);
+
 #endif //NDKPRO_NATIVE_LIB_H
