@@ -62,6 +62,16 @@ Java_com_sandro_nativelib_NativeAgent_basicJavaTypeToJni(
         jdouble argDouble);
 
 /*
+ * jni 接收java 数组
+ */
+extern "C" JNIEXPORT void JNICALL
+Java_com_sandro_nativelib_NativeAgent_javaArrToJni(
+        JNIEnv* env,
+        jobject thiz,
+        jintArray intArr,
+        jobjectArray strArr);
+
+/*
  * 返回字符串
  */
 extern "C" JNIEXPORT jstring JNICALL

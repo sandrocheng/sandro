@@ -15,6 +15,7 @@ public class MainApp extends Application {
         NativeAgent.getInstance().stringToJni("word from java wrold! 成功1");
         NativeAgent.getInstance().readBasicDataFromJni();
         NativeAgent.getInstance().startAccessJavaAttrAndMethod();
+        NativeAgent.getInstance().javaArrayTypeToJniTest();
     }
 
 

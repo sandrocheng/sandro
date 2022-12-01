@@ -44,6 +44,41 @@ Java_com_sandro_nativelib_NativeAgent_stringToJni(JNIEnv* env, jobject thiz,jstr
 }
 
 extern "C" JNIEXPORT void JNICALL
+Java_com_sandro_nativelib_NativeAgent_javaArrToJni(
+        JNIEnv* env,
+        jobject thiz,
+        jintArray intArr,
+        jobjectArray strArr){
+    LOGD("----------javaArrToJni start-------------");
+    jint* intArray = env->GetIntArrayElements(intArr,JNI_FALSE);
+    jsize arrlen = env->GetArrayLength(intArr);
+    LOGD("intArr len is %d",(int)arrlen);
+    std::string str = "";
+    for(int i = 0;i<(int)arrlen;i++){
+        str.append(std::to_string((int)intArray[i]));
+        str.append(",");
+    }
+    LOGD("%s",str.c_str());
+
+    arrlen= env->GetArrayLength(strArr);
+    LOGD("strArr len is %d",(int)arrlen);
+
+    str.clear();
+    for(int i = 0;i<(int)arrlen;i++){
+        jstring tempStr = (jstring)env->GetObjectArrayElement(strArr,i);
+
+        jsize strlen = env->GetStringLength(tempStr);
+        char wordBuff[strlen];
+        env->GetStringUTFRegion(tempStr,0,strlen,wordBuff);
+        str.append(wordBuff);
+        str.append(",");
+    }
+    LOGD("%s",str.c_str());
+    LOGD("----------javaArrToJni end---------------");
+
+}
+
+extern "C" JNIEXPORT void JNICALL
 Java_com_sandro_nativelib_NativeAgent_basicJavaTypeToJni(
         JNIEnv* env,
         jobject thiz,

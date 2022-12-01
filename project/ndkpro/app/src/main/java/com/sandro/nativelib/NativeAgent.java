@@ -91,6 +91,11 @@ public class NativeAgent {
         basicJavaTypeToJni(argBoolean, argByte, argChar, argShort, argInt, argLong, argfloat, argDouble);
     }
 
+    public void javaArrayTypeToJniTest() {
+        javaArrToJni(new int[]{10,20,30,40,50,60}
+                , new String[]{"word1","word2","word3","word4"});
+    }
+
     /**
      * 从c层读取基本类型
      */
@@ -117,6 +122,8 @@ public class NativeAgent {
                                            long argLong,
                                            float argFloat,
                                            double argDouble);
+
+    private native void javaArrToJni(int[] intArr,String[] strArr);
 
     /**
      * @return c++返回一个字符串
