@@ -4,6 +4,7 @@ import android.app.Application;
 import android.util.Log;
 
 import com.sandro.nativelib.NativeAgent;
+import com.sandro.nativelib.NativeThreadAgent;
 
 public class MainApp extends Application {
 
@@ -18,6 +19,8 @@ public class MainApp extends Application {
         NativeAgent.getInstance().javaArrayTypeToJniTest();
         NativeAgent.getInstance().arrayFromJNI();
         NativeAgent.getInstance().getObjectFromJNI();
+
+        NativeThreadAgent.startAThread();
     }
 
 

@@ -21,6 +21,8 @@ add_library( # Sets the name of the library.
              SHARED
 
              # Provides a relative path to your source file(s).
+             native-lib-thread.cpp
+             native-lib-thread.h
              nativeC-lib.h
              nativeC-lib.c
              native-lib.cpp

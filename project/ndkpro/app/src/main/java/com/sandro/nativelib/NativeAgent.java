@@ -1,6 +1,8 @@
 package com.sandro.nativelib;
 
-
+/**
+ * 对应natie-lib.h里的接口
+ */
 public class NativeAgent {
     public String agentName = "cur agentName is init by java";
     public static int VERSION = 101;
@@ -161,11 +163,6 @@ public class NativeAgent {
      */
     public native String stringFromJNI();
 
-    /**
-     *
-     * @return c返回一个字符串
-     */
-    public native String stringFromCJNI();
     private native byte byteFromJNI();
     private native short shortFromJNI();
     private native int intFromJNI();

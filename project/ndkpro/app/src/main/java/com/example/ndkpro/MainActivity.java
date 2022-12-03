@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import com.example.ndkpro.databinding.ActivityMainBinding;
 import com.sandro.nativelib.NativeAgent;
+import com.sandro.nativelib.NativeCAgent;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -28,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
         TextView tv = binding.sampleText;
         String str = NativeAgent.getInstance().stringFromJNI()
                 + "\n"
-                + NativeAgent.getInstance().stringFromCJNI();
+                + NativeCAgent.stringFromCJNI();
         tv.setText(str);
     }
 

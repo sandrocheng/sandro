@@ -15,8 +15,8 @@
  * 返回字符串
  */
 JNIEXPORT jstring JNICALL
-Java_com_sandro_nativelib_NativeAgent_stringFromCJNI(
+Java_com_sandro_nativelib_NativeCAgent_stringFromCJNI(
         JNIEnv* env,
-        jobject thiz);
+        jclass thiz);
 
 #endif //NDKPRO_NATIVEC_LIB_H
