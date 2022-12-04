@@ -102,12 +102,14 @@ extern "C" void startwork1(){
     callbackJavaStaticVoidMethodInThread((char*)"startAThreadOnJoinFinish",(char*)"()V");
 }
 
-extern "C" void callbackJavaStaticVoidMethodInThread(const char* name, const char* sig,int workid ){
+extern "C" void callbackJavaStaticVoidMethodInThread(const char* name, const char* sig,...){
     JNIEnv *env = nullptr;
 
     JavaVMAttachArgs jvmargs;
     jvmargs.version = jniVer;
-    jvmargs.name = "pthread-startAThreadWork1";//给线程起个名字吧，这样在调试或者崩溃的时候能显示出名字，而不是thead-1,thread-2这样的名字。
+    std::string threadName = "pthread-";
+    threadName.append(name);
+    jvmargs.name = threadName.c_str();//给线程起个名字吧，这样在调试或者崩溃的时候能显示出名字，而不是thead-1,thread-2这样的名字。
     jvmargs.group = NULL;//java.lang.ThreadGroup的全局引用，作用你懂的。
 
     g_vm->AttachCurrentThread(&env, &jvmargs);
@@ -115,12 +117,11 @@ extern "C" void callbackJavaStaticVoidMethodInThread(const char* name, const cha
 
     jmethodID mID = env->GetStaticMethodID(gs_NativeThreadAgent_class,name,(char*)sig);
 
-    if(workid >= 0){
-        env->CallStaticVoidMethod(gs_NativeThreadAgent_class,mID,workid);
-    }else{
-        env->CallStaticVoidMethod(gs_NativeThreadAgent_class,mID);
-    }
-
+    //可变参数截取
+    va_list args;
+    va_start(args,sig);
+    env->CallStaticVoidMethodV(gs_NativeThreadAgent_class,mID,args);
+    va_end(args);
 
 
     g_vm->DetachCurrentThread();//释放当前线程

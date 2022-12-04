@@ -75,7 +75,7 @@ extern "C" void setNativeThreadAgendClass(JNIEnv* env,jclass jclz);
  * 回调java层 NativeThreadAgent 对应类的静态void方法
  * @param name 回调方法名称
  * @param sig 回调方法签名
- * @param workid 回调方法参数,<0代表该回调函数没有这个参数,不写默认-1
+ * @param ... 回调方法参数
  */
-extern "C" void callbackJavaStaticVoidMethodInThread(const char* name, const char* sig,int workid = -1);
+extern "C" void callbackJavaStaticVoidMethodInThread(const char* name, const char* sig,...);
 #endif //NDKPRO_NATIVE_LIB_THREAD_H
