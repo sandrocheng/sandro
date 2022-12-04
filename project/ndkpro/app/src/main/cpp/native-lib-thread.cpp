@@ -40,9 +40,19 @@ Java_com_sandro_nativelib_NativeThreadAgent_startMultiThreadOnJoin(JNIEnv* env, 
 extern "C" JNIEXPORT void JNICALL
 Java_com_sandro_nativelib_NativeThreadAgent_startMultiThreadOnDetach(JNIEnv* env, jclass jclz){
     setNativeThreadAgendClass(env,jclz);
+    ThreadClass tc(7);
+    std::thread mThread(tc);
+    mThread.detach();
+
     std::thread(startworkCallBack,4,(char*)"startMultiThreadOnDetachFinish",(char*)"(I)V").detach();
     std::thread(startworkCallBack,5,(char*)"startMultiThreadOnDetachFinish",(char*)"(I)V").detach();
     std::thread(startworkCallBack,6,(char*)"startMultiThreadOnDetachFinish",(char*)"(I)V").detach();
+
+    auto mylamthread = []{
+        startworkCallBack(8,(char*)"startMultiThreadOnDetachFinish", (char*)"(I)V");
+    };
+    std::thread(mylamthread).detach();
+
     LOGD("startMultiThreadOnDetach in main thread finish");
 }
 

@@ -6,6 +6,12 @@
  * thread.detach()
  *      传统多线程程序需要等待子线程执行完毕再推出，比如使用join的方式让主线程等待
  *      detach让子线程和主线程脱离，不阻塞主线程
+ *      一旦detach后，就不能再join回来
+ * thread.joinable 判断是否可以成功使用 join 或者 detach ，返回true或者flase
+ *
+ * 注意
+ * 线程中如果使用了其他线程内存变量的引用，需要注意该变量的生命周期是否合理，避免其他线程内存回收导致当前线程的问题
+ * 使用函数对象（仿函数）构造一个thread的时候，该对象在thread内部使用拷贝构造，所以要注意仿函数内部是否由指针，考虑是否需要重写拷贝构造
  *
  * 自己创建的子线程不能用主线程的JNIEnv了，得用AttachCurrentThread生成自己的JNIEnv，用完后调用DetachCurrentThread。
  *
@@ -26,6 +32,7 @@
 #include <string>
 #include <android/log.h>
 #include <thread>//c++ 11 线程库
+#include "ThreadClass.h"
 
 /**
  * 启动一个线程使用join方法执行
