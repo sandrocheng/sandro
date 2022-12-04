@@ -20,7 +20,7 @@ public class MainApp extends Application {
         NativeAgent.getInstance().arrayFromJNI();
         NativeAgent.getInstance().getObjectFromJNI();
 
-        NativeThreadAgent.startAThread();
+        NativeThreadAgent.startAThreadOnJoin();
     }
 
 

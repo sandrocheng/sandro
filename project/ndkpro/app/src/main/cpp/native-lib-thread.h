@@ -1,4 +1,12 @@
 /*
+ * c++ 11 线程库 <thread>
+ * thread.join() //阻塞主线程，让主线程等待子线程执行完毕，然后主线程再继续执行
+ *               //当多个线程使用join的时候，按调用顺序逐个执行完毕后继续主线程
+ *
+ * thread.detach()
+ *      传统多线程程序需要等待子线程执行完毕再推出，比如使用join的方式让主线程等待
+ *      detach让子线程和主线程脱离，不阻塞主线程
+ *
  * 自己创建的子线程不能用主线程的JNIEnv了，得用AttachCurrentThread生成自己的JNIEnv，用完后调用DetachCurrentThread。
  *
  * 在线程中获取JNIEnv ,首先要先获取javaVM，有许多方式可以获取JavaVM指针。
@@ -19,10 +27,55 @@
 #include <android/log.h>
 #include <thread>//c++ 11 线程库
 
+/**
+ * 启动一个线程使用join方法执行
+ */
 extern "C" JNIEXPORT void JNICALL
-Java_com_sandro_nativelib_NativeThreadAgent_startAThread(JNIEnv* env, jclass jclz);
+Java_com_sandro_nativelib_NativeThreadAgent_startAThreadOnJoin(JNIEnv* env, jclass jclz);
 
-extern "C" void startAThreadWork1();
+/**
+ * 启动多个线程使用join方法执行
+ */
+extern "C" JNIEXPORT void JNICALL
+Java_com_sandro_nativelib_NativeThreadAgent_startMultiThreadOnJoin(JNIEnv* env, jclass jclz);
 
+/**
+ * 启动多个线程使用detach方法执行
+ */
+extern "C" JNIEXPORT void JNICALL
+Java_com_sandro_nativelib_NativeThreadAgent_startMultiThreadOnDetach(JNIEnv* env, jclass jclz);
+
+
+/**
+ * 线程任务：输出字符串，结束后回调java接口
+ * @param workid  任务id
+ * @param name 方法名称
+ * @param sig 方法签名
+ */
+extern "C"  void startworkCallBack(int workid,const char* name, const char* sig);
+
+/**
+ * 线程任务：输出字符串
+ * @param workid  任务id
+ */
+extern "C"  void startwork(int workid);
+
+/**
+ * 线程任务1：输出字符串
+ */
+ extern "C"  void startwork1();
+
+/**
+ * 设置全局变量 NativeThreadAgent的class，用于子线程中evn的生成
+ */
 extern "C" void setNativeThreadAgendClass(JNIEnv* env,jclass jclz);
+
+
+/**
+ * 回调java层 NativeThreadAgent 对应类的静态void方法
+ * @param name 回调方法名称
+ * @param sig 回调方法签名
+ * @param workid 回调方法参数,<0代表该回调函数没有这个参数,不写默认-1
+ */
+extern "C" void callbackJavaStaticVoidMethodInThread(const char* name, const char* sig,int workid = -1);
 #endif //NDKPRO_NATIVE_LIB_THREAD_H

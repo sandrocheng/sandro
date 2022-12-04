@@ -18,6 +18,39 @@ JavaVM *g_vm;
 jint jniVer;
 static jclass gs_NativeThreadAgent_class = NULL;
 
+extern "C" JNIEXPORT void JNICALL
+Java_com_sandro_nativelib_NativeThreadAgent_startAThreadOnJoin(JNIEnv* env, jclass jclz){
+    //通过 NewGlobalRef 方法，在全局变量中复制一份 jni传参jclass/jobject，只有全局的jclass/jobject 才能在子线程中调用
+    setNativeThreadAgendClass(env,jclz);
+    std::thread(startwork1).join();
+    LOGD("startAThreadOnJoin in main thread finish");
+}
+
+extern "C" JNIEXPORT void JNICALL
+Java_com_sandro_nativelib_NativeThreadAgent_startMultiThreadOnJoin(JNIEnv* env, jclass jclz){
+    setNativeThreadAgendClass(env,jclz);
+    std::thread(startwork,1).join();
+    std::thread(startwork,2).join();
+    std::thread(startwork,3).join();
+    jmethodID mID = env->GetStaticMethodID(jclz,(char*)"startMultiThreadJoinFinish",(char*)"()V");
+    env->CallStaticVoidMethod(jclz,mID);
+    LOGD("startMultiThreadJoinFinish in main thread finish");
+}
+
+extern "C" JNIEXPORT void JNICALL
+Java_com_sandro_nativelib_NativeThreadAgent_startMultiThreadOnDetach(JNIEnv* env, jclass jclz){
+    setNativeThreadAgendClass(env,jclz);
+    std::thread(startworkCallBack,4,(char*)"startMultiThreadOnDetachFinish",(char*)"(I)V").detach();
+    std::thread(startworkCallBack,5,(char*)"startMultiThreadOnDetachFinish",(char*)"(I)V").detach();
+    std::thread(startworkCallBack,6,(char*)"startMultiThreadOnDetachFinish",(char*)"(I)V").detach();
+    LOGD("startMultiThreadOnDetach in main thread finish");
+}
+
+extern "C"  void startworkCallBack(int workid,const char* name, const char* sig){
+    startwork(workid);
+    callbackJavaStaticVoidMethodInThread(name,sig,workid);
+}
+
 /*
  * 通过重写 jni中 JNI_OnLoad 方法，在jni加载时候可以获取 JavaVM 指针，这个JavaVm是全局变量，用于之后获取env使用
  */
@@ -55,30 +88,42 @@ extern "C" void setNativeThreadAgendClass(JNIEnv* env,jclass jclz){
     }
 }
 
-
-extern "C" JNIEXPORT void JNICALL
-Java_com_sandro_nativelib_NativeThreadAgent_startAThread(JNIEnv* env, jclass jclz){
-    //通过 NewGlobalRef 方法，在全局变量中复制一份 jni传参jclass/jobject，只有全局的jclass/jobject 才能在子线程中调用
-    setNativeThreadAgendClass(env,jclz);
-    std::thread(startAThreadWork1).join();
+extern "C"  void startwork(int workid){
+    LOGD("start work ,id : %d" , workid);
+    LOGD("work id : %d, step 1..." , workid);
+    LOGD("work id : %d, step 2..." , workid);
+    LOGD("work id : %d, step 3..." , workid);
+    LOGD("start work ,id : %d finish",workid);
 }
 
-extern "C" void startAThreadWork1(){
-    LOGD("startAThreadWork");
-    LOGD("startAThreadWork finish");
+extern "C" void startwork1(){
+    LOGD("startwork1");
+    LOGD("startwork1 finish");
+    callbackJavaStaticVoidMethodInThread((char*)"startAThreadOnJoinFinish",(char*)"()V");
+}
+
+extern "C" void callbackJavaStaticVoidMethodInThread(const char* name, const char* sig,int workid ){
     JNIEnv *env = nullptr;
 
-    JavaVMAttachArgs args;
-    args.version = jniVer;
-    args.name = "pthread-startAThreadWork1";//给线程起个名字吧，这样在调试或者崩溃的时候能显示出名字，而不是thead-1,thread-2这样的名字。
-    args.group = NULL;//java.lang.ThreadGroup的全局引用，作用你懂的。
+    JavaVMAttachArgs jvmargs;
+    jvmargs.version = jniVer;
+    jvmargs.name = "pthread-startAThreadWork1";//给线程起个名字吧，这样在调试或者崩溃的时候能显示出名字，而不是thead-1,thread-2这样的名字。
+    jvmargs.group = NULL;//java.lang.ThreadGroup的全局引用，作用你懂的。
 
-     int ret = g_vm->AttachCurrentThread(&env, &args);
-     LOGD("AttachCurrentThread env is:%p, ret=%d , jniVer=%d",env,ret,jniVer);
+    g_vm->AttachCurrentThread(&env, &jvmargs);
+//    LOGD("AttachCurrentThread env is:%p, ret=%d , jniVer=%d",env,ret,jniVer);
 
-    jmethodID mID = env->GetStaticMethodID(gs_NativeThreadAgent_class,(char*)"startAThreadFinish",(char*)"()V");
-    env->CallStaticVoidMethod(gs_NativeThreadAgent_class,mID);
+    jmethodID mID = env->GetStaticMethodID(gs_NativeThreadAgent_class,name,(char*)sig);
+
+    if(workid >= 0){
+        env->CallStaticVoidMethod(gs_NativeThreadAgent_class,mID,workid);
+    }else{
+        env->CallStaticVoidMethod(gs_NativeThreadAgent_class,mID);
+    }
+
+
+
     g_vm->DetachCurrentThread();//释放当前线程
-    g_vm->GetEnv((void**)&env,jniVer);//释放之后，当前线程的env指针会被销毁
-    LOGD("after  DetachCurrentThread env is:%p", env);
+//    g_vm->GetEnv((void**)&env,jniVer);//释放之后，当前线程的env指针会被销毁
+//    LOGD("after  DetachCurrentThread env is:%p", env);
 }
