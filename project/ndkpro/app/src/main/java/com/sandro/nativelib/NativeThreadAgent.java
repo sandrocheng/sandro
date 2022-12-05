@@ -48,6 +48,17 @@ public class NativeThreadAgent {
      */
     public static void startMultiThreadOnDetachFinish(int workid){
         android.util.Log.d("NativeThreadAgent","startMultiThreadOnDetachFinish callback ,workid is " + workid);
+        synchronized (mHandler){
+            mHandler.removeCallbacksAndMessages(null);
+            mHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    android.util.Log.d("NativeThreadAgent",
+                            "startMultiThreadOnDetachFinish callback wait 1500 m and no callback,process go one ");
+                }
+            },1500L);
+        }
+
     }
 
     public static native void startAThreadOnJoin();

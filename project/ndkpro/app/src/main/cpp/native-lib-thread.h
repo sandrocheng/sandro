@@ -10,20 +10,30 @@
  * thread.joinable 判断是否可以成功使用 join 或者 detach ，返回true或者flase
  *
  * 注意
+ * 1）
  * 线程中如果使用了其他线程内存变量的引用，需要注意该变量的生命周期是否合理，避免其他线程内存回收导致当前线程的问题
  * 使用函数对象（仿函数）构造一个thread的时候，该对象在thread内部使用拷贝构造，所以要注意仿函数内部是否由指针，考虑是否需要重写拷贝构造
- *
  * 自己创建的子线程不能用主线程的JNIEnv了，得用AttachCurrentThread生成自己的JNIEnv，用完后调用DetachCurrentThread。
- *
  * 在线程中获取JNIEnv ,首先要先获取javaVM，有许多方式可以获取JavaVM指针。
  * 可以在VM创建的时候记录下来，也可以通过JNI_GetCreatedJavaVMs查询被创建的虚拟机，还可以通过调用JNI函数GetJavaVM或者定义JNI_OnLoad句柄接口。
  * 与JNIEnv不同的是，JavaVM只要被缓存在全局引用中，是可以被跨线程使用的。
- *
  * 子线程中也不能直接使用 jni传参过来的 jclass/jobject
  * 需要定义一个全局变量，然后调用NewGlobalRef给全局变量赋值
  * gs_class = (jclass)env->NewGlobalRef(jclz);
  * 在子线程中只能操作这个全局变量
  * 通过DeleteGlobalRef来 释放全局引用。 全局引用一直保持有效,直到被程序员手动释放。 在失效之前,全局引用确保了所引用的对象不会被GC
+ *
+ * 2)
+ * 线程方法使用 引用和指针传参时的坑,详见 startwork1(const int &var,char *strbuff )方法示例
+ * 当使用对象的深拷贝传参时,有可能发生在其他线程销毁时刻之后才拷贝,导致bug,比如 startwork2 方法
+ * 不推荐使用引用传参,不要使用指针传参,正确方法相见startwork2(调用时使用临时变量)
+ * 使用线程的join方法，不会有以上问题，detach方法需要注意以上问题
+ * 或者使用 类对象的方式 执行线程 ，这样再调用线程之前能够完全保证 数据已经准备好
+ *  例：
+ *    ThreadClass tc(7,callbackJavaStaticVoidMethodInThread);
+ *    std::thread mThread(tc);
+ *    mThread.detach();
+ *
  */
 
 #ifndef NDKPRO_NATIVE_LIB_THREAD_H
@@ -70,8 +80,17 @@ extern "C"  void startwork(int workid);
 
 /**
  * 线程任务1：输出字符串
+ * @param var 类型引用
+ * @param strbuff 字符串指针
  */
- extern "C"  void startwork1();
+ extern "C"  void startwork1(const int &var,char *strbuff );
+
+/**
+* 线程任务2：输出字符串
+* @parvar
+* @param strbuff 字符串引用，使用引用接类对象，减少消耗
+*/
+extern "C"  void startwork2(const int var,const std::string &strbuff);
 
 /**
  * 设置全局变量 NativeThreadAgent的class，用于子线程中evn的生成
