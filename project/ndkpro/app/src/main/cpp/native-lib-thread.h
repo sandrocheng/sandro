@@ -33,6 +33,7 @@
 #include <android/log.h>
 #include <thread>//c++ 11 线程库
 #include "ThreadClass.h"
+#include "native-global-params.h"
 
 /**
  * 启动一个线程使用join方法执行

@@ -40,16 +40,16 @@ Java_com_sandro_nativelib_NativeThreadAgent_startMultiThreadOnJoin(JNIEnv* env, 
 extern "C" JNIEXPORT void JNICALL
 Java_com_sandro_nativelib_NativeThreadAgent_startMultiThreadOnDetach(JNIEnv* env, jclass jclz){
     setNativeThreadAgendClass(env,jclz);
-    ThreadClass tc(7);
+    ThreadClass tc(7,callbackJavaStaticVoidMethodInThread);
     std::thread mThread(tc);
     mThread.detach();
 
-    std::thread(startworkCallBack,4,(char*)"startMultiThreadOnDetachFinish",(char*)"(I)V").detach();
-    std::thread(startworkCallBack,5,(char*)"startMultiThreadOnDetachFinish",(char*)"(I)V").detach();
-    std::thread(startworkCallBack,6,(char*)"startMultiThreadOnDetachFinish",(char*)"(I)V").detach();
+    std::thread(startworkCallBack,4,Java_method_name_startMultiThreadOnDetachFinish,Java_method_name_startMultiThreadOnDetachFinish_sig).detach();
+    std::thread(startworkCallBack,5,Java_method_name_startMultiThreadOnDetachFinish,Java_method_name_startMultiThreadOnDetachFinish_sig).detach();
+    std::thread(startworkCallBack,6,Java_method_name_startMultiThreadOnDetachFinish,Java_method_name_startMultiThreadOnDetachFinish_sig).detach();
 
     auto mylamthread = []{
-        startworkCallBack(8,(char*)"startMultiThreadOnDetachFinish", (char*)"(I)V");
+        startworkCallBack(8,Java_method_name_startMultiThreadOnDetachFinish, Java_method_name_startMultiThreadOnDetachFinish_sig);
     };
     std::thread(mylamthread).detach();
 

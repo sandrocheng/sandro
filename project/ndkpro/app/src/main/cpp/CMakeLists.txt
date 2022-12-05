@@ -21,6 +21,8 @@ add_library( # Sets the name of the library.
              SHARED
 
              # Provides a relative path to your source file(s).
+             native-global-params.h
+             native-global-params.cpp
              native-lib-thread.cpp
              native-lib-thread.h
              nativeC-lib.h

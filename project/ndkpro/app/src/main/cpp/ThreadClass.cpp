@@ -14,8 +14,9 @@
 #include "ThreadClass.h"
 
 extern "C"
-ThreadClass::ThreadClass(int workId){
+ThreadClass::ThreadClass(int workId,void (*fp)(const char* name, const char* sig,...)){
     this->workId = workId;
+    this->callbackfp = fp;
 }
 
 extern "C"
@@ -24,4 +25,7 @@ void ThreadClass::operator()(){
     LOGD("ThreadClass work id : %d, step 2......",this->workId);
     LOGD("ThreadClass work id : %d, step 3... ...",this->workId);
     LOGD("ThreadClass work id : %d, finish",this->workId);
+    callbackfp(Java_method_name_startMultiThreadOnDetachFinish,
+       Java_method_name_startMultiThreadOnDetachFinish_sig,
+       this->workId);
 }
