@@ -35,8 +35,8 @@ Java_com_sandro_nativelib_NativeThreadAgent_startAThreadOnJoin(JNIEnv* env, jcla
 
     /**
      * 使用strbuff构造一个新的临时变量 ,安全
-     * 原因是使用临时变量显式转换会优先于线程构造,这里会构造两次,第一次是是参数中的临时变量构造,
-     * 第二次是线程内部又执行了一个拷贝构造,而这两次都会在源变量销毁之前执行,
+     * 原因是使用临时变量显式转换会在父线程执行,这里会构造两次,第一次是是参数中的临时变量构造,
+     * 第二次是内部又隐式地执行了一个拷贝构造,而这两次构造都是在父线程中执行，两次构造执行完毕后子线程才会执行
      * 因此保证了子线程在执行之前,参数已经准备完毕,这里可以自己写一个有构造,拷贝构造,析构函数的类,执行一下
      */
     std::thread(startwork2,var,std::string(strbuff)).join();
@@ -57,9 +57,26 @@ Java_com_sandro_nativelib_NativeThreadAgent_startMultiThreadOnJoin(JNIEnv* env, 
 extern "C" JNIEXPORT void JNICALL
 Java_com_sandro_nativelib_NativeThreadAgent_startMultiThreadOnDetach(JNIEnv* env, jclass jclz){
     setNativeThreadAgendClass(env,jclz);
+
+    TestClass tcObj(100);
+    LOGD("in mainThread tcobj address is %p" ,&tcObj);
+    std::thread(startwork3,std::ref(tcObj)).detach();
+
+
+    std::unique_ptr<int> pzn(new int(200));
+    std::thread(startwork4,std::move(pzn)).join();
+
+    //使用对象成员函数执行线程
+    std::thread(
+                &TestClass::thread_work,//成员函数
+                tcObj,//对象
+                10 //成员函数第一个参数
+                ).detach();
+
     ThreadClass tc(7,callbackJavaStaticVoidMethodInThread);
     std::thread mThread(tc);
-    mThread.detach();
+    LOGD("mThread id is %d" ,mThread.get_id());
+    mThread.join();
 
     std::thread(startworkCallBack,4,
                 Java_method_name_startMultiThreadOnDetachFinish,Java_method_name_startMultiThreadOnDetachFinish_sig).detach();
@@ -72,6 +89,8 @@ Java_com_sandro_nativelib_NativeThreadAgent_startMultiThreadOnDetach(JNIEnv* env
         startworkCallBack(8,Java_method_name_startMultiThreadOnDetachFinish, Java_method_name_startMultiThreadOnDetachFinish_sig);
     };
     std::thread(mylamthread).detach();
+
+
 
     LOGD("startMultiThreadOnDetach in main thread finish");
 }
@@ -118,6 +137,15 @@ extern "C" void setNativeThreadAgendClass(JNIEnv* env,jclass jclz){
     }
 }
 
+extern "C"  void startwork4(std::unique_ptr<int> pzn){
+    LOGD("start work4(unituq_ptr) ,id : %d" , *pzn);
+    LOGD("work(unituq_ptr)  id : %d, step 1..." , *pzn);
+    LOGD("work id(unituq_ptr)  : %d, step 2..." , *pzn);
+    LOGD("work id(unituq_ptr)  : %d, step 3..." , *pzn);
+    LOGD("work(unituq_ptr)  ,id : %d finish",*pzn);
+
+}
+
 extern "C"  void startwork(int workid){
     LOGD("start work ,id : %d" , workid);
     LOGD("work id : %d, step 1..." , workid);
@@ -125,6 +153,13 @@ extern "C"  void startwork(int workid){
     LOGD("work id : %d, step 3..." , workid);
     LOGD("start work ,id : %d finish",workid);
 }
+
+extern "C"  void startwork3(TestClass &tcobj){
+    tcobj.m_int--;
+    LOGD("startwork3 tc in thread address is %p ", &tcobj);
+    LOGD("startwork3 finish");
+}
+
 extern "C"  void startwork2(const int var,const std::string &strbuff){
     /**
      * strbuff的地址和外部地址是不一样的,这虽然能保证指针指向的内存不会被销毁

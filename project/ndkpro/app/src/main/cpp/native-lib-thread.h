@@ -9,6 +9,24 @@
  *      一旦detach后，就不能再join回来
  * thread.joinable 判断是否可以成功使用 join 或者 detach ，返回true或者flase
  *
+ * std::ref 函数
+ *      当方法参数是引用的时候，在线程调用前 使用 std::ref(obj),可以保证这个对象是线程外的对象。详间startwork3函数
+ *      如果不用ref，这个对象在传入线程后实际上会被拷贝构造生成一个新的对象，方法内部引用实际上是新的对象的引用，
+ *      这样就无法达到线程内修改数据，线程外数据也修改的目的，使用ref则可以实现这个目标
+ *
+ * C++11 提供了 3 种智能指针类型，它们分别由 unique_ptr 类、shared_ptr 类和 weak_ptr 类定义，所以又分别称它们为独占指针、共享指针和弱指针。
+ * #include <memory>
+ * 智能指针在线程函数中传参时，需要std::move() 相见startwork4,
+ * 智能指针智能用在join，不能用detach,因为move以后，原来的智能指针会维护的对象指向为空，因为是浅拷贝，只是更改了指针的指向，并没有实际更改内存
+ * 当主线程结束以后，内存回收，而此时子线程智能指针指向的地址还是原来堆中的地址（此时已经释放），导致野指针错乱
+ *
+ *  如果使用detach，要注意对象使用是否可能造成野指针
+ *  主要是要看对象是否在线程中执行了拷贝构造，如果没有，就不要使用detach
+ *  std::thread(
+ *             &TestClass::thread_work,//成员函数
+ *             tcObj,//对象
+ *             10 //成员函数第一个参数
+ *       ).detach();
  * 注意
  * 1）
  * 线程中如果使用了其他线程内存变量的引用，需要注意该变量的生命周期是否合理，避免其他线程内存回收导致当前线程的问题
@@ -26,10 +44,12 @@
  * 2)
  * 线程方法使用 引用和指针传参时的坑,详见 startwork1(const int &var,char *strbuff )方法示例
  * 当使用对象的深拷贝传参时,有可能发生在其他线程销毁时刻之后才拷贝,导致bug,比如 startwork2 方法
- * 不推荐使用引用传参,不要使用指针传参,正确方法相见startwork2(调用时使用临时变量)
+ * 基本类型不推荐使用引用传参,不要使用指针传参,正确方法相见startwork2(调用时使用临时变量)
+ * 程方法传参，会统一调用拷贝构造，所以即便是引用传参，线程内对引用操作，也不会影响外部的原对象
+ * 如果想要在线程内修改线程外的对象，需要使用std::ref函数,正确方法相见startwork3
  * 使用线程的join方法，不会有以上问题，detach方法需要注意以上问题
- * 或者使用 类对象的方式 执行线程 ，这样再调用线程之前能够完全保证 数据已经准备好
- *  例：
+ * 或者使用函数对象的方式 执行线程 ，这样再调用线程之前能够完全保证 数据已经准备好
+ * 例：
  *    ThreadClass tc(7,callbackJavaStaticVoidMethodInThread);
  *    std::thread mThread(tc);
  *    mThread.detach();
@@ -43,7 +63,20 @@
 #include <android/log.h>
 #include <thread>//c++ 11 线程库
 #include "ThreadClass.h"
+#include <memory>//智能指针
 #include "native-global-params.h"
+
+#define TAG "nativeThreadLibTAG"
+#define LOGD(...)   __android_log_print(ANDROID_LOG_DEBUG, TAG, __VA_ARGS__)
+
+class TestClass{
+public :
+    TestClass(int m):m_int(m){};
+    int m_int = 0;
+    void thread_work(int x){
+        LOGD("TestClass::thread_work ,arg : %d",x);
+    };
+};
 
 /**
  * 启动一个线程使用join方法执行
@@ -87,10 +120,22 @@ extern "C"  void startwork(int workid);
 
 /**
 * 线程任务2：输出字符串
-* @parvar
+* @param var
 * @param strbuff 字符串引用，使用引用接类对象，减少消耗
 */
 extern "C"  void startwork2(const int var,const std::string &strbuff);
+
+/**
+* 线程任务3：
+* @param TestClass
+*/
+extern "C"  void startwork3(TestClass &tcobj);
+
+/**
+* 线程任务3：
+* @param pzn  std::unique_ptr<int> 独占式智能指针
+*/
+extern "C"  void startwork4(std::unique_ptr<int> pzn);
 
 /**
  * 设置全局变量 NativeThreadAgent的class，用于子线程中evn的生成

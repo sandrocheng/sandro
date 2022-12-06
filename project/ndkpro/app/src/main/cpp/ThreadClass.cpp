@@ -21,9 +21,9 @@ ThreadClass::ThreadClass(int workId,void (*fp)(const char* name, const char* sig
 
 extern "C"
 void ThreadClass::operator()(){
+    LOGD("ThreadClass thread id : %d start",std::this_thread::get_id());
     LOGD("ThreadClass work id : %d, step 1... ...",this->workId);
     LOGD("ThreadClass work id : %d, step 2......",this->workId);
-    LOGD("ThreadClass work id : %d, step 3... ...",this->workId);
     LOGD("ThreadClass work id : %d, finish",this->workId);
     callbackfp(Java_method_name_startMultiThreadOnDetachFinish,
        Java_method_name_startMultiThreadOnDetachFinish_sig,
