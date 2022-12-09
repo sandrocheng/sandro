@@ -7,12 +7,19 @@
  *      传统多线程程序需要等待子线程执行完毕再推出，比如使用join的方式让主线程等待
  *      detach让子线程和主线程脱离，不阻塞主线程
  *      一旦detach后，就不能再join回来
+ *
  * thread.joinable 判断是否可以成功使用 join 或者 detach ，返回true或者flase
  *
  * std::ref 函数
  *      当方法参数是引用的时候，在线程调用前 使用 std::ref(obj),可以保证这个对象是线程外的对象。详间startwork3函数
  *      如果不用ref，这个对象在传入线程后实际上会被拷贝构造生成一个新的对象，方法内部引用实际上是新的对象的引用，
  *      这样就无法达到线程内修改数据，线程外数据也修改的目的，使用ref则可以实现这个目标
+ *
+ *
+ * 线程id获取方式
+ *  1 线程外部获取id : mThread.get_id()
+ *  2 线程内部获取当前线程id : std::this_thread::get_id()
+ *
  *
  * C++11 提供了 3 种智能指针类型，它们分别由 unique_ptr 类、shared_ptr 类和 weak_ptr 类定义，所以又分别称它们为独占指针、共享指针和弱指针。
  * #include <memory>
@@ -27,6 +34,40 @@
  *             tcObj,//对象
  *             10 //成员函数第一个参数
  *       ).detach();
+ *
+ * 保护共享数据：
+ *     操作时，用代码把共享数据锁住然后再操作数据，其他想操作共享数据的线程必须等待，直到解锁。
+ * 互斥量(mutex)：
+ *     是个类对象，理解为一把锁，多个线程尝试用lock()成员函数来加锁，只有一个线程能够锁定成功（lock()返回），
+ *     如果没有锁成功，则线程一直阻塞在这里
+ *     注意：只保护需要保护的部分。
+ *           lock 和 unlock必须成对出现
+ *           mutex是不可拷贝对象，如果放在类里面，当把类对象传递到thread里时，对象会执行拷贝操作，此时编译会出错
+ *     用法：详见 multisThreadsReadAndWrite
+ *
+ * std::lock_guard 模板
+ *   由于lock unlock必须成对出现，现实工作中，常常会有遗忘的情况发生导致严重后果 c++提供了lock_guard模板
+ *   可以直接取代lock 和 unlock
+ *   原理 ：构造的时候执行lock，析构的时候执行unclock，当函数returen或者所在代码作用域结束的时候自动调用析构
+ *
+ * c++ 死锁
+ *     两把或两把以上的锁（互斥量），互相等待会造成死锁
+ *     线程A执行的时候，先锁1号锁，再锁2号锁（还没锁上的时候线程切换了）
+ *     此时线程B开始执行，这个线程先锁2号锁（因为当前在线程A里，2号锁还没锁上就切换了，所以线程B给2号锁加锁成功）
+ *     然后继续lock 1号锁，此时1号锁在线程A没有释放，导致线程B被阻塞
+ *     当系统再切换到线程A 2号锁继续执行锁操作，但是此时线程B已经锁住了2号锁，因此线程A也阻塞住了
+ *     之后，线程A B 都无法继续执行，造成死锁。
+ *
+ * 死锁的一般解决方案
+ *    1 保证多个互斥量在不同线程上锁顺序一致
+ *    2 std::lock()函数模板
+ *      一次锁住两个或者两个以上的互斥量，他能避免多个锁由于上锁顺序导致的死锁问题
+ *     如果互斥量没有锁住，std::lock()就会阻塞住，并释放所有已经锁住的互斥量，避免死锁。
+ *     然后不断尝试是否可以都把互斥量锁住，都锁住之后才会继续执行。
+ *     注意，std::lock()只管加锁，不管解锁，需要手动在合理的位置上解锁
+ *   3 std::lock_guard() + std::lock()
+ *     联合使用这两个模板，同时避免死锁和忘记unclock的问题 详见TestClass4
+ *
  * 注意
  * 1）
  * 线程中如果使用了其他线程内存变量的引用，需要注意该变量的生命周期是否合理，避免其他线程内存回收导致当前线程的问题
@@ -65,17 +106,187 @@
 #include "ThreadClass.h"
 #include <memory>//智能指针
 #include "native-global-params.h"
-
+#include <vector>
+#include <queue>
+#include "native-global-params.h"
+#include "mutex"
 #define TAG "nativeThreadLibTAG"
 #define LOGD(...)   __android_log_print(ANDROID_LOG_DEBUG, TAG, __VA_ARGS__)
 
+//mutex是不可拷贝对象，如果放在类里面，当把类对象传递到thread里时，对象会执行拷贝操作，此时编译会出错
+static std::mutex TestClass_mutex;
+
+static std::mutex TestClass_mute2;
+
+/**
+ * mutex
+ */
 class TestClass{
+private:
+    std::queue<int> dataQ;
 public :
+    TestClass(){};
     TestClass(int m):m_int(m){};
     int m_int = 0;
     void thread_work(int x){
         LOGD("TestClass::thread_work ,arg : %d",x);
     };
+    /**
+     * 模拟耗时操作往 dataQ里插入数据
+     */
+    void dataQPush(){
+        for(int i = 0;i<m_int;i++){
+            TestClass_mutex.lock();
+            dataQ.push(i);
+            TestClass_mutex.unlock();
+            LOGD("dataQPush push data %d",i );
+
+        }
+    }
+
+    /**
+     * 把数据从消息队列取出的线程操作
+     */
+     void getDataFromQueue(){
+         for(int i = 0;i<10000;i++){
+             TestClass_mutex.lock();
+             if(!dataQ.empty()){
+                 while (!dataQ.empty()){
+                     int data = dataQ.front() ;
+                     dataQ.pop();
+                     LOGD("getDataFromQueue get data from dataQ : %d " , data);
+                 }
+             }
+             TestClass_mutex.unlock();
+         }
+     }
+};
+
+/**
+ * std::lock_guard()
+ */
+class TestClass2{
+private:
+    std::queue<int> dataQ;
+    int queue_len = 0;
+public :
+    TestClass2(){};
+    TestClass2(int m):queue_len(m){};
+
+    /**
+     * 模拟耗时操作往 dataQ里插入数据
+     */
+    void dataQPush(){
+        for(int i = 0;i<queue_len;i++){
+            std::lock_guard<std::mutex> guard(TestClass_mute2);
+            dataQ.push(i);
+            LOGD("dataQPush2 push data %d",i );
+        }
+    }
+
+    /**
+     * 把数据从消息队列取出的线程操作
+     */
+    void getDataFromQueue(){
+        for(int i = 0;i<100000;i++){
+            std::lock_guard<std::mutex> guard(TestClass_mute2);
+            if(!dataQ.empty()){
+                while (!dataQ.empty()){
+                    int data = dataQ.front() ;
+                    dataQ.pop();
+                    LOGD("getDataFromQueue2 get data from dataQ : %d " , data);
+                }
+            }
+        }
+    }
+};
+
+/**
+ * std::lock()
+ */
+class TestClass3{
+private:
+    std::queue<int> dataQ;
+    int queue_len = 0;
+public :
+    TestClass3(){};
+    TestClass3(int m):queue_len(m){};
+
+    /**
+     * 模拟耗时操作往 dataQ里插入数据
+     */
+    void dataQPush(){
+        for(int i = 0;i<queue_len;i++){
+            std::lock(TestClass_mutex,TestClass_mute2);
+            dataQ.push(i);
+            LOGD("dataQPush3 push data %d",i );
+            TestClass_mutex.unlock();
+            TestClass_mute2.unlock();
+        }
+    }
+
+    /**
+     * 把数据从消息队列取出的线程操作
+     */
+    void getDataFromQueue(){
+        for(int i = 0;i<100000;i++){
+            std::lock(TestClass_mutex,TestClass_mute2);
+            if(!dataQ.empty()){
+                while (!dataQ.empty()){
+                    int data = dataQ.front() ;
+                    dataQ.pop();
+                    LOGD("getDataFromQueue3 get data from dataQ : %d " , data);
+                }
+            }
+            TestClass_mutex.unlock();
+            TestClass_mute2.unlock();
+        }
+    }
+};
+
+/**
+ * std::lock_guard() + std::lock()  避免死锁和忘记unclock的问题
+ */
+class TestClass4{
+private:
+    std::queue<int> dataQ;
+    int queue_len = 0;
+public :
+    TestClass4(){};
+    TestClass4(int m):queue_len(m){};
+
+    /**
+     * 模拟耗时操作往 dataQ里插入数据
+     */
+    void dataQPush(){
+        for(int i = 0;i<queue_len;i++){
+            std::lock(TestClass_mutex,TestClass_mute2);
+            // std::adopt_loc对象会避免 guard 给互斥量上锁，避免二次上锁
+            std::lock_guard<std::mutex> guard1(TestClass_mutex,std::adopt_lock);
+            std::lock_guard<std::mutex> guard2(TestClass_mute2,std::adopt_lock);
+            dataQ.push(i);
+            LOGD("dataQPush4 push data %d",i );
+        }
+    }
+
+    /**
+     * 把数据从消息队列取出的线程操作
+     */
+    void getDataFromQueue(){
+        for(int i = 0;i<100000;i++){
+            std::lock(TestClass_mutex,TestClass_mute2);
+            // std::adopt_lock对象会避免 guard 给互斥量上锁，避免二次上锁
+            std::lock_guard<std::mutex> guard1(TestClass_mutex,std::adopt_lock);
+            std::lock_guard<std::mutex> guard2(TestClass_mute2,std::adopt_lock);
+            if(!dataQ.empty()){
+                while (!dataQ.empty()){
+                    int data = dataQ.front() ;
+                    dataQ.pop();
+                    LOGD("getDataFromQueue4 get data from dataQ : %d " , data);
+                }
+            }
+        }
+    }
 };
 
 /**
@@ -96,6 +307,23 @@ Java_com_sandro_nativelib_NativeThreadAgent_startMultiThreadOnJoin(JNIEnv* env, 
 extern "C" JNIEXPORT void JNICALL
 Java_com_sandro_nativelib_NativeThreadAgent_startMultiThreadOnDetach(JNIEnv* env, jclass jclz);
 
+/**
+ * 创建和等待多个线程
+ */
+extern "C" JNIEXPORT void JNICALL
+Java_com_sandro_nativelib_NativeThreadAgent_startAndWaitMultiThread(JNIEnv* env, jclass jclz);
+
+/**
+ * 多个线程读写共享数据
+ */
+extern "C" JNIEXPORT void JNICALL
+Java_com_sandro_nativelib_NativeThreadAgent_multisThreadsReadAndWrite(JNIEnv* env, jclass jclz);
+
+/**
+ * 避免死锁的常规处理方法
+ */
+extern "C" JNIEXPORT void JNICALL
+Java_com_sandro_nativelib_NativeThreadAgent_deadLockVoid(JNIEnv* env, jclass jclz);
 
 /**
  * 线程任务：输出字符串，结束后回调java接口
@@ -136,6 +364,12 @@ extern "C"  void startwork3(TestClass &tcobj);
 * @param pzn  std::unique_ptr<int> 独占式智能指针
 */
 extern "C"  void startwork4(std::unique_ptr<int> pzn);
+
+/**
+* 线程任务5：
+* @param workid  id
+ */
+extern "C"  void startwork5(int workid);
 
 /**
  * 设置全局变量 NativeThreadAgent的class，用于子线程中evn的生成

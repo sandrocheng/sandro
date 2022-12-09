@@ -55,15 +55,62 @@ public class NativeThreadAgent {
                 public void run() {
                     android.util.Log.d("NativeThreadAgent",
                             "startMultiThreadOnDetachFinish callback wait 1500 m and no callback,process go one ");
+                    new Thread(){
+                        public void run(){
+                            startAndWaitMultiThread();
+                        }
+                    }.start();
+
                 }
             },1500L);
         }
-
     }
+
+    /**
+     * startAndWaitMultiThread 结束时回调一次
+     */
+    public static void startAndWaitMultiThreadFinish(){
+        android.util.Log.d("NativeThreadAgent","startAndWaitOtherThreadFinish callback ");
+        new Thread(){
+            public void run(){
+                multisThreadsReadAndWrite();
+            }
+        }.start();
+    }
+
+    /**
+     * multisThreadsReadAndWrite 结束回调
+     */
+    public static void multisThreadsReadAndWriteFinish(){
+        android.util.Log.d("NativeThreadAgent","multisThreadsReadAndWriteFinish callback ");
+        new Thread(){
+            public void run(){
+                deadLockVoid();
+            }
+        }.start();
+    }
+
+    /**
+     * multisThreadsReadAndWrite 结束回调
+     */
+    public static void deadLockVoidFinish(){
+        android.util.Log.d("NativeThreadAgent","deadLockVoid callback ");
+//        new Thread(){
+//            public void run(){
+//                deadLockVoid();
+//            }
+//        }.start();
+    }
+
+    public static native void deadLockVoid();
 
     public static native void startAThreadOnJoin();
 
     private static native void startMultiThreadOnJoin();
 
     private static native void startMultiThreadOnDetach();
+
+    private static native void startAndWaitMultiThread();
+
+    private static native void multisThreadsReadAndWrite();
 }

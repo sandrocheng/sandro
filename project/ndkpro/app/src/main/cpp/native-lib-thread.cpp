@@ -19,6 +19,59 @@ jint jniVer;
 static jclass gs_NativeThreadAgent_class = NULL;
 
 extern "C" JNIEXPORT void JNICALL
+Java_com_sandro_nativelib_NativeThreadAgent_deadLockVoid(JNIEnv* env, jclass jclz){
+    TestClass3 tc3(10);
+    std::thread getDataThread(&TestClass3::getDataFromQueue,std::ref(tc3));
+    std::thread pushThread(&TestClass3::dataQPush,std::ref(tc3));
+    getDataThread.join();
+    pushThread.join();
+
+    TestClass4 tc4(10);
+    std::thread getDataThread4(&TestClass4::getDataFromQueue,std::ref(tc4));
+    std::thread pushThread4(&TestClass4::dataQPush,std::ref(tc4));
+    getDataThread4.join();
+    pushThread4.join();
+
+    jmethodID  jmID = env->GetStaticMethodID(jclz,(char *)"deadLockVoidFinish",(char*)"()V");
+    env->CallStaticVoidMethod(jclz,jmID);
+
+}
+
+extern "C" JNIEXPORT void JNICALL
+Java_com_sandro_nativelib_NativeThreadAgent_multisThreadsReadAndWrite(JNIEnv* env, jclass jclz){
+
+    //使用lock 和 unlock 对数据加锁
+    TestClass tc(10);
+    std::thread getDataThread(&TestClass::getDataFromQueue,std::ref(tc));
+    std::thread pushThread(&TestClass::dataQPush,std::ref(tc));
+    pushThread.join();
+    getDataThread.join();
+
+    //使用std::lock_guard模板对数据加锁
+    TestClass2 tc2(10);
+    std::thread getDataThread2(&TestClass2::getDataFromQueue,std::ref(tc2));
+    std::thread pushThread2(&TestClass2::dataQPush,std::ref(tc2));
+    getDataThread2.join();
+    pushThread2.join();
+    jmethodID mID = env->GetStaticMethodID(jclz,(char*)"multisThreadsReadAndWriteFinish",(char*)"()V");
+    env->CallStaticVoidMethod(jclz,mID);
+}
+
+extern "C" JNIEXPORT void JNICALL
+Java_com_sandro_nativelib_NativeThreadAgent_startAndWaitMultiThread(JNIEnv* env, jclass jclz){
+    std::vector<std::thread> threadArr;
+    for(int i=0;i<3;i++){
+        threadArr.push_back(std::thread(startwork5,(100+i)));
+    }
+    for(auto iter = threadArr.begin() ;iter!=threadArr.end();iter++){
+        iter->join();
+    }
+    jmethodID mID = env->GetStaticMethodID(jclz,(char*)"startAndWaitMultiThreadFinish",(char*)"()V");
+    env->CallStaticVoidMethod(jclz,mID);
+    LOGD("startAndWaitOtherThread in main thread finish,cur thread id is %d",std::this_thread::get_id());
+}
+
+extern "C" JNIEXPORT void JNICALL
 Java_com_sandro_nativelib_NativeThreadAgent_startAThreadOnJoin(JNIEnv* env, jclass jclz){
     //通过 NewGlobalRef 方法，在全局变量中复制一份 jni传参jclass/jobject，只有全局的jclass/jobject 才能在子线程中调用
     setNativeThreadAgendClass(env,jclz);
@@ -40,7 +93,7 @@ Java_com_sandro_nativelib_NativeThreadAgent_startAThreadOnJoin(JNIEnv* env, jcla
      * 因此保证了子线程在执行之前,参数已经准备完毕,这里可以自己写一个有构造,拷贝构造,析构函数的类,执行一下
      */
     std::thread(startwork2,var,std::string(strbuff)).join();
-    LOGD("startAThreadOnJoin in main thread finish");
+    LOGD("startAThreadOnJoin in main thread finish,cur thread id is %d",std::this_thread::get_id());
 }
 
 extern "C" JNIEXPORT void JNICALL
@@ -51,7 +104,7 @@ Java_com_sandro_nativelib_NativeThreadAgent_startMultiThreadOnJoin(JNIEnv* env, 
     std::thread(startwork,3).join();
     jmethodID mID = env->GetStaticMethodID(jclz,(char*)"startMultiThreadJoinFinish",(char*)"()V");
     env->CallStaticVoidMethod(jclz,mID);
-    LOGD("startMultiThreadJoinFinish in main thread finish");
+    LOGD("startMultiThreadJoinFinish in main thread finish,cur thread id is %d",std::this_thread::get_id());
 }
 
 extern "C" JNIEXPORT void JNICALL
@@ -92,7 +145,7 @@ Java_com_sandro_nativelib_NativeThreadAgent_startMultiThreadOnDetach(JNIEnv* env
 
 
 
-    LOGD("startMultiThreadOnDetach in main thread finish");
+    LOGD("startMultiThreadOnDetach in main thread finish ,cur thread id is %d",std::this_thread::get_id());
 }
 
 extern "C"  void startworkCallBack(int workid,const char* name, const char* sig){
@@ -144,6 +197,16 @@ extern "C"  void startwork4(std::unique_ptr<int> pzn){
     LOGD("work id(unituq_ptr)  : %d, step 3..." , *pzn);
     LOGD("work(unituq_ptr)  ,id : %d finish",*pzn);
 
+}
+
+extern "C"  void startwork5(int workid){
+    LOGD("start work5 ,id : %d ,thread_id is %d" , workid,std::this_thread::get_id());
+    LOGD("work5  %d ,step1...." , workid);
+    LOGD("work5  %d ,step2...." , workid);
+    LOGD("work5  %d ,step3...." , workid);
+    LOGD("work5  %d ,step4...." , workid);
+    LOGD("work5  %d ,step5...." , workid);
+    LOGD("work5 id : %d,thread_id is %d  finish",workid,std::this_thread::get_id());
 }
 
 extern "C"  void startwork(int workid){
