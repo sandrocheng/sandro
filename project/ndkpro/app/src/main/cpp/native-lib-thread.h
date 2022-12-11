@@ -326,6 +326,12 @@ extern "C" JNIEXPORT void JNICALL
 Java_com_sandro_nativelib_NativeThreadAgent_deadLockVoid(JNIEnv* env, jclass jclz);
 
 /**
+ * unique_lock
+ */
+extern "C" JNIEXPORT void JNICALL
+Java_com_sandro_nativelib_NativeThreadAgent_uniqueLock(JNIEnv* env, jclass jclz);
+
+/**
  * 线程任务：输出字符串，结束后回调java接口
  * @param workid  任务id
  * @param name 方法名称

@@ -19,6 +19,35 @@ jint jniVer;
 static jclass gs_NativeThreadAgent_class = NULL;
 
 extern "C" JNIEXPORT void JNICALL
+Java_com_sandro_nativelib_NativeThreadAgent_uniqueLock(JNIEnv* env, jclass jclz){
+    UniqueLockCase ulc;
+    std::thread pushThread(&UniqueLockCase::dataQPush,std::ref(ulc));
+    std::thread popThread(&UniqueLockCase::getDataFromQueue,std::ref(ulc));
+    pushThread.join();
+    popThread.join();
+
+    UniqueLockCase2 ulc2;
+    std::thread pushThread2(&UniqueLockCase2::dataQPush2,std::ref(ulc2));
+    std::thread popThread2(&UniqueLockCase2::getDataFromQueue2,std::ref(ulc2));
+    pushThread2.join();
+    popThread2.join();
+
+    UniqueLockCase3 ulc3;
+    std::thread popThread3(&UniqueLockCase3::getDataFromQueue3,std::ref(ulc3));
+    std::thread pushThread3(&UniqueLockCase3::dataQPush3,std::ref(ulc3));
+    popThread3.join();
+    pushThread3.join();
+
+    UniqueLockCase4 ulc4;
+    std::thread popThread4(&UniqueLockCase4::getDataFromQueue4,std::ref(ulc4));
+    std::thread pushThread4(&UniqueLockCase4::dataQPush4,std::ref(ulc4));
+    popThread4.join();
+    pushThread4.join();
+
+    LOGD("uniqueLock thread finish,cur thread id is %d",std::this_thread::get_id());
+}
+
+extern "C" JNIEXPORT void JNICALL
 Java_com_sandro_nativelib_NativeThreadAgent_deadLockVoid(JNIEnv* env, jclass jclz){
     TestClass3 tc3(10);
     std::thread getDataThread(&TestClass3::getDataFromQueue,std::ref(tc3));

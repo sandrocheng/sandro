@@ -95,12 +95,14 @@ public class NativeThreadAgent {
      */
     public static void deadLockVoidFinish(){
         android.util.Log.d("NativeThreadAgent","deadLockVoid callback ");
-//        new Thread(){
-//            public void run(){
-//                deadLockVoid();
-//            }
-//        }.start();
+        new Thread(){
+            public void run(){
+                uniqueLock();
+            }
+        }.start();
     }
+
+    public static native void uniqueLock();
 
     public static native void deadLockVoid();
 
