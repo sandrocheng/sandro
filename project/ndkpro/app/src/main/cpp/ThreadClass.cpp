@@ -35,7 +35,7 @@ void UniqueLockCase4::dataQPush4(){
 
 extern "C"
 void UniqueLockCase4::getDataFromQueue4(){
-    for(int i = 0;i<len * 10000;i++){
+    for(int i = 0;i<len * 1000;i++){
         std::unique_lock<std::mutex> ul = renUniqueLock();
         ul.lock();
 

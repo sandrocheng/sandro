@@ -110,6 +110,7 @@
 #include <queue>
 #include "native-global-params.h"
 #include "mutex"
+#include "SingleTonClass.h"
 #define TAG "nativeThreadLibTAG"
 #define LOGD(...)   __android_log_print(ANDROID_LOG_DEBUG, TAG, __VA_ARGS__)
 
@@ -330,6 +331,12 @@ Java_com_sandro_nativelib_NativeThreadAgent_deadLockVoid(JNIEnv* env, jclass jcl
  */
 extern "C" JNIEXPORT void JNICALL
 Java_com_sandro_nativelib_NativeThreadAgent_uniqueLock(JNIEnv* env, jclass jclz);
+
+/**
+ * 单例中的线程安全问题
+ */
+extern "C" JNIEXPORT void JNICALL
+Java_com_sandro_nativelib_NativeThreadAgent_singleTonSaftyThread(JNIEnv* env, jclass jclz);
 
 /**
  * 线程任务：输出字符串，结束后回调java接口

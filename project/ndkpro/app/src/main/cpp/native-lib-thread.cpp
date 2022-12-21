@@ -19,6 +19,24 @@ jint jniVer;
 static jclass gs_NativeThreadAgent_class = NULL;
 
 extern "C" JNIEXPORT void JNICALL
+Java_com_sandro_nativelib_NativeThreadAgent_singleTonSaftyThread(JNIEnv* env, jclass jclz){
+    std::vector<std::thread> threadArr;
+    auto mythWork = [](int i){
+        SingleTonClass::getInstance();
+        SingleTonClass2::getInstance();
+        LOGD("work %d , thread_id : %d",i,std::this_thread::get_id());
+    };
+    for(int i=0;i<10;i++){
+        threadArr.push_back(std::thread(mythWork,i));
+    }
+    for(auto iter = threadArr.begin() ;iter!=threadArr.end();iter++){
+        iter->join();
+    }
+
+    LOGD("singleTonSaftyThread thread finish,cur thread id is %d",std::this_thread::get_id());
+}
+
+extern "C" JNIEXPORT void JNICALL
 Java_com_sandro_nativelib_NativeThreadAgent_uniqueLock(JNIEnv* env, jclass jclz){
     UniqueLockCase ulc;
     std::thread pushThread(&UniqueLockCase::dataQPush,std::ref(ulc));
@@ -45,6 +63,8 @@ Java_com_sandro_nativelib_NativeThreadAgent_uniqueLock(JNIEnv* env, jclass jclz)
     pushThread4.join();
 
     LOGD("uniqueLock thread finish,cur thread id is %d",std::this_thread::get_id());
+    jmethodID  jmID = env->GetStaticMethodID(jclz,(char *)"uniqueLockFinish",(char*)"()V");
+    env->CallStaticVoidMethod(jclz,jmID);
 }
 
 extern "C" JNIEXPORT void JNICALL

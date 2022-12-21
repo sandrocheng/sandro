@@ -21,6 +21,8 @@ add_library( # Sets the name of the library.
              SHARED
 
              # Provides a relative path to your source file(s).
+             SingleTonClass.h
+             SingleTonClass.cpp
              native-global-params.h
              native-global-params.cpp
              native-lib-thread.cpp

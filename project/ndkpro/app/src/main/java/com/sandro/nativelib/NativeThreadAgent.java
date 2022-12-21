@@ -17,7 +17,7 @@ public class NativeThreadAgent {
      * startAThreadOnJoin 线程结束以后回调该函数
      */
     public static void startAThreadOnJoinFinish(){
-        android.util.Log.d("NativeThreadAgent","startAThreadOnJoinFinish callback");
+        android.util.Log.d("NativeThreadAgent","startAThreadOnJoinFinish callback,startMultiThreadOnJoin");
 
         mHandler.post(new Runnable() {
             @Override
@@ -32,7 +32,7 @@ public class NativeThreadAgent {
      * startMulitThreadOnJoin 线程结束以后回调该函数
      */
     public static void startMultiThreadJoinFinish(){
-        android.util.Log.d("NativeThreadAgent","startMultiThreadOnJoin callback");
+        android.util.Log.d("NativeThreadAgent","startMultiThreadOnJoin callback,startMultiThreadOnDetach");
 
         mHandler.post(new Runnable() {
             @Override
@@ -54,7 +54,7 @@ public class NativeThreadAgent {
                 @Override
                 public void run() {
                     android.util.Log.d("NativeThreadAgent",
-                            "startMultiThreadOnDetachFinish callback wait 1500 m and no callback,process go one ");
+                            "startMultiThreadOnDetachFinish callback wait 1500 m and no callback,process go one,startAndWaitMultiThread ");
                     new Thread(){
                         public void run(){
                             startAndWaitMultiThread();
@@ -70,7 +70,7 @@ public class NativeThreadAgent {
      * startAndWaitMultiThread 结束时回调一次
      */
     public static void startAndWaitMultiThreadFinish(){
-        android.util.Log.d("NativeThreadAgent","startAndWaitOtherThreadFinish callback ");
+        android.util.Log.d("NativeThreadAgent","startAndWaitOtherThreadFinish callback ,multisThreadsReadAndWrite");
         new Thread(){
             public void run(){
                 multisThreadsReadAndWrite();
@@ -82,7 +82,7 @@ public class NativeThreadAgent {
      * multisThreadsReadAndWrite 结束回调
      */
     public static void multisThreadsReadAndWriteFinish(){
-        android.util.Log.d("NativeThreadAgent","multisThreadsReadAndWriteFinish callback ");
+        android.util.Log.d("NativeThreadAgent","multisThreadsReadAndWriteFinish callback,start deadLockVoid ");
         new Thread(){
             public void run(){
                 deadLockVoid();
@@ -94,13 +94,27 @@ public class NativeThreadAgent {
      * multisThreadsReadAndWrite 结束回调
      */
     public static void deadLockVoidFinish(){
-        android.util.Log.d("NativeThreadAgent","deadLockVoid callback ");
+        android.util.Log.d("NativeThreadAgent","deadLockVoid callback ,start uniqueLock");
         new Thread(){
             public void run(){
                 uniqueLock();
             }
         }.start();
     }
+
+    /**
+     * uniqueLock 结束回调
+     */
+    public static void uniqueLockFinish(){
+        android.util.Log.d("NativeThreadAgent","uniqueLock callback,start singleTonSaftyThread");
+        new Thread(){
+            public void run(){
+                singleTonSaftyThread();
+            }
+        }.start();
+    }
+
+    public static native void singleTonSaftyThread();
 
     public static native void uniqueLock();
 
