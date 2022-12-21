@@ -3,11 +3,14 @@ package com.example.ndkpro;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.ndkpro.databinding.ActivityMainBinding;
 import com.sandro.nativelib.NativeAgent;
 import com.sandro.nativelib.NativeCAgent;
+import com.sandro.nativelib.NativeThreadAgent;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -31,6 +34,20 @@ public class MainActivity extends AppCompatActivity {
                 + "\n"
                 + NativeCAgent.stringFromCJNI();
         tv.setText(str);
+
+        Button btn_waitAndNotify = binding.waitAndNotify;
+        btn_waitAndNotify.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                new Thread(){
+                    public void run(){
+                        NativeThreadAgent.waitAndNotifyStart();
+                    }
+                }.start();
+
+            }
+        });
     }
 
 

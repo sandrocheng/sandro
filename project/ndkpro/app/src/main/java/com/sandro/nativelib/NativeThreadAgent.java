@@ -114,6 +114,45 @@ public class NativeThreadAgent {
         }.start();
     }
 
+    public static void singleTonSaftyThreadFinish(){
+        android.util.Log.d("NativeThreadAgent","singleTonSaftyThreadFinish callback");
+    }
+
+    private static Object waitAndNotifyLock = new Object();
+    private static boolean iswaitAndNotifyRunning = false;
+    public static void waitAndNotifyStart(){
+        synchronized (waitAndNotifyLock){
+            android.util.Log.d("NativeThreadAgent","iswaitAndNotifyRunning is " + iswaitAndNotifyRunning);
+            if(iswaitAndNotifyRunning){
+                return;
+            }
+            iswaitAndNotifyRunning = true;
+        }
+        waitAndNotify();
+    }
+
+    public static void waitAndNotifyFinish(){
+        //在c回调java的接口中修改静态对象的值,此时这个静态对象是在c 内存中构建的,java是读不到这个对象的值的
+        //通过handler传递到java内存中再修改,java才能读到这个变量
+        //或者在c中直接修改java中变量的值也可以
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                synchronized (waitAndNotifyLock){
+                    android.util.Log.d("NativeThreadAgent","cur iswaitAndNotifyRunning is " + iswaitAndNotifyRunning );
+                    NativeThreadAgent.iswaitAndNotifyRunning = false;
+                    android.util.Log.d("NativeThreadAgent","waitAndNotifyFinish !" );
+                }
+            }
+        });
+
+//        android.util.Log.d("NativeThreadAgent","cur iswaitAndNotifyRunning is " + iswaitAndNotifyRunning );
+//        NativeThreadAgent.iswaitAndNotifyRunning = false;
+//        android.util.Log.d("NativeThreadAgent","waitAndNotifyFinish !" );
+    }
+
+    private static native void waitAndNotify();
+
     public static native void singleTonSaftyThread();
 
     public static native void uniqueLock();

@@ -339,6 +339,12 @@ extern "C" JNIEXPORT void JNICALL
 Java_com_sandro_nativelib_NativeThreadAgent_singleTonSaftyThread(JNIEnv* env, jclass jclz);
 
 /**
+ * c++11 线程的 wait notify
+ */
+extern "C" JNIEXPORT void JNICALL
+Java_com_sandro_nativelib_NativeThreadAgent_waitAndNotify(JNIEnv* env, jclass jclz);
+
+/**
  * 线程任务：输出字符串，结束后回调java接口
  * @param workid  任务id
  * @param name 方法名称

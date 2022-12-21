@@ -27,6 +27,59 @@ SingleTonClass* SingleTonClass::getInstance(){
     return instance;
 }
 
+void SingleTonClass::startPushMsg(){
+    int count = 100;
+    for(int i = 0;i<count;i++){
+        std::unique_lock<std::mutex> ul(SingleTonClass::instanceLock);
+        msgQ.push(i);
+        LOGD("SingleTonClass startPushMsg %d , queue size %d",i,msgQ.size());
+        cvar.notify_one();//把wait的线程唤醒,一次通知一个线程
+    }
+
+    for(int i = 0;i<20;i++){
+        std::unique_lock<std::mutex> ul(SingleTonClass::instanceLock);
+        msgQ.push(-1);//连续每隔一段时间push一个-1,用于通知其他线程,任务结束,离开定时循环
+        cvar.notify_all();//尝试唤醒所有线程
+        ul.unlock();
+        std::chrono::milliseconds dura(50);
+        std::this_thread::sleep_for(dura);
+    }
+
+}
+
+void SingleTonClass::getMsgFromQueue(){
+    while(true){
+        std::unique_lock<std::mutex> ul(SingleTonClass::instanceLock);
+        //wait：线程阻塞
+        //如果接口返回值(第二个参数)是false，那么wait将释放互斥量，并阻塞到本行，
+        //直到其他线程调用notify_one()
+        //第二个参数不填写，默认接口返回false
+        //返回true,则加锁，并继续执行后面的代码
+        //wait被notify_one时,wait会不断尝试获得锁,一旦得到,锁一定是已经得到并上锁了的状态(条件变量内部上的锁)
+        //wait继续执行时,如果没有第二个参数,则上锁,继续执行
+        //如果有第二个参数,需要判断是否返回true,才能继续执行,如果返回false,则释放锁,并阻塞在这里,直到下次被唤醒
+        cvar.wait(ul,[this]{
+            //队列不为空的时候返回true,结束等待
+            return !msgQ.empty();
+        });
+        int msg = msgQ.front();
+        msgQ.pop();
+        int size = msgQ.size();
+        LOGD("thread %d SingleTonClass getMsgFromQueue %d,cur queue size %d,thread",std::this_thread::get_id(),msg,size);
+        if(msg == -1){
+            LOGD("thread %d SingleTonClass getMsgFromQueue done !",std::this_thread::get_id());
+            return;
+        }
+    }
+}
+
+void SingleTonClass::clearMsg() {
+    std::unique_lock<std::mutex> ul(SingleTonClass::instanceLock);
+    while(!msgQ.empty()){
+        msgQ.pop();
+    }
+}
+
 SingleTonClass::CGSingleTon::~CGSingleTon() {
     if(SingleTonClass::instance != nullptr){
         delete SingleTonClass::instance;

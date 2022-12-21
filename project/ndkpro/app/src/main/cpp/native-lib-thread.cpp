@@ -19,6 +19,28 @@ jint jniVer;
 static jclass gs_NativeThreadAgent_class = NULL;
 
 extern "C" JNIEXPORT void JNICALL
+Java_com_sandro_nativelib_NativeThreadAgent_waitAndNotify(JNIEnv* env, jclass jclz){
+    SingleTonClass::getInstance()->clearMsg();
+    std::thread getThread ([]{
+        SingleTonClass::getInstance()->getMsgFromQueue();
+    });
+    std::thread getThread2 ([]{
+        SingleTonClass::getInstance()->getMsgFromQueue();
+    });
+    std::thread pushThread([]{
+        SingleTonClass::getInstance()->startPushMsg();
+    });
+    getThread.join();
+    getThread2.join();
+    pushThread.join();
+
+    LOGD("waitAndNotify thread finish,cur thread id is %d",std::this_thread::get_id());
+    jmethodID  jmID = env->GetStaticMethodID(jclz,(char *)"waitAndNotifyFinish",(char*)"()V");
+    env->CallStaticVoidMethod(jclz,jmID);
+
+}
+
+extern "C" JNIEXPORT void JNICALL
 Java_com_sandro_nativelib_NativeThreadAgent_singleTonSaftyThread(JNIEnv* env, jclass jclz){
     std::vector<std::thread> threadArr;
     auto mythWork = [](int i){
@@ -32,8 +54,9 @@ Java_com_sandro_nativelib_NativeThreadAgent_singleTonSaftyThread(JNIEnv* env, jc
     for(auto iter = threadArr.begin() ;iter!=threadArr.end();iter++){
         iter->join();
     }
-
     LOGD("singleTonSaftyThread thread finish,cur thread id is %d",std::this_thread::get_id());
+    jmethodID  jmID = env->GetStaticMethodID(jclz,(char *)"singleTonSaftyThreadFinish",(char*)"()V");
+    env->CallStaticVoidMethod(jclz,jmID);
 }
 
 extern "C" JNIEXPORT void JNICALL

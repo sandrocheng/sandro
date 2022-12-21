@@ -11,11 +11,18 @@
 #include <android/log.h>
 #include <thread>
 #include <mutex>
+#include <queue>
 
 class SingleTonClass {
 private:
     static SingleTonClass* instance ;
     static std::mutex instanceLock;
+    std::queue<int> msgQ;
+    /**
+     * 条件变量，配合一个互斥量，达到多线程通知的作用
+     * 当一个线程中将该变量置为条件达成，另一个线程等待这个条件的地方再继续执行
+     */
+    std::condition_variable cvar;
     SingleTonClass(){};
 
 private:
@@ -33,6 +40,12 @@ public:
      * @return
      */
     static SingleTonClass* getInstance();
+
+    void clearMsg();
+
+    void startPushMsg();
+
+    void getMsgFromQueue();
 };
 
 
