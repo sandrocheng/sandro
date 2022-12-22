@@ -110,6 +110,7 @@
 #include <queue>
 #include "native-global-params.h"
 #include "mutex"
+#include <future>
 #include "SingleTonClass.h"
 #define TAG "nativeThreadLibTAG"
 #define LOGD(...)   __android_log_print(ANDROID_LOG_DEBUG, TAG, __VA_ARGS__)
@@ -290,6 +291,16 @@ public :
     }
 };
 
+class TestClass5{
+public:
+    int exec(int second){
+        LOGD("start work TestClass5 ");
+        std::chrono::seconds dura(second);
+        std::this_thread::sleep_for(dura);
+        LOGD("TestClass5::exec finish,thread id is %d",std::this_thread::get_id());
+        return second;
+    };
+};
 /**
  * 启动一个线程使用join方法执行
  */
@@ -345,6 +356,28 @@ extern "C" JNIEXPORT void JNICALL
 Java_com_sandro_nativelib_NativeThreadAgent_waitAndNotify(JNIEnv* env, jclass jclz);
 
 /**
+ * c++11 线程 async future
+ * std::async 是一个函数模板，用来启动一个异步任务，启动之后返回一个std::future对象，
+ * std::future 对象里边含有线程入口函数所返回的结果
+ * 可以通过future对象的成员函数get()来取得结果
+ */
+extern "C" JNIEXPORT jboolean JNICALL
+Java_com_sandro_nativelib_NativeThreadAgent_startAsyncTask(JNIEnv* env, jclass jclz);
+
+/**
+ * std::packaged_task,类模板 打包任务，模板参数是各种可调用对象
+ * 把各种可调用对象包装起来，方便将来作为线程入口函数来调用。
+ */
+extern "C" JNIEXPORT jboolean JNICALL
+Java_com_sandro_nativelib_NativeThreadAgent_startPackagedTask(JNIEnv* env, jclass jclz);
+
+/**
+ * std::promise 类模板 ，作用是某个线程中给他赋值，然后在其他线程中取出来使用
+ */
+extern "C" JNIEXPORT jboolean JNICALL
+        Java_com_sandro_nativelib_NativeThreadAgent_startPromise(JNIEnv* env, jclass jclz);
+
+/**
  * 线程任务：输出字符串，结束后回调java接口
  * @param workid  任务id
  * @param name 方法名称
@@ -389,6 +422,19 @@ extern "C"  void startwork4(std::unique_ptr<int> pzn);
 * @param workid  id
  */
 extern "C"  void startwork5(int workid);
+
+/**
+* 线程任务6：
+ * @param seconds  任务执行时间,单位：秒
+ */
+extern "C"  int startwork6(int seconds);
+
+/**
+ * 使用promise在线程之间传递结果值
+ * @param tmpp 线程执行完毕以后，会把需要给外部线程的结果保存到这个参数中
+ * @param clac 需要计算的数据，根据这个数据计算一个结果，然后保存到tmpp中去
+ */
+extern "C" void startwork7(std::promise<int> &tmpp,int calc);
 
 /**
  * 设置全局变量 NativeThreadAgent的class，用于子线程中evn的生成

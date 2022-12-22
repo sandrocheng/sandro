@@ -18,6 +18,128 @@ JavaVM *g_vm;
 jint jniVer;
 static jclass gs_NativeThreadAgent_class = NULL;
 
+extern "C" JNIEXPORT jboolean JNICALL
+Java_com_sandro_nativelib_NativeThreadAgent_startPromise(JNIEnv* env, jclass jclz){
+    LOGD("startPromise ，thread id is %d",std::this_thread::get_id());
+    std::promise<int> result;//声明一个promise对象，保存类型为int类型
+    std::thread thread1(startwork7,std::ref(result),16);
+    thread1.join();
+    std::future<int> fResult = result.get_future();//使用get_future前提是，必须要调用线程的join
+    LOGD("startPromise startwork7 finished,thread id is %d , result is %d",std::this_thread::get_id(),fResult.get());
+    return (unsigned char)1;
+}
+
+extern "C" void startwork7(std::promise<int> &tmpp,int calc){
+    calc ++;
+    calc*=4;
+    std::chrono::seconds dura(3);
+    std::this_thread::sleep_for(dura);
+    tmpp.set_value(calc);
+    LOGD("startwork7,thread id is %d",std::this_thread::get_id());
+}
+
+extern "C" JNIEXPORT jboolean JNICALL
+Java_com_sandro_nativelib_NativeThreadAgent_startPackagedTask(JNIEnv* env, jclass jclz){
+    LOGD("startPackagedTask ，thread id is %d",std::this_thread::get_id());
+    //模板类型是被调用函数的 返回值 + （参数类型）组成，函数名作为对象的参数
+    std::packaged_task<int(int)> mypt(startwork6);
+    //作为线程对象创建线程，第二个参数，是startwork6函数的参数
+    std::thread t1(std::ref(mypt),1);
+    t1.join();
+    //通过调用packaged_task中的get_future得到函数startwork6的返回值
+    std::future<int> result = mypt.get_future();
+    LOGD("startPackagedTask startwork6 finished,thread id is %d , result is %d",std::this_thread::get_id(),result.get());
+
+    //用packaged_task包装一个lambda表达式
+    std::packaged_task<int(int)> mypt2([](int second){
+        LOGD("start lambda func ");
+        std::chrono::seconds dura(second);
+        std::this_thread::sleep_for(dura);
+        LOGD("lambda func finish,thread id is %d",std::this_thread::get_id());
+        return second;
+    });
+    std::thread t2(std::ref(mypt2),2);
+    t2.join();
+    std::future<int> r2 = mypt2.get_future();
+    LOGD("startPackagedTask mypt2 finished,thread id is %d , r2 is %d",std::this_thread::get_id(),r2.get());
+
+    //packaged_task本身就是可执行对象，可以直接调用，直接调用就是当前线程执行可调用对象
+    std::packaged_task<int(int)> mypt3(startwork6);
+    mypt3(1);
+    std::future<int> r3 = mypt3.get_future();
+    LOGD("startPackagedTask mypt3 finished,thread id is %d , r3 is %d",std::this_thread::get_id(),r3.get());
+
+    //使用一个容器保存所有packaged_task
+    LOGD("----------------------start task vector,thread id is %d",std::this_thread::get_id());
+    std::vector<std::packaged_task<int(int)>> my_task;
+    std::packaged_task<int(int)> mypt4(startwork6);
+    std::packaged_task<int(int)> mypt5([](int second){
+        LOGD("start lambda func ");
+        std::chrono::seconds dura(second);
+        std::this_thread::sleep_for(dura);
+        LOGD("lambda func finish,thread id is %d",std::this_thread::get_id());
+        return second;
+    });
+
+
+    //packaged_task对象不能拷贝，只能移动
+    my_task.push_back(std::move(mypt4));
+    my_task.push_back(std::move(mypt5));
+    my_task.push_back(std::packaged_task<int(int)>(startwork6));
+    auto it = my_task.begin();
+    int i = 0;
+    for(;it!=my_task.end();it++,i++){
+        std::packaged_task<int(int)> tmp = std::move(*it);
+        tmp(1);
+        LOGD("task %d result is %d,thread id is %d",i,tmp.get_future().get(),std::this_thread::get_id());
+    }
+    //因为使用移动语义将packaged对象移动到临时对象中去，此时vector中的元素都已经为NULL，及时清理，避免有问题
+    my_task.clear();
+
+    return (unsigned char)1;
+}
+
+extern "C" JNIEXPORT jboolean JNICALL
+Java_com_sandro_nativelib_NativeThreadAgent_startAsyncTask(JNIEnv* env, jclass jclz){
+    unsigned char dataBoolean = 1;//0->false,1->true
+    LOGD("startAsyncTask started,thread id is %d",std::this_thread::get_id());
+    //函数的async调用方式，第一个参数是函数名称，第二个参数开始是函数参数，没有参数不用填
+    std::future<int> result = std::async(startwork6,1);
+
+    //future get()方法会阻塞直到async线程执行完毕
+    //get函数只能调用一次，第二次会报异常
+    LOGD("startAsyncTask startwork6 finished,thread id is %d , result is %d",std::this_thread::get_id(),result.get());
+
+    TestClass5 tc5;
+    //类成员函数的async调用方式
+    //第一个参数是类成员函数地址，第二个方法是类的实例，第三个参数开始是成员函数参数
+    std::future<int> result2 = std::async(&TestClass5::exec,&tc5,2);
+    //如果没有返回值，可以用wait()方法，阻塞直到线程完毕
+    //如果没有调用get或者wait，调用线程依然会等待async执行完毕之后才会结束。不推荐这么做。最好手动的调用get或者wait，让流程可控比较好
+    LOGD("startAsyncTask TestClass5 finished,thread id is %d , result2 is %d",std::this_thread::get_id(),result2.get());
+
+    //async的 std::launch参数是一个枚举类型含义如下
+    //1) std::launch::deferred , 表示线程入口函数调用被延迟到std::future的wait()或者get()的时候才执行
+    //   如果wait或者get没有被调用,线程并不会执行，实际上线程都不会创建
+    //   使用deferred后，不会创建线程执行任务，只会在调用线程调用
+    //2)std::launch::async，在调用async函数的时候就开始创建线程并执行，系统默认就是这个标记
+    std::future<int> result3 = std::async(std::launch::deferred,&TestClass5::exec,&tc5,1);
+    LOGD("startAsyncTask TestClass5 .");
+    LOGD("startAsyncTask TestClass5 ..");
+    LOGD("startAsyncTask TestClass5 ...");
+    LOGD("startAsyncTask TestClass5 ....");
+    LOGD("startAsyncTask TestClass5 result3 finished,thread id is %d , result3 is %d",std::this_thread::get_id(),result3.get());
+    return dataBoolean;
+}
+
+extern "C"  int startwork6(int second){
+    LOGD("start work 6 ");
+    std::chrono::seconds dura(second);
+    std::this_thread::sleep_for(dura);
+    LOGD("work 6 finish,thread id is %d",std::this_thread::get_id());
+    return second;
+}
+
 extern "C" JNIEXPORT void JNICALL
 Java_com_sandro_nativelib_NativeThreadAgent_waitAndNotify(JNIEnv* env, jclass jclz){
     SingleTonClass::getInstance()->clearMsg();

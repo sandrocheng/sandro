@@ -41,7 +41,7 @@ void SingleTonClass::startPushMsg(){
         msgQ.push(-1);//连续每隔一段时间push一个-1,用于通知其他线程,任务结束,离开定时循环
         cvar.notify_all();//尝试唤醒所有线程
         ul.unlock();
-        std::chrono::milliseconds dura(50);
+        std::chrono::milliseconds dura(5);
         std::this_thread::sleep_for(dura);
     }
 

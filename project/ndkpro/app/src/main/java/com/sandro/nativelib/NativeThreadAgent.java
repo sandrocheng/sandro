@@ -151,6 +151,12 @@ public class NativeThreadAgent {
 //        android.util.Log.d("NativeThreadAgent","waitAndNotifyFinish !" );
     }
 
+    public static native boolean startPromise();
+
+    public static native boolean startPackagedTask();
+
+    public static native boolean startAsyncTask();
+
     private static native void waitAndNotify();
 
     public static native void singleTonSaftyThread();

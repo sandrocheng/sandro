@@ -18,14 +18,17 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/black"
+        android:textColor="@color/white"
         android:text="c++ 11 多线程"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
     <LinearLayout
+        android:background="@color/black"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <Button
@@ -33,6 +36,32 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="waitAndNotify"
+            android:textAllCaps="false"
+            />
+        <Button
+            android:id="@+id/asyncTask"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="启动异步任务"
+            android:textAllCaps="false"
+            />
+    </LinearLayout>
+    <LinearLayout
+        android:background="@color/black"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/packaged_task"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="packaged_task"
+            android:textAllCaps="false"
+            />
+        <Button
+            android:id="@+id/promise"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="promise"
             android:textAllCaps="false"
             />
     </LinearLayout>

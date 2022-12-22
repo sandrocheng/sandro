@@ -35,6 +35,10 @@ public class MainActivity extends AppCompatActivity {
                 + NativeCAgent.stringFromCJNI();
         tv.setText(str);
 
+        btnInit();
+    }
+
+    private void btnInit() {
         Button btn_waitAndNotify = binding.waitAndNotify;
         btn_waitAndNotify.setOnClickListener(new View.OnClickListener(){
 
@@ -43,6 +47,48 @@ public class MainActivity extends AppCompatActivity {
                 new Thread(){
                     public void run(){
                         NativeThreadAgent.waitAndNotifyStart();
+                    }
+                }.start();
+
+            }
+        });
+
+        Button btn_asyncTask = binding.asyncTask;
+        btn_asyncTask.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                new Thread(){
+                    public void run(){
+                        NativeThreadAgent.startAsyncTask();
+                    }
+                }.start();
+
+            }
+        });
+
+        Button btn_packagedTask = binding.packagedTask;
+        btn_packagedTask.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                new Thread(){
+                    public void run(){
+                        NativeThreadAgent.startPackagedTask();
+                    }
+                }.start();
+
+            }
+        });
+
+        Button btn_promise= binding.promise;
+        btn_promise.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                new Thread(){
+                    public void run(){
+                        NativeThreadAgent.startPromise();
                     }
                 }.start();
 
