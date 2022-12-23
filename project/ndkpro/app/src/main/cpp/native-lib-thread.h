@@ -378,6 +378,34 @@ extern "C" JNIEXPORT jboolean JNICALL
         Java_com_sandro_nativelib_NativeThreadAgent_startPromise(JNIEnv* env, jclass jclz);
 
 /**
+ * future 成员函数演示
+ */
+extern "C" JNIEXPORT jboolean JNICALL
+Java_com_sandro_nativelib_NativeThreadAgent_startFutureTest(JNIEnv* env, jclass jclz);
+
+/**
+ * std::shared_future演示
+ * future.get()的设计是移动语义，所以第二次调用取值时会发生异常
+ * std::shared_future 类模板的get方法是复制数据，可以多次get取值
+ */
+extern "C" JNIEXPORT jboolean JNICALL
+Java_com_sandro_nativelib_NativeThreadAgent_startSharedFutureTest(JNIEnv* env, jclass jclz);
+
+/**
+ * 互斥量：多线程中保护共享数据，操作前上锁，操作后开锁，锁期间其他线程无法操作被锁的共享数据
+ * 在c++中即使简单的读写操作，分别在不同线程中执行，也会有线程安全问题，比如：
+ * int x = sharedvalue;//读线程取值
+ * sharedvalue++;//写线程赋值
+ * 实际情况是读线程有可能得到的是一个预料不到的中间值
+ * 因为赋值语句在内部也是多个步骤执行（汇编层比如++ ，是三个步骤），每个步骤执行的时候都有可能发生线程切换。导致读线程读到的值不可预料
+ * 如果使用互斥量保护数据，虽然安全，但是在频繁操作的情况下，效率会低很多。
+ * std::atomic,C++中提供的无锁原子操作技术，能在保证安全的前提下，提升效率
+ * 互斥量的优势是对多步骤操作的代码段加锁，而原子操作只能针对某一个变量进行保护，一般用于基础类型的变量
+ */
+extern "C" JNIEXPORT void JNICALL
+Java_com_sandro_nativelib_NativeThreadAgent_atomicTest(JNIEnv* env, jclass jclz);
+
+/**
  * 线程任务：输出字符串，结束后回调java接口
  * @param workid  任务id
  * @param name 方法名称

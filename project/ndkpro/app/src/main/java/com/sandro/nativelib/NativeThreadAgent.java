@@ -151,6 +151,12 @@ public class NativeThreadAgent {
 //        android.util.Log.d("NativeThreadAgent","waitAndNotifyFinish !" );
     }
 
+    public static native void atomicTest();
+
+    public static native boolean startSharedFutureTest();
+
+    public static native boolean startFutureTest();
+
     public static native boolean startPromise();
 
     public static native boolean startPackagedTask();

@@ -29,6 +29,7 @@
         app:layout_constraintTop_toTopOf="parent" />
     <LinearLayout
         android:background="@color/black"
+        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <Button
@@ -48,12 +49,14 @@
     </LinearLayout>
     <LinearLayout
         android:background="@color/black"
+        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <Button
             android:id="@+id/packaged_task"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:text="packaged_task"
             android:textAllCaps="false"
             />
@@ -61,7 +64,38 @@
             android:id="@+id/promise"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:text="promise"
+            android:textAllCaps="false"
+            />
+        <Button
+            android:layout_gravity="center_vertical"
+            android:id="@+id/future"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="future成员函数"
+            android:textAllCaps="false"
+            />
+    </LinearLayout>
+    <LinearLayout
+        android:background="@color/black"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/shared_furure"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="shared_furure"
+            android:textAllCaps="false"
+            />
+        <Button
+            android:id="@+id/atomic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="原子操作atomic"
             android:textAllCaps="false"
             />
     </LinearLayout>

@@ -18,6 +18,92 @@ JavaVM *g_vm;
 jint jniVer;
 static jclass gs_NativeThreadAgent_class = NULL;
 
+
+extern "C" JNIEXPORT void JNICALL
+Java_com_sandro_nativelib_NativeThreadAgent_atomicTest(JNIEnv* env, jclass jclz){
+    LOGD("[atomicTest] thread id is %d",std::this_thread::get_id());
+    int globalIntValue = 0;
+    auto work = [](int &data){
+        for(int i=0;i< 10000000;i++){
+            data++;
+        }
+    };
+
+    std::vector<std::thread> threadsV;
+    for(int i=0;i<10;i++){
+        threadsV.push_back(std::thread(work,std::ref(globalIntValue)));
+    }
+    auto it = threadsV.begin();
+    for(;it!=threadsV.end();it++){
+        (*it).join();
+    }
+    LOGD("[atomicTest] 普通变量多线程写入 golbalIntValue = %d",globalIntValue);
+
+    threadsV.clear();
+    std::atomic<int> atomicIntValue(0);
+    auto work1 = [](std::atomic<int>  &data){
+        for(int i=0;i< 10000000;i++){
+            data++;
+        }
+    };
+    for(int i=0;i<10;i++){
+        threadsV.push_back(std::thread(work1,std::ref(atomicIntValue)));
+    }
+    it = threadsV.begin();
+    for(;it!=threadsV.end();it++){
+        (*it).join();
+    }
+    LOGD("[atomicTest] atomic变量多线程写入 atomicIntValue = %d",(int)atomicIntValue);
+}
+
+extern "C" JNIEXPORT jboolean JNICALL
+Java_com_sandro_nativelib_NativeThreadAgent_startSharedFutureTest(JNIEnv* env, jclass jclz){
+    LOGD("[startSharedFutureTest] ，thread id is %d",std::this_thread::get_id());
+    std::packaged_task<int(int)> task1(startwork6);
+    std::thread task1Thread(std::ref(task1),1);
+    task1Thread.join();
+    std::future<int> result =  task1.get_future();
+
+    //result.share() 是移动语义，调用后result会置空,可以通过result.valid()去判断当前值是否有效
+    std::shared_future<int> result_s(result.share());
+    if(!result.valid()){
+        LOGD("[startSharedFutureTest] result.get is invalid");
+    }
+
+    //shared_future可以多次get
+    LOGD("[startSharedFutureTest] result_s.get 1sd is %d",result_s.get());
+    LOGD("[startSharedFutureTest] result_s.get 2nd is %d",result_s.get());
+
+    return (unsigned char) 1;
+}
+
+extern "C" JNIEXPORT jboolean JNICALL
+Java_com_sandro_nativelib_NativeThreadAgent_startFutureTest(JNIEnv* env, jclass jclz){
+    LOGD("startFutureTest ，thread id is %d",std::this_thread::get_id());
+
+    std::future<int> fResult2 = std::async(startwork6,1);
+    std::future_status status2 = fResult2.wait_for(std::chrono::milliseconds(1300));
+    if(status2 == std::future_status::ready){
+        LOGD("startFutureTest fResult2 thread ready,and result is %d",fResult2.get());
+    }
+
+    std::future<int> fResult3 = std::async(std::launch::deferred,startwork6,1);
+    std::future_status status3 = fResult3.wait_for(std::chrono::milliseconds(1300));
+    if(status3 == std::future_status::deferred){
+        //如果async第一个参数被设置了std::launch::deferred，则本条件成立
+        LOGD("startFutureTest fResult3 thread deferred,and result is %d",fResult3.get());
+    }
+
+    std::future<int> fResult1 = std::async(startwork6,2);
+    //线程状态，可以设置线程超时时间。
+    //通过wait_for 设置阻塞时间，超时就返回，返回时，根据status判断调用线程是否已经执行完毕
+    std::future_status status1 = fResult1.wait_for(std::chrono::seconds(1));
+    if(status1 == std::future_status::timeout){
+        LOGD("startFutureTest fResult1 thread timeout");
+    }
+    return (unsigned char)1;
+}
+
 extern "C" JNIEXPORT jboolean JNICALL
 Java_com_sandro_nativelib_NativeThreadAgent_startPromise(JNIEnv* env, jclass jclz){
     LOGD("startPromise ，thread id is %d",std::this_thread::get_id());
@@ -82,7 +168,7 @@ Java_com_sandro_nativelib_NativeThreadAgent_startPackagedTask(JNIEnv* env, jclas
     });
 
 
-    //packaged_task对象不能拷贝，只能移动
+    //使用移动 避免多个地方使用这个引用
     my_task.push_back(std::move(mypt4));
     my_task.push_back(std::move(mypt5));
     my_task.push_back(std::packaged_task<int(int)>(startwork6));

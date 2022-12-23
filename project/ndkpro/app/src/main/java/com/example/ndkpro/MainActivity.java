@@ -94,6 +94,43 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
+        binding.future.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                new Thread(){
+                    public void run(){
+                        NativeThreadAgent.startFutureTest();
+                    }
+                }.start();
+
+            }
+        });
+        binding.sharedFurure.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                new Thread(){
+                    public void run(){
+                        NativeThreadAgent.startSharedFutureTest();
+                    }
+                }.start();
+
+            }
+        });
+        binding.atomic.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                new Thread(){
+                    public void run(){
+                        NativeThreadAgent.atomicTest();
+                    }
+                }.start();
+
+            }
+        });
     }
 
 
