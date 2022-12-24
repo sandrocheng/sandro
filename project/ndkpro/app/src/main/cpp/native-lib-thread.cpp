@@ -44,6 +44,7 @@ Java_com_sandro_nativelib_NativeThreadAgent_atomicTest(JNIEnv* env, jclass jclz)
     auto work1 = [](std::atomic<int>  &data){
         for(int i=0;i< 10000000;i++){
             data++;
+            //data = data + 1 这种不是原子操作
         }
     };
     for(int i=0;i<10;i++){
@@ -54,6 +55,8 @@ Java_com_sandro_nativelib_NativeThreadAgent_atomicTest(JNIEnv* env, jclass jclz)
         (*it).join();
     }
     LOGD("[atomicTest] atomic变量多线程写入 atomicIntValue = %d",(int)atomicIntValue);
+
+
 }
 
 extern "C" JNIEXPORT jboolean JNICALL
@@ -80,6 +83,16 @@ Java_com_sandro_nativelib_NativeThreadAgent_startSharedFutureTest(JNIEnv* env, j
 extern "C" JNIEXPORT jboolean JNICALL
 Java_com_sandro_nativelib_NativeThreadAgent_startFutureTest(JNIEnv* env, jclass jclz){
     LOGD("startFutureTest ，thread id is %d",std::this_thread::get_id());
+    std::future<int> fResult4 = std::async(startwork6,1);
+    std::future_status status4 = fResult4.wait_for(std::chrono::seconds(0));
+    if(status4 == std::future_status::deferred){
+        LOGD("startFutureTest fResult4 defferred");
+        //当系统资源紧张时，此时默认异步任务可能不会起新线程，通过判断deferred状态，可以确定是否是在当前线程执行
+        //如果deferred,可以根据业务判断是否继续执行耗时操作
+        //deferred情况下，不调用fResult4.get()就不会执行目标函数
+    }else{
+        LOGD("startFutureTest fResult4 is run in new thread ,and result is %d",fResult4.get());
+    }
 
     std::future<int> fResult2 = std::async(startwork6,1);
     std::future_status status2 = fResult2.wait_for(std::chrono::milliseconds(1300));
@@ -108,19 +121,24 @@ extern "C" JNIEXPORT jboolean JNICALL
 Java_com_sandro_nativelib_NativeThreadAgent_startPromise(JNIEnv* env, jclass jclz){
     LOGD("startPromise ，thread id is %d",std::this_thread::get_id());
     std::promise<int> result;//声明一个promise对象，保存类型为int类型
-    std::thread thread1(startwork7,std::ref(result),16);
+    std::promise<int> result2;
+    std::thread thread1(startwork7,std::ref(result),std::ref(result2),16);
     thread1.join();
     std::future<int> fResult = result.get_future();//使用get_future前提是，必须要调用线程的join
-    LOGD("startPromise startwork7 finished,thread id is %d , result is %d",std::this_thread::get_id(),fResult.get());
+    std::future<int> fResult2 = result2.get_future();
+    LOGD("startPromise startwork7 finished,thread id is %d , result is %d ,result2 is %d",std::this_thread::get_id(),fResult.get(),fResult2.get());
     return (unsigned char)1;
 }
 
-extern "C" void startwork7(std::promise<int> &tmpp,int calc){
+extern "C" void startwork7(std::promise<int> &tmpp1,std::promise<int> &tmpp2,int calc){
     calc ++;
     calc*=4;
     std::chrono::seconds dura(3);
     std::this_thread::sleep_for(dura);
-    tmpp.set_value(calc);
+    tmpp1.set_value(calc);
+    std::chrono::seconds dura2(1);
+    std::this_thread::sleep_for(dura2);
+    tmpp2.set_value(4);
     LOGD("startwork7,thread id is %d",std::this_thread::get_id());
 }
 
@@ -208,7 +226,8 @@ Java_com_sandro_nativelib_NativeThreadAgent_startAsyncTask(JNIEnv* env, jclass j
     //1) std::launch::deferred , 表示线程入口函数调用被延迟到std::future的wait()或者get()的时候才执行
     //   如果wait或者get没有被调用,线程并不会执行，实际上线程都不会创建
     //   使用deferred后，不会创建线程执行任务，只会在调用线程调用
-    //2)std::launch::async，在调用async函数的时候就开始创建线程并执行，系统默认就是这个标记
+    //2)std::launch::async，在调用async函数的时候就开始强制创建线程并执行
+    //3）std::launch::any  系统根据当前情况自行决定使用async或者deferred，不填写launch 的情况下，默认值是这个
     std::future<int> result3 = std::async(std::launch::deferred,&TestClass5::exec,&tc5,1);
     LOGD("startAsyncTask TestClass5 .");
     LOGD("startAsyncTask TestClass5 ..");

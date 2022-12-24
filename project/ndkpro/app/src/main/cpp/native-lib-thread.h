@@ -350,16 +350,20 @@ extern "C" JNIEXPORT void JNICALL
 Java_com_sandro_nativelib_NativeThreadAgent_singleTonSaftyThread(JNIEnv* env, jclass jclz);
 
 /**
- * c++11 线程的 wait notify
+ * c++11 条件变量std::condition_variable 的 wait notify
  */
 extern "C" JNIEXPORT void JNICALL
 Java_com_sandro_nativelib_NativeThreadAgent_waitAndNotify(JNIEnv* env, jclass jclz);
 
 /**
  * c++11 线程 async future
- * std::async 是一个函数模板，用来启动一个异步任务，启动之后返回一个std::future对象，
- * std::future 对象里边含有线程入口函数所返回的结果
- * 可以通过future对象的成员函数get()来取得结果
+ * 1）std::async 是一个函数模板，用来启动一个异步任务，启动之后返回一个std::future对象，
+ *   std::future 对象里边含有线程入口函数所返回的结果
+ *   可以通过future对象的成员函数get()来取得结果
+ * 2）std::thread如果系统资源紧张，那么可能创建线程失败，导致整个程序不稳定，甚至崩溃
+ *   std::async，一般叫创建一个异步任务，
+ *   二者最大的区别是async有时候并不创建新线程（不加launch的调用）。
+ *   async 相对 thread 能比较容易得到线程入口函数的返回值
  */
 extern "C" JNIEXPORT jboolean JNICALL
 Java_com_sandro_nativelib_NativeThreadAgent_startAsyncTask(JNIEnv* env, jclass jclz);
@@ -459,11 +463,11 @@ extern "C"  int startwork6(int seconds);
 
 /**
  * 使用promise在线程之间传递结果值
- * @param tmpp 线程执行完毕以后，会把需要给外部线程的结果保存到这个参数中
+ * @param tmpp1 线程执行完毕以后，会把需要给外部线程的结果保存到这个参数中
+ * @param tmpp2 线程执行的时间（秒）
  * @param clac 需要计算的数据，根据这个数据计算一个结果，然后保存到tmpp中去
  */
-extern "C" void startwork7(std::promise<int> &tmpp,int calc);
-
+extern "C" void startwork7(std::promise<int> &tmpp1,std::promise<int> &tmpp2,int calc);
 /**
  * 设置全局变量 NativeThreadAgent的class，用于子线程中evn的生成
  */
