@@ -18,6 +18,54 @@ JavaVM *g_vm;
 jint jniVer;
 static jclass gs_NativeThreadAgent_class = NULL;
 
+extern "C" JNIEXPORT void JNICALL
+Java_com_sandro_nativelib_NativeThreadAgent_timedMutex(JNIEnv* env, jclass jclz){
+    LOGD("[timedMutex] thread id is %d",std::this_thread::get_id());
+    TestClass7 tc7;
+    std::thread t1(&TestClass7::getDataFromQueue,&tc7);
+    std::thread t2(&TestClass7::dataQPush,&tc7);
+    t1.join();
+    t2.join();
+
+
+    std::thread t3([]{
+        //steady_clock 是单调的时钟，相当于教练手中的秒表；只会增长，适合用于记录程序耗时；
+        //system_clock 是系统的时钟；因为系统的时钟可以修改；甚至可以网络对时； 所以用系统时间计算时间差可能不准
+        std::chrono::seconds dura(1);
+        if(timedMutex.try_lock_until(std::chrono::steady_clock::now() + dura)){
+            LOGD("[timedMutex] t3 get lock and sleep 1 second");
+            std::this_thread::sleep_for(dura);
+            timedMutex.unlock();
+        }else{
+            LOGD("[timedMutex] t3 did not get lock ,finish");
+        }
+    });
+
+    std::thread t4([]{
+        //steady_clock 是单调的时钟，相当于教练手中的秒表；只会增长，适合用于记录程序耗时；
+        //system_clock 是系统的时钟；因为系统的时钟可以修改；甚至可以网络对时； 所以用系统时间计算时间差可能不准
+        std::chrono::seconds dura(1);
+        if(timedMutex.try_lock_until(std::chrono::steady_clock::now() + dura)){
+            LOGD("[timedMutex] t4 get lock and sleep 1 second");
+            std::this_thread::sleep_for(dura);
+            timedMutex.unlock();
+        }else{
+            LOGD("[timedMutex] t4 has waited for 1 sec,and did not get the lock ,finish");
+        }
+    });
+    t3.join();
+    t4.join();
+}
+
+extern "C" JNIEXPORT void JNICALL
+Java_com_sandro_nativelib_NativeThreadAgent_recursiveMutex(JNIEnv* env, jclass jclz){
+    LOGD("[recursiveMutex] thread id is %d",std::this_thread::get_id());
+    TestClass6 tc6;
+    std::thread t1(&TestClass6::getDataFromQueue,std::ref(tc6));
+    std::thread t2(&TestClass6::dataQPush,std::ref(tc6));
+    t1.join();
+    t2.join();
+}
 
 extern "C" JNIEXPORT void JNICALL
 Java_com_sandro_nativelib_NativeThreadAgent_atomicTest(JNIEnv* env, jclass jclz){

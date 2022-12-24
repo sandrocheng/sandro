@@ -118,7 +118,11 @@
 //mutex是不可拷贝对象，如果放在类里面，当把类对象传递到thread里时，对象会执行拷贝操作，此时编译会出错
 static std::mutex TestClass_mutex;
 
-static std::mutex TestClass_mute2;
+static std::mutex TestClass_mutex2;
+
+static std::recursive_mutex reMutex;
+
+static std::timed_mutex timedMutex;
 
 /**
  * mutex
@@ -180,7 +184,7 @@ public :
      */
     void dataQPush(){
         for(int i = 0;i<queue_len;i++){
-            std::lock_guard<std::mutex> guard(TestClass_mute2);
+            std::lock_guard<std::mutex> guard(TestClass_mutex2);
             dataQ.push(i);
             LOGD("dataQPush2 push data %d",i );
         }
@@ -191,7 +195,7 @@ public :
      */
     void getDataFromQueue(){
         for(int i = 0;i<100000;i++){
-            std::lock_guard<std::mutex> guard(TestClass_mute2);
+            std::lock_guard<std::mutex> guard(TestClass_mutex2);
             if(!dataQ.empty()){
                 while (!dataQ.empty()){
                     int data = dataQ.front() ;
@@ -219,11 +223,11 @@ public :
      */
     void dataQPush(){
         for(int i = 0;i<queue_len;i++){
-            std::lock(TestClass_mutex,TestClass_mute2);
+            std::lock(TestClass_mutex,TestClass_mutex2);
             dataQ.push(i);
             LOGD("dataQPush3 push data %d",i );
             TestClass_mutex.unlock();
-            TestClass_mute2.unlock();
+            TestClass_mutex2.unlock();
         }
     }
 
@@ -232,7 +236,7 @@ public :
      */
     void getDataFromQueue(){
         for(int i = 0;i<100000;i++){
-            std::lock(TestClass_mutex,TestClass_mute2);
+            std::lock(TestClass_mutex,TestClass_mutex2);
             if(!dataQ.empty()){
                 while (!dataQ.empty()){
                     int data = dataQ.front() ;
@@ -241,7 +245,7 @@ public :
                 }
             }
             TestClass_mutex.unlock();
-            TestClass_mute2.unlock();
+            TestClass_mutex2.unlock();
         }
     }
 };
@@ -262,10 +266,10 @@ public :
      */
     void dataQPush(){
         for(int i = 0;i<queue_len;i++){
-            std::lock(TestClass_mutex,TestClass_mute2);
+            std::lock(TestClass_mutex,TestClass_mutex2);
             // std::adopt_loc对象会避免 guard 给互斥量上锁，避免二次上锁
             std::lock_guard<std::mutex> guard1(TestClass_mutex,std::adopt_lock);
-            std::lock_guard<std::mutex> guard2(TestClass_mute2,std::adopt_lock);
+            std::lock_guard<std::mutex> guard2(TestClass_mutex2,std::adopt_lock);
             dataQ.push(i);
             LOGD("dataQPush4 push data %d",i );
         }
@@ -276,10 +280,10 @@ public :
      */
     void getDataFromQueue(){
         for(int i = 0;i<100000;i++){
-            std::lock(TestClass_mutex,TestClass_mute2);
+            std::lock(TestClass_mutex,TestClass_mutex2);
             // std::adopt_lock对象会避免 guard 给互斥量上锁，避免二次上锁
             std::lock_guard<std::mutex> guard1(TestClass_mutex,std::adopt_lock);
-            std::lock_guard<std::mutex> guard2(TestClass_mute2,std::adopt_lock);
+            std::lock_guard<std::mutex> guard2(TestClass_mutex2,std::adopt_lock);
             if(!dataQ.empty()){
                 while (!dataQ.empty()){
                     int data = dataQ.front() ;
@@ -300,6 +304,88 @@ public:
         LOGD("TestClass5::exec finish,thread id is %d",std::this_thread::get_id());
         return second;
     };
+};
+
+class TestClass6{
+private:
+    std::queue<int> dataQ;
+
+public :
+    TestClass6(){};
+
+    /**
+     * 模拟耗时操作往 dataQ里插入数据
+     */
+    void dataQPush(){
+        for(int i = 0;i<10000;i++){
+            reMutex.lock();
+            std::unique_lock<std::recursive_mutex> ul(reMutex);
+            dataQ.push(i);
+            LOGD("dataQPush6 push data %d",i );
+            reMutex.unlock();
+        }
+    }
+
+    /**
+     * 把数据从消息队列取出的线程操作
+     */
+    void getDataFromQueue(){
+        for(int i = 0;i<100000;i++){
+            reMutex.lock();//std::recursive_mutex 递归的独占互斥量,允许同一个线程，同一个互斥量多次被lock
+            std::lock_guard<std::recursive_mutex> lg(reMutex);
+            if(!dataQ.empty()){
+                int data = dataQ.front() ;
+                dataQ.pop();
+                LOGD("getDataFromQueue6 get data from dataQ : %d " , data);
+            }
+            reMutex.unlock();
+        }
+    }
+};
+
+class TestClass7{
+private:
+    std::queue<int> dataQ;
+
+public :
+    TestClass7(){};
+
+    /**
+     * 模拟耗时操作往 dataQ里插入数据
+     */
+    void dataQPush(){
+        std::chrono::microseconds timeout(60);
+        for(int i = 0;i<10000;i++){
+            if(timedMutex.try_lock_for(timeout)){
+                dataQ.push(i);
+                LOGD("dataQPush7 push data %d",i );
+                timedMutex.unlock();
+            }else{
+                LOGD("dataQPush7 push data time out ,CUZ timedMutex is locked by other thread");
+            }
+        }
+    }
+
+    /**
+     * 把数据从消息队列取出的线程操作
+     */
+    void getDataFromQueue(){
+        for(int i = 0;i<100000;i++){
+            std::chrono::microseconds timeout(60);
+            //等待60微秒来尝试获取锁
+            if(timedMutex.try_lock_for(timeout)){
+                //在100毫秒内拿到了锁
+                if(!dataQ.empty()){
+                    int data = dataQ.front() ;
+                    dataQ.pop();
+                    LOGD("getDataFromQueue7 get data from dataQ : %d " , data);
+                }
+                timedMutex.unlock();
+            }else{
+                LOGD("getDataFromQueue7 lock timeout ,CUZ timedMutex is locked by other thread");
+            }
+        }
+    }
 };
 /**
  * 启动一个线程使用join方法执行
@@ -408,6 +494,25 @@ Java_com_sandro_nativelib_NativeThreadAgent_startSharedFutureTest(JNIEnv* env, j
  */
 extern "C" JNIEXPORT void JNICALL
 Java_com_sandro_nativelib_NativeThreadAgent_atomicTest(JNIEnv* env, jclass jclz);
+
+/**
+ * 普通的std::mutex 独占互斥量（自己lock时候，其他地方lock不了），同一个线程，同一个互斥量多次调用lock(),系统会报异常
+ * 相对的std::recursive_mutex 递归的独占互斥量,允许同一个线程，同一个互斥量多次被lock
+ * 当出现有多次lock的情况时候，优先应该考虑代码是否有优化空间，而不是直接使用recursive_mutex，因为recursive_mutex的效率较差
+ * recursive_mutex递归次数上限，太多次会报异常
+ */
+extern "C" JNIEXPORT void JNICALL
+Java_com_sandro_nativelib_NativeThreadAgent_recursiveMutex(JNIEnv* env, jclass jclz);
+
+/**
+ * 带超时的互斥量
+ * std::timed_mutex : 有超时功能的互斥量
+ *       try_lock_for() : 等待超时时间
+ *       try_lock_until() : 等到未来的一个时间点
+ * std::recursive_timed_mutex : 有超时功能的递归互斥量,超时使用方法和timed_mutex一样
+ */
+extern "C" JNIEXPORT void JNICALL
+Java_com_sandro_nativelib_NativeThreadAgent_timedMutex(JNIEnv* env, jclass jclz);
 
 /**
  * 线程任务：输出字符串，结束后回调java接口

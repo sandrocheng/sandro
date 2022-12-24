@@ -39,8 +39,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void btnInit() {
-        Button btn_waitAndNotify = binding.waitAndNotify;
-        btn_waitAndNotify.setOnClickListener(new View.OnClickListener(){
+        binding.waitAndNotify.setOnClickListener(new View.OnClickListener(){
 
             @Override
             public void onClick(View v) {
@@ -53,8 +52,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Button btn_asyncTask = binding.asyncTask;
-        btn_asyncTask.setOnClickListener(new View.OnClickListener(){
+        binding.asyncTask.setOnClickListener(new View.OnClickListener(){
 
             @Override
             public void onClick(View v) {
@@ -67,8 +65,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Button btn_packagedTask = binding.packagedTask;
-        btn_packagedTask.setOnClickListener(new View.OnClickListener(){
+        binding.packagedTask.setOnClickListener(new View.OnClickListener(){
 
             @Override
             public void onClick(View v) {
@@ -81,8 +78,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Button btn_promise= binding.promise;
-        btn_promise.setOnClickListener(new View.OnClickListener(){
+        binding.promise.setOnClickListener(new View.OnClickListener(){
 
             @Override
             public void onClick(View v) {
@@ -126,6 +122,30 @@ public class MainActivity extends AppCompatActivity {
                 new Thread(){
                     public void run(){
                         NativeThreadAgent.atomicTest();
+                    }
+                }.start();
+
+            }
+        });
+        binding.recursiveMutex.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                new Thread(){
+                    public void run(){
+                        NativeThreadAgent.recursiveMutex();
+                    }
+                }.start();
+
+            }
+        });
+        binding.timedMutex.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                new Thread(){
+                    public void run(){
+                        NativeThreadAgent.timedMutex();
                     }
                 }.start();
 
