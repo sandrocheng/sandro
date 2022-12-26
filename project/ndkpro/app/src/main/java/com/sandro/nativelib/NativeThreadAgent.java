@@ -151,6 +151,8 @@ public class NativeThreadAgent {
 //        android.util.Log.d("NativeThreadAgent","waitAndNotifyFinish !" );
     }
 
+    public static native void threadsPool();
+
     public static native void timedMutex();
 
     public static native void recursiveMutex();

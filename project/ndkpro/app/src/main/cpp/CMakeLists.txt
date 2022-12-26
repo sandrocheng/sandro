@@ -21,6 +21,11 @@ add_library( # Sets the name of the library.
              SHARED
 
              # Provides a relative path to your source file(s).
+             ThreadsPool.cpp
+             ThreadsPool.h
+             ThreadsPoolManager.h
+             ThreadsPoolManager.cpp
+             XTask.h
              SingleTonClass.h
              SingleTonClass.cpp
              native-global-params.h

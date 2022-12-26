@@ -68,6 +68,9 @@
  *   3 std::lock_guard() + std::lock()
  *     联合使用这两个模板，同时避免死锁和忘记unclock的问题 详见TestClass4
  *
+ * 虚假唤醒：
+ *   通过使用wait的第二个参数（lambda表达式）当被唤醒时，再做一次业务判断，避免唤醒后依然没有可执行的数据
+ *
  * 注意
  * 1）
  * 线程中如果使用了其他线程内存变量的引用，需要注意该变量的生命周期是否合理，避免其他线程内存回收导致当前线程的问题
@@ -112,6 +115,7 @@
 #include "mutex"
 #include <future>
 #include "SingleTonClass.h"
+#include "ThreadsPoolManager.h"
 #define TAG "nativeThreadLibTAG"
 #define LOGD(...)   __android_log_print(ANDROID_LOG_DEBUG, TAG, __VA_ARGS__)
 
@@ -491,6 +495,12 @@ Java_com_sandro_nativelib_NativeThreadAgent_startSharedFutureTest(JNIEnv* env, j
  * 如果使用互斥量保护数据，虽然安全，但是在频繁操作的情况下，效率会低很多。
  * std::atomic,C++中提供的无锁原子操作技术，能在保证安全的前提下，提升效率
  * 互斥量的优势是对多步骤操作的代码段加锁，而原子操作只能针对某一个变量进行保护，一般用于基础类型的变量
+ *
+ * 原子操作不允许赋值： auto atm2 = atm;//编译不会通过，因为这种方式很难原子操作，所以把拷贝构造函数给删掉了
+ * 可以使用load()：以原子方式读atomic对象的值
+ * 比如：atomic<int> atm2(atm.load());
+ * store(): 以原子方式写入内容
+ * atm2.store(12);
  */
 extern "C" JNIEXPORT void JNICALL
 Java_com_sandro_nativelib_NativeThreadAgent_atomicTest(JNIEnv* env, jclass jclz);
@@ -513,6 +523,12 @@ Java_com_sandro_nativelib_NativeThreadAgent_recursiveMutex(JNIEnv* env, jclass j
  */
 extern "C" JNIEXPORT void JNICALL
 Java_com_sandro_nativelib_NativeThreadAgent_timedMutex(JNIEnv* env, jclass jclz);
+
+/**
+ * 线程池
+ */
+extern "C" JNIEXPORT void JNICALL
+Java_com_sandro_nativelib_NativeThreadAgent_threadsPool(JNIEnv* env, jclass jclz);
 
 /**
  * 线程任务：输出字符串，结束后回调java接口

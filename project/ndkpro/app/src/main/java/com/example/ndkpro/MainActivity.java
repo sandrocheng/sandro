@@ -151,6 +151,18 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+        binding.threadsPool.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                new Thread(){
+                    public void run(){
+                        NativeThreadAgent.threadsPool();
+                    }
+                }.start();
+
+            }
+        });
     }
 
 

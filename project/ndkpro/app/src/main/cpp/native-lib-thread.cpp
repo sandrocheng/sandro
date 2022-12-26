@@ -19,6 +19,29 @@ jint jniVer;
 static jclass gs_NativeThreadAgent_class = NULL;
 
 extern "C" JNIEXPORT void JNICALL
+Java_com_sandro_nativelib_NativeThreadAgent_threadsPool(JNIEnv* env, jclass jclz){
+    LOGD("[threadsPool] thread id is %d",std::this_thread::get_id());
+    class Task:virtual public XTask{
+    private :
+        int id;
+    public:
+        Task(int _id):id(_id){};
+        int run(){
+            LOGD("[threadsPool] task %d start ",id);
+            std::chrono::seconds dura(1);
+            std::this_thread::sleep_for(dura);
+            LOGD("[threadsPool] task %d finish ",id);
+            return 0;
+        }
+    };
+    for(int i = 0;i<10;i++){
+        Task *t = new Task(i);
+        ThreadsPoolManager::getInstance()->addTask(t);
+    }
+
+}
+
+extern "C" JNIEXPORT void JNICALL
 Java_com_sandro_nativelib_NativeThreadAgent_timedMutex(JNIEnv* env, jclass jclz){
     LOGD("[timedMutex] thread id is %d",std::this_thread::get_id());
     TestClass7 tc7;
