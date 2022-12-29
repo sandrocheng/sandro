@@ -1,0 +1,215 @@
+1、 命令解析器 shell
+	1.1
+	命令解析器的作用：用户通过终端操作linux操作系统，对用户输入到终端的命令进行解析，解析成内核能够识别的指令，调用对应的执行程序。
+ 		内核 <————> shell(命令解析器) <————> 终端
+	用户在终端输入命令，由shell命令解析器对命令进行解析（按照$PATH环境变量搜索命令），解析成内核能够识别的指令，然后由内核执行命令，最后由终端显示命令执行的结果给用户。
+	注意：shell在寻找命令的时候是按照$PATH环境变量去查找的，如果找到了就执行对应的命令，若找不到就报错，执行 echo $PATH 可以查看PATH环境变量的值。     
+        1.2
+        linux系统结构：
+        	用户
+               应用层 - 图形界面
+               shell层 - shell命令
+               内核层 - 系统调用
+               硬件 - 驱动指令
+        1.3
+        常用的命令解析器:
+        	shell -- Bourne Shell
+        	         /bin/sh
+        	bash -- Bourne Again Shell
+        	        /bin/bash                
+        查看当前系统所使用的shell : echo $SHELL
+        查看当前系统下有哪些shell : cat /etc/shells	
+        在bash内使用shell : sh
+        在shell内使用bash : bash
+ 
+ 
+2、常用快捷键
+	2.1 tab键:
+		补齐命令：
+			如：在终端输入his，然后按tab键，会补齐history命令
+			如：输入h，然后按tab键，会显示所有以h开头的命令
+		
+		补齐文件（包括目录和文件），用于ls cd等命令：	                                
+			如：如果在执行ls+空格 然后按tab键，会显示当前目录下所有的文件，如果执行ls + 回车，只会显示可显示文件和目录
+	
+	2.2 主键盘快捷键
+		遍历输入的历史命令
+			ctrl+p/方向键上:从当前位值向上遍历
+			ctrl+n/方向键下:从当前位值向下遍历
+			注意：使用history命令可以显示所有用户收入过的命令。	
+		
+		光标位值移动：
+			ctrl+b/方向键左：光标左移
+			ctrl+f/方向键右：光标右移
+			ctrl+a : 移动到头部
+			ctrl+e: 移动到尾部
+		
+		字符删除
+		
+			ctrl+h(Backspace):删除光标前边的字符
+			ctrl+d(Delete):删除光标后边的字符
+				光标后边的字符即光标覆盖的字符
+		        ctrl+u : 删除光标前所有的内容
+		        ctrl+k : 删除光标后所有的内容
+		
+3、linux 的目录结构和常见目录的作用
+	3.1 linux系统的目录结构是一个倒立的树状结构，根目录用 / 表示
+	/ -- 
+	    /root
+	    	/root/Desktop
+	    	/root/Mailder
+	    	/...
+	    /bin
+	    /boot
+	    /dev
+	    /etc
+	    /home
+	    /var
+	    /lib
+	    /media
+	    /usr
+	    	/usr/bin
+	    	/usr/lib
+	    	....
+	
+	3.2 linux主要目录介绍
+	/bin:binary,二进制文件，可执行程序，shell命令
+		如：ls,rm,mv,cp等常用命令	    	
+	/sbin:s是超级用户的意思，这里存放的是系统管理员使用的系统管理程序。
+		如：ifconfig,halt,shutdown,reboot等系统命令。
+
+	/lib:linux运行的时候需要加在的一些动态库
+		如：libc.so 、libpthread.so等
+	/usr: unix system resource--类似于windows的programe file目录
+		include目录里存放头文件，如：stdio.h,stdlib.h,string.h,pthread.h
+		games目录下的小游戏-如：sl小火车游戏
+	/etc:存放配置文件
+		/etc/passwd : man 5 passwd 可以查看passwd文件的格式信息
+		/etc/group : man 5 group 可以查看group文件的格式信息
+		/etc/profile : 系统的配置文件，修改该文件会影响这个系统下面的所有用户	
+	/dev:device,在linux下一切皆文件
+		硬盘，显卡，显示器
+		字符设备文件，块设备管理器
+			如：在input目录下执行：sudo cat mouse0,移动鼠标会显示有输入	
+	/root:linux的超级用户root的家目录
+		比如：su - root ,自动进入到root这个目录，然后exit 推出root用户，又重新回到当前用户的家目录	
+	/home : linux所有用户的家目录（宿主目录或者主目录）
+		如 ： /home/sandro				
+	/opt:安装第三方应用程序
+		比如安装一个oracle数据库文件
+	/mnt:手动挂载的目录，如u盘等
+	/tmp : 存放临时文件
+		新建在这个目录下的文件会在系统重启后自动清除	
+	/media:外设的自动挂载目录，如光驱等。
+
+4、相对路径和绝对路径
+	4.1 绝对路径：从根目录开始表示的路径，也就是从/开始，如：/home/sandro
+	4.2 相对路径：
+		从当前所处的目录开始表示的路径。
+		.表示当前目录
+		..表示当前目录的上一级目录	
+	4.3 linux中的命令提示符
+		sandro@sandro-Lenovo-XiaoXin-V4000:~/mywork$ 
+		a)sandro ,当前登陆的用户
+		b)@ ,分割符
+		c)sandro-Lenovo-XiaoXin-V4000 ,主机名
+			主机名在/ect/hosts这个文件中
+		d): ,分割符号	
+		e)~/mywork ,当前工作目录，~表示宿主目录(家目录或主目录)，例如 /home/sandro
+			可通过echo ~  或者 echo $HOME 查看当前用户的宿主目录
+		f)$ ,表示当前用户为普通用户，#表示当前用户为root用户
+			例 sandro@sandro-Lenovo-XiaoXin-V4000:~/mywork$   普通用户
+			   root@sandro-Lenovo-XiaoXin-V4000:/home/sandro/mywork#  root用户
+
+5、命令别名配置
+	为了能够简化某些命令操作，可以给命令编辑别名，编辑后直接使用别名即可。
+		宿主目录下编辑 .bashrc
+			gedit .bashrc
+		查找 alias ,系统一般会默认定义一些别名 比如 ll='ls -alF'
+		可以在这里添加自己的别名 ，例如 mywork='cd ~/mywork/gitwork/sandro'	
+		编辑之后 执行： . .bashrc ,让命令生效
+		之后只要执行 mywork 就会 跳转到 ~/mywork/gitwork/sandro 目录下
+
+6 、软件包安装
+	在线安装
+		软件安装：sudo apt-get install 软件名
+		软件卸载：sudo apt-get remove 软件名
+		更新软件列表 ：sudo apt-get update
+		清理安装包：sudo apt-get clean
+			清理的缓存路径是 /var/cache/apt/archives
+		注意
+			安装之前要执行 sudo apt-get update,更新以下软件列表和安装路径
+			然后在 install 
+	
+	本地安装		
+		在Ubuntu 系统下必须有deb格式的安装包
+		Ubuntu 本地deb格式文件安装
+			sudo dpkg -i xxx.deb	
+		软件卸载		
+			sudo dpkg -r 软件名					
+		    	
+		    
+7、linux中常用的压缩工具		  
+	gzip 和 bzip2 ： 不能压缩目录，只能一个一个文件压缩，压缩之后会使源文件消失
+		gzip
+			gzip * ,压缩当前目录下所有的文件，但是目录不能压缩,每个文件生成一个.gz后缀的压缩文件
+				也可以单独文件压缩：gzip 文件名
+			gunzip * ,解压当前目录下所有的.gz文件
+				也可以单独文件解压：gunzip 文件名
+		bzip2:使用方法可gzip基本一样	
+			bzip2 * , 压缩当前目录下所有的文件，但是目录不能压缩
+			bunzip2* , 解压当前目录下所有的.bz2文件  
+		    
+	tar工具	  
+		相关参数说明：
+			z : 用gzip来压缩/解压缩文件
+			j : 用bzip2来压缩/解压缩文件
+			c : create ，创建新的压缩文件，与x互斥作用
+			x : 从压缩文件中释放文件，与c互斥作用
+			v : 详细报告tar处理的文件信息
+			f : 指定压缩文件的名字
+			t : 查看压缩包中有哪些文件
+			
+		压缩：
+			tar cvf 压缩包名字.tar 源文件（要打包压缩的文件或目录）
+			tar zcvf 压缩包名字.tar.gz 源文件（要打包压缩的文件或目录）
+			tar jcvf 压缩包名字.tar.bz2 源文件（要打包压缩的文件或目录）
+			
+			例子：
+				tar cvf my.tar a.log b.log c.log , 把当前目录下的a.log b.log c.log 打成一个包 my.tar
+				tar cvm my.tar ./ ,把当前目录下所有文件打包，并命名为my.tar
+		解压缩：
+			tar xvf 已有的压缩包 （xxx.tar）
+			tar zxvf 已有的压缩包 （xxx.tar.gz）
+			tar jxvf 已有的压缩包 （xxx.tar.bz2）
+			解压到指定目录：添加参数 -C
+				tar xvf xxx.tar -C ./test
+		查看压缩包中有哪些文件
+			tar -tvf test.tar		
+		
+	rar工具
+		使用前需要安装rar工具
+			sudo apt-get rar
+		压缩：rar a -r 压缩包名字 要压缩的文件（含文件或者目录）		
+			压缩目录需要使用参数-r
+				例： rar a -r my a.log b.log dir  ---- 将a.log b.log dir压缩到 my.rar压缩文件中去
+			打包生成的新文件不需要指定后缀
+		
+		解压缩：rar x my.rar 目录名 -- 将my.rar解压到指定目录中去 
+			rar x my.rar -- 将my.rar解压到当前目录
+			
+	zip工具
+		压缩：zip -r 压缩包名 要压缩的文件（含文件或目录）
+			压缩目录需要使用参数-r
+			该命令不需要指定压缩包后缀
+			例子 zip -r xxx ./  ，将当前目录下所有文件压缩到myzip中去，压缩后会生成一个xxx.zip文件
+		
+		解压缩:	unzip 压缩包名称
+			解压缩到指定目录,需要添加参数 -d 解压目录
+				例子 ： unzip xxx.zip -d ./xxx
+			注意解压目录如果不存在，会创建	
+					
+			
+						 
+		    
+		    
