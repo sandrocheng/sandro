@@ -1,0 +1,7 @@
+1、切换到bin目录，执行命令将c源文件生成对应的.o文件
+	gcc -c ../func1.c ../func2.c
+执行之后会在bin目录下生成 func1.o 和 func2.o文件
+
+2、继续在bin目录下使用打包工具ar将准备好的.o文件打包为.a文件
+	ar rsc libtest.a func1.o func2.o
+	

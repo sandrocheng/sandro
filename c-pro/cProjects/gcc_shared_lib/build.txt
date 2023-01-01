@@ -1,0 +1,6 @@
+1、切换到bin目录下，在bin目录下生成.o文件
+	gcc -fpic -c ../func1.c ../func2.c
+
+2、继续在bin目录下，执行生成共享库命令，生成libtest.so
+	gcc -shared func1.o func2.o -o libtest.so
+	
