@@ -1,0 +1,20 @@
+#make -f makefile2
+#使用 -f 参数指定 makefile 文件
+
+#拆分文件，逐个编译，可以提升编译效率，没有变化的代码文件不会重复编译
+
+main:main.o fun1.o fun2.o sum.o
+	gcc -o main main.o fun1.o fun2.o sum.o
+
+#main.c依赖了head.h头文件，所以需要使用-I 来指定头文件的位值
+main.o:main.c
+	gcc -c main.c -o main.o -I./	
+
+fun1.o:fun1.c
+	gcc -c fun1.c 
+
+fun2.o:fun2.c
+	gcc -c fun2.c 
+
+sum.o:sum.c
+	gcc -c sum.c 

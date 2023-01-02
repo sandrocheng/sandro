@@ -1,0 +1,202 @@
+1、makefile简介
+	makefile文件中定义了一系列的规则来指定那些文件需要先编译，那些文件需要后编译，哪些文件需要重新编译，甚至于更复杂的功能操作
+	因为makefile就像一个shell脚本一样，其中也可以执行操作系统的命令。makefile带来的好处就是“自动化编译”,一旦写好只需要一个make命令，整个工程完全自动编译，极大的提高了软件开发效率
+	
+	make是一个命令工具，是一个解释makefile中指令的命令工具，一般来说，大多数的IDE都有这个命令，比如 ：Visual C++的nmake,Linux 下GNU的make。
+	可见makefile已经为成了一种在工程方面的编译方法
+	
+	makefile文件会使用gcc编译器对源码进行编译，最终生成可执行文件或者是库文件。
+	makefile文件命名：makefile或者Makefile
+
+2 makefile的基本规则
+	makefile由一组规则组成，规则如下：
+		目标：依赖
+		(tab)命令
+	注意：命令前的tab 缩进必须使用tab键来缩进不能用空格代替。
+
+	makefile基本规则三要素
+		目标:要生成的目标文件
+		依赖:目标文件由哪些文件生成
+		命令:通过执行该命令由依赖文件生成目标
+		
+
+	下面以具体的例子来讲解:
+		当前目录下有 mani.c fun1.c fun2.c sum.c 根据这个基本规则编写一个简单的makefile文件，生成可执行文件main。
+		makefile内容：
+			main:main.c fun1.c fun2.c sum.c
+				gcc -o ./bin/main main.c fun1.c fun2.c sum.c
+		保存以后，执行以下make命令，会自动找到这个makefile文件并执行	
+
+
+3 makefile的工作原理
+	基本原则：
+		若想生成目标，检查规则中的所有依赖文件是否都存在：
+			如果有依赖文件不存在，则向下搜索规则，看是否有生成该依赖文件的规则
+			如果有规则用来生成该依赖文件，则执行规则中的命令生成依赖文件
+			如果没有规则用来生成该依赖文件，则报错
+
+			                                    +--------存在------>通过命令生成目标
+			                                    |
+			生成目标---(检查)--->依赖条件-------|			
+                	    ^                               |
+                            |                               +--------不存在---->寻找新规则用来生成依赖条件
+                   	    |                                                               |
+                            |                                                               |        
+                            |                                                               |
+                            +---------------依赖条件作为子目标，向下寻找------------------- +
+		
+		如果所有依赖都存在，检查规则中的目标是否需要更新，必须先检查他的所有依赖
+		依赖中有任何一个被更新，则目标必须更新（检查的规则是哪个时间大哪个最新）
+			若目标的时间>依赖的时间，不更新
+			若目标的时间<依赖的时间，则更新
+
+							+-------->依赖1
+							|	
+							|
+			更新目标---(检查)--->更新---(比较时间)--->依赖2
+			   ^				|	
+			   |				|
+			   |				+-------->依赖3
+			   |					    |	
+			   |					    |
+                           |                                        |
+                           +----------(依赖比目标文件新)------------+ 
+  
+	总结：
+		分析各个目标和依赖之间的关系
+		根据依赖关系自底向上执行命令
+		根据依赖文件的时间和目标文件的时间确定是否需要更新
+		如果目标不依赖任何条件，则执行对应命令，以示更新（如：伪目标）
+
+4、拆分目标提升编译效率
+	上一个makefile效率会比较低,如下：
+		main:main.c fun1.c fun2.c sum.c
+	这里面只要有一个文件修改，就得重新编译，拆分之后可以提高效率，如下:
+		main:main.o fun1.o fun2.o sum.o
+			gcc -o main main.o fun1.o fun2.o sum.o
+
+		#main.c依赖了head.h头文件，所以需要使用-I 来指定头文件的位值
+		main.o:main.c
+			gcc -c main.c -o main.o -I./	
+
+		fun1.o:fun1.c
+			gcc -c fun1.c 
+
+		fun2.o:fun2.c
+			gcc -c fun2.c 
+
+		sum.o:sum.c
+			gcc -c sum.c 
+	
+	使用首次使用make命令运行：
+		gcc -c main.c -o main.o -I./	
+		gcc -c fun1.c 
+		gcc -c fun2.c 
+		gcc -c sum.c 
+		gcc -o main main.o fun1.o fun2.o sum.o
+	所有文件都生成一次。
+	
+	在没有修改代码的情况下 ，再次make:
+		make: “main”已是最新。
+	此时经过文件和目标修改时间对比，发现没有新修改，所以不会重新编译
+	
+	现在通过 touch fun1.c ，fun1.c的修改时间会更新为当前时间，此时再次运行make命令:	
+ 		gcc -c fun1.c 
+		gcc -o main main.o fun1.o fun2.o sum.o
+	此时 fun2.c 和 sum.c由于修改时间没有变化，所以不会重新编译
+
+
+5 makefile中的变量
+	在makefile中使用变量有点类似于c语言中的宏定义，使用该变量相当于内容替换，使用变量可以是makefile易于维护，修改起来变得简单
+	makefile中有三种类型的变量
+		普通变量
+		自带变量
+		自动变量
+	
+	普通变量：
+		变量定义直接使用 = 
+		使用变量用 $(变量名)
+	如：下面是变量的定义和使用
+		foo=abc //定义变量并赋值
+		bar = $(foo) //使用变量，$(变量名)
+	定义了两个变量，foo、bar，其中bar的值是foo变量的引用
+	
+	自带变量：
+		除了使用用户自定义变量，makefile中也提供了一些变量(变量名是大写)，供用户直接使用，我们可以直接对其进行赋值
+			CC = gcc #arm-linux-gcc
+			CPPFLAGS: C预处理的选项 -I(指定头文件)
+			CFLAGS : C编译器的选项 -Wall -g -c
+			LDFLAGS：链接器选项 -L -l	
+	
+	自动变量：
+		$@:表示规则中的目标
+		$<:表示规则中的第一个条件
+		$^:表示规则中的所有条件，组成一个列表，以空格个开，如果这个列表中有重复的项，则消除重复项。
+		例如：
+			main:main.c fun1.c fun2.c sum.c
+			$@ 对应 main
+                        $< 对应 main.c
+			$^ 对应 main.c fun1.c fun2.c sum.c
+		注意：自动变量只能在规则的命令中使用
+			例如：
+				main:main.o fun1.o fun2.o sum.o
+					gcc -o main main.o fun1.o fun2.o sum.o
+	
+                        可以替换成
+                                 main:main.o fun1.o fun2.o sum.o
+                                         gcc -o main $^
+			这里 $^ 对应main.o fun1.o fun2.o sum.o
+
+6、模式规则
+	至少要在规则的目标定义中要包含 ‘%’，‘%’表示1个或多个，在依赖条件中同样可以使用‘%’，依赖条件中的‘%’的取值取决于其目标
+	比如 main.o:main.c  fun1.o:fun1.c  fun2.o : fun2.c   ，简单说就是 xxx.o:xxx.c
+		CC=gcc #重新给自带变量 CC 赋值为gcc
+		CPPFLAGS=-I./  #重新给自带变量CPPFLAGS 赋值
+		target=main #定义main目标变量
+		objects=main.o fun1.o fun2.o sum.o #定义.o文件依赖变量
+		$(target):$(objects)
+			$(CC) -o $@ $^
+
+		%.o:%.c
+			$(CC) -c $< -o $@ $(CPPFLAGS)
+
+
+7、makefile函数
+	makefile 函数有很多，下面两个是最常用的
+		wildcard , 查找指定目录下的指定类型文件
+		例如：src=$(wildcard *c)//找到当前目录下所有后缀为.c的文件 ，赋值给src
+
+		patsubst , 匹配替换
+		列如： obj=$(patsubst %.c,%.o ,$(src)) //把src变量里所有后缀为.c的文件替换成.o
+	
+	在makefile中所有的函数都是有返回值的
+		当前目录下有main.c fun1.c fun2.c sum.c
+			src=$(wildcard *.c) //等价于 src=main.c fun1.c fun2.c sum.c
+			obj=$(patsubst %.c,%.o,$(src)) //等价于 src=main.o fun1.o fun2.o sum.o
+
+8、增加makefile的清理操作
+	用途：清除编译生成的中间.o文件和最终目标文件
+	make clean 如果当前目录下有同名clean文件，则不执行clean对应的命令，解决方案
+		伪目标声明：
+			.PHONY:clean
+		声明目标为伪目标后，makefile将不会检查该目标是否存在或者该目标是否需要更新
+	
+	clean 命令中的特殊符号
+		“-” 此条命令出错，make也会继续执行后续的命令，如：“-rm main.o”	
+        		rm -f:强制执行，比如若要删除的文件不存在 使用-f 不会报错
+		“@” 不显示命令本身，只显示结果，如：@echo clean done
+	
+9、其他：
+	makefile中出现的第一个目标是终极目标，make默认只会执行终极目标和他的依赖目标，其他的目标，默认情况下是不会执行的，只能通过命令手动指定当前要执行哪一个目标
+		make clean,执行makefile的clean目标
+		make, 执行makefile的第一个目标
+
+	make -f，指定某一个makefile文件
+		make -f makefile6, 执行makefile6的默认目标
+		make -f makefile6 clean ,执行makefile6的clean目标
+		
+
+
+
+
+

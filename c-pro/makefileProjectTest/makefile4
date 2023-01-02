@@ -1,0 +1,31 @@
+#make -f makefile4
+#通过自定义变量,自带变量，自动变量 简化文件书写
+#通过模式规则，继续简化文件书写
+
+CC=gcc #重新给自带变量 CC 赋值为gcc
+CPPFLAGS=-I./  #重新给自带变量CPPFLAGS 赋值
+
+target=main #定义main目标变量
+objects=main.o fun1.o fun2.o sum.o #定义.o文件依赖变量
+
+$(target):$(objects)
+	$(CC) -o $@ $^
+
+%.o:%.c
+	$(CC) -c $< -o $@ $(CPPFLAGS)
+
+
+#使用 ‘%’ 模式规则替换下面的语句
+##main.c依赖了head.h头文件，所以需要使用-I 来指定头文件的位值
+#main.o:main.c
+#	$(CC) -c $< -o $@ $(CPPFLAGS)	
+#
+#fun1.o:fun1.c
+#	$(CC) -c $< 
+#
+#fun2.o:fun2.c
+#	$(CC) -c $< 
+#
+##在这里$^和$<是一样的
+#sum.o:sum.c
+#	$(CC) -c $< 

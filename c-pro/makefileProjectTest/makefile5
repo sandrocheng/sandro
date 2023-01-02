@@ -1,0 +1,18 @@
+#make -f makefile
+#通过自定义变量,自带变量，自动变量 简化文件书写
+#通过模式规则，继续简化文件书写
+#通过makefile 函数 继续简化文件书写
+
+CC=gcc #重新给自带变量 CC 赋值为gcc
+CPPFLAGS=-I./  #重新给自带变量CPPFLAGS 赋值
+
+target=main #定义main目标变量
+src=$(wildcard *.c) #查找当前目录下所有.c文件，返回给src
+objects=$(patsubst %.c,%.o,$(src)) #把src中所有.c 替换为.o
+
+$(target):$(objects)
+	$(CC) -o $@ $^
+
+%.o:%.c
+	$(CC) -c $< -o $@ $(CPPFLAGS)
+
