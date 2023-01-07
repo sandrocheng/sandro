@@ -1,17 +1,20 @@
 /*
- * main.c
- *
- *  Created on: 2013-5-22
- *      Author: sandro
+ ============================================================================
+ Name        : cAll.c
+ Author      : sandrocheng
+ Version     :
+ Copyright   : sandrocheng
+ Description : Hello World in C, Ansi-style
+ ============================================================================
  */
 
 #include "hello.h"
 
 int main(int argc,char *argv[])
 {
-//	say_hello();
+	say_hello();
 
-//	pointer_test();
+	pointer_test();
 
 //	string_test();
 

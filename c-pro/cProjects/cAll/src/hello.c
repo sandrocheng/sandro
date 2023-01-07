@@ -150,7 +150,7 @@ void file_byte_test(){
 	int pdataLen = sizeof(pdata)/sizeof(short);
 	size_t wcount = fwrite(pdata,sizeof(short),pdataLen,pfile);
 	fclose(pfile);
-	printf("save data success , save %d short data",wcount);
+	printf("save data success , save %ld short data",wcount);
 
 	if(!(pfile = fopen(filename,"rb"))){
 		printf("opening %s fils error!", filename);
@@ -159,7 +159,7 @@ void file_byte_test(){
 
 	short rdata[pdataLen];
 	wcount = fread(rdata,sizeof(short),pdataLen,pfile);
-	printf("\nread %d short data : \n",wcount);
+	printf("\nread %ld short data : \n",wcount);
 	for(int i = 0;i<wcount;i++){
 		printf("%d," , rdata[i]);
 	}
@@ -254,7 +254,7 @@ void file_test() {
 }
 
 void struct_test() {
-	printf("size of horse struct is %d", sizeof(struct horse));
+	printf("size of horse struct is %ld", sizeof(struct horse));
 	struct horse dobbin = { 24, 17, "dobbin" };
 	struct horse trigger = { 22, 19, "trigger" };
 	printf("\nage %d height %d name %s", dobbin.age, dobbin.height,
@@ -292,6 +292,7 @@ void struct_test() {
 }
 
 void c_date_time_test(){
+	printf("\n--------------------------------[c_date_time_test]---------------------------------\n");
 	clock_t start,end;
 	time_t calendar_start = time(NULL);
 	printf("calendar_start is %lu",(long)calendar_start);
@@ -375,6 +376,7 @@ void changePvalue(short *pValue) {
 }
 
 void pointer_test() {
+	printf("---------------------------[pointer_test]------------------------\n");
 	short value = 999L;
 	short *pValue = &value;
 	changePvalue(pValue);
@@ -382,8 +384,8 @@ void pointer_test() {
 	printf("\n&pValue is %p", &pValue);
 	printf("\npValue is %p", pValue);
 	printf("\n&value is %p", &value);
-	printf("\npValue's size : %d", sizeof(pValue));
-	printf("\nvalue's size : %d\n", sizeof(value));
+	printf("\npValue's size : %ld", sizeof(pValue));
+	printf("\nvalue's size : %ld\n", sizeof(value));
 
 	*pValue = 888;
 	printf("\nvalue is %d : ", value);
@@ -407,7 +409,7 @@ void pointer_test() {
 
 	char str[] = "char array test";
 	char *pstr = str;
-	printf("\n pstr is \"%s\" sizeof(str) is %d", pstr, sizeof(str));
+	printf("\n pstr is \"%s\" sizeof(str) is %ld", pstr, sizeof(str));
 }
 
 int any_func(int (*_pfun)(int, int), int x, int y) {
@@ -430,7 +432,7 @@ void string_test() {
 	char str3[] = "123456 那我他";
 	size_t count = 0;
 	count = strlen(str3);
-	printf("\"%s\" has %d chars ,size is %d\n", str3, count, sizeof(str3));
+	printf("\"%s\" has %ld chars ,size is %ld\n", str3, count, sizeof(str3));
 
 	int len = STR_LEN;
 	char str4[STR_LEN] = "abcdefg ";
@@ -470,7 +472,7 @@ void string_test() {
 }
 
 void say_hello() {
-	printf("HelloWorld! \n");
+	printf("-------------------------------[say_hello]---------------------------------\n");
 	printf("If at first you don\'t succeed,try,try,try again!");
 	printf("\n\"\tIt is a wise father that knows his own child.\"");
 	printf("\n Be careful!!\a");
@@ -512,18 +514,18 @@ void say_hello() {
 //	scanf("%d",&x);
 //	printf("input x is : %d ",x);
 
-	printf("\nVariables of type char occupy %d bytes", sizeof(char));
-	printf("\nVariables of type short occupy %d bytes", sizeof(short));
-	printf("\nVariables of type int occupy %d bytes", sizeof(int));
-	printf("\nVariables of type long occupy %d bytes", sizeof(long));
-	printf("\nVariables of type long long occupy %d bytes", sizeof(long long));
-	printf("\nVariables of type float occupy %d bytes", sizeof(float));
-	printf("\nVariables of type double occupy %d bytes", sizeof(double));
-	printf("\nVariables of type long double occupy %d bytes",
+	printf("\nVariables of type char occupy %ld bytes", sizeof(char));
+	printf("\nVariables of type short occupy %ld bytes", sizeof(short));
+	printf("\nVariables of type int occupy %ld bytes", sizeof(int));
+	printf("\nVariables of type long occupy %ld bytes", sizeof(long));
+	printf("\nVariables of type long long occupy %ld bytes", sizeof(long long));
+	printf("\nVariables of type float occupy %ld bytes", sizeof(float));
+	printf("\nVariables of type double occupy %ld bytes", sizeof(double));
+	printf("\nVariables of type long double occupy %ld bytes",
 			sizeof(long double));
-	printf("\nVariables of type long double occupy %d bytes",
+	printf("\nVariables of type long double occupy %ld bytes",
 			sizeof(long double));
-	printf("\n\"汉字\" occupy %d bytes", sizeof("汉字1"));
-	printf("\n Program last compiled at time %s on date %s",__TIME__,__DATE__);
+	printf("\n\"汉字\" occupy %ld bytes", sizeof("汉字1"));
+	printf("\n Program last compiled at time %s on date %s\n",__TIME__,__DATE__);
 }
 
