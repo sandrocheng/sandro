@@ -1,21 +1,11 @@
-/* -*- Mode: C; indent-tabs-mode: t; c-basic-offset: 4; tab-width: 4 -*-  */
-/*
- * main.cc
- * Copyright (C) 2022 sandro <sandro@sandro-Lenovo-XiaoXin-V4000>
-	 * 
- * foobar-cpp is free software: you can redistribute it and/or modify it
- * under the terms of the GNU General Public License as published by the
- * Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
-	 * 
- * foobar-cpp is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- * See the GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License along
- * with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+//============================================================================
+// Name        : cplusAll.cpp
+// Author      : sandrocheng
+// Version     :
+// Copyright   : sandrocheng
+// Description : Hello World in C++, Ansi-style
+//============================================================================
+
 #include<iostream>
 #include<bitset>
 #include<time.h>
@@ -84,7 +74,7 @@ int main(int argc,char *argv[])
 		<< endl
 		<< "非初始化变量 i 的默认值 ："<< i
 		<< endl
-		<< "extern data is " << _data 
+		<< "extern data is " << _data
 		<< endl;
 
 	short j = 0x8fff;
@@ -198,7 +188,7 @@ void operatorTest(){
 
 	int posnum = num & 0b1;//保留第0位，其他位都清零
 	cout << "其他位清零 ： "<< bitset<8>(posnum)<<" ,第 " << pos << "位是 : "<< posnum <<endl;
-	
+
 }
 
 void randTest(){
@@ -228,8 +218,8 @@ void sizeofTest(){
 	long j = 300;
 	float k = 1.0f;
 	double t = 3.3;
-	
-	cout << "char size is " << sizeof(y) << endl 
+
+	cout << "char size is " << sizeof(y) << endl
 		 << "short size is " << sizeof(z) << endl
 		 << "int size is " << sizeof(x) << endl
 		 << "float size is " << sizeof(k) << endl
@@ -254,7 +244,7 @@ void signTest(){
 
 	unsigned short b = 0b1111111111101010;
 	short c = 0b1111111111101010;// 负数，首位用“1”，其余部分用正数原码的补码表示
-    cout << "unsigned binary " << bitset<16>(b) << " is " <<  b << endl 
+    cout << "unsigned binary " << bitset<16>(b) << " is " <<  b << endl
 		 << "signed binnary  " << bitset<16>(c) << " is " << c <<endl;
 }
 
@@ -286,8 +276,8 @@ void cinCharTest(){
 	char ch = '\0';
 	cout<< "请输入一个字符 ：";
 	cin>>ch;
-	cout << "输入的字符是 ： " << ch << " , ASCII is : " << (int)ch << endl;	
-		
+	cout << "输入的字符是 ： " << ch << " , ASCII is : " << (int)ch << endl;
+
 }
 
 //整形输入练习
@@ -296,8 +286,7 @@ void cinIntTest(){
 	int cinData2 = 0;
 	cout<<"请输入整形赋值给cinData1 和 cinData2: ";
 	cin>>cinData1>>cinData2;
-	cout<<"cinData1 is " << cinData1 
-		<<" , cinData2 is "<< cinData2 
+	cout<<"cinData1 is " << cinData1
+		<<" , cinData2 is "<< cinData2
 		<<endl;
 }
-
