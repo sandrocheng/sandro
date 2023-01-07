@@ -8,7 +8,6 @@
 #ifndef LINUXIO_H_
 #define LINUXIO_H_
 
-#include <stdio.h>
 #include "IOFunc.h"
 
 static void checkArgs(int argc,char* argv[]);

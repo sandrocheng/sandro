@@ -7,6 +7,54 @@
 
 #include "IOFunc.h"
 
+void readDevice(char * path){
+	printf("------readDevice path : %s\n",path);
+	int fd = STDIN_FILENO;
+	if(path != NULL){
+		fd = open(path,O_RDWR);
+	}
+
+	if(fd < 0){
+		perror("readDevice open error");
+		printf("readDevice open error,file path is %s\n",path);
+		return;
+	}else{
+		printf("open success,and fd is %d\n",fd);
+	}
+
+	char buf[1024];
+	memset(buf,0,sizeof(buf));
+
+	int count = read(fd,buf,sizeof(buf));
+
+	printf("read finish , count is %d\n",count ) ;
+	printf("[%s]",buf);
+
+	close(fd);
+}
+
+void addFileSize(char* pathName,long size){
+	printf("------addFileSize size : %ld , path : %s\n",size,pathName);
+	int flags = O_RDWR|O_CREAT; //使用seek方法扩容不能使用O_APPEND flags
+	int fd = open(pathName,flags,0666);
+	if(fd < 0){
+		perror("openFileTest open error");
+		printf("file path is %s\n",pathName);
+		return;
+	}else{
+		printf("open success,and fd is %d\n",fd);
+	}
+	//扩容n-1个字节，最后一个字节需要写入一个内容，否则无法扩容
+	int len = size - 1;
+	int fileLen = lseek(fd,0,SEEK_END);
+	printf("cur filelen is : %d\n" ,fileLen);
+	int cap = lseek(fd, len, SEEK_END);//先通过移动指针，扩容n-1个字节
+	printf("扩容后，文件大小 %d 个字节\n",cap);
+	int w = write(fd," ",1);//数据随便写，否则无法完成拓展
+	printf("写入展位符号 %d 个字节 ，此次扩容后文件大小 %d 个字节\n",w,(cap + w));
+	close(fd);
+}
+
 void writeAndRead(int argc,char* argv[]){
 	printf("------writeAndRead \n");
 	int flags = O_RDWR|O_CREAT|O_APPEND;
@@ -37,6 +85,7 @@ void writeAndRead(int argc,char* argv[]){
 
 	printf("read finish , count is %d\n",count ) ;
 	printf("[%s]",buf);
+
 	close(fd);
 }
 
@@ -50,6 +99,13 @@ void readFile(char* pathName){
 	}else{
 		printf("open success,and fd is %d\n",fd);
 	}
+
+	//通过将文件指针移动到末尾的返回值，得到文件的大小,ls -al 可以验证文件大小
+	long int size = lseek(fd, 0, SEEK_END);
+	printf("file size is %d\n",size);
+
+	//文件指针移动到最后，再读取就读不到内容了，所以要重新设置文件指针为0，就可以从头读数据了
+	lseek(fd, 0, SEEK_SET);
 	char buf[16];
 	memset(buf,0,sizeof(buf));
 	while(1){
@@ -82,11 +138,6 @@ void openFileTest(char* pathName){
 	printf("close fd  %d , and result is %d\n",fd,closeresult);
 }
 
-/**
- * 写文件测试,在文件末尾添加内容
- * @param argc main argc参数
- * @param argv main argv参数
- */
 void writeFileTestByAdd(int argc,char* argv[]){
 	printf("------writeFileTestByAdd");
 	int flags = O_RDWR | O_CREAT | O_APPEND;

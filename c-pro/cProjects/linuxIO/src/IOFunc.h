@@ -21,6 +21,11 @@
  * 				a) O_APPEND 表示追加。在文件尾部追加，不覆盖。
  *              b) O_CREAT 若次文件不存在则创建他。使用此选项是需要提供第三个参数 mode，表示该文件的访问权限
  * 					文件最终权限 mode&~umask
+ * 					umask是文件掩码，每个用户都有文件掩码，通过使用命令查看,如下
+ * 						$umask
+ * 						$0002
+ * 					注意：第一个0代表8进制，如果要设置0666，那么最终权限是
+ * 						666&~002 = 110 110 110 & 111 111 101 = 110 110 100  = 0664
  *              c)O_EXCL 如果同时指定了O_CREAT,并且文件已经存在，则出错返回。
  *              d)O_TRUNC 如果文件已存在，将其长度截断位0字节
  *              e)O_NONBLOCK 对于设备文件，以O_NONBLOCK方式打开可以做非阻塞IO操作
@@ -89,11 +94,14 @@
  * 				currpos = lseek(fd,1000,SEEK_END);//从文件尾部开始向后拓展1000个字节
  *              write(fd,"a",1)//数据随便写，否则无法完成拓展
  *
+ *6、perror 和 errno
+ *		errno是一个全局变量，当系统调用后出错，会将errno进行设置，perror 可以将errno对ixng的描述信息打印出来。
+ *		如： perror("open"); //如果报错的化打印open：（空格）错误信息
+ *		errno是每个线程都有保存，所以perror是线程安全的
  *
- *
- *
- *
- *
+ *7、阻塞和非阻塞
+ *		read函数在读普通文件的时候是非阻塞的，读完立刻返回
+ *		read函数在读设备文件的时候是阻塞的，读完buf之前会一直等待,除了设备文件，socket pipe文件也是阻塞的。
  *
  *
  *
@@ -112,6 +120,21 @@
 #include <unistd.h>//unix std的意思,是POSIX标准定义的unix类系统定义符号常量的头文件
 #include <sys/stat.h>//是 unix/linux 系统定义文件状态所在的伪标准头文件
 #include <fcntl.h>//unix标准中通用的头文件，其中包含的相关函数有 open，fcntl，shutdown，unlink，fclose等！
+
+/**
+ * 读取设备内容
+ * read函数在读设备文件的时候是阻塞的，读完buf之前会一直等待
+ */
+void readDevice(
+		char * path /*设备文件路径,NULL则读取 STDIN_FILENO*/
+);
+/**
+ * 文件扩容
+ */
+void addFileSize(
+		char * pathName,/*需要扩容的文件，如果文件不存在则创建一个新文件*/
+		long size/*需要扩容的大小，单位字节*/
+);
 
 /**
  * open文件测试
@@ -135,17 +158,15 @@ void writeFileTestByOverride(int argc,char* argv[]);
 
 /**
  * 写文件测试
- * @param argc main argc参数
- * @param argv main argv参数
- * @param flags ,linux write函数的flags参数
  */
-static void writeFileTest(int argc,char* argv[],int flags);
+static void writeFileTest(int argc,/*main argc参数*/
+						  char* argv[],/**main argv参数*/
+						  int flags /*linux write函数的flags参数*/);
 
 /**
  * read文件测试
- * @param pathName , 文件名
  */
-void readFile(char* pathName);
+void readFile(char* pathName /*文件名*/);
 
 /**
  * 写入文件，并读出内容
