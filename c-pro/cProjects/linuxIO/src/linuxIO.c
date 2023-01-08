@@ -74,6 +74,12 @@ void checkArgs(int argc,char* argv[]){
 		}else{
 			readDevice(argv[2]);
 		}
+	}else if(strcmp(argv[1],"info")==0){
+		if(argc <= 2){
+			printf("请指定一个文件/目录/设备的路径\n");
+		}else{
+			readFileInfo(argv[2]);
+		}
 	}
 	showHelp();
 }
@@ -81,11 +87,12 @@ void checkArgs(int argc,char* argv[]){
 char *path = "/home/sandro/mywork/gitwork/sandro/c-pro/cProjects/linuxIO/tmp";
 void showHelp(){
 	printf("\n==help===================================================================================================================================================\n");
-	/*tty 设备输入，eclipse里执行读不了，可以到shell里手动执行，读的时候会阻塞，直到在shell里输入并回车后read才会读到，并输出
-	 *
+	printf("info ,读取文件/设备/目录等的信息,如: info /home/sandro/.bashrc  info /home/sandro/\n",path);
+	/*
+	 * tty 设备输入，eclipse里执行读不了，可以到shell里手动执行，读的时候会阻塞，直到在shell里输入并回车后read才会读到，并输出
+	 * 默认STDIN_FILENO可以读到
 	 */
 	printf("rd path 读取设备文件,如果不输入path，默认读取linux STDIN_FILENO,如: rd /dev/tty\n");
-
 	printf("as filepath size,打开文件,如果文件不存在则创建一个文件,并扩容size个字节,如: as %s/log 100 \n",path);
 	printf("wr filepath xxx,打开文件,如果文件不存在则创建一个文件,并追加字符串xxx,并读出内容,如: wr %s/log hello world\n",path);
 	printf("read filepath,读取文件内容,如: read %s/log\n",path);

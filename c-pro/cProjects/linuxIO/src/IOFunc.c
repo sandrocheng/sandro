@@ -7,6 +7,49 @@
 
 #include "IOFunc.h"
 
+void readFileInfo(char * path){
+	printf("------readFileInfo path : %s\n",path);
+	struct stat statbuf;
+	if(stat(path, &statbuf) == 0){
+		printf("dev_t : %ld \n" ,statbuf.st_dev);
+		printf("st_ino : %ld \n" ,statbuf.st_ino);
+		printf("file type is ");
+        switch (statbuf.st_mode & S_IFMT) {
+         	 case S_IFBLK:  printf("block device\n");            break;
+         	 case S_IFCHR:  printf("character device\n");        break;
+         	 case S_IFDIR:  printf("directory\n");               break;
+         	 case S_IFIFO:  printf("FIFO/pipe\n");               break;
+         	 case S_IFLNK:  printf("symlink\n");                 break;
+         	 case S_IFREG:  printf("regular file\n");            break;
+         	 case S_IFSOCK: printf("socket\n");                  break;
+         	 default:       printf("unknown?\n");                break;
+        }
+        //权限在低位9位
+        int low9 = 0777;
+        int mode = statbuf.st_mode & low9;
+        printf("Mode:%o (octal)\n",mode);
+		printf("st_nlink : %ld \n" ,statbuf.st_nlink);
+		printf("st_uid : %d \n" ,statbuf.st_uid);
+		printf("st_gid : %d \n" ,statbuf.st_gid);
+        printf("Preferred I/O block size: %ld bytes\n",(long) statbuf.st_blksize);
+        printf("File size: %lld bytes\n",(long long) statbuf.st_size);
+        printf("Blocks allocated:%lld\n",(long long) statbuf.st_blocks);
+
+        char datastr[50];
+        toDateTimeCh(datastr,statbuf.st_ctim.tv_sec);
+        printf("最近状态修改时间 ：%s %ld纳秒 \n",datastr,statbuf.st_ctim.tv_nsec);
+
+        toDateTimeCh(datastr,statbuf.st_mtim.tv_sec);
+        printf("最近修改时间 ：%s %ld纳秒 \n",datastr,statbuf.st_mtim.tv_nsec);
+
+        toDateTimeCh(datastr,statbuf.st_atim.tv_sec);
+        printf("最近访问时间 ：%s %ld纳秒 \n",datastr,statbuf.st_atim.tv_nsec);
+
+	}else{
+		perror("get stat error");
+	}
+}
+
 void readDevice(char * path){
 	printf("------readDevice path : %s\n",path);
 	int fd = STDIN_FILENO;
@@ -16,7 +59,6 @@ void readDevice(char * path){
 
 	if(fd < 0){
 		perror("readDevice open error");
-		printf("readDevice open error,file path is %s\n",path);
 		return;
 	}else{
 		printf("open success,and fd is %d\n",fd);
@@ -39,7 +81,6 @@ void addFileSize(char* pathName,long size){
 	int fd = open(pathName,flags,0666);
 	if(fd < 0){
 		perror("openFileTest open error");
-		printf("file path is %s\n",pathName);
 		return;
 	}else{
 		printf("open success,and fd is %d\n",fd);
@@ -102,7 +143,7 @@ void readFile(char* pathName){
 
 	//通过将文件指针移动到末尾的返回值，得到文件的大小,ls -al 可以验证文件大小
 	long int size = lseek(fd, 0, SEEK_END);
-	printf("file size is %d\n",size);
+	printf("file size is %ld\n",size);
 
 	//文件指针移动到最后，再读取就读不到内容了，所以要重新设置文件指针为0，就可以从头读数据了
 	lseek(fd, 0, SEEK_SET);

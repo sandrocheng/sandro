@@ -165,6 +165,7 @@ void charArrayTest(){
 }
 
 void operatorTest(){
+	cout << "--------------operatorTest start ------------"<<endl;
 	unsigned char data = 0xe7;
 	unsigned char data2 = 0b10000001;
 	cout << bitset<8>(data) <<" & " << bitset<8>(data2) << " = " << bitset<8>(data & data2)<< endl;
