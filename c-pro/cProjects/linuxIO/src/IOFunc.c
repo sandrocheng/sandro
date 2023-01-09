@@ -7,6 +7,32 @@
 
 #include "IOFunc.h"
 
+void dirIterate(const char * path){
+	printf("------dirIterate path : %s\n",path);
+	DIR *pDir = opendir(path);
+	if(pDir == NULL){
+		perror("dirIterate open error");
+		return;
+	}
+
+	struct dirent *p = NULL;
+	while((p=readdir(pDir))!=NULL){
+		if(DT_DIR == p->d_type){
+			if(strcmp(p->d_name,".")!=0 && strcmp(p->d_name,"..")){
+				printf("dir : %s/%s\n" ,path,p->d_name);
+				char dirpath[200];
+				sprintf(dirpath,"%s/%s",path,p->d_name);
+				dirIterate(dirpath);
+			}
+		}else{
+			printf("file : %s/%s\n" ,path,p->d_name);
+		}
+
+	}
+
+	closedir(pDir);
+}
+
 void readFileInfo(char * path){
 	printf("------readFileInfo path : %s\n",path);
 	struct stat statbuf;

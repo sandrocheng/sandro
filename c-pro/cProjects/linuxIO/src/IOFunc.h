@@ -180,9 +180,44 @@
  *		stat,lstat的区别
  *			对于普通文件，这两个函数没有区别，是一样的
  *			对于软链接文件，调用lstat函数获取的是软链接文件本身的属性信息，而stat获取的是软链接文件指向的文件的属性信息
+ *		statx，linux4.2新增的状态扩展函数，增加了 文件创建时间，设备主副id等属性
  *
+ * 9、目录操作相关函数
+ *		打开目录：opendir
+ *			DIR *opendir(const char *name);
+ *			成功返回目录指针，失败返回NULL位值错误码，这个指针给readdir和closedir使用。
+ *			参数，目录的绝对路径或者相对路径
  *
+ *		读取目录项：readdir
+ *				目录中的每个文件叫目录项
+ *				struct dirent *readdir(DIR *dirp);
+ *				成功返回dirent结构体指针
+ * 				失败返回NULL
+ *			  struct dirent {
+ *               ino_t          d_ino;       Inode number
+ *               off_t          d_off;       Not an offset; see below,目录文件开头至此目录进入点的位移，给内部文件指针使用。
+ *               unsigned short d_reclen;    Length of this record 这个结构体大小，也就是d_name的长度
+ *               unsigned char  d_type;      Type of file; not supported by all filesystem types 文件类型
+ *               char           d_name[256]; Null-terminated filename 读取到文件的文件名
+ *            };
+ *			  d_type:
+ *			  		 DT_BLK      This is a block device.
+ *	 	 	 	 	 DT_CHR      This is a character device.
+ *             	  	 DT_DIR      This is a directory.
+ *                   DT_FIFO     This is a named pipe (FIFO).
+ *                   DT_LNK      This is a symbolic link.
+ *             	  	 DT_REG      This is a regular file.
+ *                   DT_SOCK     This is a UNIX domain socket.
+ *                   DT_UNKNOWN  The file type could not be determined.
  *
+ *		关闭目录：closedir
+ *				int closedir(DIR *dirp);
+ *				成功返回0，失败返回-1
+ *
+ *		读取目录内容的一般步骤
+ *			1 DIR *pDir = opendir("dir") // 打开目录
+ *			2 while((p=readdir(pDir))!=NULL){} 循环读取文件
+ *          3 closedir(pDir);//关闭目录
  *
  *
  *
@@ -198,7 +233,13 @@
 #include <unistd.h>//unix std的意思,是POSIX标准定义的unix类系统定义符号常量的头文件
 #include <sys/stat.h>//是 unix/linux 系统定义文件状态所在的伪标准头文件
 #include <fcntl.h>//unix标准中通用的头文件，其中包含的相关函数有 open，fcntl，shutdown，unlink，fclose等！
+#include <dirent.h>//常规c标准库
 #include "tools.h"
+
+/**
+ * 遍历一个目录
+ */
+void dirIterate(const char * path);
 
 /**
  * Description:读取文件的信息
