@@ -7,6 +7,52 @@
 
 #include "IOFunc.h"
 
+void dupFile(const char *path){
+	printf("------dupFile path : %s\n",path);
+	int fd = open(path,O_RDWR | O_CREAT,0666);
+	if(fd < 0){
+		perror("dupFile open error");
+		return;
+	}else{
+		printf("open success,and fd is %d\n",fd);
+	}
+
+
+    //复制fd
+    int newfd = dup(fd);
+	if(newfd < 0){
+		perror("dupFile dup error");
+		return;
+	}else{
+		printf("dup success,and newfd is %d\n",newfd);
+	}
+
+	//使用旧的fd写如当前时间
+    char datastr[100];
+    toDateTimeCh(datastr,0);
+    int count = write(fd,datastr,strlen(datastr));
+    if(count <0){
+    	perror("dupFile write error");
+    }else{
+    	printf("dupFile %d bits has been writen to fd(%d) success\n",count,fd);
+    }
+
+    //重新移动文件指针到开始处，否则读不到所有内容
+    lseek(fd,0,SEEK_SET);
+
+    //使用newfd读取文件内容，验证新旧fd是否指向同一个文件
+    char buf[1024];
+    memset(buf,0,sizeof(buf));
+    int readbits = read(newfd,buf,sizeof(buf));
+    if(readbits <0){
+    	perror("dupFile read error");
+    }else{
+    	printf("fd(%d) read %d bites : %s \n",newfd,readbits,buf);
+    }
+    close(fd);
+    close(newfd);
+}
+
 void dirIterate(const char * path){
 	printf("------dirIterate path : %s\n",path);
 	DIR *pDir = opendir(path);
