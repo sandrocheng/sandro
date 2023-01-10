@@ -104,6 +104,12 @@ void checkArgs(int argc,char* argv[]){
 		}else{
 			dup2printf(argv[2]);
 		}
+	}else if(strcmp("fcntl",argv[1]) ==0 ){
+		if(argc <=2 ){
+			printf("请指定一个文件的路径\n");
+		}else{
+			fcntlTest(argv[2]);
+		}
 	}
 	showHelp();
 }
@@ -111,6 +117,7 @@ void checkArgs(int argc,char* argv[]){
 char *path = "/home/sandro/mywork/gitwork/sandro/c-pro/cProjects/linuxIO/tmp";
 void showHelp(){
 	printf("\n==help===================================================================================================================================================\n");
+	printf("fcntl filepath ,打开文件,如果文件不存在则创建一个文件,使用fcntl复制文件描述符，修改属性等操作,如: fcntl %s/log  \n",path);
 	printf("p2f filepath ,打开文件,如果文件不存在则创建一个文件,使用dup2重定向标准输出printf,将内容保存到一个文件里,如: p2f %s/log  \n",path);
 	printf("dup2 filepath1 filepath2 ,打开文件,如果文件不存在则创建一个文件,使用dup2复制文件描述符，并进行操作,如: \ndup2 %s/log %s/log1 \n",path,path);
 	printf("dup filepath ,打开文件,如果文件不存在则创建一个文件,使用dup复制文件描述符，并进行操作,如: dup %s/log \n",path);

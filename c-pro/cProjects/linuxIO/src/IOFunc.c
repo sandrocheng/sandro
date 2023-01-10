@@ -7,6 +7,91 @@
 
 #include "IOFunc.h"
 
+void fcntlTest(const char *path){
+	printf("-----------fcntl-----------\n");
+	char* errorstr = (char *)calloc(256,sizeof(char));
+	int fd = open(path,O_RDWR|O_CREAT,0664);
+	if(fd<0){
+		sprintf(errorstr,"[fcntlTest] open file %s error \n",path);
+		perror(errorstr);
+		free(errorstr);
+		return;
+	}else{
+		printf("[fcntlTest] open file %s success,fd is %d\n",path,fd);
+	}
+	int newfd = fcntl(fd,F_DUPFD,0);
+	if(newfd<0){
+		sprintf(errorstr,"fd(%d) fcntl error",fd);
+		perror(errorstr);
+		free(errorstr);
+		return;
+	}else{
+		printf("[fcntlTest] newfd(%d) success\n",newfd);
+	}
+
+	int buflen = 2048;
+	char *buf = (char*)calloc(buflen,sizeof(char));
+	toDateTimeCh(buf,0);
+	strcat(buf,"\n");
+	int count = write(fd,buf,strlen(buf));
+	if(count<0){
+		sprintf(errorstr,"[fcntlTest] write to fd(%d) error",fd);
+		perror(errorstr);
+		free(errorstr);
+		free(buf);
+		close(fd);
+		close(newfd);
+		return;
+	}else{
+		printf("[fcntlTest] %d bits write to fd(%d)\n",count,fd);
+	}
+	close(fd);
+	memset(buf,'\0',sizeof(char)*buflen);
+	lseek(newfd,0,SEEK_SET);
+	count = read(newfd,buf,sizeof(char)*buflen);
+	if(count<0){
+		sprintf(errorstr,"[fcntlTest] read fd(%d) error",newfd);
+		perror(errorstr);
+		free(errorstr);
+		free(buf);
+		close(newfd);
+		return;
+	}else{
+		printf("[fcntlTest] read newfd(%d) success %d bits return \n%s\n",newfd,count,buf);
+	}
+	close(newfd);
+
+	//重新使用O_RDWR|O_CREAT打开文件，避免lseek对append有影响
+	newfd = open(path,O_RDWR|O_CREAT,0664);
+	//获取flags值
+	int flags = fcntl(newfd,F_GETFL);
+	if(flags<0){
+		sprintf(errorstr,"[fcntlTest] fd(%d) get flags error",newfd);
+		perror(errorstr);
+		free(errorstr);
+		free(buf);
+		return;
+	}else{
+		printf("[fcntlTest] newfd(%d) get flags %x \n",newfd,flags);
+	}
+	flags = flags | O_APPEND;//追加append flag
+	printf("[fcntlTest] new flags is %x\n",flags);
+	int result = fcntl(newfd,F_SETFL,flags);
+	printf("[fcntlTest] set flags result is %d\n",result);
+	memset(buf,'\0',sizeof(char)*buflen);
+	toDateTimeCh(buf,0);
+	strcat(buf,"\n");
+	write(fd,buf,strlen(buf));
+	memset(buf,'\0',sizeof(char)*buflen);
+	lseek(newfd,0,SEEK_SET);
+	read(newfd,buf,sizeof(char)*buflen);
+	printf(buf);
+	close(newfd);
+	free(errorstr);
+	free(buf);
+
+}
+
 void dup2printf(const char *path){
 	printf("-----------dup2printf-----------\n");
 	int fd = open(path,O_RDWR | O_CREAT | O_APPEND ,0666);
@@ -14,6 +99,7 @@ void dup2printf(const char *path){
 	if(fd<0){
 		sprintf(errorstr,"[dup2printf] open file %s error\n",path);
 		perror(errorstr);
+		free(errorstr);
 		return;
 	}else{
 		printf("[dup2printf] open %s success,fd is %d ,and printf redirect start\n",path,fd);

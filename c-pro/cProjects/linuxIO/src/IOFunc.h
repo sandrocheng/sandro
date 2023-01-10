@@ -4,7 +4,7 @@
  * 		文件描述符
  * 		一个进程启动后，默认打开三个文件描述符
  * 			#define STDIN_FILENO    0
- *          #define STDOUT_FILEOUT  1
+ *          #define STDOUT_FILENO  1
  *          #define STDERR_FILENO   2
  *      新打开文件返回文件描述符表中位使用的最小文件描述符，调用open函数可以打开或创建文件，并得到一个文件描述符。
  *
@@ -269,8 +269,33 @@
  *      	假设newfd已经指向了一个文件，首先close原来打开的文件，然后newfd指向old指向的文件
  *      	若newfd没有被占用，newfd指向oldfd指向的文件
  *
+ *		fcntl函数
+ *			函数描述：改变已经打开的文件属性
+ *			函数原型：int fcntl(int fd, int cmd, ... //arg   );
+ *				若cmd为FDUPFD，复制文件描述符，与dup相同
+ *				若cmd为F_GETFL,获取文件描述符的flag属性值，就是open文件时设置的flags
+ *				若cmd为F_SETFL,设置文件描述符的flag属性
+ *				...以上只是常用命令
  *
+ *			函数返回值：返回值取决于cmd
+ *				成功：
+ *					若cmd为FDUPFD，返回一个新的文件描述符
+ *					若cmd为F_GETFL,返回文件描述符的flags值
+ *					若cmd为F_SETFL,返回0
+ *				失败：
+ *					返回-1，并设置errno值
  *
+ *			fcntl函数常用的操作：
+ *			1) 复制一个新的文件描述符：
+ *				int newfd = fcntl(fd,F_DUPFD,0);
+ *			2) 获取文件属性标志
+ *				int flag = fcntl(fd,F_GETFL,0);
+ *			3) 设置文件状态标志
+ *				flag=flag|O_APPEND;
+ *				fcntl(fd,F_SETFL,flag);
+ *			4) 常用属性标志
+ *				O_APPEND--设置文件打开状态为末尾追加
+ *				O_NONBLOCK--设置打开的文件描述符为非阻塞
  *
  */
 
@@ -286,6 +311,11 @@
 #include <fcntl.h>//unix标准中通用的头文件，其中包含的相关函数有 open，fcntl，shutdown，unlink，fclose等！
 #include <dirent.h>//常规c标准库
 #include "tools.h"
+
+/**
+ * 使用fcntl复制文件描述符，修改属性等操作
+ */
+void fcntlTest(const char *path);
 
 /**
  * 使用dup2重定向printf，将printf的内容保存到文件中去
