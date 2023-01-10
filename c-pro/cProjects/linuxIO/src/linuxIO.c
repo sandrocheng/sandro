@@ -92,6 +92,18 @@ void checkArgs(int argc,char* argv[]){
 		}else{
 			dupFile(argv[2]);
 		}
+	}else if(strcmp(argv[1],"dup2")==0){
+		if(argc <= 3){
+			printf("请指定两个文件的路径\n");
+		}else{
+			dup2File(argv[2],argv[3]);
+		}
+	}else if(strcmp("p2f",argv[1]) == 0){
+		if(argc <= 2){
+			printf("请指定一个文件的路径\n");
+		}else{
+			dup2printf(argv[2]);
+		}
 	}
 	showHelp();
 }
@@ -99,7 +111,9 @@ void checkArgs(int argc,char* argv[]){
 char *path = "/home/sandro/mywork/gitwork/sandro/c-pro/cProjects/linuxIO/tmp";
 void showHelp(){
 	printf("\n==help===================================================================================================================================================\n");
-	printf("dup filepath ,打开文件,如果文件不存在则创建一个文件,复制文件描述符，并进行操作,如: dup %s/log \n",path);
+	printf("p2f filepath ,打开文件,如果文件不存在则创建一个文件,使用dup2重定向标准输出printf,将内容保存到一个文件里,如: p2f %s/log  \n",path);
+	printf("dup2 filepath1 filepath2 ,打开文件,如果文件不存在则创建一个文件,使用dup2复制文件描述符，并进行操作,如: \ndup2 %s/log %s/log1 \n",path,path);
+	printf("dup filepath ,打开文件,如果文件不存在则创建一个文件,使用dup复制文件描述符，并进行操作,如: dup %s/log \n",path);
 	printf("dir dirpath ,遍历目录,如: dir /home/sandro/mywork/gitwork/sandro/c-pro/cProjects/linuxIO \n");
 	printf("info ,读取文件/设备/目录等的信息,如: info /home/sandro/.bashrc  info /home/sandro/\n");
 	/*

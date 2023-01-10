@@ -15,7 +15,7 @@
  * 将当前时间转化为一个中文字符串
  */
 void toDateTimeCh(
-		char* timeStr, /*返回的字符串指针，建议长度为50*/
+		char* timeStr, /*返回的字符串指针，建议长度为60*/
 		long timeS /*秒数,0当前时间*/
 );
 

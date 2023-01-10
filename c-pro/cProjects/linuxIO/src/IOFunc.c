@@ -7,6 +7,88 @@
 
 #include "IOFunc.h"
 
+void dup2printf(const char *path){
+	printf("-----------dup2printf-----------\n");
+	int fd = open(path,O_RDWR | O_CREAT | O_APPEND ,0666);
+	char* errorstr = (char *)calloc(256,sizeof(char));
+	if(fd<0){
+		sprintf(errorstr,"[dup2printf] open file %s error\n",path);
+		perror(errorstr);
+		return;
+	}else{
+		printf("[dup2printf] open %s success,fd is %d ,and printf redirect start\n",path,fd);
+	}
+	//重定向,STDOUT_FILENO将会指向文件的fd,进程后面的printf都将保存到文件中去，不会再输出
+	dup2(fd,STDOUT_FILENO);
+	char buff[60];
+	toDateTimeCh(buff,0);
+	printf("\n --------------%s---------------------- \n",buff);
+	free(errorstr);
+	close(fd);
+}
+
+void dup2File(const char *path1 ,const char *path2){
+	printf("-----------dup2File-----------\n");
+	char errorstr[200];
+	memset(errorstr,'\0',sizeof(errorstr));
+	int fd1 = open(path1,O_RDWR|O_CREAT,0666);
+	if(fd1<0){
+		sprintf(errorstr,"[dup2File] open file1 %s error\n",path1);
+		perror(errorstr);
+		return;
+	}else{
+		printf("[dup2File] open file1(fd:%d) %s  success\n",fd1,path1);
+	}
+	int fd2 = open(path2,O_RDWR|O_CREAT,0666);
+	if(fd2 < 0){
+		sprintf(errorstr,"[dup2File] open file2 %s error\n",path2);
+		perror(errorstr);
+		return;
+	}else{
+		printf("[dup2File] open file2(fd:%d) %s success\n",fd2,path2);
+	}
+
+	char buff[60];
+	toDateTimeCh(buff,0);
+	int count = write(fd1,buff,strlen(buff));
+	if(count<0){
+		sprintf(errorstr,"[dup2File] write fd1(%d) error",fd1);
+		perror(errorstr);
+		return;
+	}else{
+		printf("[dup2File] %d bits write to fd1(%d) success\n",count,fd1);
+	}
+
+	count = write(fd2,buff,strlen(buff));
+	if(count<0){
+		sprintf(errorstr,"[dup2File] write fd2(%d) error",fd2);
+		perror(errorstr);
+		return;
+	}else{
+		printf("[dup2File] %d bits write to fd2(%d) success\n",count,fd2);
+	}
+	dup2(fd1,fd2);//让fd2指向fd1的文件，此时fd2因为被占用，会先关闭当前文件(path2)
+	lseek(fd1,0,SEEK_SET);
+	strcat(buff,"\nhello");
+	count = write(fd1,buff,strlen(buff));
+	if(count<0){
+		sprintf(errorstr,"[dup2File] write to fd1(%d) second time error",fd1);
+		perror(errorstr);
+		return;
+	}else{
+		printf("[dup2File] %d bits write to fd1(%d) second time success\n",count,fd1);
+	}
+
+	memset(buff,'\0',sizeof(buff));
+	lseek(fd2,0,SEEK_SET);
+	read(fd2,buff,sizeof(buff));
+	printf("[dup2File] use fd2(%d) read str : %s",fd2,buff);
+
+	close(fd1);
+	close(fd2);
+
+}
+
 void dupFile(const char *path){
 	printf("------dupFile path : %s\n",path);
 	int fd = open(path,O_RDWR | O_CREAT,0666);
