@@ -20,19 +20,29 @@ void checkArgs(int argc,char* argv[]){
 	for(int i=0;i<argc;i++){
 		printf("argv[%d] is %s\n",i,argv[i]);
 	}
+	showHelp();
 	if(argc <= 1){
-		showHelp();
+		printf("请根据help选择命令参数");
 		return;
 	}
 	else if(strcmp(argv[1],"fork")==0){
-		//todo fork
+		if(argc>=3){
+			int size = atol(argv[2]);
+			if(size >0){
+				forkNPorcess(size);
+			}else{
+				forkTest();
+			}
+		}else{
+			forkTest();
+		}
 	}
-	showHelp();
 }
 
 char *path = "/home/sandro/mywork/gitwork/sandro/c-pro/cProjects/linuxIO/tmp";
 void showHelp(){
 	printf("\n==help===================================================================================================================================================\n");
-	printf("fork ,打开文件,如果文件不存在则创建一个文件,使用fcntl复制文件描述符，修改属性等操作,如: fcntl %s/log  \n",path);
+	printf("fork ,使用fork，创建一个进程\n");
+	printf("fork n,使用fork，创建n个进程, 例如: fork 3 \n");
 	printf("=========================================================================================================================================================\n");
 }
