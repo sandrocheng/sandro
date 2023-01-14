@@ -4,6 +4,76 @@
  *      Author: sandro
  */
 #include "processFunc.h"
+
+int forkAndWaitpid(int n) {
+	printf("-------forkAndWaitpid n:[%d] --------\n", n);
+	char *ctstr = (char*) calloc(128, sizeof(char));
+	for (int i = 0; i < n; i++) {
+		pid_t id = fork();
+		if (id == 0) {
+			toDateTimeCh(ctstr, 0);
+			printf("{%s} son[%d] created\n", ctstr, getpid());
+			sleep(1 + i * 2);
+			free(ctstr);
+			return (1 + i * 2);
+		} else if (id < 0) {
+			perror("create process error");
+		}
+	}
+	while (1) {
+		int wstatus;
+		pid_t sid = waitpid(-1, &wstatus, WNOHANG);
+		if (sid > 0) {
+			toDateTimeCh(ctstr, 0);
+			if (WIFEXITED(wstatus)) {
+				printf("{%s} son[%d] terminated normally,status is %d \n",
+						ctstr, sid, WEXITSTATUS(wstatus));
+			} else if (WIFSIGNALED(wstatus)) {
+				printf("{%s} son[%d] was terminated by a signal[%d] \n", ctstr,
+						sid, WTERMSIG(wstatus));
+			} else {
+				printf("{%s} son[%d] finished by other reason !", ctstr, sid);
+			}
+		} else if (sid == -1) {
+			perror("waitpid error");
+			break;
+		}
+		sleep(1);
+	}
+	toDateTimeCh(ctstr, 0);
+	printf("[%s] all son process finished\n", ctstr);
+	free(ctstr);
+	return 0;
+}
+
+void forkAndWait(int n){
+	printf("-------forkAndWait n:[%d] --------\n",n);
+	for(int i = 0;i<n;i++){
+		pid_t pid = fork();
+		if(pid == 0){
+			printf("son[%d] created\n",getpid());
+			sleep(45);
+			break;
+		}else if(pid<0){
+			perror("create process error");
+		}
+	}
+	while(1){
+		int status;
+		pid_t id = wait(&status);
+		if(id < 0){
+			printf("all son process finished\n");
+			return;
+		}
+		if(WIFEXITED(status)){
+			printf("son[%d] terminated normally,status is %d \n",id,WEXITSTATUS(status));
+		}else if(WIFSIGNALED(status)){
+			printf("son[%d] was terminated by a signal[%d] \n",id,WTERMSIG(status));
+		}else{
+			printf("son[%d] finished by other reason !",id);
+		}
+	}
+}
 void execCMD(int argc ,char* argv[]){
 	printf("-------execCMD [%s]--------\n",argv[2]);
 	char* subargv[5] = {NULL,NULL,NULL,NULL,NULL};
@@ -77,6 +147,7 @@ void forkTest(){
 		perror("fork error");
 		return;
 	}else if(pid == 0 ){
+		printf("this son process ，pid : %d,ppid is %d \n ",getpid(),getppid());
 		sleep(2);
 		//当父进程存活的时候，子进程的ppid不变，当父进程结束后，子进程是孤儿进程（父进程id是1，init进程,或者用户进程）
 		printf("this son process ，pid : %d,ppid is %d \n ",getpid(),getppid());

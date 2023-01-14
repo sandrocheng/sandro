@@ -9,7 +9,7 @@
 
 #include "processFunc.h"
 
-static void checkArgs(int argc,char* argv[]);
+static int checkArgs(int argc,char* argv[]);
 
 static void showHelp();
 

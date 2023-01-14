@@ -107,6 +107,38 @@
  *			返回值：若是成功，则不返回，不会再执行exec函数后面的代码，若是失败，会执行exec后面的代码，可以用perror打印错误原因。
  *			execlp函数一般是执行系统命令
  *
+ * 4、wait
+ * 		原型：pid_t wait(int *wstatus);
+ * 		函数作用：
+ * 			阻塞并等待子进程退出
+ * 			回收子进程
+ * 			获取子进程结束状态（退出原因）
+ *		返回值：
+ *			成功，返回清理掉的子进程ID；
+ *			失败，-1（没有子进程）
+ *		status参数：
+ *			子进程的退出状态--传出参数
+ *			WIFEXITED（status）: 非0 ，进程正常退出
+ *			WEXITSTATUS(status) ：获取进程退出状态
+ *	        WIFSIGNALED(status) ： 非0，进程异常终止
+ *	        WTERMSIG(status) ： 获取进程终止的信号编号
+ *
+ * 5 waitpid
+ * 		原型：pid_t waitpid(pid_t pid, int *wstatus, int options);
+ * 		函数作用：同wait
+ * 		函数参数：
+ * 			pid : -1 ,等待任意子进程，与wait等效
+ * 				  >0 ,等待pid这个子进程
+ * 				  =0 ，等待进程组id与目前进程id相等的任意子进程，也就是说任何和调用waitpid()函数的进程再同一个进程组的进程。
+ * 				  <-1 ,等待其组id等于pid绝对值的任意进程，适用于子进程再其他组的情况
+ * 	    	status:子进程的退出状态，用法同wait
+ * 	    	option: 设置为 WNOHANG，函数非阻塞(若果没结束立刻返回)，设置位0 ，函数阻塞
+ * 	    函数返回值
+ * 			>0 返回回收掉的子进程id
+ * 			-1 无子进程
+ * 			=0 参数3 为 WNOHANG,且子进程正在运行。
+ *
+ *
  *
  *
  *
@@ -124,8 +156,19 @@
 #include <sys/stat.h>//是 unix/linux 系统定义文件状态所在的伪标准头文件
 #include <fcntl.h>//unix标准中通用的头文件，其中包含的相关函数有 open，fcntl，shutdown，unlink，fclose等！
 #include <dirent.h>//常规c标准库
+#include <sys/wait.h>//unix类库
 #include "tools.h"
 
+/**
+ * 创建n个子进程并使用waitpid全部回收
+ * 返回结束状态值
+ */
+int forkAndWaitpid(int n);
+
+/**
+ * 创建n个子进程并使用wait全部回收
+ */
+void forkAndWait(int n);
 /**
  * 执行一个系统PATH里配置的命令
  */
