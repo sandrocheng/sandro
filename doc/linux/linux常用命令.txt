@@ -1,4 +1,5 @@
-1、 tree 命令
+一、常用文件和目录操作
+1.1、 tree 命令
 	需要安装：sudo apt-get install tree
 	以树状形式查看指定目录内容
 	命令使用方法
@@ -6,7 +7,7 @@
 		tree 目录 -- 树形结构显示指定目录下的文件信息
 	tree命令智能查看目录内容，不能查看文件
 
-2 、 ls命令
+1.2 、 ls命令
 	查看指定目录下的文件信息
 	使用方法：
 		ls ：显示当前目录下的文件信息
@@ -52,7 +53,7 @@
 		如：ls -ltr,列出当前目录下的文件，按照时间逆向（从小到大）排序		
 
 
-3、cd 命令
+1.3、cd 命令
 	切换目录（change directory）,命令使用方式： cd + 路径
 	路径可以是绝对路径也可以是相对路径
 		cd /home/sandro ，绝对路径（从根目录开始）
@@ -66,26 +67,26 @@
 		cd -	
 		例如 先执行 cd /home/sandro/mywork ,然后又执行cd /home/sandro/tools ,此时用 cd - ，可以立即回到 /home/sandro/mywork中去
 
-4、pwd命令
+1.4、pwd命令
 	查看用户但前所处的工作目录，printf working directory
 
-5、which命令
+1.5、which命令
 	显示命令所在的目录 如： which ls、which tree 等	
 
-6、touch命令
+1.6、touch命令
 	如果文件不存，创建一个新文件，如果文件存在，更新文件的最后修改时间
 	命令使用方式 : touch 文件名
 
-7、mkdir命令
+1.7、mkdir命令
 	创建新目录，make directory
 	创建方式：mkdir 目录名,如果创建多级目录需要添加参数 -p
 	例：
 		在当前目录下创建目录: mkdir mydir
 		在宿主下创建多级目录： mkdir -p ~/test/hello/world/aa
-8、rmdir命令
+1.8、rmdir命令
 	删除空目录，只能删除空目录，使用方式：rmdir 目录名
 
-9、rm命令
+1.9、rm命令
 	删除文件：rm 文件名
 	删除目录：rm -r 目录名
 	参数：
@@ -95,7 +96,7 @@
 	rm -rf 强制删除目录及目录下所有文件和目录		
 	注意：使用rm命令删除的文件或者目录不会放入回收站中，数据不易恢复
 
-10、cp命令 
+1.10、cp命令 
 	文件或目录copy命令
 	命令使用方式 : cp 源目录或文件 目标目录或文件
 	若有目录的拷贝需要使用 -r 参数
@@ -106,7 +107,7 @@
 	      cp -r 目录名1 目录名2(存在)：把目录1拷贝到目录2下，如果目录2下已经有一个目录叫目录1，该目录会被新的目录1覆盖
 	      cp -a file1 file2 : 把file1的文件信息/属性也拷贝到file2中
 
-11、mv命令
+1.11、mv命令
 	mv 源文件 目标文件:转移文件
 	mv file1 file2（不存在）：此时相当于文件改名 	
 	mv file1 file2（存在）：覆盖  
@@ -114,17 +115,17 @@
 	mv dir1 dir2(不存在) ： 相当于目录改名
 	mv dir1 dir2(存在)：dir1目录移动到dir2目录下
 	
-12、cat命令
+1.12、cat命令
 	将文件内容一次性输出到终端
 	使用方式： cat 文件名
 	缺点：终端显示内容有限，如果文件太长无法全部显示
 	可用于文件重定向 cat file1>file2 ，相当于cp file1 file2
 	
-13、more命令
+1.13、more命令
 	文件内容分页显示到终端，但是只能一直向下浏览(回车一行，空格一页，q/ctrl+c 退出)，不能会退
 	使用方式: more + 文件名
 
-14、less 命令
+1.14、less 命令
 	文件内容分页显示到终端，可以自由上下浏览
 	使用方式 ：less + 文件名
 	相关操作
@@ -134,13 +135,13 @@
 		显示上一页：PageUp
 		退出 : q
 
-15、head命令
+1.15、head命令
 	从文件头部开始查看前n行的内容
 	使用方式 ： head -n[行数] 文件名
 		head -20 hello.text
 	如果没有指定行数，默认显示前10行内容				
 			 							
-16 、tail命令
+1.16 、tail命令
 	从文件尾部向上查看最后n行的内容
 	使用方式：tail -n[行数] 文件名
 	如果没有指定行数，默认显示最后10行内容					 			
@@ -149,7 +150,7 @@
 		当另一个终端向这个文件插入内容时，比如 echo "hello world">>test.log
 		此时原来阻塞的终端会实时显示 
 
-17、软链接
+1.17、软链接
 	类似于windows中的快捷方式
 	创建软链接
 		ln -s 源文件 快捷方式的名字，例如：ln -s aa aa.soft
@@ -159,7 +160,7 @@
 		源文件更换目录，软链接失效
 		软链接的大小是：路径+文件名的总字节数
 		
-18、硬链接
+1.18、硬链接
 	ln 文件名 硬链接的名字
 	例：ln test.log test.log.hard
 	
@@ -181,18 +182,18 @@
 		可以起到共享，同步文件的作用
 		可以起到保护文件的作用（删除一个硬链接，只要计数不为0，不会真正删除）
 
-19、wc 命令
+1.19、wc 命令
 	显示文件行数，字节数，单词数
 		wc -l file : 显示文件的总行数
 		wc -c file : 显示文件的总字节数
 		wc -w file : 显示文件的总单词数
 		wc file : 显示文件行数，字节数，单词数		
 
-20、whoami
+1.20、whoami
 	显示当前登陆的用户名
 	echo $USER ，使用环境变量USER也可以查看当前登陆的用户名		
 
-21、chmod 修改文件权限	
+1.21、chmod 修改文件权限	
 	linux是通过权限对文件进行控制的，通过使用chmod命令可以修改文件相关权限
 	文字设定法：
 		命令：chmod[who][+|-|=][mode] 文件名
@@ -230,7 +231,7 @@
 		      chmod -022 a.log ,去掉同组人和其他人的写权限
 		注意：使用数字设定法，一定药用三位的8进制数，如：066
 
-22、chown ,修改文件所有者和所属组
+1.22、chown ,修改文件所有者和所属组
 	修改文件所有者	
 		用法：chown 文件所有者 文件名
 			示例：sudo shown mytest file.txt
@@ -244,13 +245,13 @@
 	
 	若系统没有其他用户，可以使用sudo adduser 用户名 创建一个新用户
 
-23、chgrp, 修改文件所属组
+1.23、chgrp, 修改文件所属组
 	使用方法：chgrp 用户组 文件或目录名
 		示例：修改文件所属组为mytest
 			sudo chgrp mytest file.txt
 	普通用户需要使用管理员权限执行该命令
 	
-24 、find 
+1.24 、find 
 	按文件名查询			 			      						
 		命令：find 路径 -name 文件名
 		示例：find ~/home -name "*.c"	
@@ -316,12 +317,12 @@
 		
 		注意：如果查询结果可能比较大推荐用xargs，分段查找展示。exec是先把结果放到缓存里，然后一起输出，如果结果集很大，不利于查看，也有可能缓存被用光导致失败	
 			
-25、 | 管道符
+1.25、 | 管道符
 	“|”是管道符，左边代表输入，右边代表输出
 	例如 ：find ./ -type d | xargs ls -l
 	左边是查找出来的结果，作为写端。右边的xargs命令是读端，此时读的是左边写端的find结果集。
 
-26、grep命令
+1.26、grep命令
 	文件内容查找
 	命令 ： grep -r(有目录) "查找的内容" 搜索的路径
 		-r ,若是目录，则可以递归搜索
@@ -333,18 +334,18 @@
 		grep -r -n "hello world" ./  查找在当前目录下（包含所有子目录）包含“hello world”字符串的文件，并显示行号		
 		grep -r -i -n "hello world" ./  查找在当前目录下（包含所有子目录）包含“hello world”字符串的文件，忽略大小写并显示行号		
 
-27、find 和 grep 联合使用
+1.27、find 和 grep 联合使用
 	查找当前目录下cxx文件中含有“hello world”的文件，忽略大小写，并显示行号，先使用find命令查找文件，然后用grep命令检索文件内容
 	find ./ -name "*.cxx" |xargs grep -r -n -i "hello world"						
 
-28、>和>>
+1.28、>和>>
 	>和>>其实都属于输出重定向，都可以输出内容到指定文件。
 	>会覆盖目标的原有内容，当文件存在时，会先删除原文件，再重新创建文件，然后把内容写入该文件，否则直接创建文件。
 	>>会在目标原有内容后追加内容，当文件存在时直接在文件末尾进行内容追加，不会删除原文件，否则直接创建文件。
 	示例
 		echo "hello" >> log ,在log中追加“hello”
 		ls -l > log ,删除并创见新的文件保存 ls -l的结果
-29、man 
+1.29、man 
 	Linux中的man手册就是提供给用户在有不明白的命令或者函数的时候，去查询它的功能、使用方法、头文件以及所需参数的帮助手册。
 	其中我们常用前3个手册，第1手册中是用来存放可执行程序和shell命令的；第2个手册用来存放系统调用函数的，这些函数由内核提供；第3个手册是用来存放库调用函数的，这些函数由第三方库来提供。
 	下表显示了手册的 章节 号及其包含的手册页类型。
@@ -367,4 +368,66 @@
 	查看man手册使用方法：
 		命令：man man
 	查看 ls 命令使用方法
-		命令 : man ls			
+		命令 : man ls	
+
+二、进程相关命令
+2.1 ps
+	ps -ef | grep "xxx"
+	ps aux | grep "xxx"
+	ps ajx | grep "xxx"
+		-a : 当前系统所有用户进程
+		-u : 查看进程所有者以及其他一些信息
+		-x : 显示没有控制终端的进程，不能与用户进行交互的进程【输入，输出】,如下 tty列是?的 都是没有控制终端的进程
+			   PPID     PID    PGID     SID TTY        TPGID STAT   UID   TIME COMMAND
+                              0       1       1       1 ?             -1 Ss       0   0:03 /sbin/init splash
+                              0       2       0       0 ?             -1 S        0   0:00 [kthreadd]
+                              2       3       0       0 ?             -1 I<       0   0:00 [rcu_gp]
+                              2       4       0       0 ?             -1 I<       0   0:00 [rcu_par_gp]
+
+		-j : 列出与作业控制相关的信息
+	例子：
+		$ ps aux
+		USER         PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+		root           1  0.0  0.1 168460 11480 ?        Ss   1月11   0:03 /sbin/init splash
+		root           2  0.0  0.0      0     0 ?        S    1月11   0:00 [kthreadd]
+		root           3  0.0  0.0      0     0 ?        I<   1月11   0:00 [rcu_gp]
+	VSZ : 进程的虚拟内存大小，单位为KiB
+	RSS : 任务已使用的非交换物理内存（KB）或者驻留集(resident set)的大小
+		Resident Set 当一个进程在运行的时候,操作系统不会一次性加载进程的所有数据到内存,只会加载一部分正在用,以及预期要用的数据。其他数据可能存储在虚拟内存,交换区和硬盘文件
+	TTY : 控制终端
+	COMMAND : CMD显示完整命令的线程号
+	STAT : 多字符进程状态。
+		stat或者s 的状态
+               		D    uninterruptible sleep (usually IO)
+               		I    Idle kernel thread
+              		R    running or runnable (on run queue)
+              		S    interruptible sleep (waiting for an event to complete)
+               		T    stopped by job control signal
+               		t    stopped by debugger during the tracing
+               		W    paging (not valid since the 2.6.xx kernel)
+               		X    dead (should never be seen)
+               		Z    defunct ("zombie") process, terminated but not reaped by its parent
+
+       		如果使用BSD格式，会有如下状态
+	                <    high-priority (not nice to other users)
+        	        N    low-priority (nice to other users)
+        	        L    has pages locked into memory (for real-time and custom IO)
+             	        s    is a session leader
+              		l    is multi-threaded (using CLONE_THREAD, like NPTL pthreads do)
+               		+    is in the foreground process group
+		
+
+		ps ajx
+	        PPID     PID    PGID     SID TTY        TPGID STAT   UID   TIME COMMAND
+     	 	0       1       1        1   ?             -1 Ss       0   0:03 /sbin/init splash
+      		0       2       0        0   ?             -1 S        0   0:00 [kthreadd]
+      		2       3       0        0   ?             -1 I<       0   0:00 [rcu_gp]
+		PPID : 父ID
+		PID : 进程ID
+		PGID : 组ID
+		SID : 会话ID
+		TPGID : 进程连接到的tty（终端）上的前台进程组的ID，如果进程未连接到tty，则为-1
+		
+2.2 kill
+	kill -l :查看系统有哪些信号
+        kill -9 pid : 杀死某个进程, -9是杀死进程信号，可以使用 kill -l查看所有支持的信号 	
