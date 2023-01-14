@@ -76,6 +76,8 @@
 6、kill / ps命令
 	详细见 linux常用命令.txt
 
+7、exec函数族
+	详见/c-pro/cProjects/linuxProcess 项目
 
 
 

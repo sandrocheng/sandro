@@ -4,6 +4,55 @@
  *      Author: sandro
  */
 #include "processFunc.h"
+void execCMD(int argc ,char* argv[]){
+	printf("-------execCMD [%s]--------\n",argv[2]);
+	char* subargv[5] = {NULL,NULL,NULL,NULL,NULL};
+	int len = argc > 8? 8 : argc;
+	for(int i = 3;i<len;i++){
+		subargv[i-3] = argv[i];
+	}
+	for(int i=0;i< 5;i++){
+		if(subargv[i] != NULL){
+			printf("[execCMD] sub arg :%d,%s\n",i,subargv[i]);
+		}
+	}
+
+	pid_t pid = fork();
+	if(pid == 0){
+		sleep(1);
+		printf("start cmd: %s %s %s %s %s %s \n",argv[2],subargv[0] ,subargv[1] ,subargv[2] ,subargv[3] ,subargv[4]);
+		execlp(argv[2],argv[2],subargv[0] ,subargv[1] ,subargv[2] ,subargv[3] ,subargv[4] ,NULL );
+		perror("[execCMD] execlp error");
+	}else if(pid < 0){
+		perror("[execCMD] fork error");
+	}else if(pid > 0){
+		printf("[execCMD] fork success \n");
+	}
+}
+
+void execfile(int argc ,char* argv[]){
+	printf("-------forkNPorcess [%s] [%s]--------\n",argv[2],argv[3]);
+	char* subargv[5] = {NULL,NULL,NULL,NULL,NULL};
+	int len = argc>9?9:argc;
+	for(int i=4;i<len;i++){
+		subargv[i-4] = argv[i];
+	}
+	for(int i=0;i< 5;i++){
+		if(subargv[i] != NULL){
+			printf("[forkNPorcess] sub arg :%d,%s\n",i,subargv[i]);
+		}
+	}
+
+	pid_t pid = fork();
+	if(pid==0){
+		execl(argv[2],argv[3],argv[4],argv[5],argv[6],argv[7],argv[8],argv[9],NULL);
+		perror("[forkNPorcess] execl error");//如果打印这句话，肯定是调用失败了
+	}else if(pid < 0 ){
+		perror("[forkNPorcess] fork error");
+	} else{
+		printf("[forkNPorcess]  fork success\n");
+	}
+}
 
 void forkNPorcess(int n){
 	printf("-------forkNPorcess [%d]--------\n",n);
