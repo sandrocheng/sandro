@@ -264,7 +264,7 @@
  *				oldfd：要复制的文件描述符
  *				newfd: 复制成新的文件描述符
  *      	返回值
- *      		成功：将oldfd复制给newfd，两个文件描述符指向同一个文件
+ *      		成功：将oldfd复制给newfd，两个文件描述符指向同一个文件oldfd
  *          	失败：返回-1，设置errno值
  *      	假设newfd已经指向了一个文件，首先close原来打开的文件，然后newfd指向old指向的文件
  *      	若newfd没有被占用，newfd指向oldfd指向的文件

@@ -138,11 +138,6 @@
  * 			-1 无子进程
  * 			=0 参数3 为 WNOHANG,且子进程正在运行。
  *
- *
- *
- *
- *
- *
  */
 
 #ifndef PROCESSFUNC_H_
