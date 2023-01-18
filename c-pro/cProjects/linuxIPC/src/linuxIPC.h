@@ -9,6 +9,7 @@
 #define LINUXIPC_H_
 
 #include "linuxPIPE.h"
+#include "linuxFIFO.h"
 
 static int checkArgs(int argc,char* argv[]);
 
