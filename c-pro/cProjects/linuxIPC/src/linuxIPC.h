@@ -10,6 +10,7 @@
 
 #include "linuxPIPE.h"
 #include "linuxFIFO.h"
+#include "linuxMMAP.h"
 
 static int checkArgs(int argc,char* argv[]);
 

@@ -40,6 +40,24 @@ int checkArgs(int argc,char* argv[]){
 			return 3;
 		}
 		useFIFO(argv[2]);
+	}else if(strcmp("mmap_fs",argv[1]) == 0){
+		if(argc <=2){
+			printf("请确认mmap映射文件地址");
+		}else{
+			IPCinFS(argv[2]);
+		}
+	}else if(strcmp("mmap_w",argv[1]) == 0){
+		if(argc <=2){
+			printf("请确认mmap映射文件地址");
+		}else{
+			MMAPIPCWriteClient(argv[2]);
+		}
+	}else if(strcmp("mmap_r",argv[1]) == 0){
+		if(argc <=2){
+			printf("请确认mmap映射文件地址");
+		}else{
+			MMAPIPCRClient(argv[2]);
+		}
 	}
 	return returnNO;
 }
@@ -50,6 +68,9 @@ void showHelp(){
 	printf("pipe 使用管道完成一次父子进程间的通信\n");
 	printf("twoCMD cmd1 arg1..| cmd2 arg2... 使用父子进程通过管道，将两个linux命令联合起来,每个命令最多接9个参数，并输出，如:twoCMD ps aux | grep --color=auto bash\n");
 	printf("                                 如果使用的是.out执行程序，管道符前要加‘\\’，如:./linuxIPC twoCMD ps aux \\| grep --color=auto bash\n");
+	printf("mmap_fs path,使用mmap进行父子进程的通信，如：mmap_fs /home/sandro/mywork/gitwork/sandro/c-pro/cProjects/linuxIPC/tmp/FSmmapfile\n");
+	printf("mmap_w path,使用mmap进行多进程通信，写进程，如：mmap_w /home/sandro/mywork/gitwork/sandro/c-pro/cProjects/linuxIPC/tmp/Mulitmmapfile\n");
+	printf("mmap_r path,使用mmap进行多进程通信，读进程，如：mmap_r /home/sandro/mywork/gitwork/sandro/c-pro/cProjects/linuxIPC/tmp/Mulitmmapfile\n");
 
 	printf("=========================================================================================================================================================\n");
 }
