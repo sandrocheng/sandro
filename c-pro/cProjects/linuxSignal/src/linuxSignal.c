@@ -25,6 +25,14 @@ int checkArgs(int argc,char* argv[]){
 	if(argc <= 1){
 		printf("请根据help选择命令参数");
 		return 1;
+	}else if(strcmp("rePS",argv[1])==0){
+		registSigPipeSignal();
+	}else if(strcmp("kill",argv[1]) == 0){
+		killChilden();
+	}else if(strcmp("RB",argv[1]) == 0){
+		raiseAndAbort();
+	}else if(strcmp("count",argv[1]) == 0){
+		countByAlarm();
 	}
 	return returnNO;
 }
@@ -32,7 +40,9 @@ int checkArgs(int argc,char* argv[]){
 void showHelp(){
 	printf("\n==help===================================================================================================================================================\n");
 
-	printf("mmap_r path,使用mmap进行多进程通信，读进程，如：mmap_r /home/sandro/mywork/gitwork/sandro/c-pro/cProjects/linuxIPC/tmp/Mulitmmapfile\n");
-
+	printf("rePS , 注册SIGPIPE信号，通过管道写入错误触发 SIGPIPE 信号\n");
+	printf("kill ,fork出子进程，并使用kill函数发送信号，杀死所有子进程 \n");
+	printf("RB ,注册SIGUSR1信号，并使用raise给自己发送，收到SIGUSR1后，使用abort终止当前进程 \n");
+	printf("count ,使用alarm函数计时，检测1秒中内，可以作多少次+1运算\n");
 	printf("=========================================================================================================================================================\n");
 }
