@@ -63,6 +63,30 @@
  *		实际执行时间（real）=系统时间(sys)+用户时间(user)+损耗时间
  *		损耗的时间主要来自文件IO操作，IO操作会有用户区到内核区的切换，切换的次数越多越耗时。
  *
+ *6、setitimer
+ * 	函数原型： int setitimer(int which, const struct itimerval *new_value,struct itimerval *old_value);
+ * 	函数描述：设置定时器（闹钟），可代替alarm函数，精度微妙，可以实现周期定时。
+ * 	函数返回值：0 成功，-1 失败，并设置errno值
+ * 	函数参数：
+ * 			which:指定定时方式
+ * 				自然定时：ITIMER_REAL -> SIGALRM 计算自然时间
+ * 				虚拟空间计时（用户空间） ITIMER_VIRTUAL -> SIGVTALRM ,只计算进程占用cpu的时间
+ * 				运行时计时（用户+内核）ITIMER_PROF -> SIGPROF计算占用cpu及执行系统调用的时间
+ *
+ * 			new_value:struct itimerval, 负责设定timeout时间
+ * 				itimerval.it_value:设定第一次执行function所延迟的秒数
+ * 				itimerval.it_interval:设定以后每几秒执行一次function
+					struct itimerval {
+               	   	   struct timeval it_interval; // Interval for periodic timer
+               	   	   struct timeval it_value;    // Time until next expiration
+           	   		};
+           	   		struct timeval {
+               	   	   time_t      tv_sec;         // seconds
+               	   	   suseconds_t tv_usec;        // microseconds
+           	    	};
+ *				old_value:存放旧的timeout值，一般指定为NULL
+ *
+ *
  *
  */
 
@@ -79,6 +103,12 @@
 #include <wait.h>
 #include "tools.h"
 #include <signal.h>
+#include <sys/time.h>
+
+/**
+ * 使用setitimer 多次 执行1秒内的+1运算后，取平均值
+ */
+void countBySetitimer();
 
 /**
  * 使用alarm函数计时，检测1秒中内，可以作多少次+1运算

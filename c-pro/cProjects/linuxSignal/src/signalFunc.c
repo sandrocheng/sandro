@@ -7,9 +7,37 @@
 #include "signalFunc.h"
 
 static void sighandler(int sigNO);
-
-int global_count = 0;
+static void timerHandler(int sigNO);
+long global_count = 0;
 int startCount = 0;
+
+#define countBySetitimer_TOTAL_COUNT 10
+int countBySetitimer_current = 0;
+void countBySetitimer(){
+	printf("----------[countBySetitimer]------------\n");
+	global_count = 0;
+	signal(SIGALRM,timerHandler);
+	struct itimerval tm;
+	tm.it_interval.tv_sec = 1;
+	tm.it_interval.tv_usec = 0;
+	tm.it_value.tv_sec = 1;
+	tm.it_value.tv_usec = 0;
+	int ret = setitimer(ITIMER_REAL, &tm,NULL);
+	printf("setitimer ret is %d\n",ret);
+	while(countBySetitimer_current<countBySetitimer_TOTAL_COUNT){
+		global_count++;
+	}
+}
+
+void timerHandler(int sigNO){
+	if(SIGALRM != sigNO){
+		return;
+	}
+	countBySetitimer_current ++;
+	double savage = (double)global_count/countBySetitimer_current/100000000;
+	printf("第%d次[%ld]，平均值：%lf亿\n",countBySetitimer_current,global_count,savage);
+}
+
 void countByAlarm(){
 	printf("----------[countByAlarm]------------\n");
 	char timeSTR[70];

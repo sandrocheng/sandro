@@ -33,6 +33,8 @@ int checkArgs(int argc,char* argv[]){
 		raiseAndAbort();
 	}else if(strcmp("count",argv[1]) == 0){
 		countByAlarm();
+	}else if(strcmp("multiCount",argv[1]) == 0){
+		countBySetitimer();
 	}
 	return returnNO;
 }
