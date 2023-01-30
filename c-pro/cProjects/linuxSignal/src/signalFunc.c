@@ -8,8 +8,87 @@
 
 static void sighandler(int sigNO);
 static void timerHandler(int sigNO);
+static void sigSetTest_timeHandler(int sigNO);
 long global_count = 0;
 int startCount = 0;
+
+void sigSetTest(){
+	printf("----------[sigSetTest]------------\n");
+	startCount=0;
+	signal(SIGALRM,sigSetTest_timeHandler);
+	struct itimerval tm;
+	tm.it_interval.tv_sec = 1;
+	tm.it_interval.tv_usec = 0;
+	tm.it_value.tv_sec = 1;
+	tm.it_value.tv_usec = 0;
+	int ret = setitimer(ITIMER_REAL, &tm,NULL);
+	printf("setitimer ret is %d\n",ret);
+	sigset_t set;
+	sigemptyset(&set);
+	int addret = sigaddset(&set,SIGALRM);
+
+	while(1){
+		startCount ++;
+		sleep(1);
+		if(startCount>10){
+			printf("[sigSetTest] quit\n");
+			return;
+		}else if (startCount == 2){
+
+			if(addret!=0){
+				perror("[sigSetTest] sigaddset error\n");
+				return;
+			}
+			int ret = sigprocmask(SIG_BLOCK, &set, NULL);
+			if(ret != 0){
+				perror("[sigSetTest] sigprocmask SIG_BLOCK error\n");
+				return;
+			}
+			printf("[sigSetTest] 设置阻塞信号集SIGALRM为阻塞 持续3秒\n");
+
+		}else if(startCount == 5){
+			sigset_t pendingSet;
+			sigemptyset(&pendingSet);
+			int ret = sigpending(&pendingSet);
+			if(ret != 0){
+				perror("[sigSetTest] sigpending error\n");
+				return;
+			}
+			ret = sigismember(&pendingSet,SIGALRM);
+			if(ret == 1){
+				printf("[sigSetTest] SIGALRM 在未决信号集当中\n");
+			}else if(ret == 0){
+				printf("[sigSetTest] SIGALRM 不在未决信号集当中\n");
+			}else{
+				perror("[sigSetTest] sigismember error\n");
+				return;
+			}
+
+			printf("当前未决信号集：\n");
+			for(int i = 1;i<32;i++){
+				ret = sigismember(&pendingSet,i);
+				printf("%d",ret);
+			}
+			printf("\n");
+
+			printf("[sigSetTest] 设置阻塞信号集SIGALRM 不阻塞\n");
+			ret = sigprocmask(SIG_UNBLOCK, &set, NULL);
+			if(ret != 0){
+				perror("[sigSetTest] sigprocmask SIG_UNBLOCK error\n");
+				return;
+			}
+		}
+	}
+}
+
+void sigSetTest_timeHandler(int sigNO){
+	if(sigNO!=SIGALRM){
+		return;
+	}
+	char timeStr[70];
+	toDateTimeCh(timeStr,0);
+	printf("[sigSetTest_timeHandler] -- %s \n",timeStr);
+}
 
 #define countBySetitimer_TOTAL_COUNT 10
 int countBySetitimer_current = 0;

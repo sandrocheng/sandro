@@ -86,6 +86,55 @@
            	    	};
  *				old_value:存放旧的timeout值，一般指定为NULL
  *
+ *7、信号集相关函数
+ *		由于信号集属于内核的一块区域，用户不能直接操作内核空间，因此，内核提供了一些信号集相关的接口函数，使用这些函数用户就可以完成对信号集的相关操作
+ *		信号集是一个能表示多个信号的数据类型，sigset_t set,set是一个信号集，既然是一个集合，就需要对集进行添加，删除等操作。
+ *		源码中的信号集定义（signal.h）
+ *		#define _SIGSET_NWORDS(1024/(8*sizeof(unsigned long int)))
+ *		typedef struct{
+ *			unsigned long int _val[_SIGSET_NWORDS];
+ *		} __sigset_t;
+ *
+ *		int sigemptyset(sigset_t *set)
+ *		函数说明：将某个信号集清0
+ *		函数返回值：0，成功，-1失败，并设置errno
+ *
+ *		int sigfillset(sigset_t *set)
+ *		函数说明：将某个信号集全部位置1
+ *		函数返回值：0，成功，-1失败，并设置errno
+ *
+ *		int sigaddset(sigset+_t *set,int signum);
+ *		函数说明：将某个信号加入信号集中，实际上就是将集合中某位置1，
+ *		比如sigaddset(&set,SIGINT);set集合初始化以后，所有位都是0，使用这个方法，将SIGINT对应编号的位置1
+ *		函数返回值：0，成功，-1失败，并设置errno
+ *
+ *		int sigdelset(sigset_t *set,int signum);
+ *		函数说明：将某个信号从信号集中清除，sigaddset的反操作
+ *		函数返回值：0，成功，-1失败，并设置errno
+ *
+ *		int sigismember(const sigset_t *set,int signum);
+ *		函数说明：判断某个信号是否在信号集中，实际上是signum某个编号的位是否是1
+ *		函数返回值：1，在；0，不在；-1失败，并设置errno
+ *
+ *		sigprocmask函数
+ *		函数说明：用来屏蔽信号，解除屏蔽也使用该函数。其本质，读取或者修改进程控制块中的信号屏蔽字（阻塞信号集）。
+ *		注意：屏蔽信号，值是将信号处理延后执行（延至解除屏蔽）；而忽略信号表示将信号丢弃处理
+ *			若调用sigprocmask解除了对当前若干个信号的阻塞，则在sigprocmask返回前，至少将其中一个信号递达
+ *		函数原型：int sigprocmask(int how, const sigset_t *set, sigset_t *oldset);
+ *		函数返回值：0，成功；-1，失败，并设置errno
+ *		函数参数：
+ *			how:参数取值，假设当前信号屏蔽字为mask
+ *				SIG_BLOCK:当how=SIG_BLOCK,set表示需要屏蔽的信号，相当于mask = mask|set;
+ *				SIG_UNBLOCK:当how=SIG_UNBLOCK，set表示需要解除屏蔽的信号。相当于mask = mask & ~set
+ *    			SIT_SETMASK:当how=SIT_SETMASK，set表示用于替代原始屏蔽集的新屏蔽集，相当于mask=set
+ *			set：使用sigaddset等函数处理过的集合，一般是先使用集合处理函数 把要设置的集合先设置好，在使用sigprocmask设置到系统中去
+ *			oldset：系统之前的阻塞信号集。
+ *
+ *	   sigpending函数
+ *	   函数原型： int sigpending(sigset_t *set);
+ *	   函数说明： 读取当前进程的未决信号集
+ *	   函数参数：set传出参数
+ *	   函数返回值：0，成功；-1，失败，设置errno
  *
  *
  */
@@ -104,6 +153,11 @@
 #include "tools.h"
 #include <signal.h>
 #include <sys/time.h>
+
+/**
+ * 信号集设置和读取
+ */
+void sigSetTest();
 
 /**
  * 使用setitimer 多次 执行1秒内的+1运算后，取平均值
