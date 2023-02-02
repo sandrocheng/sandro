@@ -13,6 +13,69 @@ static void setSigaction_timeHandler(int sigNO);
 long global_count = 0;
 int startCount = 0;
 
+void sigChldTest(){
+	printf("----------[sigChldTest]------------\n");
+	startCount = 0;
+	sigset_t set;
+	int ret = sigemptyset(&set);
+	if(ret != 0){
+		perror("[setSigaction] sigemptyset-1 error");
+		return;
+	}
+	ret = sigaddset(&set,SIGCHLD);
+	if(ret != 0){
+		perror("[setSigaction] sigaddset error");
+		return;
+	}
+
+	//先阻塞住SIGCHLD信号，避免主线程注册前子进程就退出，导致僵尸进程的情况
+	ret =  sigprocmask(SIG_BLOCK, &set, NULL);
+	if(ret != 0){
+		perror("[setSigaction] sigprocmask error");
+		return;
+	}
+
+	int i=0;
+	for(;i<3;i++){
+		pid_t pid = fork();
+		if(pid < 0){
+			perror("fork error");
+			return;
+		}else if(pid == 0){
+			break;
+		}
+	}
+	if (i == 3) {
+		//此时SIGCHLD被阻塞，此时子进程结束也没有关系，等到解除阻塞的时候，依然会收到SIGCHLD信号去回收子进程
+		struct sigaction act;
+		act.sa_flags = 0;
+		act.sa_handler = sighandler;
+		ret = sigemptyset(&act.sa_mask);
+		if(ret != 0){
+			perror("[setSigaction] sigemptyset error");
+			return;
+		}
+		ret = sigaction(SIGCHLD, &act,NULL);
+		if(ret !=0 ){
+			perror("[setSigaction] sigaction error");
+			return;
+		}
+
+		//注册完成，解除SIGCHLD信号的阻塞
+		ret =  sigprocmask(SIG_UNBLOCK, &set, NULL);
+		if(ret != 0){
+			perror("[setSigaction] sigprocmask-2 error");
+			return;
+		}
+
+		while(startCount == 0){
+			sleep(1);
+		}
+		printf("[sigChldTest] fp finish\n");
+	} else if (i < 3) {
+		printf("[sigChldTest] sp(%d) finish\n", getpid());
+	}
+}
 
 void setSigaction(){
 	printf("----------[setSigaction]------------\n");
@@ -267,5 +330,28 @@ void sighandler(int sigNO){
 		toDateTimeCh(timeSTR,0);
 		printf("[sighandler-%s] get SIGALRM! \n",timeSTR);
 		startCount = 1;
+	}else if(sigNO == SIGCHLD){
+		printf("[sighandler] get SIGCHLD\n");
+		while(1){
+			int wstatus;
+			pid_t sid = waitpid(-1, &wstatus, WNOHANG);
+			if (sid > 0) {
+				if (WIFEXITED(wstatus)) {
+					printf("son[%d] terminated normally,status is %d \n",
+							sid, WEXITSTATUS(wstatus));
+				} else if (WIFSIGNALED(wstatus)) {
+					printf("son[%d] was terminated by a signal[%d] \n",
+							sid, WTERMSIG(wstatus));
+				} else {
+					printf("son[%d] finished by other reason !", sid);
+				}
+			} else if (sid == -1) {
+				startCount = 1;
+				perror("waitpid error");
+				break;
+			}else{
+				break;
+			}
+		}
 	}
 }

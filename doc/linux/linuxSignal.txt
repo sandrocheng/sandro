@@ -111,9 +111,25 @@
 		详见/c-pro/cProjects/linuxSignal项目
 
 5、信号捕捉函数
-	详见/c-pro/cProjects/linuxSignal项目
+	详见/c-pro/cProjects/linuxSignal项目	
 
+6、SIGCHLD信号
+	6.1)产生SIGCHLD信号的条件
+		子进程结束的时候
+		子进程收到SIGSTOP信号
+		当子进程停止时，收到SIGCONT信号
 	
+	6.2）SIGCHLD信号的作用
+		子进程退出后，内核会给他的父进程发送SIGCHLD信号，父进程收到这个信号后可以回收子进程
+		使用SIGCHLD信号完成对子进程的回收，可以避免父进程阻塞等待而不能执行其他操作。
+		只有当父进程收到SIGCHLD信号之后才会去调用信号捕捉函数完成对子进程的回收，未收到SIGCHLD信号之前可以处理其他操作。
+	
+	6.3)使用SIGCHLD完成对子进程的回收
+		1）有可能未完成的信号处理函数时子进程都退出了，所以需要在fork之前先将SIGCHLD信号阻塞，当完成信号处理函数的注册以后在解除阻塞
+		2）当SIGCHLD信号处理期间，SIGCHLD信号若再次产生是被阻塞的，而且，若产生了多次，则该信号只会被处理一次，这样可能会产生僵尸进程
+		   解决方法：可以在信号处理函数里面使用while(1)循环回收，这样就有可能出现捕获一次SIGCHLD信号，但是回收了多个子进程的情况，从而避免产生僵尸进程。
+		详见/c-pro/cProjects/linuxSignal项目
+
 
 
 

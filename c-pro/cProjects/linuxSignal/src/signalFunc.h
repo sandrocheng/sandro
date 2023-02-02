@@ -156,11 +156,6 @@
                void     (*sa_restorer)(void);//已经不再使用了，废弃了
            };
  *
- *
- *
- *
- *
- *
  */
 
 #ifndef SIGNALFUNC_H_
@@ -177,6 +172,11 @@
 #include "tools.h"
 #include <signal.h>
 #include <sys/time.h>
+
+/**
+ * fork多个子进程，并且注册SIGCHLD信号，在收到SIGCHLD信号之后回收子进程
+ */
+void sigChldTest();
 
 /**
  * 使用sigaction函数注册一个定时信号
