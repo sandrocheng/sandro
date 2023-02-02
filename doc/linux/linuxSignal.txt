@@ -110,8 +110,15 @@
 	4.2）信号集相关函数
 		详见/c-pro/cProjects/linuxSignal项目
 
-
-
-
+5、信号捕捉函数
+	详见/c-pro/cProjects/linuxSignal项目
 
 	
+
+
+
+
+
+
+
+

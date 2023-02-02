@@ -136,6 +136,30 @@
  *	   函数参数：set传出参数
  *	   函数返回值：0，成功；-1，失败，设置errno
  *
+ *8 、信号捕捉函数sigaction
+ *      signal函数在不同的unix版本表现不太一样，一般使用sigaction代替，signal函数不能捕捉SIGSTOP和SIGKILL。
+ *		sigaction函数说明：注册一个信号处理函数
+ *		函数原型：int sigaction(int signum, const struct sigaction *act,struct sigaction *oldact);
+ *		函数返回值：0，成功；-1 ，失败，并设置errno
+ *		函数参数：
+ *			signum:捕捉的信号
+ *			act:传入参数，新的处理方式。
+ *			oldact:传出的参数，旧的处理方式
+ *		struct sigaction {
+               void     (*sa_handler)(int);//信号处理函数，系统回调
+                                           //也可以赋值为SIG_IGN表示忽略或者SIG_DEF表示执行默认动作
+               void     (*sa_sigaction)(int, siginfo_t *, void *);//信号处理函数，一般不用
+               sigset_t   sa_mask;//信号处理函数执行期间需要阻塞的信号，
+               	   	   	   	   	  //比如信号处理函数执行耗时操作，在信号处理期间再有信号发生时，会阻塞。信号处理完成后，会解除阻塞
+               	   	   	   	   	  //当某个信号被执行时，它自身会被自动放入进程的信号掩码，因此再信号处理期间，这个信号不会再度发生
+               int        sa_flags;//通常为0，表示使用默认标识
+               void     (*sa_restorer)(void);//已经不再使用了，废弃了
+           };
+ *
+ *
+ *
+ *
+ *
  *
  */
 
@@ -153,6 +177,11 @@
 #include "tools.h"
 #include <signal.h>
 #include <sys/time.h>
+
+/**
+ * 使用sigaction函数注册一个定时信号
+ */
+void setSigaction();
 
 /**
  * 信号集设置和读取

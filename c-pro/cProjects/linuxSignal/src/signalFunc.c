@@ -9,8 +9,52 @@
 static void sighandler(int sigNO);
 static void timerHandler(int sigNO);
 static void sigSetTest_timeHandler(int sigNO);
+static void setSigaction_timeHandler(int sigNO);
 long global_count = 0;
 int startCount = 0;
+
+
+void setSigaction(){
+	printf("----------[setSigaction]------------\n");
+	struct sigaction act;
+	startCount = 0;
+
+
+	act.sa_flags = 0;
+	act.sa_handler = setSigaction_timeHandler;
+	int ret = sigemptyset(&act.sa_mask);
+	if(ret != 0){
+		perror("[setSigaction] sigemptyset error");
+		return;
+	}
+
+	ret = sigaction(SIGALRM, &act,NULL);
+	if(ret !=0 ){
+		perror("[setSigaction] sigaction error");
+		return;
+	}
+	struct itimerval tm;
+	tm.it_interval.tv_sec = 1;
+	tm.it_interval.tv_usec = 0;
+	tm.it_value.tv_sec = 1;
+	tm.it_value.tv_usec = 0;
+	ret = setitimer(ITIMER_REAL, &tm,NULL);
+	if(ret != 0){
+		perror("[setSigaction] setitimer error");
+	}
+	while(startCount < 5){
+		sleep(1);
+	}
+}
+
+void setSigaction_timeHandler(int sigNO){
+	if(SIGALRM == sigNO){
+		startCount ++;
+		char timeStr[100];
+		toDateTimeCh(timeStr,0);
+		printf("[setSigaction_timeHandler] - %s\n",timeStr);
+	}
+}
 
 void sigSetTest(){
 	printf("----------[sigSetTest]------------\n");
