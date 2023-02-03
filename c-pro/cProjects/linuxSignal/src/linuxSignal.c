@@ -41,12 +41,15 @@ int checkArgs(int argc,char* argv[]){
 		setSigaction();
 	}else if(strcmp("sc",argv[1]) == 0){
 		sigChldTest();
+	}else if(strcmp("ipc",argv[1]) == 0){
+		ipcBySignalMMap();
 	}
 	return returnNO;
 }
 
 void showHelp(){
 	printf("\n==help===================================================================================================================================================\n");
+	printf("ipc ,使用SIGUSR1，SIGUSR2信号 和 MMAP 在父子进程间进行数据通信\n");
 	printf("sc ,fork多个子进程，并且注册SIGCHLD信号，在收到SIGCHLD信号之后回收子进程\n");
 	printf("sa ,使用sigaction函数注册一个定时信号\n");
 	printf("ss,设置阻塞信号集，并读取阻塞信号集和未决信号集合\n");

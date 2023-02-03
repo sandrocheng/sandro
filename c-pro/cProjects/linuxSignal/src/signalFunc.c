@@ -10,8 +10,139 @@ static void sighandler(int sigNO);
 static void timerHandler(int sigNO);
 static void sigSetTest_timeHandler(int sigNO);
 static void setSigaction_timeHandler(int sigNO);
+static int registSig();
+static void ipcSigHandler(int sigNO);
+
+#define MMAP_SIZE 4096
+
 long global_count = 0;
 int startCount = 0;
+void *mmapAdd = NULL;
+char mmap_buff[256];
+int sonPid = 0;
+int sonquit = 1;
+int fatherQuit = 1;
+void ipcBySignalMMap(){
+	printf("----------[ipcBySignalMMap]------------\n");
+	mmapAdd = mmap(NULL,MMAP_SIZE,PROT_READ|PROT_WRITE,MAP_SHARED|MAP_ANONYMOUS,-1,0);
+	sigset_t set;
+	int ret = sigemptyset(&set);
+	if(ret != 0){
+		perror("[ipcBySignalMMap] sigemptyset-1 error");
+		return;
+	}
+
+	if(sigaddset(&set,SIGCHLD) != 0){
+		perror("[ipcBySignalMMap] sigaddset SIGCHLD error");
+		return;
+	}
+	if(sigaddset(&set,SIGUSR1) != 0){
+		perror("[ipcBySignalMMap] sigaddset SIGUSR1 error");
+		return;
+	}
+	if(sigaddset(&set,SIGUSR2) != 0){
+		perror("[ipcBySignalMMap] sigaddset SIGUSR2 error");
+		return;
+	}
+	//先阻塞住要监听的信号，避免信号遗漏
+	ret =  sigprocmask(SIG_BLOCK, &set, NULL);
+
+	int pid = fork();
+
+	if(pid>0){
+		sonPid = pid;
+		ret = registSig(&set);
+		printf("F registSig finish [%d]\n",ret);
+		memset(mmapAdd,0,MMAP_SIZE);
+		startCount = 5;
+		sprintf(mmap_buff,"%d",startCount);
+		memcpy(mmapAdd, mmap_buff, strlen(mmap_buff));
+		ret = kill(sonPid, SIGUSR1);
+		printf("F init finish send SIGUSR1 ret is %d\n",ret);
+		while(fatherQuit){
+			sleep(1);
+		}
+		printf("father finish\n");
+	}else if(pid == 0){
+		registSig(&set);
+
+		while(sonquit){
+			sleep(1);
+		}
+	}else{
+		perror("[ipcBySignalMMap] fork error");
+	}
+}
+
+void ipcSigHandler(int sigNO){
+	if(sigNO == SIGUSR2){
+		printf("[%d]get SIGUSR2\n",getpid());
+		if(startCount>=0){
+			startCount--;
+			sprintf(mmap_buff,"%d",startCount);
+			memcpy(mmapAdd, mmap_buff, strlen(mmap_buff));
+			kill(sonPid, SIGUSR1);
+		}
+	}else if(sigNO == SIGUSR1){
+		char buff[256];
+		memset(buff,0x00,sizeof(buff));
+		memcpy(buff,mmapAdd,sizeof(buff));
+		printf("[%d]get SIGUSR1,data is: %s\n",getpid(),buff);
+		kill(getppid(), SIGUSR2);
+		if(strcmp("-1",buff) == 0){
+			sonquit = 0;
+		}
+	}else if(sigNO == SIGCHLD){
+		printf("[ipcSigHandler] get SIGCHLD\n");
+		while(1){
+			int wstatus;
+			pid_t sid = waitpid(-1, &wstatus, WNOHANG);
+			if (sid > 0) {
+				if (WIFEXITED(wstatus)) {
+					printf("son[%d] terminated normally,status is %d \n",
+							sid, WEXITSTATUS(wstatus));
+				} else if (WIFSIGNALED(wstatus)) {
+					printf("son[%d] was terminated by a signal[%d] \n",
+							sid, WTERMSIG(wstatus));
+				} else {
+					printf("son[%d] finished by other reason !", sid);
+				}
+			} else if (sid == -1) {
+				perror("waitpid error");
+				fatherQuit = 0;
+				break;
+			}else{
+				break;
+			}
+		}
+	}
+}
+
+int registSig(sigset_t *set){
+	struct sigaction act;
+	act.sa_flags = 0;
+	act.sa_handler = ipcSigHandler;
+	int ret = sigemptyset(&act.sa_mask);
+	if (ret != 0) {
+		perror("[registSig] sigemptyset error");
+		return -1;
+	}
+	if (sigaction(SIGCHLD, &act, NULL) != 0) {
+		perror("[registSig] sigaction SIGCHLD error");
+		return -1;
+	}
+	if (sigaction(SIGUSR1, &act, NULL) != 0) {
+		perror("[registSig] sigaction SIGUSR1 error");
+		return -1;
+	}
+	if (sigaction(SIGUSR2, &act, NULL) != 0) {
+		perror("[registSig] sigaction SIGUSR2 error");
+		return -1;
+	}
+	//注册完成，解除信号的阻塞
+	ret = sigprocmask(SIG_UNBLOCK, set, NULL);
+	return ret;
+}
 
 void sigChldTest(){
 	printf("----------[sigChldTest]------------\n");
@@ -81,8 +212,6 @@ void setSigaction(){
 	printf("----------[setSigaction]------------\n");
 	struct sigaction act;
 	startCount = 0;
-
-
 	act.sa_flags = 0;
 	act.sa_handler = setSigaction_timeHandler;
 	int ret = sigemptyset(&act.sa_mask);

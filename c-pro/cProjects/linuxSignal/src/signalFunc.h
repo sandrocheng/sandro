@@ -172,6 +172,16 @@
 #include "tools.h"
 #include <signal.h>
 #include <sys/time.h>
+#include <sys/mman.h>//mmap liunx标准库
+
+/**
+ * 使用SIGUSR1，SIGUSR2信号 和 MMAP 在父子进程间进行数据通信
+ * 子进程fork之后发送SIGUSR2给父进程
+ * 父进程收到SIGUSR2后，发送SIGUSR1 通知子进程从mmap读数据，子进程读到数据以后给继续给父进程发送SIGUSR2,
+ * 当mmap 中 数据为 -1 时，说名父进程发送完所有的数据了
+ * 此时子进程退出，父进程监听到SIGCHLD后，回收子进程并退出
+ */
+void ipcBySignalMMap();
 
 /**
  * fork多个子进程，并且注册SIGCHLD信号，在收到SIGCHLD信号之后回收子进程
