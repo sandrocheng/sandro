@@ -14,6 +14,8 @@ struct person{
 static void * threadB(void *arg);
 static void * threadC(void *arg);
 
+int T_QUIT = 1;
+int T_FINISH = 0;
 void create5Threads(){
 	printf("----------[create5Threads]------------\n");
 	int ret;
@@ -28,14 +30,27 @@ void create5Threads(){
 			return ;
 		}
 	}
-
-	sleep(2);
+	for(int i=0;i<n;i++){
+		void *p;
+		ret = pthread_join(thread[i],&p);
+		int n = *(int *)p;
+		if(ret == 0){
+			printf("[create5Threads] child[%ld] exit status:%d , p address is %p\n",thread[i],n,p);
+		}else{
+			printf("[create5Threads]pthread_join error,[%s]\n",strerror(ret));
+		}
+	}
+	printf("[create5Threads] finish");
 }
 
 void * threadC(void *arg){
 	int pos = *(int *)arg;
+	if(pos == 0){//如果是0号线程，默认自动退出线程
+		pthread_exit(&T_QUIT);
+	}
+	sleep(1);
 	printf("[threadC][threadID=%ld] ,createNO is %d\n",pthread_self(),pos);
-	return NULL;
+	return &T_FINISH;
 }
 void createStructArgThread(){
 	printf("----------[createStructArgThread]------------\n");

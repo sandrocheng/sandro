@@ -22,7 +22,24 @@
  *			如果任意一个线程调用了exit或者_exit，则整个进程的所有线程都终止。
  *			由于从main函数return也相当于调用exit，为了防止新创建的线程还没有得到执行就终止，可以在main函数return之前先延时1秒（这个方法有缺陷，后面有更好的方式）
  *
+ *2、pthread_exit
+ *		在线程中禁止调用exit函数，否则会导致整个进程退出，取而代之的是调用pthread_exit函数，这个函数是使一个线程退出，如果主线程调用pthread_exit函数也不会使整个进程
+ *		退出，不影响其他线程的执行
  *
+ *		函数描述：单个线程退出
+ *		函数原型:void pthread_exit(void *retval);
+ *		函数参数：
+ *			retval表示线程退出状态，一般传NULL
+ *		注意：pthread_exit或者rturn返回的指针所指向的内存单元必须是全局的或者使用malloc分配的，不能在线程函数的栈上分配，因为当其他线程得到这个返回指针时线程函数已经退出了
+ *		栈空间就会被回收。
+ *
+ *3、pthread_join
+ * 		函数描述：阻塞等待线程退出，获取线程退出状态。其作用，对应进程中的waitpid()函数
+ *		函数原型：int pthread_join(pthread_t thread,void **retval);
+ *		函数返回值：0，成功；其他，错误号
+ *		函数参数：
+ *			thread:create时候的线程ID
+ *			retval:储存线程结束状态，这个指针和pthread_exit的参数是统一块内存地址。
  */
 
 #ifndef PTHREADFUN_H_
