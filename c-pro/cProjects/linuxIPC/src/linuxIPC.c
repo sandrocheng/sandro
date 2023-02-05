@@ -4,7 +4,7 @@
  Author      : sandrocheng
  Version     :
  Copyright   : sandrocheng
- Description : linux IPC in C, Ansi-style
+ Description : linux IPC
  ============================================================================
  */
 

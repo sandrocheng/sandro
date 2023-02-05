@@ -4,7 +4,7 @@
  Author      : sandrocheng
  Version     :
  Copyright   : sandrocheng
- Description : Hello World in C, Ansi-style
+ Description : c语言基本操作
  ============================================================================
  */
 
