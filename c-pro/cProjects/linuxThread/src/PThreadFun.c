@@ -41,6 +41,7 @@ void cancelThread(){
 			result = *(int *)p;
 		}
 		printf("[cancelThread] thread[%ld] quit ,result is %d \n",thread,result);
+		printf("主线程ID和子线程ID使用pthread_equal判断是否相同： %d (0,不等，非0，相等)\n",pthread_equal(pthread_self(),thread));
 	}else{
 		printf("[cancelThread] pthread_join error : %s \n",strerror(ret));
 	}
@@ -60,7 +61,7 @@ void * threadE(void *arg){
 	sleep(1);
 	pthread_testcancel();
 	printf("[threadE] finish\n");
-	return T_FINISH;
+	return &T_FINISH;
 }
 void detachThread(){
 	printf("----------[detachThread]------------\n");

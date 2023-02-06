@@ -65,7 +65,11 @@
  * 		函数描述，设置一个取消点，需要结合pthread_cancel使用
  * 		函数原型:void pthread_testcancel(void);
  *
- *
+ *7、pthread_equal
+ *		函数表述，比较两个线程ID是否相等
+ *		函数原型 int pthread_equal(pthread_t t1, pthread_t t2);
+ *		返回值：非0，相等；0，不等
+ *		注意：这个函数是为了能够扩展使用的，有可能linux再未来的线程ID pthread类型被修改为结构体实现
  *
  */
 
