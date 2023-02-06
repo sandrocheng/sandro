@@ -73,10 +73,29 @@
   
 
 
-
-
-
-
+7、线程属性
+	linux下线程的属性是可以根据实际项目需要，进行设置，之前讨论的线程都是采用线程的默认属性，默认属性已经可以解决绝大多数开发时遇到的问题，如果对程序的性能提出更高的要求，则需要设置线程属性。
+	
+	7.1)线程的分离状态决定一个线程以什么样的方式来终止自己，有两种状态：
+		非分离状态：线程的默认属性是非分离状态，这种情况下，原有的线程等待创建的线程结束，只有当pthread_join()函数返回时，创建的线程才算终止，才能释放自己占用的资源
+		分离状态：分离线程没有被其他的线程所等待，自己运行结束了，线程也就终止了，马上释放系统资源。应该根据自己的实际需要，选择适当的分离状态。
+	
+	7.2)设置线程属性分为以下几个步骤：
+		第一步：定义线程属性类型的变量
+			pthread_attr_t attr;
+		第二步：对线程属性变量进行初始化
+			int pthread_attr_init(pthread_attr_t *attr);
+		第三步：设置线程为分离属性
+			int pthread_attr_setdetachstate(pthread_attr_t *attr,int detachstate;);
+			attr:线程属性
+			detachstate:
+				PTHREAD_CREATE_DETACHED(分离)
+				PTHREAD_CREATE_JOINABLE(非分离)
+		注意：完成这一步之后调用pthread_create函数创建线程
+		第四部：释放线程资源
+			int pthread_attr_destroy(pthread_attr_t *attr);
+			参数：线程属性
+		
 
 
 

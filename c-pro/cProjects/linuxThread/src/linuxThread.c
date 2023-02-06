@@ -38,12 +38,15 @@ int checkArgs(int argc,char* argv[]){
 		detachThread();
 	}else if(strcmp("cancel",argv[1]) == 0){
 		cancelThread();
+	}else if(strcmp("cdt",argv[1]) == 0){
+		createDetachedThread();
 	}
 	return returnNO;
 }
 
 void showHelp(){
 	printf("\n==help===================================================================================================================================================\n");
+	printf("cdt ,使用线程属性，创加一个分离线程\n");
 	printf("cancel ,创建一个线程，并尝试取消该线程\n");
 	printf("detach ,创建一个线程，并使用pthread_detach设置线程分离\n");
 	printf("ct ,创建线程\n");

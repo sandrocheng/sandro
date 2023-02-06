@@ -84,6 +84,11 @@
 #include <pthread.h>//linux c库 ，线程库
 
 /**
+ * 使用线程属性，创加一个分离线程
+ */
+void createDetachedThread();
+
+/**
  * 创建一个线程，并尝试取消该线程
  */
 void cancelThread();

@@ -19,6 +19,39 @@ static void * threadE(void *arg);
 int T_QUIT = 1;
 int T_FINISH = 0;
 
+void createDetachedThread(){
+	printf("----------[createDetachedThread]------------\n");
+	pthread_t thread;
+	pthread_attr_t attr;
+	int ret = pthread_attr_init(&attr);
+	if(ret != 0){
+		printf("[createDetachedThread] pthread_attr_init error : %s\n",strerror(ret));
+		return;
+	}
+	ret = pthread_attr_setdetachstate(&attr,PTHREAD_CREATE_DETACHED);
+	if(ret !=0){
+		printf("[createDetachedThread] pthread_attr_init error : %s\n",strerror(ret));
+		return;
+	}
+	ret = pthread_create(&thread,&attr,threadD,NULL);
+	if(ret == 0){
+		printf("[createDetachedThread] pthread_create success tid[%ld]\n",thread);
+	}else{
+		printf("[createDetachedThread] pthread_create error : %s \n",strerror(ret));
+		return;
+	}
+	ret = pthread_attr_destroy(&attr);
+	if(ret!=0){
+		printf("[createDetachedThread] pthread_attr_destroy error : %s \n",strerror(ret));
+	}
+	ret = pthread_join(thread,NULL);
+	if(ret!=0){//因为创建的是分离线程，所以join的时候一定是失败的
+		printf("[createDetachedThread] pthread_join error : %s\n",strerror(ret));
+	}
+	sleep(1);
+	printf("main thread finish\n");
+}
+
 void cancelThread(){
 	printf("----------[cancelThread]------------\n");
 	pthread_t thread;
