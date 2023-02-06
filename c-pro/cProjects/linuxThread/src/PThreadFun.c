@@ -14,10 +14,54 @@ struct person{
 static void * threadB(void *arg);
 static void * threadC(void *arg);
 static void * threadD(void *arg);
+static void * threadE(void *arg);
 
 int T_QUIT = 1;
 int T_FINISH = 0;
 
+void cancelThread(){
+	printf("----------[cancelThread]------------\n");
+	pthread_t thread;
+	int ret = pthread_create(&thread,NULL,threadE,NULL);
+	if(ret == 0){
+		printf("[cancelThread] pthread_create success tid[%ld]\n",thread);
+	}else{
+		printf("[cancelThread] pthread_create error : %s \n",strerror(ret));
+		return;
+	}
+
+	sleep(2);
+	pthread_cancel(thread);
+
+	void *p = NULL;
+	ret = pthread_join(thread,&p);
+	if(ret == 0){
+		int result = T_QUIT;
+		if(p == NULL){
+			result = *(int *)p;
+		}
+		printf("[cancelThread] thread[%ld] quit ,result is %d \n",thread,result);
+	}else{
+		printf("[cancelThread] pthread_join error : %s \n",strerror(ret));
+	}
+}
+
+void * threadE(void *arg){
+	printf("[threadE] work1..\n");//printf 底层调用了write，这句话实际上也相当于设置了取消点
+	sleep(1);
+	pthread_testcancel();
+	printf("[threadE] work2..\n");
+	sleep(1);
+	pthread_testcancel();
+	printf("[threadE] work3..\n");
+	sleep(1);
+	pthread_testcancel();
+	printf("[threadE] work4..\n");
+	sleep(1);
+	pthread_testcancel();
+	printf("[threadE] finish\n");
+	return T_FINISH;
+}
 void detachThread(){
 	printf("----------[detachThread]------------\n");
 	pthread_t thread;
@@ -26,12 +70,14 @@ void detachThread(){
 		printf("[detachThread] child[%ld] create success \n",thread);
 	}else{
 		printf("[detachThread]pthread_create error,[%s]\n",strerror(ret));
+		return;
 	}
 	ret = pthread_detach(thread);
 	if(ret == 0){
 		printf("[detachThread] child[%ld] pthread_detach success \n",thread);
 	}else{
 		printf("[detachThread]pthread_detach error,[%s]\n",strerror(ret));
+		return;
 	}
 	ret = pthread_join(thread,NULL);
 	if(ret != 0){//线程detach以后，再join，不会再阻塞，并且会返回错误

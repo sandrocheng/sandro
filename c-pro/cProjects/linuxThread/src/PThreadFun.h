@@ -53,7 +53,17 @@
  *		而不保留终止状态。不能对一个已经处于detach状态的线程调用pthread_join，这样的调用将返回EINVAL错误。也就是说，如果已经对一个线程调用了pthread_detach就不能再调用
  *		pthread_join了。
  *
+ *5、pthread_cancel函数
+ *		函数描述：杀死（取消）线程。类似进程的kill函数
+ *		函数原型：int pthread_cancel(pthread_t thread);
+ *		函数返回值：0，成功；其他，错误号
+ *		注意：线程的取消不是实时的，有一定的延时。需要等待线程达到某个取消点（检查点），取消点类似游戏的存档，必须达到指定的场所才能执行，
+ *		取消点：是线程检查是否被取消，并按请求进行动作的一个位值。通常是一些系统调用create,open,pause,close,read,write等（man 7 pthreads可以查看取消点的调用列表）
+ *			   可以粗略的认为一个系统调用(进入内核)即为一个取消点。还可以通过调用pthread_testcancel函数设置一个取消点。
  *
+ *6 、pthread_testcancel
+ * 		函数描述，设置一个取消点，需要结合pthread_cancel使用
+ * 		函数原型:void pthread_testcancel(void);
  *
  *
  *
@@ -68,6 +78,11 @@
 #include <sys/types.h>//Unix/Linux系统的基本系统数据类型的头文件
 #include <unistd.h>//unix std的意思,是POSIX标准定义的unix类系统定义符号常量的头文件
 #include <pthread.h>//linux c库 ，线程库
+
+/**
+ * 创建一个线程，并尝试取消该线程
+ */
+void cancelThread();
 
 /**
  * 创建一个线程，并使用pthread_detach设置线程分离
