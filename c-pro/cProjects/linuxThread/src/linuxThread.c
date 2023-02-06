@@ -34,11 +34,15 @@ int checkArgs(int argc,char* argv[]){
 	}else if(strcmp("create5Threads",argv[1]) == 0){
 		create5Threads();
 	}
+	else if(strcmp("detach",argv[1]) == 0){
+		detachThread();
+	}
 	return returnNO;
 }
 
 void showHelp(){
 	printf("\n==help===================================================================================================================================================\n");
+	printf("detach ,创建一个线程，并使用pthread_detach设置线程分离\n");
 	printf("ct ,创建线程\n");
 	printf("ctarg ,创建带基础类型参数的线程\n");
 	printf("ctargstruct ,创建带struct参数的线程\n");

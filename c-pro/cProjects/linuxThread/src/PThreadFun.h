@@ -40,6 +40,23 @@
  *		函数参数：
  *			thread:create时候的线程ID
  *			retval:储存线程结束状态，这个指针和pthread_exit的参数是统一块内存地址。
+ *
+ *4、pthread_detach
+ *		线程分离状态：指定该状态，线程主动与主控线程断开关系，线程结束后，其退出状态不由其他线程获取，而直接自己自动释放。网络多线程服务器常用。
+ *		进程若有该机制，将不会产生僵尸进程。僵尸进程的产生主要由于进程死后，大部分资源被释放，一点残留资源仍然村于系统中。导致内核认为该进程仍存在。
+ *		也可以使用pthread_create函数参2（线程属性），来设置线程分离。pthread_detach函数是在创建线程之后调用的。
+ *		函数描述：实现线程分离
+ *		函数原型：int pthread_detach(pthread_t thread);
+ *		函数返回值：0，成功；其他，错误号
+ *
+ *		一般情况下，线程终止后，其终止状态一直保留到其他线程调用pthread_join获取它的状态为止。但是线程也可以被设置为detach状态，这样的线程一旦终止就立刻回收他占用的所有资源，
+ *		而不保留终止状态。不能对一个已经处于detach状态的线程调用pthread_join，这样的调用将返回EINVAL错误。也就是说，如果已经对一个线程调用了pthread_detach就不能再调用
+ *		pthread_join了。
+ *
+ *
+ *
+ *
+ *
  */
 
 #ifndef PTHREADFUN_H_
@@ -51,6 +68,11 @@
 #include <sys/types.h>//Unix/Linux系统的基本系统数据类型的头文件
 #include <unistd.h>//unix std的意思,是POSIX标准定义的unix类系统定义符号常量的头文件
 #include <pthread.h>//linux c库 ，线程库
+
+/**
+ * 创建一个线程，并使用pthread_detach设置线程分离
+ */
+void detachThread();
 
 /**
  * 创建一个简单线程
