@@ -84,6 +84,11 @@
 #include <pthread.h>//linux c库 ，线程库
 
 /**
+ * 使用多个线程对一个全局变量分别做加法，查看同步和不同步的计算结果是什么
+ */
+void synchronizationTest();
+
+/**
  * 使用线程属性，创加一个分离线程
  */
 void createDetachedThread();

@@ -15,10 +15,45 @@ static void * threadB(void *arg);
 static void * threadC(void *arg);
 static void * threadD(void *arg);
 static void * threadE(void *arg);
+static void * threadF(void *arg);
 
 int T_QUIT = 1;
 int T_FINISH = 0;
 
+int synchronizationTest_number = 0;;
+void synchronizationTest(){
+	printf("----------[synchronizationTest]------------\n");
+	synchronizationTest_number = 0;
+	int p_size = 10;
+	pthread_t thread[p_size];
+	for(int i=0;i<p_size;i++){
+		int ret = pthread_create(&thread[i],NULL,threadF,NULL);
+		if(ret == 0){
+			printf("[synchronizationTest] pthread_create success tid[%ld]\n",thread[i]);
+		}else{
+			printf("[synchronizationTest] pthread_create error : %s \n",strerror(ret));
+			return;
+		}
+	}
+	for(int i=0;i<p_size;i++){
+		int ret = pthread_join(thread[i],NULL);
+		if(ret!=0){
+			printf("[synchronizationTest] pthread_join error : %s\n",strerror(ret));
+			return;
+		}
+	}
+	printf("[synchronizationTest] finish,synchronizationTest_number is %d",synchronizationTest_number);
+}
+
+void * threadF(void *arg){
+	int n = 0;
+	for(int i =0;i<1000;i++){
+		n = synchronizationTest_number;
+		n++;
+		synchronizationTest_number = n;
+	}
+	return NULL;
+}
 void createDetachedThread(){
 	printf("----------[createDetachedThread]------------\n");
 	pthread_t thread;
