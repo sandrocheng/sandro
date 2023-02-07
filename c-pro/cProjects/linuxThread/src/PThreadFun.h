@@ -71,6 +71,43 @@
  *		返回值：非0，相等；0，不等
  *		注意：这个函数是为了能够扩展使用的，有可能linux再未来的线程ID pthread类型被修改为结构体实现
  *
+ *8、pthread_mutex_t类型
+ *		其本质是一个结构体，为简化理解，应用时可以忽略其实现细节，简单当成整数看待
+ *		pthread_mutex_t mutex;变量mutex只有两种取值，1和0
+ *
+ *9、pthread_mutex_init函数
+ *		函数描述：初始化一个互斥锁（互斥量）---> 初值可以看作1
+ *		函数原型：pthread_mutex_init (pthread_mutex_t *__mutex,const pthread_mutexattr_t *__mutexattr)
+ *		函数参数：
+ *			mutex:传出参数，调用时应传&mutex
+ *			attr:互斥锁属性。是一个传入参数，通常传NULL,选用默认属性(线程间共享)。
+ *			restrict关键字：只用于限制指针，告诉编译器，所有修改该指针指向内存中内容的操作，只能通过本指针完成。不能通过除本指针以外的其他变量或指针修改互斥量，
+ *			mutex的两种初始化方式：
+ *				静态初始化：如果互斥锁mutex时静态分配的（定义在全局，或加了static关键字修饰），可以直接使用宏进行初始化。
+ *					phtread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
+ *				动态初始化：局部变量应该采用动态初始化。
+ *					pthread_mutex_init(&mutex,NULL);
+ *
+ *10、pthread_mutex_destroy函数
+ *		函数描述：销毁一个互斥锁。
+ *		函数原型：int pthread_mutex_destroy(pthread_mutex_t *mutex);
+ *
+ *11 、pthread_mutex_lock
+ *		函数描述：对互斥锁加锁，可理解为将mutex--，阻塞函数
+ *		函数原型： int pthread_mutex_lock(pthread_mutex_t *mutex);
+ *
+ *12、phtread_mutex_unlock
+ *		函数描述：对互斥锁解锁，可理解为将mutex++.
+ *		函数原型：int pthread_mutex_unlock(pthread_mutex_t *mutex);
+ *
+ *13、pthread_mutex_trylock
+ *		函数描述：尝试加锁，非阻塞函数
+ *		函数原型：int pthread_mutex_trylock(pthread_mutex_t *mutex)
+ *		函数成功返回0。任何其他返回值都表示错误。
+ *
+ *
+ *
+ *
  */
 
 #ifndef PTHREADFUN_H_
@@ -85,8 +122,9 @@
 
 /**
  * 使用多个线程对一个全局变量分别做加法，查看同步和不同步的计算结果是什么
+ * @param useMutex : 1，加锁；0，不加锁
  */
-void synchronizationTest();
+void synchronizationTest(int useMutex);
 
 /**
  * 使用线程属性，创加一个分离线程

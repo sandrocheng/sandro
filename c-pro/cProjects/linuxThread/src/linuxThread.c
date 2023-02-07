@@ -41,7 +41,8 @@ int checkArgs(int argc,char* argv[]){
 	}else if(strcmp("cdt",argv[1]) == 0){
 		createDetachedThread();
 	}else if(strcmp("synch",argv[1]) == 0){
-		synchronizationTest();
+		synchronizationTest(0);
+		synchronizationTest(1);
 	}
 	return returnNO;
 }

@@ -20,14 +20,20 @@ static void * threadF(void *arg);
 int T_QUIT = 1;
 int T_FINISH = 0;
 
-int synchronizationTest_number = 0;;
-void synchronizationTest(){
-	printf("----------[synchronizationTest]------------\n");
+int synchronizationTest_number = 0;
+pthread_mutex_t mutex;
+void synchronizationTest(int useMutex){
+	printf("----------[synchronizationTest %s]------------\n",useMutex==0?"不加锁":"加锁");
 	synchronizationTest_number = 0;
+	if(useMutex == 1){
+		pthread_mutex_init(&mutex,NULL);
+	}
 	int p_size = 10;
 	pthread_t thread[p_size];
+	clock_t start,end;
+	start = clock();
 	for(int i=0;i<p_size;i++){
-		int ret = pthread_create(&thread[i],NULL,threadF,NULL);
+		int ret = pthread_create(&thread[i],NULL,threadF,&useMutex);
 		if(ret == 0){
 			printf("[synchronizationTest] pthread_create success tid[%ld]\n",thread[i]);
 		}else{
@@ -42,16 +48,32 @@ void synchronizationTest(){
 			return;
 		}
 	}
-	printf("[synchronizationTest] finish,synchronizationTest_number is %d",synchronizationTest_number);
+	end = clock();
+	if(useMutex == 1){
+		pthread_mutex_destroy(&mutex);
+	}
+	printf("[synchronizationTest] finish,synchronizationTest_number is %d ,usetime[%ld]\n",synchronizationTest_number,(end-start));
 }
 
 void * threadF(void *arg){
+	int useMutex = *(int*) arg; //0:不加锁，1:加锁
 	int n = 0;
-	for(int i =0;i<1000;i++){
-		n = synchronizationTest_number;
-		n++;
-		synchronizationTest_number = n;
+	if (useMutex == 0) {
+		for (int i = 0; i < 1000; i++) {
+			n = synchronizationTest_number;
+			n++;
+			synchronizationTest_number = n;
+		}
+	} else {
+		for (int i = 0; i < 1000; i++) {
+			pthread_mutex_lock(&mutex);
+			n = synchronizationTest_number;
+			n++;
+			synchronizationTest_number = n;
+			pthread_mutex_unlock(&mutex);
+		}
 	}
+
 	return NULL;
 }
 void createDetachedThread(){

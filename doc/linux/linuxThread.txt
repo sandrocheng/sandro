@@ -103,3 +103,15 @@
 	当多个线程共同访问某个共享资源的时候，每个线程访问时需要先加锁，执行任务， 再解锁，如果加锁的时候锁被占用，则加锁失败并阻塞等待占用锁的线程释放锁后才能有机会解除加锁阻塞。
 	通过互斥锁，多个线程不能同时访问共享资源，保证了多线程同步安全。
 
+9、互斥锁
+	详见c-pro/cProjects/linuxThread项目
+	注意：加锁之后，一定会影响效率，因为cpu无法并行执行多个线程中被加锁的代码。
+	
+	互斥锁的使用步骤：
+		1）创建一把锁：pthread_mutex_t mutex;
+		2) main函数中初始化互斥锁：pthread_mutex_init(&mutex,NULL);
+		3) 锁的使用：在共享资源出现的上下，加锁和解锁
+			pthread_mutex_lock(&mutex);
+			...共享资源代码
+			pthread_mutex_unlock(&mutex);
+		4）释放锁：在main函数中释放，pthread_mutex_destroy(&mutex);
