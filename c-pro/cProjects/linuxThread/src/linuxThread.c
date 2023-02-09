@@ -45,6 +45,8 @@ int checkArgs(int argc,char* argv[]){
 		synchronizationTest(1);
 	}else if(strcmp("rwlock",argv[1]) == 0){
 		rwlockTest();
+	}else if(strcmp("cond",argv[1]) == 0){
+		condFunc();
 	}
 	return returnNO;
 }
@@ -60,5 +62,6 @@ void showHelp(){
 	printf("ctargstruct ,创建带struct参数的线程\n");
 	printf("create5Threads ,创建5个线程，并在每个线程内输出线程创建的序号,0号线程自动退出,通过pthread_join，保证线程结束后，主线程再退出\n");
 	printf("rwlock ,使用读写锁对共享资源进行线程安全保护，7个读线程，3个写线程\n");
+	printf("cond,使用条件变量实现一个生产者消费者模型\n");
 	printf("=========================================================================================================================================================\n");
 }

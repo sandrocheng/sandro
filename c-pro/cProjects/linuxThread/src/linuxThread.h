@@ -1,6 +1,5 @@
 /*
  * linuxThread.h
- *
  *  Created on: 2023年2月5日
  *      Author: sandro
  */
@@ -9,6 +8,7 @@
 #define LINUXTHREAD_H_
 
 #include "PThreadFun.h"
+#include "PThreadCond.h"
 
 static int checkArgs(int argc,char* argv[]);
 

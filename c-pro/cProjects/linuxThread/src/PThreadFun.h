@@ -106,7 +106,7 @@
  *		函数成功返回0。任何其他返回值都表示错误。
  *
  *
- *14 读写锁主要操作函数
+ *14、 读写锁主要操作函数
  *		1）定以读写锁：pthread_rwlock_t rwlock;
  *		2) 初始化读写锁：
  *			int pthread_rwlock_init(pthread_rwlock_t *restrict rwlock,const pthread_rwlockattr_t *restrict attr);
@@ -118,7 +118,6 @@
  *		6) 加写锁：int pthread_rwlock_wrlock(pthread_rwlock *rwlock);
  *		7) 尝试加写锁：int pthread_rwlock_trylock(pthread_rwlock *rwlock);
  *		8) 解锁：int pthread_rwlock_unlock(pthread_rwlock_t * rwlock);
- *
  *
  *
  */
