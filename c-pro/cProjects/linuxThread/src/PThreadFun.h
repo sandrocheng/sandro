@@ -106,6 +106,19 @@
  *		函数成功返回0。任何其他返回值都表示错误。
  *
  *
+ *14 读写锁主要操作函数
+ *		1）定以读写锁：pthread_rwlock_t rwlock;
+ *		2) 初始化读写锁：
+ *			int pthread_rwlock_init(pthread_rwlock_t *restrict rwlock,const pthread_rwlockattr_t *restrict attr);
+ *				rwlock-读写锁
+ *				attr- 读写属性，NULL为默认属性
+ *		3）销毁读写锁：int pthread_rwlock_destroy(pthread_rwlock *rwlock);
+ *		4) 加读锁 ：int pthread_rwlock_rdlock(pthread_rwlock *rwlock);
+ *		5) 尝试加读锁：int pthread_rwlock_tryrdlock(pthread_rwlock *rwlock);
+ *		6) 加写锁：int pthread_rwlock_wrlock(pthread_rwlock *rwlock);
+ *		7) 尝试加写锁：int pthread_rwlock_trylock(pthread_rwlock *rwlock);
+ *		8) 解锁：int pthread_rwlock_unlock(pthread_rwlock_t * rwlock);
+ *
  *
  *
  */
@@ -119,6 +132,14 @@
 #include <sys/types.h>//Unix/Linux系统的基本系统数据类型的头文件
 #include <unistd.h>//unix std的意思,是POSIX标准定义的unix类系统定义符号常量的头文件
 #include <pthread.h>//linux c库 ，线程库
+
+/**
+ * 使用读写锁对共享资源进行线程安全保护，7个读线程，3个写线程
+ * 3个写线程 计算 数字++ 5万次
+ * 7读线程 每个读线程，随机sleep
+ * 验证 结果是否是 15万
+ */
+void rwlockTest();
 
 /**
  * 使用多个线程对一个全局变量分别做加法，查看同步和不同步的计算结果是什么

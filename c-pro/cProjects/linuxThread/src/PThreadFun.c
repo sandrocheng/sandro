@@ -16,12 +16,102 @@ static void * threadC(void *arg);
 static void * threadD(void *arg);
 static void * threadE(void *arg);
 static void * threadF(void *arg);
+static void * threadG(void *arg);
 
 int T_QUIT = 1;
 int T_FINISH = 0;
 
 int synchronizationTest_number = 0;
 pthread_mutex_t mutex;
+
+pthread_rwlock_t rwlock;
+void rwlockTest(){
+	printf("----------[rwlockTest]------------\n");
+	synchronizationTest_number = 0;
+	pthread_rwlock_init(&rwlock,NULL);
+	int threadCount = 10;
+	pthread_t thread[threadCount];
+	int state[threadCount];
+	clock_t start,end;
+	start = clock();
+	for(int i = 0;i<threadCount;i++){
+		if(i>6){
+			state[i] = 1;
+		}else{
+			state[i] = 0;
+		}
+		int ret = pthread_create(&thread[i],NULL,threadG,&state[i]);
+		if(ret != 0){
+			printf("[rwlockTest] pthread_create error:%s \n" , strerror(ret));
+			return;
+		}
+	}
+	for(int i = 0;i<threadCount;i++){
+		int ret = pthread_join(thread[i],NULL);
+		if(ret!=0){
+			printf("[rwlockTest] pthread_join error : %s\n",strerror(ret));
+			return;
+		}
+	}
+	pthread_rwlock_destroy(&rwlock);
+	end = clock();
+	double sec = (double)(end-start) / CLOCKS_PER_SEC;
+	printf("[rwlockTest] finish,synchronizationTest_number is %d ,usetime[%lf]\n",synchronizationTest_number,sec);
+}
+
+void * threadG(void *arg){
+	int state = *(int *)arg;
+	int n = 0;
+
+	if(state == 0){
+		int temp = -1;
+		while(1){
+			int sleeptime = 0;
+			pthread_rwlock_rdlock(&rwlock);
+			if(temp == synchronizationTest_number){
+				sleeptime = 1;
+			}else{
+				temp = synchronizationTest_number;
+				if(synchronizationTest_number % 10000 == 0 ){
+					printf("thread[%ld] synchronizationTest_number cur is %d\n",pthread_self(),synchronizationTest_number);
+				}
+			}
+
+			if(synchronizationTest_number == 150000){
+				pthread_rwlock_unlock(&rwlock);
+				printf("read thread[%ld] finish \n",pthread_self());
+				break;
+			}
+			pthread_rwlock_unlock(&rwlock);
+			if(sleeptime == 1){
+				usleep(1);
+			}
+		}
+	}else{
+		for(int i = 0;i<50000;i++){
+			int sleeptime = 0;
+			pthread_rwlock_wrlock(&rwlock);
+			n = synchronizationTest_number;
+			n++;
+			synchronizationTest_number = n;
+			if(synchronizationTest_number % 10000 == 0){
+				sleeptime = 1;
+			}
+
+			if(i == 49999){
+				printf("write thread[%ld] finish synchronizationTest_number is %d\n",pthread_self() , synchronizationTest_number);
+			}
+
+			pthread_rwlock_unlock(&rwlock);
+			if(sleeptime == 1){
+				usleep(1);
+			}
+		}
+
+	}
+	return NULL;
+}
+
 void synchronizationTest(int useMutex){
 	printf("----------[synchronizationTest %s]------------\n",useMutex==0?"不加锁":"加锁");
 	synchronizationTest_number = 0;
