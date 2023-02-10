@@ -7,11 +7,13 @@
 
 #include "PThreadCond.h"
 
-# define CONSUMER_SIZE 5
+#define CONSUMER_SIZE 5
+#define PRODUCT_SIZE 6000
 static void* producer(void *arg);
 static void* consumer(void *arg);
 static void addCnode(struct CNode *head,int data);
 static void removeFirstNode(struct CNode *head);
+
 
 pthread_mutex_t mutex;
 pthread_cond_t cond;
@@ -24,11 +26,19 @@ void condFunc(){
 	pthread_mutex_init(&mutex,NULL);
 	pthread_cond_init(&cond,NULL);
 	pthread_t proThread;
-	pthread_create(&proThread,NULL,producer,head);
+	int ret = pthread_create(&proThread,NULL,producer,head);
+	if(ret != 0){
+		printf("[condFunc] pthread_create proThread error : %s \n",strerror(ret));
+		return;
+	}
 
 	pthread_t conThread[CONSUMER_SIZE];
 	for(int i = 0;i<CONSUMER_SIZE;i ++){
 		pthread_create(&conThread[i],NULL,consumer,head);
+		if(ret != 0){
+			printf("[condFunc] pthread_create conThread error : %s \n",strerror(ret));
+			return;
+		}
 	}
 
 	pthread_join(proThread,NULL);
@@ -46,11 +56,10 @@ void condFunc(){
 
 void* producer(void *arg){
 	struct CNode *head = (struct CNode *)arg;
-	int len = 3000;
-	for(int i = 0;i<len;i++){
+	for(int i = 0;i<PRODUCT_SIZE;i++){
 		pthread_mutex_lock(&mutex);
 		addCnode(head,i);
-		if(i == len - 1){
+		if(i == PRODUCT_SIZE - 1){
 			workStart = 1;
 		}
 		pthread_cond_signal(&cond);
@@ -86,6 +95,8 @@ void* consumer(void *arg){
 				pthread_cond_signal(&cond);
 				break;
 			}
+			//每次signal时，都会有多个消费值线程在在这里被重新唤醒，当第一个消费者取得最后一个数据 时候，第二个拿到cpu的线程会在这里继续
+			//此时head中的数据是空的，所以后面的线程要注意判空
 			pthread_cond_wait(&cond,&mutex);
 		}
 		removeFirstNode(head);
