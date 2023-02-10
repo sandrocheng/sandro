@@ -9,6 +9,7 @@
 
 #include "PThreadFun.h"
 #include "PThreadCond.h"
+#include "PthreadSem.h"
 
 static int checkArgs(int argc,char* argv[]);
 

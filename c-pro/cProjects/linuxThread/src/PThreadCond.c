@@ -36,7 +36,7 @@ void condFunc(){
 	for(int i = 0;i<CONSUMER_SIZE;i ++){
 		pthread_create(&conThread[i],NULL,consumer,head);
 		if(ret != 0){
-			printf("[condFunc] pthread_create conThread error : %s \n",strerror(ret));
+			printf("[condFunc] pthread_create conThread error: %s \n",strerror(ret));
 			return;
 		}
 	}

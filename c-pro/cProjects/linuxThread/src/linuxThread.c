@@ -47,21 +47,24 @@ int checkArgs(int argc,char* argv[]){
 		rwlockTest();
 	}else if(strcmp("cond",argv[1]) == 0){
 		condFunc();
+	}else if(strcmp("sem",argv[1]) == 0){
+		semTest();
 	}
 	return returnNO;
 }
 
 void showHelp(){
 	printf("\n==help===================================================================================================================================================\n");
-	printf("synch ,使用多个线程对一个全局变量分别做加法，查看同步和不同步的计算结果是什么\n");
-	printf("cdt ,使用线程属性，创加一个分离线程\n");
-	printf("cancel ,创建一个线程，并尝试取消该线程\n");
-	printf("detach ,创建一个线程，并使用pthread_detach设置线程分离\n");
-	printf("ct ,创建线程\n");
-	printf("ctarg ,创建带基础类型参数的线程\n");
-	printf("ctargstruct ,创建带struct参数的线程\n");
-	printf("create5Threads ,创建5个线程，并在每个线程内输出线程创建的序号,0号线程自动退出,通过pthread_join，保证线程结束后，主线程再退出\n");
-	printf("rwlock ,使用读写锁对共享资源进行线程安全保护，7个读线程，3个写线程\n");
-	printf("cond,使用条件变量实现一个生产者消费者模型\n");
+	printf("synch ,使用多个线程对一个全局变量分别做加法，查看同步和不同步的计算结果是什么。\n");
+	printf("cdt ,使用线程属性，创加一个分离线程。\n");
+	printf("cancel ,创建一个线程，并尝试取消该线程。\n");
+	printf("detach ,创建一个线程，并使用pthread_detach设置线程分离。\n");
+	printf("ct ,创建线程。\n");
+	printf("ctarg ,创建带基础类型参数的线程。\n");
+	printf("ctargstruct ,创建带struct参数的线程。\n");
+	printf("create5Threads ,创建5个线程，并在每个线程内输出线程创建的序号,0号线程自动退出,通过pthread_join，保证线程结束后，主线程再退出。\n");
+	printf("rwlock ,使用读写锁对共享资源进行线程安全保护，7个读线程，3个写线程。\n");
+	printf("cond,使用条件变量实现一个生产者、消费者模型。\n");
+	printf("sem,使用信号量 实现一个生产者、消费者模型。\n");
 	printf("=========================================================================================================================================================\n");
 }
