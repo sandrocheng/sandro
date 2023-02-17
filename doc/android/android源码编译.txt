@@ -1,0 +1,153 @@
+1、硬件要求
+	手机：google 官方手机 Nexus、 Pixel 系列，这些机型可以在google官方下载到对应的驱动包。
+	电脑：16G以上内存，至少220G以上硬盘，(android 12.0 源代码，repo仓库文件，编译后的中间文件和目标文件，各70G左右)
+	      当内存数不够的时候，可以通过扩展linux swap，避免oom
+	      使用 free -m ：查看当前系统的物理内存和swap大小
+	      swap（linux 交换分区）：swap是磁盘上的一块区域，当物理内存吃紧时，linux会将内存中不常访问的数据保存到swap上，这样系统就有更多的物理内存为各进程服务了。
+		                      所以swap虽然能有效减少内存不够带来的进程运行问题，但是也在一定程度上影响了系统运行的效率。
+				      一般默认swap大小是2G，如果编译的时候还发生oom，可以修改swap大小
+				      实际上编译的时候通过降低编译线程数量，就能有效减少运行时期的内存，比如实测中采用编译器默认的线程数量(6个，也可能不是这个数)，基本上不会超过8个G。
+	系统：ubuntu
+	      执行 sudo apt-get update,更新软件列表
+	android 源码编译官网：https://source.android.google.cn/
+2、软件要求：
+	java,python3,git
+	按照官网中apt-get 列表中安装其他依赖库
+	
+	repo安装
+		如果可以翻墙，可以按照官网中的repo安装步骤执行。
+		如果不能则手动按照以下步骤下载安装
+			1）下载repo脚本 git clone https://gerrit-googlesource.lug.ustc.edu.cn/git-repo
+			2) 如果运行./repo version 抛出payton错误，一般是python3路径的问题，可以使用 python3 ./repo version 查看版本的方式检查是否能正常运行
+			   或者配置一下根目录的.bashrc文件 增加一个别名 
+				alias repo='python3 ~/software/git-repo/repo'
+                           然后运行source ~/.bashrc 重新加载,加载后 repo version 就能看到版本信息了
+3、android 源码下载
+	国内android官网源码被屏蔽了，可以使用其他国内镜像资源，比如清华的repo库
+	1) 修改repo文件中的谷歌源为清华源，即将REPO_URL = 'https://gerrit.googlesource.com/git-repo'修改为REPO_URL = 'https://mirrors.tuna.tsinghua.edu.cn/git/git-repo/'
+	2）建立repo资源目录，比如mkdir ~/mywork/repo
+	3) 切换到repo资源目录 cd ~/mywork/repo
+        4) 使用清华源初始化repo仓库目录 
+		1）全量库初始化
+			repo init -u https://mirrors.tuna.tsinghua.edu.cn/git/AOSP/platform/manifest
+		2）如果只是要android的某一个版本，可以使用-b参数，如下载android12分支的源码：
+			repo init -u https://mirrors.tuna.tsinghua.edu.cn/git/AOSP/platform/manifest -b android-12.0.0_r30
+			https://source.android.google.cn/docs/setup/about/build-numbers?hl=zh-cn#source-code-tags-and-builds 里 可以查看个分支列表
+			
+		repo has been initialized in /home/sandro/mywork/repowork/android12.0.0_r30
+		出现这句话，说明初始化成功,成功后目录下会多出一个.repo目录
+
+	5）repo sync ，下载源码,60多G，比较耗时。
+		
+
+4、repo 常用命令
+	1)repo sync [PROJECT1...PROJECTN]
+		下载最新本地工作文件，更新成功，这本地文件和repository 中的代码是一样的。 可以指定需要更新的project ， 如果不指定任何参数，会同步整个所有的项目。
+        	如果是第一次运行repo sync ， 则这个命令相当于 git clone ，会把 repository 中的所有内容都拷贝到本地。 
+		如果不是第一次运行repo sync ， 则相当于 git remote update ;  git rebase origin/branch 。  repo sync 会更新 .repo 下面的文件。
+		举例: repo sync -j8 prebuilts/maven_repo/android
+
+	2）repo manifest
+		可以根据当前各Project的版本信息生成一个manifest文件，manifest中列出了具体有多少个工程，以及工程名等信息。
+	
+	3) repo status
+		显示 project 中每个仓库的状态，并打印仓库名称。
+		查看本地所有Project的修改。
+        4) repo init -u <url> [OPTIONS]
+		repo init -u URL 用以在当前目录安装 repository ，会在当前目录创建一个目录 ".repo"  -u 参数指定一个URL， 从这个URL 中取得repository 的 manifest 文件。
+		在当前目录下初始化repo，会在当前目录生生成一个.repo目录，像Git  Project下的.git一样，-u指定url，可以加参数-m指定manifest文件，默认是default.xml。
+		.repo/manifests保存manifest文件。.repo/projects下有所有的project的数据信息，repo是一系列git project的集合，每个git project下的.git目录中的refs等目录都是链接到.repo/manifests下的。
+	5) repo diff
+		查看修改
+		repo diff platform/build platform/bionic  ---只查看其中两个项目
+	6) repo info
+		查看当前项目分支信息，以及每个project的信息。
+5、源码编译
+	1）使用 envsetup.sh 脚本初始化环境：
+		source build/envsetup.sh
+	   参阅 platform/build/envsetup.sh 中的脚本，了解相关命令的说明
+	   如需查看可用命令的完整列表，请运行以下命令 ：hmm
+	2) 选择目标 lunch [目标名称]
+		如：lunch aosp_arm-eng
+		目标名称后缀：
+			eng后缀：具有额外调试工具的开发配置
+			user后缀：权限受限；适用于生产环境
+			userdebug：与"user"类似，但具有root权限和调试功能；是进行调试时的首选编译类型。
+		aosp_arm-eng 目标：该目标是对模拟器进行完整编译，并且所有调试功能均处于启用状态(老的版本都用这个，12不用这个了)
+		aosp_blueline-userdebug 目标:pixel 3对应的调试编译类型目标。
+		sdk_phone_x86_64-eng 目标：64位的模拟器完整编译，aosp_arm-eng是32位的，编译后模拟器非常慢，推荐使用x86会好很多。
+		如果没有目标的情况下,lunch会提示从菜单中选择，所有的目标可以参考官网：使用入门->构建->刷写设备[选择设备]页面
+
+	3) 构建代码
+		m: 使用“m”构建所有内容	, 
+		构建之前，要使用m clean，清理一下上次编译的文件，该命令与 rm -rf out/相同
+		m -jN
+			设置编译线程数，比如：m -j12,使用12个线程编译，不使用-j，编译器会根据电脑配置选择线程数，线程越多编译速度理论上更快，但是更耗内存。
+			可以根据内存大小选择适当的线程数量,一般来讲16G物理内存+足够的swap(至少8G)，就可以用12个线程。
+		
+	4）编译成功后，所有的编译目标文件都存放到了 /out 目录。
+	   编译过程比较慢，使用i7cpu,4核8线程32G内存的电脑编译androiod12的源码，也得1～2个小时。
+6、运行模拟器
+	android12 64位模拟器目标 sdk_phone_x86_64-eng，编译成功后，运行emulator就可以运行模拟器了
+	
+	ubuntu第一次运行一般会抛出硬件加速错误，如下：
+		handleCpuAcceleration: feature check for hvf
+		emulator: ERROR: x86_64 emulation currently requires hardware acceleration!
+		CPU acceleration status: /dev/kvm is not found: VT disabled in BIOS or KVM kernel module not loaded
+		More info on configuring VM acceleration on Linux:
+		https://developer.android.com/studio/run/emulator-acceleration#vm-linux
+		General information on acceleration: https://developer.android.com/studio/run/emulator-acceleration.
+	原因是没有开启硬件加速，解决方法：
+		1）进入bios,选择Configuration,把Inter Virtual Technology打开
+		2）安装kvm,https://help.ubuntu.com/community/KVM/Installation
+
+	提供的链接被墙了，对应的andorid中文开发者如下：
+		https://developer.android.google.cn/studio/run/emulator-acceleration?hl=zh-cn#vm-linux
+		https://developer.android.google.cn/studio/run/emulator-acceleration?hl=zh-cn
+
+	注意：
+		如果关闭了shell，想重新打开模拟器，需要进入源码目录，重新执行
+		1）source build/envsetup.sh  ，加载命令
+		2）lunch sdk_phone_x86_64-eng ，确认目标
+                3) emulator 
+		否则无法执行emulator命令
+
+7、面向pixel3编译android12.0.0_r30 的源码
+	编译前需要先了解当前分支版本号：
+		通过repo info 命令可以查看，显示的信息中包含如下信息
+			Manifest revision: refs/tags/android-12.0.0_r30
+	1) 下载pixel3驱动
+		a)查找源码buildID :官网->关于->代号、标记、和细分版本号 ，源码标记和build 中，查找android12.0.0_r30对应的ID(SP1A.210812.016.B1)
+		b)根据build在官网的驱动下载页面下载pixel3的驱动，对应的驱动有两个
+			Vendor image
+			GPS, Audio, Camera, Gestures, Graphics, DRM, Video, Sensors
+                c)解压这两个驱动文件，后得到两个.sh文件extract-google_devices-blueline.sh和extract-qcom-blueline.sh
+	        d)把这两个.sh文件移动到源码根目录下
+		e)根目录运行  ./extract-google_devices-blueline.sh和 ./extract-qcom-blueline.sh ，驱动文件会保存到vender目录下
+		  注意：运行后，会先提示要同意一个协议，enter按键翻页到底部，会显示“Type "I ACCEPT" if you agree to the terms of the license” 输入“I ACCEPT”才能继续，如果回车键按多了，会跳出。
+	2）重新编译
+		a)source build/envsetup.sh ,加载编译命令
+		b)lunch aosp_blueline-userdebug , 确定pixel 3的编译目标
+		c) m -j12,开始编译	
+
+8 、编译fastboot和adb
+	编译前执行source build/envsetup.sh ,加载编译命令
+	1)adb工具编译，如果没有下载和安装过adb工具，可以在源码里直接编译一份adb工具
+		命令：m adb
+	2)fastboot编译
+		fastboot是用来刷机的工具，它能够解锁，安装android系统
+		命令 m fastboot 
+		编译完成以后，使用fastboot -help确认。
+
+9、pixel3 oem解锁
+	pixel如果是v版的无法解锁，也就没办法刷机了
+	使用adb 命令 ：adb shell getprop ro.boot.cid,如果返回11111111，是无运营商的版本。如果是0000001，就是v版，Verizon版（运营商版）
+	
+	1) 手机开发者选项里面打开oem锁
+	2) 运行adb reboot bootloader android设备重启后，进入fastboot mode模式
+	3）使用命令：fastboot flashing unlock,在手机上按power按键继续，解锁成功，屏幕上会有类似：device is unlocked 的提示
+
+10、刷机
+	1）adb reboot bootloader,将手机重启进入bootloader模式
+	2）fastboot flashall -w,向手机刷写新的镜像
+	3) 刷写成功后自动重启
