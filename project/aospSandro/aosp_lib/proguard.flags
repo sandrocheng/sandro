@@ -1,0 +1,7 @@
+-keep class com.sandro.test.aosp_lib.LogBuild{
+    *;
+}
+
+-keep class com.sandro.test.aosp_lib.inner.**{
+    *;
+}

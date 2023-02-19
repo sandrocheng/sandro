@@ -40,7 +40,17 @@
 	5）repo sync ，下载源码,60多G，比较耗时。
 		
 
-4、repo 常用命令
+4、repo介绍
+	一种对git构成补充的google代码库管理工具，可以用来管理多个git项目。
+	比如：在repo项目下 find ./ -name ".git",可以看到源码目录下有很多个git子项目
+	      find ./ -name ".git" wc -l ,可以统计个数
+	
+	.repo目录
+		保存repo源码库历史 在.repo/manifests 目录下 使用git branch -a ，可以查看源码所有分支名
+		.repo/manifests/default.xml中保存了所有git项目信息。
+	
+	
+	常用命令：
 	1)repo sync [PROJECT1...PROJECTN]
 		下载最新本地工作文件，更新成功，这本地文件和repository 中的代码是一样的。 可以指定需要更新的project ， 如果不指定任何参数，会同步整个所有的项目。
         	如果是第一次运行repo sync ， 则这个命令相当于 git clone ，会把 repository 中的所有内容都拷贝到本地。 
@@ -62,6 +72,10 @@
 		repo diff platform/build platform/bionic  ---只查看其中两个项目
 	6) repo info
 		查看当前项目分支信息，以及每个project的信息。
+
+	7) repo forall -c git status
+		对所有项目执行 git status，查看代码情况
+	
 5、源码编译
 	1）使用 envsetup.sh 脚本初始化环境：
 		source build/envsetup.sh
@@ -87,7 +101,32 @@
 		
 	4）编译成功后，所有的编译目标文件都存放到了 /out 目录。
 	   编译过程比较慢，使用i7cpu,4核8线程32G内存的电脑编译androiod12的源码，也得1～2个小时。
-6、运行模拟器
+
+	5）编译命令m,mm,mmm
+		源码编译后，会有很多系统app,启动模拟器后 通过adb shell 会发现这些app基本都会 /system/app  和 /system/priv-app目录中。
+		对应编译apk，存在于/out/target/product/emulator_x86_64/system  中的app目录和 priv-app目录中
+		当修改某个apk源码后，可以重新单独编译一个apk，而不用每次都全部编译，然后重启android，就能看到效果了
+
+		m : 编译所有项目
+		mm : 编译当前目录下的一个模块，但是不编译依赖的模块
+			
+			比如:
+			      先删除/system/app/Launchr2目录中的apk和其他中间文件
+			      然后到源码目录下：cd packages/apps/Launcher2
+			      在这个目录下执行 : mm
+			这样就只会编译一个Launcher2里的这个apk包了。
+		mmm : 源码根目录下执行， 编译多个项目
+			比如，在源码根目录下，执行 ： mmm ./packages/apps/Settings  ./packages/apps/Bluetooth 
+			
+6、repo转git管理
+	因为repo是用来管理所有git项目的，所以.repo会很大，android12的有70多个G，为了节省空间可以删除.repo文件和所有工程下的.git文件来介绍空间
+	删除.git 目录前，要做个备份，后面可能会用到，删除所有.git文件：find ./ -name ".git" | xargs rm -rf
+	通过git 命令在当前目录重新创建仓库，以后就可以用一个git管理所有文件了。
+
+	删除后编译，可能会抛出错误，一般来说是编译文件依赖了 .git目录下的某个文件，可以在备份里把这个文件找出来，并修改一下依赖这个文件的路径。就可以继续编译了
+	
+
+7、运行模拟器
 	android12 64位模拟器目标 sdk_phone_x86_64-eng，编译成功后，运行emulator就可以运行模拟器了
 	
 	ubuntu第一次运行一般会抛出硬件加速错误，如下：
@@ -105,6 +144,10 @@
 		https://developer.android.google.cn/studio/run/emulator-acceleration?hl=zh-cn#vm-linux
 		https://developer.android.google.cn/studio/run/emulator-acceleration?hl=zh-cn
 
+	官网->文档->创建->android模拟器 文档页中有相关模拟器的介绍
+		emulator -partition-size 1024,有的时候运行模拟器会提示警告，说partition 太小，可以用这个参数配置更大的空间。
+
+
 	注意：
 		如果关闭了shell，想重新打开模拟器，需要进入源码目录，重新执行
 		1）source build/envsetup.sh  ，加载命令
@@ -112,7 +155,7 @@
                 3) emulator 
 		否则无法执行emulator命令
 
-7、面向pixel3编译android12.0.0_r30 的源码
+8、面向pixel3编译android12.0.0_r30 的源码
 	编译前需要先了解当前分支版本号：
 		通过repo info 命令可以查看，显示的信息中包含如下信息
 			Manifest revision: refs/tags/android-12.0.0_r30
@@ -130,7 +173,7 @@
 		b)lunch aosp_blueline-userdebug , 确定pixel 3的编译目标
 		c) m -j12,开始编译	
 
-8 、编译fastboot和adb
+9 、编译fastboot和adb
 	编译前执行source build/envsetup.sh ,加载编译命令
 	1)adb工具编译，如果没有下载和安装过adb工具，可以在源码里直接编译一份adb工具
 		命令：m adb
@@ -139,7 +182,7 @@
 		命令 m fastboot 
 		编译完成以后，使用fastboot -help确认。
 
-9、pixel3 oem解锁
+10、pixel3 oem解锁
 	pixel如果是v版的无法解锁，也就没办法刷机了
 	使用adb 命令 ：adb shell getprop ro.boot.cid,如果返回11111111，是无运营商的版本。如果是0000001，就是v版，Verizon版（运营商版）
 	
@@ -147,7 +190,19 @@
 	2) 运行adb reboot bootloader android设备重启后，进入fastboot mode模式
 	3）使用命令：fastboot flashing unlock,在手机上按power按键继续，解锁成功，屏幕上会有类似：device is unlocked 的提示
 
-10、刷机
+11、刷机
 	1）adb reboot bootloader,将手机重启进入bootloader模式
 	2）fastboot flashall -w,向手机刷写新的镜像
 	3) 刷写成功后自动重启
+
+12 envsetup.sh 中常用的命令
+	1)croot,在源码中任何子目录中使用croot都会回到 源码根目录的位值
+	2)log保存，m -12 2>&1 | tee -a build.log
+		编译的时候把编译过程中的log保存到build.log中去,同时也输出到屏幕上(tee -a)
+		2>&1的含义:将标准错误输出重定向到标准输出。
+ 	3)printconfig,查看当前的编译环境变量
+
+13 常见问题总结
+	1）老版本jdk-7 问题，如果要编译老版本比如 android 5.1，会提示要求openjdk-7,这个时候就得先卸载当前的jdk-8，但是openjdk-7目前已经没有了。
+	   通过find ./ -name "*.mk" | xargs grep "You asked for an OpenJDK" 找到脚本位值在 ./build/core/main.mk中
+	   发现这里要求如果是linux中必须要用onpenjdk,把这里改称不判断openjdk，然后下载oracle java_7 ,就可以了	 

@@ -1,0 +1,3 @@
+rootProject.name = "aosp_sandro"
+include ':app'
+include ':aosp_lib'
