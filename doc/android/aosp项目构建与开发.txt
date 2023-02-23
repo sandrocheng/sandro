@@ -90,13 +90,13 @@
 			6）清空变量，调用子mk
 	
 	2.2）通过Android.mk编译jar包    
-		源码位值：project/aospSandro/ ,将这个工程下的aosp_lib源码文件，拷贝到package/apps中，只保留java文件 Android.mk 和 proguard.flags文件
-		apsp_lib中Android.mk,内容如下：
+		源码位值：project/aospSandro/ ,将这个工程下的aosp_lib源码文件，拷贝到package/apps中，只保留java文件 Android.mk 和 proguard.flags文件,重新命名为：AospSandroJavaLib
+		AospSandroJavaLib.mk,内容如下：
 			LOCAL_PATH:= $(call my-dir) 
 			include $(CLEAR_VARS)
 			
 			#模块名称（其他模块使用，比如说jar包，so库之类的）
-			LOCAL_MODULE := aosp_lib
+			LOCAL_MODULE := aosp-sandro-java-lib
 	
 			#什么版本下编译，选项有user/debug/test/optional
 			#optional,在任何版本下都编译		
@@ -109,12 +109,44 @@
 			LOCAL_SRC_FILES := $(call all-java-files-under,src)
 			include $(BUILD_STATIC_JAVA_LIBRARY)
 										
-		配置好后，在项目根目录下执行mm，编译成功后，jar包会输出到 /out/target/common/obj/JAVA_LIBRARIES/目录下 aosp_lib_intermediates目录中
+		配置好后，在项目根目录下执行mm，编译成功后，jar包会输出到 /out/target/common/obj/JAVA_LIBRARIES/aosp-sandro-java-lib_intermediates目录中
 						
-			
+	2.3) 通过Android.mk编译apk包
+		在package/apps中新建一个项目目录，比如命名位AospSandroLogDemo,
+		源码位值：project/aospSandro/ ,将这个工程下的app源码文件，package/apps/AospSandroLogDemo中，只保留android源文件 Android.mk 和 proguard.flags文件
+		把Android.mk文件和proguard.flags移到上一层目录中
+		目录结构：
+			package/apps/aosp_LogDemo/
+						 src/
+						 proguard.flags	
+						 Android.mk	
+		Android.mk:
+			LOCAL_PATH:= $(call my-dir)/app
+			include $(CLEAR_VARS)
 
+			#编译出来的名称(apk使用)
+			LOCAL_PACKAGE_NAME := AospLogDemo
+			#依赖的jar静态包
+			LOCAL_STATIC_JAVA_LIBRARIES := aosp-sandro-java-lib 
 
+			#什么版本下编译，选项有user/debug/test/optional
+			#optional,在任何版本下都编译
+			LOCAL_MODULE_TAGS := optional
 
+			#混淆规则文件，如果不想混淆，可以使用变量LOCAL_PROGUARD_ENABLED := disable
+			LOCAL_PROGUARD_FLAG_FILES := proguard.flags
 
+			#源码地址
+			LOCAL_SRC_FILES := $(call all-java-files-under,src)
 
-     
+			#资源文件
+			LOCAL_RESOURCE_DIR := $(LOCAL_PATH)/src/main/res
+
+			#清单文件
+			LOCAL_MANIFEST_FILE := src/main/AndroidManifest.xml
+	
+			#android12 通过设置这个变量，通只系统忽略隐藏的类，否则编译会失败
+			LOCAL_PRIVATE_PLATFORM_APIS := true
+
+			include $(BUILD_PACKAGE)
+   

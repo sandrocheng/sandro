@@ -31,10 +31,10 @@
 		1）全量库初始化
 			repo init -u https://mirrors.tuna.tsinghua.edu.cn/git/AOSP/platform/manifest
 		2）如果只是要android的某一个版本，可以使用-b参数，如下载android12分支的源码：
-			repo init -u https://mirrors.tuna.tsinghua.edu.cn/git/AOSP/platform/manifest -b android-12.0.0_r30
+			repo init -u https://mirrors.tuna.tsinghua.edu.cn/git/AOSP/platform/manifest -b android-12.1.0_r11
 			https://source.android.google.cn/docs/setup/about/build-numbers?hl=zh-cn#source-code-tags-and-builds 里 可以查看个分支列表
 			
-		repo has been initialized in /home/sandro/mywork/repowork/android12.0.0_r30
+		repo has been initialized in /home/sandro/mywork/repowork/android-12.1.0_r11
 		出现这句话，说明初始化成功,成功后目录下会多出一个.repo目录
 
 	5）repo sync ，下载源码,60多G，比较耗时。
@@ -88,7 +88,7 @@
 			user后缀：权限受限；适用于生产环境
 			userdebug：与"user"类似，但具有root权限和调试功能；是进行调试时的首选编译类型。
 		aosp_arm-eng 目标：该目标是对模拟器进行完整编译，并且所有调试功能均处于启用状态(老的版本都用这个，12不用这个了)
-		aosp_blueline-userdebug 目标:pixel 3对应的调试编译类型目标。
+		aosp_flame-userdebug 目标:pixel 4对应的调试编译类型目标。
 		sdk_phone_x86_64-eng 目标：64位的模拟器完整编译，aosp_arm-eng是32位的，编译后模拟器非常慢，推荐使用x86会好很多。
 		如果没有目标的情况下,lunch会提示从菜单中选择，所有的目标可以参考官网：使用入门->构建->刷写设备[选择设备]页面
 
@@ -96,8 +96,9 @@
 		m: 使用“m”构建所有内容	, 
 		构建之前，要使用m clean，清理一下上次编译的文件，该命令与 rm -rf out/相同
 		m -jN
-			设置编译线程数，比如：m -j12,使用12个线程编译，不使用-j，编译器会根据电脑配置选择线程数，线程越多编译速度理论上更快，但是更耗内存。
-			可以根据内存大小选择适当的线程数量,一般来讲16G物理内存+足够的swap(至少8G)，就可以用12个线程。
+			设置编译线程数，比如：m -j16,使用16个线程编译，不使用-j，编译器会根据电脑配置选择线程数，线程越多编译速度理论上更快，但是更耗内存。
+			可以根据内存大小选择适当的线程数量,一般来讲16G物理内存+足够的swap(至少8G)，就可以用16个线程。
+			线程数跟cpu也有关系，在内存足够的情况下，线程数=2*逻辑cpu数，  逻辑cpu数 = cpu个数 * 每个cpu的核数。linux下,使用lscpu查看cup个数和核数。
 		
 	4）编译成功后，所有的编译目标文件都存放到了 /out 目录。
 	   编译过程比较慢，使用i7cpu,4核8线程32G内存的电脑编译androiod12的源码，也得1～2个小时。
@@ -155,22 +156,22 @@
                 3) emulator 
 		否则无法执行emulator命令
 
-8、面向pixel3编译android12.0.0_r30 的源码
+8、面向pixel4编译android-12.1.0_r11的源码
 	编译前需要先了解当前分支版本号：
 		通过repo info 命令可以查看，显示的信息中包含如下信息
-			Manifest revision: refs/tags/android-12.0.0_r30
+			Manifest revision: refs/tags/android-12.1.0_r11
 	1) 下载pixel3驱动
-		a)查找源码buildID :官网->关于->代号、标记、和细分版本号 ，源码标记和build 中，查找android12.0.0_r30对应的ID(SP1A.210812.016.B1)
-		b)根据build在官网的驱动下载页面下载pixel3的驱动，对应的驱动有两个
+		a)查找源码buildID :官网->关于->代号、标记、和细分版本号 ，源码标记和build 中，查找 android-12.1.0_r11 对应的ID( SQ3A.220705.003.A1  )
+		b)根据build在官网的驱动下载页面下载pixel4的驱动https://developers.google.cn/android/drivers，对应的驱动有两个
 			Vendor image
 			GPS, Audio, Camera, Gestures, Graphics, DRM, Video, Sensors
-                c)解压这两个驱动文件，后得到两个.sh文件extract-google_devices-blueline.sh和extract-qcom-blueline.sh
+                c)解压这两个驱动文件，后得到两个.sh文件 extract-google_devices-flame.sh  和 extract-qcom-flame.sh
 	        d)把这两个.sh文件移动到源码根目录下
-		e)根目录运行  ./extract-google_devices-blueline.sh和 ./extract-qcom-blueline.sh ，驱动文件会保存到vender目录下
+		e)根目录运行  ./extract-google_devices-flame.sh  和 ./extract-qcom-flame.sh ，驱动文件会保存到vender目录下
 		  注意：运行后，会先提示要同意一个协议，enter按键翻页到底部，会显示“Type "I ACCEPT" if you agree to the terms of the license” 输入“I ACCEPT”才能继续，如果回车键按多了，会跳出。
 	2）重新编译
 		a)source build/envsetup.sh ,加载编译命令
-		b)lunch aosp_blueline-userdebug , 确定pixel 3的编译目标
+		b)lunch aosp_flame-userdebug , 确定pixel 4的编译目标
 		c) m -j12,开始编译	
 
 9 、编译fastboot和adb
@@ -181,10 +182,16 @@
 		fastboot是用来刷机的工具，它能够解锁，安装android系统
 		命令 m fastboot 
 		编译完成以后，使用fastboot -help确认。
+	3)fastboot 设别链接：
+		a)adb reboot bootloader,将手机重启进入bootloader模式
+		b)fastboot devices，查看手机是否能链接上
+			如果返回：no permissions (missing udev rules? user is in the plugdev group); see [http://developer.android.com/tools/device.html]
+			需要修改 /etc/udev/rules.d 目录下的rules文件。
+			
 
-10、pixel3 oem解锁
+10、pixel4 oem解锁
 	pixel如果是v版的无法解锁，也就没办法刷机了
-	使用adb 命令 ：adb shell getprop ro.boot.cid,如果返回11111111，是无运营商的版本。如果是0000001，就是v版，Verizon版（运营商版）
+	确认手机开发者选项里面的oem锁 不是灰的，一般美版或者v版 这个选项是锁定的，不能解锁就没办法刷机了
 	
 	1) 手机开发者选项里面打开oem锁
 	2) 运行adb reboot bootloader android设备重启后，进入fastboot mode模式

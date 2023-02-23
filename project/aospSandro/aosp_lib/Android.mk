@@ -2,7 +2,7 @@ LOCAL_PATH:= $(call my-dir)
 include $(CLEAR_VARS)
 
 #模块名称（其他模块使用，比如说jar包，so库之类的）
-LOCAL_MODULE := aosp_lib
+LOCAL_MODULE := aosp-sandro-java-lib
 
 #什么版本下编译，选项有user/debug/test/optional
 #optional,在任何版本下都编译
