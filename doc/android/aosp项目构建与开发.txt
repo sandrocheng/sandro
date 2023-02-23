@@ -157,4 +157,6 @@
 				   编译好的jar包会保存到，/out/target/common/obj/JAVA_LIBRARIES/ 和 /out/target/product/emulator_x86_64/system/framework目录下
 		BUILD_STATIC_JAVA_LIBRARY，编译出来的是静态库，会编译到自己的apk里。		
 
-	
+	    jar包以静态库的方式编译，include $(BUILD_STATIC_JAVA_LIBRARY)  ，依赖的时候必须使用静态库依赖，LOCAL_STATIC_JAVA_LIBRARIES := aosp-sandro-java-lib
+            jar包以共享库的方式编译，include $(BUILD_JAVA_LIBRARY)  ，依赖的时候必须使用静态库依赖，LOCAL_JAVA_LIBRARIES := aosp-sandro-java-lib
+
