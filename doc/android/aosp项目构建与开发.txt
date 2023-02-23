@@ -149,4 +149,12 @@
 			LOCAL_PRIVATE_PLATFORM_APIS := true
 
 			include $(BUILD_PACKAGE)
-   
+    		编译成功后 apk 会保存到 out/target/product/emulator_x86_64/system/app/AospLogDemo/AospLogDemo.apk 位置中。
+		注意此时只是编译成功，模拟器启动后，不会默认安装，老版本这么编译会直接默认安装到系统app中。通过make snod 命令刷新system.img。重启模拟器就直接安装了。
+		
+	2.4) BUILD_JAVA_LIBRARY和BUILD_STATIC_JAVA_LIBRARY的区别
+		BUILD_JAVA_LIBRARY,编译出来的是动态库（共享库），共享库不会编译到自己的apk里，加载的时候会动态加载。
+				   编译好的jar包会保存到，/out/target/common/obj/JAVA_LIBRARIES/ 和 /out/target/product/emulator_x86_64/system/framework目录下
+		BUILD_STATIC_JAVA_LIBRARY，编译出来的是静态库，会编译到自己的apk里。		
+
+	
