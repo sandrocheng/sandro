@@ -160,3 +160,4 @@
 	    jar包以静态库的方式编译，include $(BUILD_STATIC_JAVA_LIBRARY)  ，依赖的时候必须使用静态库依赖，LOCAL_STATIC_JAVA_LIBRARIES := aosp-sandro-java-lib
             jar包以共享库的方式编译，include $(BUILD_JAVA_LIBRARY)  ，依赖的时候必须使用静态库依赖，LOCAL_JAVA_LIBRARIES := aosp-sandro-java-lib
 
+		
