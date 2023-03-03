@@ -160,4 +160,23 @@
 	    jar包以静态库的方式编译，include $(BUILD_STATIC_JAVA_LIBRARY)  ，依赖的时候必须使用静态库依赖，LOCAL_STATIC_JAVA_LIBRARIES := aosp-sandro-java-lib
             jar包以共享库的方式编译，include $(BUILD_JAVA_LIBRARY)  ，依赖的时候必须使用静态库依赖，LOCAL_JAVA_LIBRARIES := aosp-sandro-java-lib
 
-		
+	2.5) mk文件里 := 与 += 的使用方法
+		a) := ,变量赋值
+			LOCAL_XXX := \
+				var1 \
+				var2 \
+				var3
+			也可以写成 LOCAL_XXX := var1 var2 var3
+		b)+= 变量内容追加
+	          比如
+			LOCAL_XXX := var1 #先赋值 
+			LOCAL_XXX += var2 #后面追加 
+			LOCAL_XXX += var3 	
+
+	2.6) mk输出函数
+		$(warning 输出内容)，打印输出内容
+		$(error 输出内容)，打印输出内容，并终止编译
+		例如：
+			$(warning $(LOCAL_XXX)),输出 LOCAL_XXX的内容
+	
+	

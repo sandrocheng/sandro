@@ -1,0 +1,103 @@
+1 、EventBus的使用和优点
+	1.1）常用通信方式：
+		a）广播,消耗资源比较大，一般当需要content上下文的时候会用到广播
+		b) 接口回调，
+		c）binder，需要拿到句柄才能调用
+		d) intent，
+		e）handler,容易内存泄漏	
+	1.2）eventbus优点：
+		a) 使用简单，解耦
+		b) 速度快
+		c) 轻量
+		d) 用户量大
+		e) 线程间切换容易
+		
+	1.3) 缺点：
+		a) 声明周期问题，结合liveDataBus能更好解决
+
+	1.4）eventBus框架
+
+                                              +--Event---> Subscriber
+	                event                 |             onEvent()
+	    Publisher ----------> Event Bus --+	
+	                port()                |
+                                              +--Event---> Subscriber
+							    onEvent
+
+
+	1.5)使用：
+		方式一：常用做法，效率不高，适合简单的数据分发
+			a)需要接受事件的类，注册，注销
+				EventBus.getDefault().register(this);
+				EventBus.getDefault().unregister(this);
+			b)实现事件类,public static class XXXEvent{....};
+			c)在需要接收事件的类中，实现接受方法
+				public void onMessageEvent(XXXEvent){...};
+				
+			d)发送数据
+				EventBus.getDefault().post(xxxEvent);
+		
+		方式二：3.0之后eventbus为了提升性能，增加了新的使用方法
+			a)实现一个有事件注册表的EventBus 单例管理类
+				public class MyEventBus{ 
+					private Map<Object,list<SubscribeMethod>> cacheMap;
+					private static volatile LeoEventBus instance;
+				}
+			b）实现注册接口，判断是否重新注册过
+				public void register(Object obj){
+					List<SubscribeMethod> list = cacheMap.get(obj)
+					if(list == null){
+						list = getSubscribeMethodReflection(obj);
+					}
+							
+				}		
+				
+				//通过反射，返回订阅方法的list
+				private List<SubscribeMethod> getSubscribeMethodReflection(Object obj){
+					List<SubscribeMethod> list = new ArrayList<>();
+					Class<?> clazz = obj.getClass();
+					
+					while(clazz!=null){
+                                        	Method[] methods = clazz.getDeclaredMethods();
+                                          	for(Method m: methods){ 
+                                                 	 //遍历所有方法，找到有注解的方法，注解是自定义的代表的是eventbus要回调的接口
+                                                  	Subscribe subscribe = method.getAnnotation(Subscribe.class);
+                                                  	if(subscribe == null){
+                                                        	  continue;
+                                                  	}
+                                                  	Class<?> types = method.getParameterTypes(); 
+                                                  	if(types.length!=1){//判断参数是否是1个，假设接口里传参只有一个
+                                                        	  throw new RuntimeEsception();
+                                                  	}
+                                                  	ThreadMode threadMode = subscribe.threadMode();//获取注解参数
+                                                  	SubscribeMethod subscribeMethod = new SubscribeMethod(method,types[0],threadMode);
+                                                  	list.add(subscribeMethod);
+                                          	}
+						clazz = clazz.getSuperClass();//继续查找父类中是否有SubscribeMethod
+					}
+					
+					return list;
+				}
+
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

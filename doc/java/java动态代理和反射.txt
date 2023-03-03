@@ -1,0 +1,74 @@
+1. java动态代理
+	特点：无侵入式的给代码增加额外的功能
+		调用者 -> 代理 -> 对象
+	使用代理的目的：如果对象嫌身上干的事情太多可以通过代理来转移部分职责。
+	对象有什么方法想被代理，代理就一定要有对应的方法，这些方法是通过接口约定好的。
+	调用者通过代理调用对象的接口实现，代理在调用对象接口前或后实现一些非对象职责的功能。
+
+	创建一个代理对象
+		源码在：project/JavaDynamicProxy中
+		java.lang.reflect.Proxy,动态代理，代理一个对象，间接执行相关操作，并且在执行操作前后可以增加额外操作
+	
+		/**
+		* @param loader:用于指定用哪个类加载器
+ 		* @param interfaces:指定接口，这些接口用于指定生成的代理有哪些方法
+		* @param h:指定生成的代理对象要干什么事情
+		*/
+		public static Object newProxyInstance(ClassLoader loader,Class<?> interfaces,InvocationHandler h);
+
+2.reflect反射
+	源码：project/JavaReflection/
+
+	2.1)
+	什么是反射：反射允许对封装类的子段，方法和构造函数的信息进行编成访问。
+	比如idea展示类信息的时候就是通过反射获取所有的成员变量、成员方法和构造函数，展示给开发人员查看
+	
+	2.2)
+	反射可以获取的内容
+	1）成员变量：修饰符，名字，类型，赋值/取值
+	2）构造方法：修饰符，名字，形参，创建对象
+        3）成员方法：修饰符，名字，形参，返回值，抛出的异常，注解，运行方法
+
+	2.3)
+	反射的准备工作，获取class对象的三种方式
+	1）Class.forName("类的全名");//源代码阶段，这个阶段只有.java文件或者.class文件
+	2）类名.class;//加载阶段，此时类已经加载到内存中
+	3) 对象.getClass();//实例运行阶段，此时类对象已经在内存中创建	
+
+	2.4)
+	利用反射获取构造方法
+	使用Class类中获取构造方法的函数：
+	Constructor<>[] getConstructors() : 返回所有公共构造方法对象的数组
+	Constructor<>[] getDeclaredConstructors():返回所有构造方法(public private protected的都能获取)对象的数组
+	Constructor<T> getConstructor(Class<> ... parameterTypes):返回单个公共构造方法对象
+	Constructor<T> getDeclaredConstructor(Class<> ... parameterTypes):返回单个构造方法对象
+
+	Constructor类中用于创建对象的方法
+	T newInstance(Object...initargs): 根据指定的构造方法创建对象
+	setAccessible(boolean flag):设置为true，表示取消访问检查
+	
+	2.5)利用反射获取成员变量
+	Field[] getFields() ,返回所有公共成员变量对象的数组
+	Field[] getDeclaredFields(),返回所有成员变量对象的数组
+	Field getField(String name),返回单个公共成员变量对象
+	Field getDeclaredField(String name) 返回单个成员变量对象
+
+	Field类中用于创建对象的方法
+	void set(Object obj,Object value);赋值
+	Object get(Object obj)获取值
+	
+	2.5)获取成员方法
+	Method[] getMethods(),返回所有公共成员方法对象的数组，包括继承的
+	Method[] getDeclaredMethods():返回所有成员方法对象的数组，不包括继承的
+	Method getMethod(String name,Class<?>...parameterTypes):返回一个公共成员方法对象
+	Method getDeclaredMethod(String name,Class<?>... parameterTypes):返回单个成员方法对象
+
+	运行反射的方法
+	Object invoke(Object obj,Object ...args)
+	obj,用obj对象调用该方法
+	args,调用方法传递的参数
+	return，返回值，如果没有返回值就不用写
+
+	2.6)反射的作用
+		获取一个类里面所有的信息，获取到了之后，在执行其他的业务逻辑
+		结合配置文件，动态的创建对象并调用方法	
