@@ -1,0 +1,60 @@
+1. 什么是注解(annotation)
+	定义：注解（Annotation），也叫元数据。一种代码级别的说明。它是JDK1.5及以后版本引入的一个特性，与类、接口、枚举是在同一个层次。
+	      它可以声明在包、类、字段、方法、局部变量、方法参数等的前面，用来对这些元素进行说明，注释。
+	作用分类：
+		编写文档：通过代码里标识的元数据生成文档【生成文档doc文档】
+		代码分析：通过代码里标识的元数据对代码进行分析【使用反射】
+		编译检查：通过代码里标识的元数据让编译器能够实现基本的编译检查【Override】
+	注意：
+		jdk 1.5之后引入
+		用于说明程序的
+
+2.jdk内置的注解
+	@Override,@Deprecated,
+	@SuppressWarnings，压制警告，使用@SuppressWarnings("all"),压制所有警告
+
+3.注解的定义
+	源码详见
+	格式：
+	1）元注解
+		public @interface 注解名称{
+			属性列表
+			...
+		}
+		
+	2）注解本质，使用javap xx.class，反编译后得到
+		public interface com.sandro.annotation.MyAnno extends java.lang.annotation.Annotation {}
+		本质上就是一个接口，该接口默认继承 java.lang.annotation.Annotation
+	3) 注解的属性，也就是接口中的抽象方法
+		要求：
+			属性的返回值类型：基本数据类型，字符串，枚举，注解类型，以上类型的数组
+					  不能使用void或者其他类的类型
+			
+			在使用的时候定义的属性，需要赋值:
+				a)可以使用default，定义默认值，使用时可以不赋值
+				b)如果只有一个属性需要赋值并且属性名是value，使用时可以不用写value,例如：
+					@MyAnno(value=12)
+					public class xxx{...}
+					可以写成
+					@MyAnno(12)
+					public class xxx{...}
+					另外，@SuppressWarnings("all")就是使用的这样的规则
+				c)数组赋值时，需要用{}，如果数组中只有一个，{}可以省略
+					
+	4）元注解：描述注解的注解
+		1）@Target：描述注解能够作用的位值
+			@Target(value={ElementType.TYPE}) ,表示该注解只能作用于类上
+			@Target(value={ElementType.METHOD}) ,表示该注解只能作用于方法上
+			@Target(value={ElementType.FIELD}) ,表示该注解只能作用于成员变量上
+			@Target(value={ElementType.FIELD,ElementType.TYPE}) ,表示该注解只能作用于成员变量和类上
+
+
+		2）@Retention:描述注解被保留的阶段，源码(SOURCE)，class(CLASS)，runtime(RUNTIME)阶段
+		3) @Documented:描述注解是否被抽取到api文档中
+		4) @Inherited:描述注解是否可以被子类继承
+	
+	5) 解析注解：获取注解中定义的属性值
+		1）获取该类(被注解修饰的类)的字节码对象
+		2) 获取上边的注解对象 class.getAnnotation...
+		3) 根据注解对象获取注解内容
+		
