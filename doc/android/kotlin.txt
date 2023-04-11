@@ -1,0 +1,135 @@
+1、kotlin语言和jvm虚拟机
+	
+		Kotlin语言             Java语言           Groovy语言
+		    |                      |                  |
+                    +----------------------+------------------+	  
+                                          ⇩
+                                       编译环节
+       				          ⇩
+                                       产生字节码
+				          ⇩
+                         JVM产生指令对，操作系统进行命令式执行
+
+  kotlin也可以直接生成二进制代码。就是说kotlin可以通过在jvm上运行达到跨平台的能力，也可以直接生成某个平台的字节码来运行。
+  
+2、kotlin语言声明变量与内置数据
+	源码见project/KotlinStart项目 base.MainVarTest
+	
+	2.1）定义一个String类型的变量
+		/**
+     		*  代表可读可改  变量名   变量类型    值
+     		*  var           name  :  String   =  "Hello World! "
+     		*/
+		var name:String = "Hello World! "
+	
+	2.2）内置数据类型	
+		String      字符串
+     		Char        单字符
+		Byte        字节类型
+		Short       短整形
+     		Boolean     true/false
+     		Int         整形
+     		Double      双精度小数
+     		Float       单精度小数
+     		List        集合
+     		Set         无重复的元素集合
+     		Map         键值对集合
+
+3、kotlin语言的只读变量
+	源码见project/KotlinStart项目 base.MainVarTest
+	
+	只读变量   变量名  变量类型     值
+	val        data  : Int       =  20
+
+4、kotlin语言的类型推断
+	源码见project/KotlinStart项目 base.MainVarTest
+
+	当定义变量时，比如：
+		var name:String = "Hello World! "
+		val data : Int = 20
+	编译器会提示 ：Explicitly given type is redundant here，类型不需要定义，因为kotlin会根据值推导出变量类型，此时类型部分就可以不需要写了
+
+5、编译时常量
+	源码见project/KotlinStart项目 base.MainVarTest
+	编译时常量只能时常用的基本数据类型：String,Int,List,Set,Map等
+	val是只读变量，使用const修饰表示编译时常量
+	const不适用于局部变量,因为在函数内定义一个变量的时候，就必须在运行时才能调用函数赋值，不属于编译时的范围
+
+
+6、查看kotlin反编译后的字节码
+	kotlin编译成字节码后可以在jvm上运行，在idea中 tools->kotlin->Show Kotlin Bytecode,可以查看字节码
+	通过反编译可以大致了解没有类型的变量具体是什么类型的
+	比如 : const val data2 = 100 反编译后是   public final static I data2 = 100，I 就是 int类型
+	在Kotlin Bytecode中点击Decompile,可以看反编译的java代码。相对容易理解
+	从反编译的类型验证，kotlin的基本类型（引用类型）， 比如Int ,Double等虽然是类，但是在编译成java字节码的时候都转化成了java基本类型，所以不用担心效率问题。
+
+7 、kotlin语言的range表达式
+	源码见project/KotlinStart项目 base.MainVarTest
+	用于数字范围判断的表达式
+	例如：
+		 if(number in 1..200){
+		     ...
+       		 }
+	使用关键字 in 表示 ..用于表示闭合区间 相当于 if(number >=1 and number <= 100)
+	也可以结合取反符号“!” , 例如 ：if(number !in 1..100)
+	
+8、kotlin语言的when表达式
+	源码见project/KotlinStart项目 base.MainVarTest
+	when表达是类似于java 的 switch表达式，但是功能更强大
+	因为是表达式，所以可以返回数据,如果使用{} ,则可以执行其他业务语句
+	例1：
+		val week=5
+		val info = when(week){
+			6->"星期六"
+			7->"星期日"
+			else-> {
+				"工作日"
+			}
+		}
+	此时所有返回值都是String 的，则info会自动类型推断为String类型
+	
+	例子2
+          	val week=5
+          	val info = when(week){
+                 	 6->"星期六"
+                  	7->"星期日"
+                  	else-> {
+                        	println("工作日")
+                  	}
+         	 }
+	此时，else中的返回值不是String，info会自动推断为Any类型，Any类型类似java中的Object类型
+
+9、kotlin语言的String 模板
+	源码见project/KotlinStart项目 base.MainVarTest
+	    val garden = "黄石公园"
+    	    val time = 6
+    	    //如果用空格隔开可以直接接如其他字符串，如果没有空格隔开就需要使用{}把变量包裹起来
+	    println("今天天气很晴朗，去$garden 玩，玩了${time}个小时")
+	
+            val isLogin = true
+            //kt的if是表达式可以更灵活的使用，java的if是语句，有局限性
+            println("server response result : ${if(isLogin) "恭喜你登陆成功" else "登陆失败"}")
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
