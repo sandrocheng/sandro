@@ -110,16 +110,67 @@
             //kt的if是表达式可以更灵活的使用，java的if是语句，有局限性
             println("server response result : ${if(isLogin) "恭喜你登陆成功" else "登陆失败"}")
 
-  
+10、函数
+	源码见project/KotlinStart项目 base.MainVarTest
+	/**
+ 	* private : 默认是public修饰符
+	* fun : 函数声明关键字
+ 	* method1 : 函数名
+ 	* age:Int,name:String  函数参数
+ 	* : Int ,返回类型
+ 	*/
+	private fun method1(age:Int,name:String) : Int {
+    		println("name $name , age : $age");
+    		return 200
+	} 
+
+11、函数参数中的默认参数
+	源码见project/KotlinStart项目 base.FunEx.kt
+	private fun action3(name:String = "NoName",age:Byte = 18){
+    		println("action3 name :$name , age : $age");
+	}
 
 
+12、具名函数参数
+	源码见project/KotlinStart项目 base.FunEx.kt
+	
+	private fun action3(name:String = "NoName",age:Byte = 18){
+                 println("action3 name :$name , age : $age");
+        }
+	该方法在使用具名参数调用时如：
+		action3(age=11) : 此时第一个参数name会使用默认值，使用具名参数方式传参时，可以忽略顺序，只要保证所有参数都有值/默认值就行
 
+13、Unit函数特点
+	//:Unit不写，默认也有，相当于Java中的void关键字，但是Uint实际上是一个类
+	Unit比void更高级，因为void不能打印，也不能判断，Unit实际上是返回一个类对象，更有利于程序的编写
+	private fun action1(name:String,age:Byte):Unit{
+    		println("action1 name :$name , age : $age");
+	}
 
+14、Nothing类型特点
+	源码见project/KotlinStart项目 base.FunEx.kt
+	private fun show(number:Int){
+   		 when(number){
+        		in 0..59 -> println("不及格")
+        		in 60..69 -> println("及格")
+        		in 70..100 ->println("优秀")
+        		else -> {
+            			//TODO会返回一个Nothing类型的对象，并抛出异常，程序会终止
+            			TODO("没有这种分数 $number")
+        		}
+    		}
+	}
 
+15、反引号中函数名的特点
+	源码见project/KotlinStart项目 base.FunEx.kt
+	1) 可以使用特殊符号定义方法名，比如使用中文。一般用于测试方法
+		private fun `测试`(){
+    			println("测试反引号函数名")
+		}
+	2）跟java互相调用时用到
+		JavaTest.`in`()//in是java类中的方法名，但是在kt中 in 是关键字，此时为了执行调用方法，需要用``
 
-
-
-
+	3) 一些核心功能的方法为了提高反编译的门槛使用特殊字符作为函数名称
 
 
 
