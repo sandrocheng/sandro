@@ -1,3 +1,6 @@
+/**
+ * kt 函数
+ */
 package base
 
 fun main(args: Array<String>) {
