@@ -357,13 +357,71 @@
     		//注意，使用的时候需要用 “::”把函数声明为一个函数对象才能作为参数使用
     		showStudentInfo("lily",16,false,::showStudentInfoCallBack);
 	
+27、kt的可空性特点
+	源码见project/KotlinStart项目 base.KTnull.kt
+	java在运行期间才会遇到空指针异常，kt优化了该问题，编译期间能在一定程度上减少空指针的出现
 
+    	第一种情况：默认是不可控类型：不能随意给null
+    		var name : String = "sandro"
+    		//name = null , 如果手动赋null，编译其会提示：Null can not be a value of a non-null type String
 
+    	第二种情况：使用修饰符 “？” 声明变量时指定为可空类型
+    		var name2:String ?
+    		name2 = null//此时就可以赋值为null了
+    
+28、安全调用操作符	
+	源码见project/KotlinStart项目 base.KTnull.kt
+		 var name3:String ? = "sandro"
+   	 	//name3.capitalize()因为name3是可空类型，想要使用name3,必须给出补救措施,否则编译失败
+    		name3?.capitalize()//使用修饰符"?"，如果真的是null ?后面这一段代码就不执行，从而避免空指针异常
 
+29、使用带let的安全调用
+	源码见project/KotlinStart项目 base.KTnull.kt
+	
+	1)判空操作
+		var name4:String ?=null//定义一个可空变量		
+		name4?.let {
+        		//在let的代码块中 使用 it 代替 name4本身
+        		//这种写法，相当于对nam4进行了判空，如果name4为空，代码块不执行
+        		println(name4);
+    		}
+	
+	2）判空赋默认值
+	    	name4=""
+    		var name5 = name4?.let{
+        		if(it.isBlank()){//如果name没有内容
+            			"default" // 返回一个新值给外部
+        		}else{
+            			it
+        		}
+    		}
+    		println("name5 : $name5");
 
+30、非空断言操作符特点
+	源码见project/KotlinStart项目 base.KTnull.kt
+  
+     	//!!表示不管name是否为空都执行，这种情况下和java一样有可能空指针异常
+     	//如果能保证name是有值的才建议使用断言，否则有空指针的风险
+     	var name6:String?=""
+     	var n = name6!!.capitalize()
+     	println(n)30、非空断言操作符特点
 
+31、使用if判断null值的情况
+	源码见project/KotlinStart项目 base.KTnull.kt
+    	//if也算是补救措施，编译器能够通过编译，这种写法和java一样
+	if(name6 != null){
+        	println(name6.capitalize())
+    	}
 
+32、空合并操作符
+	源码见project/KotlinStart项目 base.KTnull.kt
 
+   	 //使用?:判断变量是否为空，如果为空执行“:”后面的语句
+    	var info:String? = null
+    	println(info?:"sundro")
+
+    	//let + 空合并操作符
+    	println(info?.let { "[$it]" } ?: "[sandro]")	
 
 
 
