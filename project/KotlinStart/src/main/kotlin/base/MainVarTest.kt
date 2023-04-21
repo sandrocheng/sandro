@@ -1,5 +1,7 @@
 package base
 
+import kotlin.math.roundToInt
+
 /**
  * kotlin语言声明变量与内置数据
  */
@@ -105,4 +107,12 @@ fun main(args: Array<String>) {
     val isLogin = true
     //kt的if是表达式可以更灵活的使用，java的if是语句，有局限性
     println("server response result : ${if(isLogin) "恭喜你登陆成功" else "登陆失败"}");
+
+    //8 Double转Int与类型格式化========================
+    println("3.99999.toInt ${3.99999.toInt()}");//向下取正
+    println("3.99999.roundToInt ${3.99999.roundToInt()}");//四舍五入
+
+    //保留小数点3位
+    val r = "%.3f".format(1.234567)//返回的是字符串
+    println("r is $r");
 }
