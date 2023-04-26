@@ -972,7 +972,90 @@
     	val r2= map.getOrPut(2){"bbb"}
     	println(map)
 
-62、
-    println("r2 : $r2")
+62、定义类 与 field关键字
+    	源码见project/KotlinStart项目 oop.KTClass.kt、oop.classes.ClassA.kt
+	
+	class ClassA {
+    		/**
+     		* 背后实际上是定义了私有成员变量，
+     		* 并定义成员变量的set get方法
+     		* private String name = null
+     		*/
+    	var name: String? = null
+    	var age = 0
 
+    	var info = "info"
+        	//这两个get set方法是针对info这个变量的隐式方法，如果只是简单的读取和设置就不需要显示的写出来
+        	//field代表info这个变量，get set也是对应info这个变量
+        	//写的话，编译器会提示这是多余的代码
+        	//get set方法 标准写法需要再缩进一下
+        	get() = field
+        	set(value) {
+            		field = value
+        	}
 
+    	var word = "hello word"
+        	//此时因为对get方法进行了扩展使用，这个时候编译器会认为是合理的
+        	get() {
+            	return field.uppercase()
+        	}
+        	set(value) {
+            		field = "[$value]"
+        	}
+	}
+
+	调用：
+	    	ClassA().name = "sss"//实际上是隐式调用这个成员变量的set方法 => new ClassA().setName("sss")
+    		println(ClassA().age)//实际上是隐式调用 new ClassA().getAge()
+
+    		println("ClassA().info : ${ClassA().info}")
+
+    		println("ClassA().word : ${ClassA().word}")
+
+63、计算属性与防范竞态条件
+    	源码见project/KotlinStart项目 oop.KTClass.kt、oop.classes.ClassA.kt
+	class ClassB {
+    		/**
+     		* 因为是val类型的
+     		* 所以对应的java代码是
+     		* private int number = 0
+     		* public int getNumber(){return this.number;}
+     		* 不会有set方法
+     		*/
+    		val number:Int = 0
+
+    		/**
+     		* number2在声明的时候没有赋值，但是get函数有值返回，因此也符合kt的语法，不会编译报错
+     		* 外部调用的时候 也是通过number来隐式调用到 getNumber2()这个方法
+     		* 这种属性变量，就叫做计算属性，此时field就失效了，不需要使用field,也不能初始化
+     		* 比如 val number2:Int = 0
+     		*          get() = 5
+     		*     此时会编译报错
+     		*  这种情况下对应的java代码不会有 private int number2=0 这个定义
+     		*  只会有 public int getNumber2(){...}这个函数
+     		*/
+    		val number2:Int
+        	get()=(1..1000).shuffled().first()//取从1 到 1000的随机数
+
+    		private var info:String?=null
+
+    		/**
+     		* 防范竟态条件
+     		*  当调用成员时，这个成员可能为null，这个时候必须要采用防范竟态条件，这个是kt编程的规范
+    		*  先使用?.also 对字符串判空，如果为空 不执行 also匿名函数
+     		*  再使用?: 空合并字符，返回一个不空的值
+     		*/
+    		fun getShowInfo():String{
+        		return info?.also {
+            			"[$it]"
+        		} ?: "info is null ,error"
+    		}
+	}	
+
+	调用：
+		println("ClassB().number : ${ClassB().number}")//实际上是new ClassB().getNumber()
+    		//ClassB().number = 1 此时编译会报错，因为number 是 val 类型，不会有set函数
+
+    		println("ClassB().number2 : ${ClassB().number2}")
+
+    		println("ClassB().getShowInfo() ：${ClassB().getShowInfo()}")
