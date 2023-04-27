@@ -971,6 +971,7 @@
     	// 如果当前key对应的值存在则返回当前值，默认值不会起作用
     	val r2= map.getOrPut(2){"bbb"}
     	println(map)
+	println("r2 : $r2")//此时因为2对应的value已经存在，所以返回的还是旧值，新的bbb不会起作用
 
 62、定义类 与 field关键字
     	源码见project/KotlinStart项目 oop.KTClass.kt、oop.classes.ClassA.kt
@@ -989,8 +990,8 @@
         	//field代表info这个变量，get set也是对应info这个变量
         	//写的话，编译器会提示这是多余的代码
         	//get set方法 标准写法需要再缩进一下
-        	get() = field
-        	set(value) {
+        	get() = field //如果变量是public的，get方法不能用private修饰
+        	set(value) {  //set方法也可以通过 private set(value){} ,定义为私有方法
             		field = value
         	}
 
@@ -1059,3 +1060,175 @@
     		println("ClassB().number2 : ${ClassB().number2}")
 
     		println("ClassB().getShowInfo() ：${ClassB().getShowInfo()}")
+
+64、主构造函数
+	源码见project/KotlinStart项目 oop.KTClass.kt、oop.classes.ClassC.kt
+
+	//这个叫主构造函数，如果没有参数的化，()可以不写
+	//规范的写法 一般用 _xxx来传参，这些参数实际上是临时输入类型，不能直接使用，需要手动接受成为变量才能用
+	class ClassC(_name:String ,_age:Int,_isMale:Boolean) {
+
+    		var name = _name//需要手动接受才能赋值
+        		private set // set私有化简写，这样外部就不能 通过.name = "xxx"来给name赋值了
+    		private val isMale = _isMale // 使用val也相当于把set私有化了，和name一样，如果是private的变量，set和get方法都会自动定义为private
+    		val sex:String//使用计算属性
+        		get() {
+            			if(isMale){
+                			return "男"
+            			}
+            			return "女"
+        		}
+    		val age = _age
+        		get() {
+            			if(field < 0){
+                			return 0
+            			}
+            			return field
+        		}
+		}
+
+65、主构造函数中定义属性
+	源码见project/KotlinStart项目 oop.KTClass.kt、oop.classes.ClassD.kt
+
+	/**
+	* 在主构造函数中直接定义成员变量,这样比较方便，比较常见的写法
+ 	* 相当于
+ 	* class ClassC(_name:String ,_age:Int,_isMale:Boolean){
+ 	*      var name = _name
+ 	*      val age = _age
+ 	*      val isMale=_isMale
+ 	* }
+ 	*/
+	class ClassD(var name:String,val age:Int,private val isMale:Boolean ) {
+    		val sex:String//使用计算属性
+    			get() {
+        			if(isMale){
+            				return "男"
+        			}
+        			return "女"
+    			}
+	}
+
+66、次要构造函数
+	源码见project/KotlinStart项目 oop.KTClass.kt、oop.classes.ClassE.kt
+	
+	/**
+ 	* 次要构造函数，完成类似java的构造函数重载
+ 	* 如果次要函数和主构造函数都有默认参数，实例化的时候，由于编译器无法确认用的是哪个构造函数，会优先调用主构造函数
+ 	*/
+	class ClassE(var name:String ) {//有参数的主构造
+    		var age:Int = 0
+        		private set
+    		private var isMale = false
+    		private var info:String? = null
+
+    		val infoMsg:String
+        		get() {
+            			return info?.let {
+                			it
+            			}?:"未赋值"
+        		}
+
+
+    		/**
+     		* 次构造
+     		* 如果主构造有参数，次构造必须要通过:this(xxx)调用父构造,否则编译失败
+     		* 目的是为了构造统一管理，为了更好的初始化设计
+     		*/
+    		constructor(_name:String,_age:Int):this(_name){
+        		this.age = _age
+    		}
+
+    		/**
+     		* 这个次构造，通过this(xxx,xxx) 调用的是另一个次构造
+     		* info定义了一个默认参数，如果不传值就使用这个默认值
+     		*/
+    		constructor(_name:String,_age:Int,_isMale:Boolean ,_info:String = "未知"):this(_name,_age){
+        		this.isMale = _isMale
+        		this.info = _info
+    		}
+	}
+
+67、初始化块
+	源码见project/KotlinStart项目 oop.KTClass.kt、oop.classes.ClassF.kt
+	
+	/**
+ 	* 初始化块
+ 	*/
+	class ClassF(_name:String?,_age:Int,_info:String?) {
+    		/**
+     		* 初始化块，init代码块
+     		* 主构造调用的时候执行
+     		*/
+    		init {
+        		//代码块里可以使用主构造里的临时变量
+        		//可以在这里做统一的初始化工作，或者变量的校验
+        		println("name:${_name},age:${_age},info:$_info")
+    		}
+
+    		/**
+     		* 没有参数的次构造，次构造调用的时候会调用主构造，从而执行init代码块
+     		*/
+    		constructor():this(null,0,null){
+        		println("次构造调用");
+    		}
+	}
+
+68、构造初始化顺序
+	源码见project/KotlinStart项目 oop.KTClass.kt、oop.classes.ClassG.kt
+	
+	class ClassG (_name:String,val age:Int){//第一步 ，主构造内部属性age生成并赋值
+    		//第二步，因为成员变量name在init代码块上边，所以name会先生成并赋值 ，如果name在init代码块下边，则name的生成和赋值会在init后面
+    		val name = _name
+    		init {//第三步，执行init代码块
+        		val nameTmp = _name
+        		println("init name:$name,nameTmp:$nameTmp ,age:$age");
+    		}
+
+
+    		constructor(_name:String,_age:Int,_isMale:Boolean):this(_name,_age){
+        		//第五步，如果外部是通过次构造实例化一个对象，次构造内部代码块最后执行
+        		println("次构造 name:$_name ,age:$_age ,isMale:$_isMale")
+    		}
+    
+    		//第四步，其他写在init代码块后面的成员变量的生成和赋值或初始化
+    		val list = mutableListOf<Int>()
+	}
+
+69、延迟初始化lateinit
+	源码见project/KotlinStart项目 oop.KTClass.kt、oop.classes.ClassH.kt
+
+	class ClassH {
+    		//延时初始化对象只能是var类型，不且不能是可空类型，否则编译失败
+    		private lateinit var value: String
+
+    		/**
+     		* 模拟一个耗时操作，延时初始化 value赋值
+     		*/
+    		fun request(){
+        		value = "success"
+    		}
+
+    		/**
+     		* 由于showValue里使用了延迟加载变量，所以调用showValue前必须要先调用 request 方法加载延迟变量
+     		* 否则会 报 kotlin.UninitializedPropertyAccessException: lateinit property value has not been initialized
+     		*/
+    		fun showValue(){
+        		//如果没有初始化只要用到就报错，就算判null也不行，比如 if(value==null) ,
+        		println("value : $value")
+    		}
+
+    		/**
+     		* 如果想要避免延迟加载带来的错误，需要判断变量是否初始化
+     		* ::value.isInitialized
+     		*/
+    		fun showValue2(){
+        		if(::value.isInitialized){
+            			println("value:$value")
+        		}else{
+            			println("value延迟加载，当前request方法还没有执行");
+        		}
+    		}
+	}
+
+

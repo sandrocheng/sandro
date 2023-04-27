@@ -14,8 +14,8 @@ class ClassA {
         //field代表info这个变量，get set也是对应info这个变量
         //写的话，编译器会提示这是多余的代码
         //get set方法 标准写法需要再缩进一下
-        get() = field
-        set(value) {
+        get() = field  //如果变量是public的，get方法不能用private修饰
+        set(value) { //set方法也可以通过 private set(value){} ,定义为私有方法
             field = value
         }
 
