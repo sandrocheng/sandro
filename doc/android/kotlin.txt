@@ -1231,4 +1231,153 @@
     		}
 	}
 
+70、惰性初始化
+	源码见project/KotlinStart项目 oop.KTClass.kt、oop.classes.ClassI.kt
+	
+	/**
+ 	* lateinit延迟加载是在使用的时候，手动加载的懒加载方式，然后再使用
+ 	* 惰性初始化 by lazy，是自动加载，然后再使用
+ 	*/
+	class ClassI {
+
+    		//不使用惰性初始化，普通方式初始化一个耗时操作的变量
+    		val data:String = readbyDatabase()
+
+    		private fun readbyDatabase(): String {
+        		println("readbyDatabase....")
+        		println("readbyDatabase....")
+        		println("readbyDatabase....")
+        		println("readbyDatabase....")
+        		println("readbyDatabase....")
+        		println("readbyDatabase....")
+        		println("readbyDatabase....")
+        		return "database load success"
+    		}
+
+    		//使用惰性加载
+    		val data2 by lazy {
+        		readbyDatabase()
+    		}
+	}
+
+	调用：
+	    	val ci = ClassI()
+    		Thread.sleep(1000)
+    		//从结果看实例化时候，类成员就已经加载，如果类成员是耗时的，实例化也会是耗时的
+    		//没有任何懒加载的特点
+    		println("not lazy load : ${ci.data}")
+
+    		val ci2 = ClassI()
+    		Thread.sleep(1000)
+    		println("sleep finish")
+    		//懒加载，成员变量在使用的时候才加载，否则不加载，成员变量的加载不会影响实例化的效率
+    		println("lazy load : ${ci.data2}")
+
+71、kt初始化陷阱
+	源码见project/KotlinStart项目 oop.KTClass.kt、oop.classes.ClassJ.kt
+	class ClassJ(_name:String) {
+   		private val name = _name
+    		//常见错误三：因为因为getNameStr在内部使用了 name成员变量
+    		//所以getNameStr()必须写在name赋值后面，否则会空指针，这里不如java那么灵活，需要考虑到生成的java顺序
+    		val nameLen:Int = getNameStr()
+    		fun getNameStr(): Int {
+        		return name.length
+    		}
+
+
+    		var number = 10
+    		val info:String
+    		init {
+        		//常见错误一：init中使用的变量，需要放到init块之前定义，否则编译会失败：Variable cannot be initialized before declaration
+        		number += 10
+
+        		//常见问题二：java.lang.NullPointerException，要注意构造执行顺序，如果getInfoWord写在info赋值之前会空指针
+        		info="hello world"
+        		getInfoWord()
+    		}
+
+    		fun getInfoWord() {
+        		println("info[0] : ${info[0]}");
+    		}
+	}
+
+72、继承与重载
+	源码见project/KotlinStart项目 oop.KTClassInherit.kt、oop.inheritClasses.BaseClass1、oop.inheritClasses.BaseClass1Sub1
+	/**
+	 * 所有的类默认是被final修饰的不能被继承 ，和java相反
+	 * 如果要被继承需要使用 open
+	 *
+	 * 所有的函数默认也是final修饰的
+	 * 如果要被继承需要使用open
+	 */
+	open class BaseClass1(var name:String, val age:Int) {
+
+    		constructor(_name:String) : this(_name,20) {
+        		name = _name
+    		}
+
+    		private fun showName() = "name :$name"
+
+    		open fun printName() = println(showName())
+	}
+	
+	
+	/**
+	 * 使用:继承类
+	 * 子类使用临时变量接受name，并用父类的构造函数传值
+	 * 继承的父类可以使用主构造函数，也可以使用任何次要构造函数
+	 */
+	class BaseClass1Sub1(tmpName:String) : BaseClass1(tmpName){
+
+    		override fun printName() {
+        		println("BaseClass1Sub1->name : ${super.name}");
+    		}
+	}
+
+73、类型转换
+	源码见project/KotlinStart项目 oop.KTClassInherit.kt、oop.inheritClasses.BaseClass1、oop.inheritClasses.BaseClass1Sub1
+    
+	val bcSub = BaseClass1Sub1("sandro")
+
+    	//使用is判断对象类型
+    	println("bcSub is BaseClass1Sub1 :  ${bcSub is BaseClass1Sub1}")//true
+    	println("bcSub is BaseClass1 :  ${bcSub is BaseClass1}")//true
+    	//println("bc is String :  ${bc is String}") is 用于有继承关系的类的判断，如果类型和bc可能的继承关系无关，编译器就直接能判断出来了
+
+    	if(bcSub is BaseClass1Sub1){
+        	//通过as 明确表示当前实例是子类
+        	(bcSub as BaseClass1Sub1).printName()
+    	}
+
+    	if(bcSub is BaseClass1){
+        	//通过as 明确当前调用是父类的方法
+        	(bcSub as BaseClass1).printName()//此时父类方法被子类重写所以还是调用子类的方法了
+        	(bcSub as BaseClass1).printInfo()
+        	bcSub.printInfo()//因为子类可以继承父类的public方法，所以也可以直接调用父类的方法
+    	}
+
+    	val bc:BaseClass1 = BaseClass1Sub1("tony")
+    	if(bc is BaseClass1Sub1){
+        	//bc此时是用父类声明的，即使赋值的是子类，也无法直接调用子类方法，必须用 is 判断
+        	//因为用了is判断，所以代码块里直接就转化为子类实例，并调用子类实例的方法了
+        	bc.showSubInfo()
+        	bc.printInfo()//子类可以直接调用父类的public方法
+    	}
+
+    	val bc2:BaseClass1 = BaseClass1Sub1("lily")
+    	//这里不能直接调用子类方法，必须用as转换后才能调用
+    	(bc2 as BaseClass1Sub1).showSubInfo()
+    	//一旦转换后，后面就可以省略转换了，就可以直接调用了
+    	bc2.showSubInfo()
+
+74、Any超类
+	源码见project/KotlinStart项目 oop.KTClassInherit.kt
+
+	Any相当于java的Object,kt中任何类都是隐式继承这个Any超类
+ 	class Obj1 : Any(),一般声明的时候都省略  ":Any()",
+ 	Any源码里会看到，只有类和方法的声明，并没有实现，实际上kt中有各平台的实现，内部已经自动匹配到对应平台的实现类中了
+	
+	val bc : Any = BaseClass1Sub1("sandro")
+    	println("bc.toString() : ${bc.toString()}" )//toString就是Any超类提供的
+
 
