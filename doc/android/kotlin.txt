@@ -1380,4 +1380,179 @@
 	val bc : Any = BaseClass1Sub1("sandro")
     	println("bc.toString() : ${bc.toString()}" )//toString就是Any超类提供的
 
+75、对象的声明
+	源码见project/KotlinStart项目 oop.KTObjectiv.kt  oop.object.ObjectTest1.kt
+
+	/**
+	 * 对象的声明
+	 * 单例类，只能有一个默认的空构造，不能传参数,如果设置参数会提示：Constructors are not allowed for objects
+	 *
+	 */
+	object ObjTest1 {
+    		//object的init代码块在生成java代码时，是放在一个static代码块里
+    		//这里和class不一样，class中init代码块是放在 java类的构造里面
+    		init {
+        		println("ObjTest1 init")
+    		}
+
+    		fun show() = println("ObjTest1.show()")
+	}	
+
+	调用：
+    		//objective ObjTest1即是单例实例，又是类名
+    		//多次调用init块只执行了一次，返回的引用都是一个
+    		println(ObjTest1)
+    		println(ObjTest1)
+    		ObjTest1.show()//因为是对象,所以不用实例化，直接当成变量使用
+
+76、对象表达式
+	源码见project/KotlinStart项目 oop.KTObjectiv.kt  oop.object.ExpressionClass.kt
+
+	1)匿名对象表达式方式
+    	//使用 “object :” 修饰类名， 可以直接继承出来一个匿名的子类，这个子类没有类名
+    	//同时返回一个实例
+    	val ec = object : ExpressionClass() {
+       			override fun add(info: String) {
+            		super.add(info)
+            		println("------------")
+        	}
+
+        	override fun del(info: String) {
+            		super.del(info)
+            		println("------------")
+        	}
+    	}
+    	ec.del("hello")
+    	ec.add("world")
+
+	2)具名对象表达式
+
+	/**
+ 	* 定一个具名子类
+ 	*/
+	class SubEC:ExpressionClass(){
+    		override fun add(info: String) {
+        		super.add(info)
+        		println("~~~~~~~~~~")
+    		}
+
+    		override fun del(info: String) {
+        		super.del(info)
+        		println("~~~~~~~")
+    		}
+	}
+	
+	调用：
+    		val sub = SubEC()
+    		sub.add("start")
+    		sub.del("end")
+
+		
+	3）接口实例化
+	对于java接口实例化，可以使用 object: 对象表达式，也可以使用 lmbda简化方式
+	对于kt接口实例化，只能使用object:对象表达式
+	    	//对java的接口，使用对象表达式方式
+    		val p3 = object : Runnable{
+        			override fun run() {
+            			println("java Runnable instance run ...")
+        		}
+   		 }
+    		p3.run()
+
+    		//对java的接口，使用lmbda表达式实例化简化写法
+    		val p4 = Runnable {
+        		println("java Runnable short run ... ")
+    		}
+    		p4.run()
+
+    		//对kt接口只能使用对象表达式匿名实例化，不能像java接口一样使用lmbda方式实例化
+    		val p5 = object : KTRunnable{
+        		override fun run1() {
+            			println("KTRunnable run1...")
+        		}
+
+        		override fun run2() {
+            			println("KTRunnable run2...")
+        		}
+    		}
+    		p5.run1()
+    		p5.run2()
+
+	kt接口定义：
+		interface KTRunnable{
+    			fun run1()
+    			fun run2()
+		}
+	
+77、伴生对象
+	源码见project/KotlinStart项目 oop.KTObjectiv.kt  oop.object.CompainObjClass.kt
+
+	/**
+	 * 伴生对象
+	 * 由来：在kt中是没有static静态修饰符的，伴生很大程度上和java的static差不多
+	 */
+	class CompainObjClass {
+
+   		//CompainObjClass构建多少次，companion object中只有一次加载
+    		companion object{
+        		//相当于java中的静态变量
+        		val VERSION = "1.0"
+
+        		//相当于java 中的静态方法
+        		fun SHOWINFO(){
+            			println("CompainObjClass info ,version : $VERSION")
+        		}
+    		}
+	}	
+
+	调用：	
+	   	println("verison : ${CompainObjClass.VERSION}")
+    		CompainObjClass.SHOWINFO()
+
+78、嵌套类、内部类
+	源码见project/KotlinStart项目 oop.KTInnerClass.kt
+
+	class Body(_info:String){
+
+   		private val bodyInfo = _info
+
+    		fun show(){
+        		Heart().run()//外部类可以访问内部类
+        		Foot().work()//外部类可以访问嵌套类
+    		}
+
+    		//默认情况下 内部类不能访问外部的类，需要增加inner修饰符后，才能访问外部类
+    		inner class Heart{
+        		fun run() = println(" $bodyInfo ,heart run")
+    		}
+
+    		//因为没有使用inner修饰符，Foot这个类实际上并不是内部类，也就无法访问外部类Body中的变量和函数
+    		//这种类叫做嵌套类
+    		class Foot{
+        		fun work(){
+            			println("Foot -> work")
+        		}
+    		}
+
+    		inner class Hand{
+        		inner class LeftHand{
+            			//LeftHand这个类要想访问外部的变量，需要让所有的嵌套类都用inner修饰才可以
+            			fun use(){
+                			println(" $bodyInfo ,leftHand use")
+            			}
+        		}
+        		
+			//Hand是inner修饰，那么Hand内部的所有类都必须用inner修饰，否则编译报错
+        		inner class RightHand{}
+    		}
+	}
+
+	调用：
+	    	 Body("sandro").show()
+   		 Body("sandro").Hand().LeftHand().use()
+
+    		//嵌套类使用
+    		Body.Foot().work()
+
+
 
