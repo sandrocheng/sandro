@@ -10,6 +10,11 @@ package oop
  * 数据类还会增加更多的方法，比如解构函数，克隆函数，toString（把所有成员变量都组成一个字符串）,hashCode,equals函数
  *
  * 默认生成的toString hashCode,equals,copy等，只负责主构造中声明的成员变量
+ * 常用于数据封装，类似与java的 pojo
+ * 数据类至少必须有一个参数的主构造函数
+ * 数据类必须有 var val的参数，不能是临时变量
+ * 数据类不能使用open abstract sealed，inner等修饰 只能用为一 data修饰class
+ *
  */
 data class DataBean(val name:String ,val age:Int){
 
