@@ -1936,4 +1936,101 @@
 	调用：
 		Sub().onCreate()
 
+90、泛型的定义
+	源码见project/KotlinStart项目 generic.KTgeneric.kt,generic.classes.GenericClass1
+	
+	/**
+	 * T代表类型 types
+	 * kt的泛型定义和java一样
+	 */
+	class GenericClass1<T>(private val obj:T) {
+   		//定义一个万能输出器
+    		fun show() = println("万能输出器：${obj}")
+	}
+
+	data class StudentData1(val name:String,val age:Int,val isMale:Boolean)
+	data class TeacherData1(val name:String,val age:Int,val isMale:Boolean,val salary:Int)
+	
+	调用：
+	    	val st1 = StudentData1("lily",18,false)
+    		val tea2 = TeacherData1("Tony",30,true,5000)
+    		GenericClass1(st1).show()
+    		GenericClass1(tea2).show()
+    		GenericClass1(100).show()
+    		GenericClass1("data").show()
+
+91、泛型函数
+	源码见project/KotlinStart项目 generic.KTgeneric.kt,generic.classes.GenericClass1
+	/**
+ 	* 如果isTrue 运用takeIf判断obj
+ 	*/
+	class GenericClass2<T>(private val isTrue:Boolean,private val obj:T) {
+    		fun getObj():T? = obj.takeIf { isTrue }
+	}
+
+	/**
+ 	* 泛型是包括null的，所以参数没有指定可空，外部传参依然可以传null
+ 	*/
+	private fun<T> show(obj:T){
+    		obj?.also {
+        		println("show $it")
+    		}?:println("show param is null")
+	}
+
+	调用：
+		show(GenericClass2(true, 1000).getObj())
+
+92、使用泛型实现一个类型转换功能
+	源码见project/KotlinStart项目 generic.KTgeneric.kt,generic.classes.GenericClass2
+	/**
+ 	* 如果isTrue 运用takeIf判断obj
+ 	*/
+	class GenericClass2<T>(private val isTrue:Boolean,private val obj:T) {
+    		fun getObj():T? = obj.takeIf { isTrue }
+	}
+
+	调用：
+	    	val d = Data<Int>(true,123)
+    		val r:String? = d.revertAction {
+        		"[$it]"
+    		}
+    		println("revert -> $r")
+    		val strD = Data<String>(true,"333")
+    		var strR:Int? = strD.revertAction {
+        		it.toIntOrNull()?:0+ 111
+    		}
+    		println("revert -> $strR")
+
+    		val stu = Student("tony",24)
+    		val tea:Teacher? = Data<Student>(true,stu).revertAction {
+        		Teacher(it.name,it.age,1000)
+    		}
+    		println(tea)
+
+93、泛型的类型约束
+	源码见project/KotlinStart项目 generic.KTgeneric.kt
+	open class GBase(private val name:String){
+    		fun work(){
+        		println("cur name : $name")
+    		}
+	}
+	open class GPerson(name:String) : GBase(name=name)
+	class GStu(name:String):GPerson(name = name )
+	class GTeacher(name:String):GPerson(name = name)
+
+	//限定泛型必须是GBase的子类
+	private fun <T : GBase> printName(obj:T) {
+    		obj.work()
+	}
+	
+	调用:
+	    	val base = GBase("base")
+    		val person = GPerson("person")
+    		val stu = GStu("student")
+    		val tea = GTeacher("teacher")
+    		printName(base)
+    		printName(person)
+    		printName(stu)
+    		printName(tea)	
+
 
