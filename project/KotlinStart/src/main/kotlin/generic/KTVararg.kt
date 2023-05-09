@@ -19,6 +19,18 @@ class VarargClass<T>(vararg objs: T, val isMulti:Boolean){
     }
 
     fun <K> revertObj(index:Int,action:(T?) -> K) = action(objArray.elementAtOrNull(index))
+
+    /**
+     * 当isMulti=true时，返回array,注意，泛型需要被out修饰，因为有可能为null，所以返回值需要用?修饰
+     */
+    fun getArray():Array<out T>? = objArray.takeIf { isMulti }
+
+    /**
+     * 因为返回类型可能是Array<out T> ,也可能是 String,实际上是数据Serializable类型，
+     * 用Any代替，一般为了方便，如果返回值是多种类型的就用Any代替，如果可能为空，就返回 Any?类型
+     */
+    fun getArray2():Any = objArray.takeIf { isMulti }?:"error"
+
 }
 /**
  * 动态参数 vararg
@@ -28,7 +40,7 @@ fun main(){
     //但是当参数的类型很复杂有String,double,char等，所以这里p对象的类型泛型是非常复杂的,
     //实际上是{Comparable<*>&java.io.Serializable}，kt语法不支持在这里使用这种类型的写法，
     //所以要么使用自动推导类型的方式定义变量，要么使用Any来指定泛型，如果参数里有null,则需要用Any?来指定泛型 例如 val p:VarargClass<Any?>
-    //另外动态参数是可以传值null的，所以要注意判空的使用
+    //另外泛型是可以传值null的，所以要注意判空的使用，比如用String?来接受赋值，这样编译时期就能提示判空情况
     val p = VarargClass("1",2,3.3f,4.4444444444,false,'A',null, isMulti =true)
     println("p.showIndexData(0) : ${p.showIndexData(0)}")
     println("p.showIndexData(1) : ${p.showIndexData(1)}")
