@@ -2110,8 +2110,40 @@
             			println("$i : ${data} is ${data.javaClass}")
         		}?:println("取值失败")
     		}
+	}
 
-
+96、out-协变 、in-逆变
+	源码见project/KotlinStart项目 generic.KTOutAndIn.kt
+	协变，父类（泛型声明处）接收子类（泛型具体处）的赋值 父类=子类
+	逆变，子类（泛型声明处）接收父类（泛型具体处）的赋值 子类=父类
 	
-}
+
+	/**
+	 * 声明处泛型使用in修饰，这种写法java是不支持的，？extends xxx,是部分能放到类声明里
+	 * 当前类里面所有成员函数根泛型相关的只能修改，不能读取
+	 */
+	class SetClass<in T>( _data:T){
+    		private val data = _data//因为使用in来修饰反省了，所以必须用private，否则get方法会返回，导致编译处辍
+    
+   		 fun set1(item:T){
+        		println("set1 : $item")
+    		}
+    
+    		//Type parameter T is declared as 'in' but occurs in 'out' position in type T
+    		//在in 声明的类里面，所有成员函数都无法返回根泛型相关的值
+		//fun get1item():T{ return data}
+	}
+
+	/**
+	 * 声明处泛型使用out修饰，
+	 * 当前类里面所有成员函数根泛型相关的只能读取，不能修改
+	 */
+	class GetClass<out T>(_data:T){
+   		val  data = _data//因为不能让外部修改，所以这里需要用val，或者private var
+    		//Type parameter T is declared as 'out' but occurs in 'in' position in type T
+   		//不能让外界修改，编译失败
+		//fun set1(item:T) = println("set1 : $item")
+
+   	 	fun get1item():T{ return data}
+	}
 		
