@@ -670,8 +670,25 @@
     	var r2:Int = 123.also{
         	println("123 + 234 = ${it + 234}");
     	}
-    	println("r2 is $r2");
-
+    	println("r2 is $r2")
+ 
+-------------------------------------------------------------------------------------------- 
+ * 总结
+ * 1）apply和also类似，返回值都是调用者本身，和匿名函数最后一行的值没有关系
+ *    不同点：引用不同，apply使用this作为引用，also使用it作为引用
+ *       xxx.apply{this == xxx本身}
+ *       xxx.also{it == xxx本身}
+ *     应用场景：链式调用，多步初始化
+ *        比如：File("xxx").apply(setxxx()).apply(setxxx())... （因为使用this,this可以省略）
+ *             File("xxx").also(it.setxxx()).also(it.setxxx())...(it不能省略)
+ *             
+ * 2） let 和 run 类似，返回值都是匿名函数最后一行，由用户决定
+ *    不同点：引用不同，run使用this作为引用，let使用it作为引用
+ *       xxx.run{this == xxx本身}  当调用this的函数时 this.xxx ，this可以省略
+ *       xxx.let{it == xxx本身} 
+ *    with和run基本一样，只是需要传参 xxx.run(){} == with(xxx){}   
+ *    应用场景：对某一个变量进行相关操作时候，可以用 let with run包裹起来，提升代码块阅读效率   
+----------------------------------------------------------------------------------------------
 47、takeIf内置函数
 	源码见project/KotlinStart项目 base.KTBuildInFun.kt
 	
@@ -2179,6 +2196,138 @@
 	调用：
 	    	val data:ObjectClass1? = Manager().randomOrDefault<ObjectClass1>()
     		println("get data : ${data}")
+
+98、扩展函数
+	源码见project/KotlinStart项目 funextend.KTFunExtend.kt
+	 
+	增加扩展函数后
+ 	生成的java代码时候编译器会增加一个 static方法
+            public static final void show(Student $this$show){
+                System.out.println($this$show.name + " , " + $this$show.age);
+            }
+        因为是public static 方法，所以该扩展函数也可以再任何地方调用
+
 	
+	
+	class Student(val name:String,val age:Int){
+		private val info = "info"
+    		fun show(){
+        		showName()
+        		println("age:$age , info:$info")
+    		}
+
+    		private fun showName(){
+        		println("name : $name")
+    		}
+	}
+
+	//Student的扩展函数如果和本身的函数重名，将会被忽略
+	fun Student.show(){
+    		println("name : $name,age:$age")
+	}
+
+	//扩展函数内只能调用到public的成员，私有成员调用不了
+	fun Student.print(){
+    		println("name : $name,age:$age")
+	}
+
+	//给Sring类增加扩展函数,该方法在任何类里都可以调用
+	fun String.printName(n:Int):String = this + "@".repeat(n)
+
+	调用：
+	    	Student("joy",33).show()//这里实际上调用的是类本身的show函数，扩展函数因为重名了所以被忽略了
+    		Student("lily",13).print()
+    		println("aaa".printName(3))
+99、超类的扩展函数
+	源码见project/KotlinStart项目 funextend.KTextFunInSuperClass.kt
+	/**
+	 * 在超类上定义扩展函数，因为影响范围比较大，需要慎用
+	 * 自己实现的超类扩展函数不能重复定义
+	 * kt内置的扩展函数可以覆盖
+	 */
+	
+	//对 Any超类进行扩展
+	fun Any.showContent() = println("content : $this")
+
+	fun Any.linkprint():Any{
+   		println("$this")
+    		return this
+	}
+
+	data class Result(val name:String,val password:String)
+
+	调用：
+		//对Any类进行了扩展，所有子类都能调用到扩展函数
+    		Result("name","password").showContent()
+   	 	val n =  999
+    		n.showContent()
+    		//通过扩展函数完成一个链式调用
+    		n.linkprint().linkprint().linkprint()
+
+100、泛型扩展函数
+	源码见project/KotlinStart项目 funextend.KTgenericFunExt.kt
+	
+	private fun <T> T.showContentInfo() = println("${if (this is String) "字符串长度：$length" else "$this 不是字符串"}")
+	private fun commonFun(){}
+
+	//显示当前时间
+	private fun <I> I.showTime() = println("调用时间：${System.currentTimeMillis()}")
+
+	//显示调用者的类型
+	private fun <K> K.showTypeAction() {
+    		when(this){
+        		is String -> println("String")
+        		is Int -> println("Int")
+        		is Char ->println("char")
+        		else -> println("其他类型")
+    		}
+	}
+	调用：
+		val s = 1
+    		s.showContentInfo()
+    		"ssss".showContentInfo()
+    		val k = 'a'
+    		k.showContentInfo()
+    		commonFun().showContentInfo()//void函数返回的是 Unit类型，所以也适用
+    		commonFun().showTime()
+    		"kk".showTypeAction()
+    		commonFun().showTypeAction()	
+
+101、标准函数与泛型扩展函数	
+	源码见project/KotlinStart项目 funextend.KTBuildInExtFun.kt
+	/**
+	 * 过泛型扩展函数方法实现一个类似let一样的内置函数
+	 * 因为使用了匿名函数，为了提升效率，使用inline修饰
+	 * fun<I,O> 代表使用到了两个泛型，一个是input,一个是output
+	 * I.mylet ：定义一个扩展函数，任何类型都能使用(xxx.mylet),返回值是任何类型的值都可以，由用户决定
+	 * lambda : (I)->O) ： 参数是一个匿名函数，该匿名函数参数是调用者类型的变量，返回任何类型都可以(实际上是匿名函数变量的最后一行的值)
+	 * 函数体中使用this代表调用的对象，因为是对I进行了扩展此时，this实际上就是输入的数据I。 this == I本身
+	 */
+	private inline fun<I,O> I.mylet(lambda : (I)->O):O = lambda(this)
+	
+	调用：
+	    val str = "sandro".mylet{
+        	//匿名函数，当参数只有一个时，可以不用列举参数类型，并直接用it当作引用
+        	"{$it}"
+    	}
+    	println(str)		
+
+102、kotlin语言的扩展属性
+	/**
+ 	* 对String类 增加一个 myInfo属性
+	* 在编译成java时，在当前类下，定义一个了一个 getMyVersion(String $this$myInfo)的静态方法,String调用对象通过参数传进来
+	*/
+
+	private val String.myVersion :Double
+    		get()=1.0
+
+	private val String.myInfo : String
+    		get(){
+        		return "内容：$this,字符串长度：$length"
+    		}
+	
+	调用：
+		println("aaa".myVersion)
+    		println("sandro".myInfo)
 
 

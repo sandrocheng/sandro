@@ -1,6 +1,21 @@
 package base
 
 /**
+ * 总结
+ * 1）apply和also类似，返回值都是调用者本身，和匿名函数最后一行的值没有关系
+ *    不同点：引用不同，apply使用this作为引用，also使用it作为引用
+ *       xxx.apply{this == xxx本身}
+ *       xxx.also{it == xxx本身}
+ *     应用场景：链式调用，多步初始化
+ *        比如：File("xxx").apply(setxxx()).apply(setxxx())... （因为使用this,this可以省略）
+ *             File("xxx").also(it.setxxx()).also(it.setxxx())...(it不能省略)
+ *
+ * 2） let 和 run 类似，返回值都是匿名函数最后一行，由用户决定
+ *    不同点：引用不同，run使用this作为引用，let使用it作为引用
+ *       xxx.run{this == xxx本身}  当调用this的函数时 this.xxx ，this可以省略
+ *       xxx.let{it == xxx本身}
+ *    with和run基本一样，只是需要传参 xxx.run(){} == with(xxx){}
+ *    应用场景：对某一个变量进行相关操作时候，可以用 let with run包裹起来，提升代码块阅读效率
  * kt内置函数
  * apply内置函数
  * let内置函数
