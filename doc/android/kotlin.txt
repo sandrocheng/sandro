@@ -2313,6 +2313,7 @@
     	println(str)		
 
 102、kotlin语言的扩展属性
+	源码见project/KotlinStart项目 funextend.KTAttibuteExt.kt
 	/**
  	* 对String类 增加一个 myInfo属性
 	* 在编译成java时，在当前类下，定义一个了一个 getMyVersion(String $this$myInfo)的静态方法,String调用对象通过参数传进来
@@ -2329,5 +2330,43 @@
 	调用：
 		println("aaa".myVersion)
     		println("sandro".myInfo)
+
+103、可空类型扩展
+	源码见project/KotlinStart项目 funextend.KTnullableExt.kt
+	//通过增加?号声明该函数是可空类型扩展函数，即使是空 也能调用该函数
+	private fun String?.outputValue() = println(this?:"cur value is null")
+
+	private fun String.outputValue2() = println(this)	
+	
+	调用：
+	    	val value:String? = null
+
+    		//因为output2不是可空类型扩展函数，所以当value是可空类型的时候就只能通过value? 去调用
+    		//如果value为null，根据kt语法规则，outputValue2是不能执行的
+    		value?.outputValue2()
+
+    		//outputValue()是可空类型扩展函数，即使value是null，依然能够执行
+    		value.outputValue()
+
+104、infix关键字的使用
+	源码见project/KotlinStart项目 funextend.KTInfix.kt
+	/**
+ 	* infix 中缀表达式，能够简化代码的写法
+ 	* 自定义一个中缀表达式
+ 	* 1 .中缀函数必须用在扩展函数中
+ 	* 2 .必须有一个函数参数
+ 	*/
+	private infix fun <C1,C2> C1.gogo(c2 : C2){
+    		println("c1 is $this , c2 is $c2 ")
+	}
+
+	调用
+		//不依赖infix方式的写法
+    		mapOf(1.to("one") , 2.to("two"))
+    		//由于mapOf使用了 infix，所以可以简化成下面的写法
+    		mapOf(1 to "one" , 2 to "two")
+
+    		"a".gogo("b") //正常写法
+    		"abc" gogo "ccc" //简化写法
 
 
