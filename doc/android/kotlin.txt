@@ -2369,4 +2369,75 @@
     		"a".gogo("b") //正常写法
     		"abc" gogo "ccc" //简化写法
 
+105、定义扩展文件
+	源码见project/KotlinStart项目 funextend.KTExtFile.kt
 
+	定义一个扩展文件：
+	package funextend.extfiles.file1
+	/**
+	 * 扩展文件
+	 * 工作中可以统一将扩展函数通过扩展文件的方式组织起来，需要使用的时候引用就可以了
+	 * 
+	 * 1 一般都是public,否则外界无法使用
+	 * 2 Iterable<E> 子类，set list都可以用
+	 */
+	fun <E> Iterable<E>.randomItemValue() = this.shuffled().first()
+
+	调用：
+		//导入扩展文件
+		import funextend.extfiles.file1.randomItemValue
+		...
+		val list = listOf<String>("abc","def","ghi")
+    		val set = setOf<Double>(1.0,2.0,3.3)
+    		//不使用扩展文件
+    		println(list.shuffled().first())
+    		println(set.shuffled().first())
+    		//使用扩展文件
+    		println(list.randomItemValue())
+    		println(set.randomItemValue())
+
+106、重命名扩展
+	源码见project/KotlinStart项目 funextend.KTExtFile.kt
+	在引用的时候通过 import xxx.xxx.xxx as name 来重命名，可以简化代码
+	如：
+		定义一个扩展文件
+		package funextend.extfiles.file1
+		fun <E> Iterable<E>.printlnRandomItemValue() = println(this.shuffled().first()
+
+	在调用处引用这个文件，并重命名
+		import funextend.extfiles.file1.printlnRandomItemValue as prv
+	调用：
+		val list = listOf("abc","def","ghi")
+    		val set = setOf(1.0,2.0,3.3)
+    		set.prv()
+    		list.prv()	
+
+107、apply函数源码解析
+	源码见project/KotlinStart项目 funextend.KTApplyimpl.kt
+	/**
+	 * apply返回类型是引用本身
+	 * 匿名函数持有this 代表 调用者本身
+	 *
+	 * inline，因为使用到了匿名函数，使用inlin能够提高效率
+	 * fun<I> ， 泛型函数定义，代表当前函数只使用到了一个函数
+	 * I.myApply():I ， 泛型函数扩展，代表任何类型的变量都可以使用myApply，返回值是当前调用类型，实际上就是返回当前的调用者
+	 * lambda:I.()， -> Unit ,myApply的参数是一个匿名函数
+	 *                      该匿函数返回值是 Unit类型
+	 *                      入参是调用者类型，实际上就是调用者本身，
+	 *                      I.()这中写法，说明调用的时候用 this持有调用者的引用，如果是 （I），这种写法，持有的就是it
+	 *                      如参只有一个，并且是泛型时，才能这么写
+	 */
+	private inline fun<I>  I.myApply(lambda:I.()-> Unit):I{
+    		//lambda == lambda(this),因为参数定义的时候使用的是 I.(),说明只有一个参数，就是this本身，所以this就可以省略了
+    		lambda(this)
+    		return this
+	}
+
+	调用：
+	    	val str = "aaa"
+    		str.myApply {
+        		println("$length")
+    		}.myApply {
+        		println("$this , len is $length")
+    		}
+	
