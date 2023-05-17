@@ -2498,4 +2498,85 @@
             			println(data)
         		}
 
+109、DSL范式之 转换函数map
+	源码见project/KotlinStart项目 paradigm.KTDSLFunMap.kt
+	
+	val list = listOf("111","333","222","ssss")
+
+    	/**
+     	* 内置函数 map，返回一个新的集合
+     	* it ：具体的每个元素
+     	* 最后一行返回一个新的元素，并把这些元素组成新的一个集合
+     	*/
+    	val mapList = list.map {
+        	val data = it.toIntOrNull()
+        	if (data == null) 0 else (data + 100)
+    	}
+    	println(mapList)//返回新的List<Int> 集合
+
+    	//map用途:元素遍历修改值后生成一个新的map
+    	val list1 = list.map{
+        	val data = it.toIntOrNull()
+        	if (data == null) "000" else "$data"
+    	}.map{
+        	"【$it】"
+    	}
+
+110、DSL范式之 转换函数flatMap
+	源码见project/KotlinStart项目 paradigm.KTDSLFunFlatMap.kt
+	/**
+     	* flatMap 可以理解为集合的乘法，最后生成一个新的集合
+     	*/
+    	val list = listOf("sandro","lily","lucy")
+    	val newList = list.flatMap {
+        	//最后一行是返回值，必须是个集合,比如list，set等
+        	setOf("$it is working","$it is sleeping")
+    	}
+    	newList.forEach {
+        	println(it)
+    	}
+	输出：
+	sandro is working
+	sandro is sleeping
+	lily is working
+	lily is sleeping
+	lucy is working
+	lucy is sleeping
+    
+111、DSL范式之过滤函数 filter
+	源码见project/KotlinStart项目 paradigm.KTDSLFunFilter.kt
+	val list = listOf(
+        	listOf("1","2","3"),
+        	listOf("a","b","c"),
+        	listOf("A","B","C")
+    	)
+
+    	val newList = list.map { sublist ->  //把默认的it重命名为sublist
+        	//对每个子集合进行判断
+        	sublist.filter {
+            		//如果是数字则不加入新的集合中
+            		it.toIntOrNull() == null
+        	}
+    	}
+    	println(newList)
+	输出：
+	[[], [a, b, c], [A, B, C]]
+
+112、DSL范式之合并函数-zip
+	源码见project/KotlinStart项目 paradigm.KTSDLFunZip.kt
+	
+	val names = listOf("sandro", "lily", "lucy", "tony")
+    	val ages = listOf(40,30,20)
+
+    	//将两个集合合并起来，并返回一个新的集合，新集合的每个元素是Pair<String,Int>
+    	//因为ages只有三个，所以新的集合就只有三个元素
+    	val zipList = names.zip(ages)
+	//    val zipList = names zip ages   zip 是 中缀表达式，所以可以简写
+    	println(zipList)//[(sandro, 40), (lily, 30), (lucy, 20)]
+
+    	//因为每个元素是Pair类型的，所以合并之后，可以转换成map 或者 set等
+    	val map = zipList.toMap()
+    	println(map)//{sandro=40, lily=30, lucy=20}
+    	val set = zipList.toSet()//[(sandro, 40), (lily, 30), (lucy, 20)]
+    	println(set)	
 
