@@ -1,6 +1,9 @@
 package com.sandro.annotation;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author sandro
@@ -18,10 +21,37 @@ public class Main {
     @WorkerAnno(name="tom",age=22,Level=Level.L2,ability={"electrical"},
             contact_info = @ContactInfo({"132xxxxxxxx","041133332222"}))
     private static Object worker = new Object();
+
+    private static String name = "123";
+
+    @WorkerAnno(name="tony",age=21,Level=Level.L2,ability={"electrical"},
+            contact_info = @ContactInfo({"133xxxxxxxx","041133337777"}))
+    private static Object worker2 = new Object();
     public static void main(String[] args) {
         getClassAnnoInfo();
         getWorkerInfo();
+        getAllWorkAnnoObj();
+    }
 
+    private static void getAllWorkAnnoObj(){
+        System.out.println("-----------getAllWorkAnnoObj-------------");
+        Class clz = Main.class;
+        Field[] fields = clz.getDeclaredFields();
+        if(fields!=null){
+            System.out.println("get " + fields.length + " fields");
+            for(Field f : fields){
+                System.out.println("---objname : " + f.getName());
+                Annotation as[] = f.getAnnotations();
+                if(as == null || as.length == 0) continue;
+                for(Annotation a : as){
+                    System.out.println("annotation name : " + a.annotationType());
+                    if( a instanceof WorkerAnno){
+                        System.out.println("get a WorkerAnno on obj " + f.getName());
+                        //....后面就可以根据注释和对象建立二者的业务关系了
+                    }
+                }
+            }
+        }
     }
 
     /**

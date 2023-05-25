@@ -2580,3 +2580,97 @@
     	val set = zipList.toSet()//[(sandro, 40), (lily, 30), (lucy, 20)]
     	println(set)	
 
+113、函数式编程
+	源码见project/KotlinStart项目 paradigm.函数式编程.kt
+	    
+
+	val names = listOf("name1","name2","name3")
+	val ages = listOf(20,21,22)
+
+	//使用kt 内置函数方法能够比较简洁的做集合操作
+    	(names zip ages).map {
+        	"name is ${it.first} ,ages is ${it.second}"
+    	}.map {
+        	println(it)
+    	}
+
+	//更简洁的方式
+    	(listOf("name1","name2","name3") zip listOf(20,21,22)).map {
+        	println( "name is ${it.first} ,ages is ${it.second}")
+    	}
+
+114、互操作性和可空性
+	源码见project/KotlinStart项目 base.互相操作性和可空性.kt
+	    
+	//从java函数得到的返回值，不建议直接使用
+    	println(JavaTest.getInfo().length)
+    	try {
+        	//这种写法，虽然编译能通过，但是不推荐
+        	println(JavaTest.getNullInfo().length)
+    	}catch (e:Exception){
+        	println(e)
+    	}
+
+    	//从java获取的返回值，推荐使用可空变量接收后再调用
+    	val info1 : String? = JavaTest.getInfo()
+    	val info2 : String? = JavaTest.getNullInfo()
+    	println(info1?.length)
+    	println(info2?.length)
+
+115、单例
+	源码见project/KotlinStart项目 singleton.懒汉式单例.kt  和  懒汉式单例.kt
+
+	/**
+ 	* 饿汉单例
+ 	* object对应java static 对象实例,所以直接生成的对象就是饿汉式单例的
+ 	* 编译成java的代码
+ 	* public final class HungrySingleton {
+ 	*    @NotNull
+ 	*    public static final HungrySingleton INSTANCE;
+ 	*
+ 	*    public final void run() {
+ 	*       String var1 = "run";
+ 	*       System.out.println(var1);
+ 	*    }
+ 	*
+ 	*    private HungrySingleton() {}
+ 	*
+ 	*    static {
+ 	*       HungrySingleton var0 = new HungrySingleton();
+ 	*       INSTANCE = var0;
+ 	*    }
+ 	* }
+ 	*/
+	object HungrySingleton {
+    		fun run(){
+        		println("run")
+		}
+	}
+	
+	调用：
+		HungrySingleton.run()
+
+
+	
+	/**
+	 * 使用派生方法实现
+	 * 通过私有化构造，让外部无法生成实例
+	 */
+	class LazySingleton private constructor() {
+    		companion object{
+        		//使用lazy 懒加载函数实例化
+        		//mode=LazyThreadSafetyMode.SYNCHRONIZED 内部会实现一个双重校验的逻辑提升效率，并保证线程安全
+        		val instatnce:LazySingleton by lazy(mode=LazyThreadSafetyMode.SYNCHRONIZED){
+            			LazySingleton()
+        		}
+    		}
+
+    		fun run(){
+        		println("LazySingleton run")
+    		}
+	}	
+	
+	调用：
+		LazySingleton.instatnce.run()
+	
+	
