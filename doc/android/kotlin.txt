@@ -2673,4 +2673,98 @@
 	调用：
 		LazySingleton.instatnce.run()
 	
+116、@JvmName
+	源码见project/KotlinStart项目 annotation.KTAnnoJvmName.kt
+	/**
+	 * 使用JvmName注解后，可以修改类的名字，简化java端的调用
+	 * 如果不使用注解，java端调用该类的方法:KTAnnoJvmNamekt.annoJvmNameTest("xxx")
+	 * 使用后注解后：AnTest.annoJvmNameTest("test");
+	 * 注意必须写在 package annotation 外面
+	 */
+	@file:JvmName("AnTest")
+	package annotation
+
+	fun annoJvmNameTest(str:String){
+    		println(str)
+	}
+
+117、@JvmField
+	源码见project/KotlinStart项目 annotation.KTAnnoJvmField
 	
+	package annotation
+	class KTAnnoJvmField {
+
+    		/**
+     		* 在java中如果想要读取ages，必须使用getAges()方法
+     		*/
+    		val ages = listOf(21,22,23)
+
+    		/**
+     		* 使用JvmField后
+     		* 在java中可以直接调用该变量
+     		*/
+    		@JvmField
+    		var names = listOf("name1","name2","name3")
+	}
+
+	java调用：
+	        KTAnnoJvmField f = new KTAnnoJvmField();
+                for(int age : f.getAges()){
+           		 System.out.println(age);
+        	}
+        	for(String name : f.names){
+            		System.out.println(name);
+        	}
+	
+118、@JvmOverloads
+	源码见project/KotlinStart项目 annotation.KTJvmOverload.kt
+	/**
+	 * 该方法在java中调用时，无法使用默认参数
+	 */
+	fun show(name:String ,age:Int = 43,isMale:Boolean=true){
+    		println("name:$name,age:$age,isMale:$isMale")
+	}
+
+	/**
+	 * 编译器环节会专门重载一个函数给java用，这样java就可以使用默认参数了
+	 */
+	@JvmOverloads
+	fun show2(name:String ,age:Int = 43,isMale:Boolean=true){
+    		println("name:$name,age:$age,isMale:$isMale")
+	}
+	
+	java端调用
+	        KTJvmOverloadKt.show("sandro",43,true);
+        	KTJvmOverloadKt.show2("sandro");
+
+119、@JvmStatic
+	源码见project/KotlinStart项目 annotation.KTAnnoJvmStatic.kt
+	class MyClass{
+    		companion object{
+        		//在java中调用只能通过MyClass.Companion.getTarget()去调用
+        		val target = "开始学习"
+        		fun showTar(name:String) = println("$name 要$target")
+    		}
+	}
+
+	class MyClass2{
+    		companion object{
+        		/**
+         		* 使用JvmStatic后，在java中调用可以直接调用
+         		* MyClass2.showTar()
+         		*/
+        		@JvmStatic
+        		val target = "开始学习"
+
+        		@JvmStatic
+        		fun showTar(name:String) = println("$name 要$target")
+    		}
+	}
+	
+	java调用：
+	        MyClass.Companion.showTar("sandro");
+        	System.out.println(MyClass.Companion.getTarget());
+
+        	MyClass2.showTar("joy");
+        	System.out.println(MyClass2.getTarget());
+
