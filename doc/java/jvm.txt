@@ -1,0 +1,8 @@
+1、书籍和名人
+	国内比较有名的人叫R大，比叫资深的java虚拟机专家，《深入理解java虚拟机》比较早期的书籍，比较经典
+2、常用jvm工具
+	jconsole:JDK自带的 jvm监控工具，通过jconsole可以查看各进程的 内存，线程,cpu等运行信息
+	jvisualvm:oracle自带的集成工具，类似jconsole工具，功能更全面
+	jmap:java命令行工具，能够打印给定的java进程，核心文件内存信息，jmap可能在未来的JDK版本中删除
+	
+3、类加载器的深入理解与阶段分析
