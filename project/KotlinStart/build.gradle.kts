@@ -7,18 +7,18 @@ group = "org.example"
 version = "1.0-SNAPSHOT"
 
 repositories {
+    maven { setUrl ("https://maven.aliyun.com/repository/gradle-plugin") }
+    maven { setUrl ("https://maven.aliyun.com/repository/public/") }
+    maven { setUrl ("https://maven.aliyun.com/repository/google")}
+    maven { setUrl ("https://maven.aliyun.com/repository/jcenter") }
+    maven { setUrl ("http://mirrors.cloud.tencent.com/nexus/repository/maven-public/")}
+    maven { setUrl ("https://maven.aliyun.com/repository/gradle-plugin")}
     mavenCentral()
-
-//    maven { url 'https://maven.aliyun.com/repository/gradle-plugin'}
-//    maven { url 'https://maven.aliyun.com/repository/public/'}
-//    maven { url 'https://maven.aliyun.com/repository/google'}
-//    maven { url 'https://maven.aliyun.com/repository/jcenter'}
-//    maven { url 'http://mirrors.cloud.tencent.com/nexus/repository/maven-public/'}
-//    maven { url 'https://maven.aliyun.com/repository/gradle-plugin'}
 }
 
 dependencies {
     testImplementation(kotlin("test"))
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1")
 }
 
 

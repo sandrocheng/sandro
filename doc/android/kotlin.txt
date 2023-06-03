@@ -2815,3 +2815,263 @@
 	 * 定义一个创建函数create，用于初始化数据，并把最后一行数据封装成对象返回外部
 	 */
 	private fun<T> create(action:() -> T) : RxJavaCoreObj<T> = RxJavaCoreObj<T>(action())
+
+121、协程概念
+	go,lua等语言都有协程的概念，但是kotlin协程本质还是多线程。
+	因为kt是跑在jvm上的，而jvm并不支持协程，所以最后kt还是把协程转换成为了线程运行在jvm上
+	kt中协程可以理解为异步编程的同步写法
+	java中开线程做耗时操作，然后通过回调把结果通知给调用线程，这种方式的缺陷是会造成回调嵌套，导致代码复杂。
+	
+
+	协程：是一种比线程更轻量级的组件，推广了协作式多任务的子程序，允许执行被挂起和恢复。协程更适合用来实现彼此熟悉的程序组件，如协作式多任务，异常处理，事件循环，迭代器，无限列表和管道。
+	同线程比较：
+		协程非常类似线程，但是协程式协作式多任务的，而线程是抢占式多任务的。这意味着协程提供并发行而非并行性。协程超过线程的好处是，协程之间的切换不需要涉及任何系统调用或任何阻塞调用。
+		这里不需要用来守卫关键区块的同步性源语比如互斥锁，信号量等，并且不需要来自操作系统的支持。
+	kotlin中使用协程方法更像同步代码的方法，业务逻辑更简洁直观，但是并不意味着协程在效率上比线程高。
+
+122、kt中使用线程
+	源码见project/KotlinStart项目 coroutine.KTThread.kt	
+	Thread {//使用Thread类，在匿名函数中实现线程任务，需要start才能执行
+        	Thread.currentThread().name = "subThread1"
+        	Thread.sleep(3000)
+        	println("[${Thread.currentThread().name}] hello world1 ")
+    	}.start()
+
+    	thread {//使用thread匿名方法，直接启动线程任务，不需要start
+        	Thread.currentThread().name = "subThread2"
+        	println("[${Thread.currentThread().name}] hello world2")
+    	}
+
+123、协程—CoroutineScope
+	源码见project/KotlinStart项目 coroutine.KTCoroutineScope.kt
+
+	suspend fun main(){
+    		/**
+	        * CoroutineScope : 是一个suspend函数，创建一个新的协程作用域，并在该作用域执行指定代码块
+     		*                  它并不启动协程，其存在的目的是进行符合结构化并发的并行分解（即长耗时任务拆分为并发的多个短耗时任务）
+     		* Dispatchers.IO：一般耗时操作可以放在IO调度器中
+     		* Dispatchers.Default:密集计算，多核效率会更高
+     		* Dispatchers.Main:android主线程
+     		*
+     		* CoroutineScope作用域中只能执行suspend函数
+     		*
+     		*/
+    		val cs = CoroutineScope(Dispatchers.IO).launch {
+        		work1()
+    		}
+    		cs.join()//join类似 java c++中线程的join，前提是调用方法（比如这里是main函数），也必须是suspend的
+    		CoroutineScope(Dispatchers.IO).launch {
+        		log("协程2开始")
+        		delay(1000)
+        		log("协程2结束")
+    		}
+    		log("主线程")
+    		Thread.sleep(2000)//这里睡眠一下，否则主线程退出， 协程也会停止
+
+
+    		val cs2 = CoroutineScope(Dispatchers.Default).launch {
+        		log("sc start")
+        		delay(3000)
+        		log("sc finish")
+    		}
+    		Thread.sleep(500)
+    		log("cs.isActive ${cs2.isActive}")
+    		cs2.cancel()//CoroutineScope返回的协程对象可以取消
+
+    		log("app finish")
+	}
+
+	/**
+	 * suspend关键字：用于暂停执行当前协程，并保存所有局部变量，被标记为suspend的函数只能运行在协程或者其他suspend函数
+	 *              inline函数可以放在suspend函数中
+	 */
+	private suspend fun work1(){
+    		println("[${Thread.currentThread().name}] 协程1开始")
+    		delay(1000)
+    		println("[${Thread.currentThread().name}] 协程1结束")
+	}
+
+124、协程-runBlocking
+	源码见project/KotlinStart项目 coroutine.KTRunBlocking.kt
+	fun main(){
+   		 //不指定调度器，runBlocking会依赖调用的线程
+    		runBlocking {
+        		work1()
+    		}
+    		log("main 结束")
+
+    		//使用调度器，虽然在其他线程执行，但是依然会阻塞当前线程
+    		runBlocking(Dispatchers.IO) {
+        		log("协程2开始")
+        		delay(500)
+        		log("协程2结束")
+    		}
+
+    		//代码块最后一行在执行结束后返回调用者
+    		val result = runBlocking {
+        		delay(500)
+        		"work finish"
+    		}
+    		log("result:$result")
+	}
+
+	private suspend fun work1(){
+    		log("协程1开始")
+    		delay(500)
+    		log("协程1结束")
+	}
+
+125、协程-GlobalScope
+	源码见project/KotlinStart项目 coroutine.KTGlobalScope.kt
+	
+	log("process start")
+    	//GlobalScope代表整个程序的生命周期
+    	//比如android Activity中使用GlobalScope，那么就是整个进程的声明周期，即使Activity被销毁，当前协程任务依然会继续执行
+    	GlobalScope.launch {
+        	delay(1000)
+        	log("hello from GlobalScope.launch")
+    	}
+	//    GlobalScope.cancel()虽然提供了cancel方法，但是外部调用会报错，这里的cancel只能由其内部根据进程声明周期自行调用
+    	Thread.sleep(2000)//如果不加这句话进程跑完就结束了，协程任务没执行完也会停止
+    	log("process finish")
+
+126、GlobalScope和CorountineScope的区别
+	GlobalScope是全局声明周期，所以不能cancel
+	CorountineScope 声明周期是任务本身执行的周期，在任务执行期间可以随时cancel,使用起来更灵活
+
+127、Launch的使用和源码详解
+	源码见project/KotlinStart项目 coroutine.KTLaunch.kt
+	launch是协程中比较重要的方法，可以在一个协程代码块中继续执行另一个协程任务
+	默认情况下launch中会使用一个空的Context
+
+	private fun runLaunch() = runBlocking {
+    		log("aa")//[main] aa
+    		launch (Dispatchers.IO){
+        		log("bb")//[DefaultDispatcher-worker-1] bb
+    		}
+    		//不指定调度器的情况下，这个launch会继承外部（runBlocking）的调度器
+    		launch {
+        		log("cc")//[main] cc
+    		}
+    		launch(CoroutineName("coroutine1")){
+        		//[main] dd name : CoroutineName(coroutine1)
+        		//从上下文context中读取协程名字
+        		//[main] dd name : CoroutineName(coroutine1)
+        		log("dd name : ${coroutineContext[CoroutineName].toString()}")
+    		}
+
+    		val job = launch {
+        		log("e start")
+        		log("e end")
+    		}
+    		//job在调度的时候是异步而且耗时的，所以job中的任务有可能还没执行，就被这里cancel掉了
+    		job.cancel()
+
+    		//通过设置start 为 CoroutineStart.ATOMIC，可以提升任务的执行速度。
+    		//协程立即启动，但是不能在没有执行的时候被取消
+    		val job2 = launch(start = CoroutineStart.ATOMIC) {
+        		log("f start")
+        		delay(500)
+        		log("f end")
+    		}
+    		job2.cancel()
+
+    		//通过设置start 为 CoroutineStart.LAZY,可以让当前任务不立即执行，直到start被调用
+    		val job3 = launch(start = CoroutineStart.LAZY) {
+        		log("g start")
+        		delay(500)
+        		log("g end")
+    		}
+    		log("g init finish")
+    		job3.start()
+	}
+
+128、async
+	源码见project/KotlinStart项目 coroutine.KTAsync.kt
+	runBlocking {
+        	//相对于launch，async是异步执行的，并且能够返回异步执行结果
+        	//这里即使是使用ATOMIC的方式，依然不会立即执行，不像launch那样几乎是立即执行了
+        	//如果这里使用的是LAZY,那么任务会在调用await的时候才会启动，或者调用start也可以启动
+        	val d = async(start = CoroutineStart.ATOMIC) {
+            		log("test working")
+            		delay(1000)
+            		202//最后一行的值会被返回给外部，外部通过 .await()方法阻塞等待返回的值
+        	}
+        	log("blocking 1")//async是非阻塞的，这句话会继续执行
+        	log("blocking 2")//async是非阻塞的，这句话会继续执行
+        	log("blocking 3")//async是非阻塞的，这句话会继续执行
+        	log("blocking 4")//async是非阻塞的，这句话会继续执行
+
+        	//阻塞并等待结果
+        	//d.getCompleted()可以立即返回结果，但是如果任务没有执行完毕，或者被取消，会抛出相应的异常
+        	log("async result : ${d.await()}")
+        	log("blocking 2")
+    	}
+
+129、协程-select表达式
+	源码见project/KotlinStart项目 coroutine.KTSelect.kt
+	private class Product(val name:String)
+	
+	private suspend fun createProduct(name:String,time:Long):Product{
+   		 delay(time)
+    		return Product(name)
+	}
+
+	调用：
+	runBlocking {
+        	/**
+         	* select 用于多个协程在执行的时候，选择最快的那个结果
+         	*/
+        	val product = select{
+            		async {
+                		createProduct("product1",500)
+            		}.onAwait{
+                		it//当任务执行完毕，返回执行结果
+            		}
+
+            		async {
+                		createProduct("product2",1000)
+            		}.onAwait{
+                		it
+            		}
+        	}
+        	log("${product.name} created")//product1耗时最短，此时返回的是product1
+    	}	
+
+130、协程-withContext
+	码见project/KotlinStart项目 coroutine.KTWithContext.kt
+	    
+	runBlocking(Dispatchers.IO) {
+        	log("CoroutineDispatcher is ${coroutineContext[CoroutineDispatcher]}")
+        	//通过withContext把当前协程切换到其他线程池中，
+        	//比如在android里，可以通过withContext切换到主线程
+        	//最后一行的结果可以返回给外部
+        	//在执行完之前，这里是阻塞的（或者说，在执行withContext任务的时候，这里是挂起的）
+        	val result = withContext(Dispatchers.Default){
+            		log("withContext is ${coroutineContext[CoroutineDispatcher]}")
+            		delay(500)
+            		"success"
+        	}
+        	log("result : $result")
+    	}
+
+131、suspend和inline
+	码见project/KotlinStart项目 coroutine.KTSuspend.kt
+	/**
+	 * suspend 挂起函数，用于协程中执行
+	 * delay 和 Thread.sleep的区别：sleep是当前线程睡眠，如果在协程代码块中使用线程的sleep，那么运行在当前线程的其他协程任务也运行不了
+	 *                            delay，让当前协程挂起，不会影响执行其他协程，即便其他协程和当前协程运行在同一个线程上也没关系
+	 * 一般再在suspend中使用了线程的停止函数，比如sleep,wait等，编译器会提示，所以推荐在协程中调用的函数都使用suspend关键字
+	 * suspend + inline方式定义函数，编译器会做一定的协程效率优化
+	 */
+	private suspend inline fun test(){
+    		delay(500)
+	}
+
+	调用：
+		runBlocking {
+       			test()
+       			log("test finish")
+   		}
+
+
