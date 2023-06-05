@@ -60,13 +60,73 @@
 			从专有数据库中提取.class文件
 			将java源文件动态编译为.class文件，比如动态代理(动态代理在编译器是不存在这个类的，只有在运行期在存在) jsp文件(jsp文件中可以嵌入java代码，jsp最终会转化为servlet)
 	3.8) 类加载例子：
-		源码见 project/jvm_lecture项目 com.sandro.classloader.Test1，com.sandro.classloader.Test2
+		源码见 project/jvm_lecture项目 com.sandro.classloader.Test1，com.sandro.classloader.Test2，com.sandro.classloader.Test3
 		对于静态字段来说，只有直接定义了这个字段的类在首次主动使用的时候才会初始化，通过子类调用父类的静态字段，子类不会在首次主动使用的时候初始化
-		
+	
+	        -XX:+TraceClassLoading 用于追踪类的加载信息并打印出来
+ 	        比如在class根目录中运行:
+	        ..../jvm_lecture/out/production/jvm_lecture$ java -XX:+TraceClassLoading com.sandro.classloader.Test1	
+	   	
+  	        输出如下：
+			..... //jdk的一些类
+			[Loaded com.sandro.classloader.Test1 from file:/home/sandro/mywork/gitwork/sandro/project/jvm_lecture/out/production/jvm_lecture/]//进程主类
+			.....//jdk的一些类
+			[Loaded com.sandro.classloader.Test1$Parent from file:/home/sandro/mywork/gitwork/sandro/project/jvm_lecture/out/production/jvm_lecture/]
+			[Loaded com.sandro.classloader.Test1$Child from file:/home/sandro/mywork/gitwork/sandro/project/jvm_lecture/out/production/jvm_lecture/]
+   	
+5、jvm参数
+	一般jvm参数都是已 -XX:开头的
+	一般写法有如下几种：
+	5.1）布尔类型的设置
+		-XX:+<option> ,表示开启 <option>选项，比如：java -XX:+TraceClassLoading com.xxx.xxx.MainClass
+		-XX:-<option> ,表示关闭 <option>选项，jvm有些选项是默认开启的，如果在启动某个进程时候不想用某个已经开启的选项，可以通过"-"关闭
+	5.2）赋值设置
+		-XX:<option>=<value> 表示将option选项的值设置为value,如：-XX:SurvivorRatio=8,表示eden区与survivior区大小比例为8比1
+	
+4、常量的本质含义与反编译及助记符详解
+	源码见 project/jvm_lecture项目 com.sandro.classloader.Test3
+	final修饰的字符串是常量，在编译阶段这个常量就已经保存在调用这个常量的方法所在类的常量池中了
 			
-		
-	
-	
+	通过 javap -c com.sandro.classloader.Test3反编译
+	如下：
+		sandro@sandro-Lenovo-XiaoXin-V4000:~/mywork/gitwork/sandro/project/jvm_lecture/out/production/jvm_lecture$ javap -c com.sandro.classloader.Test3
+		Compiled from "Test3.java"
+		public class com.sandro.classloader.Test3 {
+  			public com.sandro.classloader.Test3();
+    				Code:
+       					0: aload_0
+       					1: invokespecial #1                  // Method java/lang/Object."<init>":()V
+       					4: return
+
+  			public static void main(java.lang.String[]);
+    				Code:
+       					0: getstatic     #2                  // Field java/lang/System.out:Ljava/io/PrintStream;
+       					3: ldc           #4                  // String hello world
+       					5: invokevirtual #5                  // Method java/io/PrintStream.println:(Ljava/lang/String;)V
+       					8: getstatic     #2                  // Field java/lang/System.out:Ljava/io/PrintStream;
+      					11: bipush        567
+      					13: invokevirtual #6                  // Method java/io/PrintStream.println:(I)V
+      					16: getstatic     #2                  // Field java/lang/System.out:Ljava/io/PrintStream;
+      					19: new           #7                  // class java/lang/StringBuilder
+      					22: dup
+      					23: invokespecial #8                  // Method java/lang/StringBuilder."<init>":()V
+      					26: ldc           #9                  // String list size is
+      					28: invokevirtual #10                 // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+      					31: getstatic     #11                 // Field com/sandro/classloader/Test3$Parent.list:Ljava/util/List;
+      					34: invokeinterface #12,  1           // InterfaceMethod java/util/List.size:()I
+      					39: invokevirtual #13                 // Method java/lang/StringBuilder.append:(I)Ljava/lang/StringBuilder;
+      					42: invokevirtual #14                 // Method java/lang/StringBuilder.toString:()Ljava/lang/String;
+      					45: invokevirtual #5                  // Method java/io/PrintStream.println:(Ljava/lang/String;)V
+      					48: return
+
+		}
+
+	助记符：
+	ldc : 表示将int,float 或者 String类型的常量值从常量池中推送置栈顶	
+	bipush:表示将单字节(-128~127)的常量推送置栈顶，从测试结果看567也用的是bipush，可能和cpu是64位有关也可能根虚拟机版本等有关系，这个范围不是固定的
+	sipush:表示将一个短整形常量值（-32768~32767）推送到栈顶，可能和cpu是64位有关也可能根虚拟机版本等有关系，这个范围不是固定的
+	iconst_1:表示将int类型的数字1推送置栈顶，最多到iconst_5,也就是说jvm对int类型 -1～5单独设置了助记符, -1对应的助记符iconst_m1
+	助记符的实现在rt.jar中，都有相应的源码可以查看，比如ldc bipush等就在com.sun.org.apache.bcel.internal.generic包下
 	
 
 
