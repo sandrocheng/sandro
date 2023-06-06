@@ -9,15 +9,14 @@ public class Test5 {
 
         /**
          * 此时Parent2没有初始化
-         * 因为这句话是类数组的实例化，并不是类的实例化
+         * 因为这句话是类数组的实例化，并不是类的实例化，所以Parent2不会初始化
          * class [Lcom.sandro.classloader.Test5$Parent2;
-         *
          */
         Parent2[] ps = new Parent2[3];
         System.out.println(ps.getClass());
 
         /**
-         * 二维数组实例，依然不会让Parent2类实例化
+         * 二维数组实例，依然不会让Parent2类初始化
          * class [[Lcom.sandro.classloader.Test5$Parent2;
          */
         Parent2[][] pss = new Parent2[1][1];
