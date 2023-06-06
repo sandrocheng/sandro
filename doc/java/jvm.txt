@@ -127,6 +127,21 @@
 	sipush:表示将一个短整形常量值（-32768~32767）推送到栈顶，可能和cpu是64位有关也可能根虚拟机版本等有关系，这个范围不是固定的
 	iconst_1:表示将int类型的数字1推送置栈顶，最多到iconst_5,也就是说jvm对int类型 -1～5单独设置了助记符, -1对应的助记符iconst_m1
 	助记符的实现在rt.jar中，都有相应的源码可以查看，比如ldc bipush等就在com.sun.org.apache.bcel.internal.generic包下
+
+5、编译期常量与运行期常量的区别
+	源码见 project/jvm_lecture项目 com.sandro.classloader.Test4 
+	当一个常量的值如果不能在编译期间确定，那么其值就不会被放到调用类的常量池中
+	这时在运行程序时，会导致主动使用这个常量所在的类，这个类就肯定会被初始化
+	
+6、数组创建本质分析
+	源码见 project/jvm_lecture项目 com.sandro.classloader.Test5
+	对于数组实例来说，其类型是由JVM在运行期动态生成的，表示为[Lcom.xxx.xxx
+	动态生成的类型其父类是Object
+	对于数组来说，JavaDoc经常构成数组的元素为Component，实际上就是将数组降低一个维度后的类型。
+	助记符：
+		anewarray，表示创建一个引用类型的（如类，接口，数组）数组，并将其引用值压入栈顶
+		newarray,表示创建一个指定的原始类型（如：int,char,short等）的数组，并将其引用压入栈顶
+	
 	
 
 
