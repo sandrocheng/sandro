@@ -13,12 +13,12 @@ public class Test6 {
     public static void main(String[] args){
         /**
          * Child.parents是常量，此时在Test6中的常量池中已经存在这个变量了
-         * 因此Child和Parent都不会初始化
+         * 因此Child和Parent都不会初始化，通过-XX:+TraceClassLoading会发现这两个类也没有被加载
          */
         System.out.println(Child.parents);
         /**
-         * Child2的属性变量在编译期间不确定，所以此时Child2是需要被初始化的
-         * 同时做为父类Parent也会被初始化
+         * Child2的属性变量在编译期间不确定，所以此时Child2是需要被加载并且初始化的
+         * 同时做为父接口Parent也会被初始化
          */
         System.out.println(Child2.parents);
 
