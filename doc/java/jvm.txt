@@ -275,11 +275,13 @@
  	   如果loader1本身加载失败，就抛异常了
 	
 	   虚拟机自带了以下几种加载器
-		-根类加载器(Bootstrap): 该加载器没有父加载器。它负责加载虚拟机的核心类库，如java.lang.*等。
-		                        类如java.lang.Object就是由根类加载器加载的。根类加载器从系统属性sun.boot.class.path所指定的目录中加载类库。
-					根类加载器的实现依赖于底层操作系统，属于虚拟机的实现的一部分，它并没有继承java.lang.ClassLoader类。
-		-扩展类加载器（Extension）: 它的父加载器为根类加载器。它从java.ext.dirs系统属性所指定的目录中加载类库，或者从JDK的安装目录的 jre\lib\ext子目录(扩展目录)中加载类库
-					    如果把用户创建的JAR文件放在这个目录下，也会自动由扩展类加载器加载。扩展类加载器是纯JAVA类，是java.lang.ClassLoader类的子类。
+		-根类加载器(Bootstrap ClassLoader): 也叫启动类加载器，该加载器没有父加载器。它负责加载虚拟机的核心类库，如java.lang.*等。
+		                                    类如java.lang.Object就是由根类加载器加载的。根类加载器从系统属性sun.boot.class.path所指定的目录中加载类库。
+					            根类加载器的实现依赖于底层操作系统，由c++实现，属于虚拟机的实现的一部分，它并没有继承java.lang.ClassLoader类。
+						    加载$JAVA_HOME中 jre/lib/rt.java
+	
+		-扩展类加载器（Extension ClassLoader）: 它的父加载器为根类加载器。它从java.ext.dirs系统属性所指定的目录中加载类库，或者从JDK的安装目录的 jre\lib\ext子目录(扩展目录)中加载类库
+					                如果把用户创建的JAR文件放在这个目录下，也会自动由扩展类加载器加载。扩展类加载器是纯JAVA类，是java.lang.ClassLoader类的子类。
 		-系统加载器（System):也成为应用类加载器，它的父加载器为扩展类加载器。它从环境变量classpath或者系统属性java.class.path所指定的目录中加载类。
 				     它是用户自定义的类加载器的默认父类加载器。系统类加载器是纯JAVA类，是java.lang.ClassLoader类的子类
 	   除了以上虚拟机自带的加载器外，用户还可以定制自己的类加载器。java提供了抽象类java.lang.ClassLoader，所有用户自定义的类加载都应该继承ClassLoader类。
@@ -297,4 +299,47 @@
 	   	比如 系统类加载要加载一个类，先交给父亲扩展类加载器加载，扩展类加载器会继续向上交给根类加载器加载，如果此时根类加载器加载不了，则会重新返回给扩展类加载器加载
 		     扩展类加载器如果也加载不了，则最后只能返回给系统类加载器去加载。这个时候如果系统类加载器也加载不了，就会抛异常了
 			
+10、类加载双亲委托机制详解
+	1）类加载的父亲（双亲）委托机制
+	   在父亲委托机制中，各个加载器按照父子关系形成了属性结构，除了根类加载器之外，其余加载器都有且只有一个父加载器
+                       
+                             根类加载器
+                                 ⬆
+                            扩展类加载器
+                                 ⬆
+                            系统类加载器-----+
+	                         ⬆ 委托      ↓ 加载动作通过loader1委托给系统加载器类，一般工程中的类实际上都是系统类加载器实际完成的
+                               loader1<-----加载-----> Sample类 
+                                 ⬆
+                               loader2       
+                                                         
+         
+	2）类加载器查询加载器示意图
+            
+         ⬆                                           ↓ 
+ 	 ⬆ 1.                                        ↓ 
+	 ⬆ 自        +--------------------------+    ↓ 
+	 ⬆ 底        |ClassLoader Architecture  |    ↓ 
+	 ⬆ 向        |                          |    ↓ 2.
+	 ⬆ 上        |     Bootstrap ClassLoader|    ↓ 自 ---------> Load JRE/lib/rt.jar或者 -Xbootclasspath选项指定的jar包
+	 ⬆ 检        |                          |    ↓ 顶
+	 ⬆ 查        |                          |    ↓ 向
+	 ⬆ 类        |     Extension ClassLoader|    ↓ 下 ---------> Load JRE/lib/ext/*.jar或 -Djava.ext.dirs指定目录下的jar包
+         ⬆ 是        |                          |    ↓ 尝
+	 ⬆ 否        |                          |    ↓ 试   
+	 ⬆ 已        |      App ClassLoader     |    ↓ 加 ---------> Load CLASSPATH或 -Djava.class.path所指定的目录下的类和jar包
+         ⬆ 经        |                          |    ↓ 载
+	 ⬆ 加        |                          |    ↓ 类 
+	 ⬆ 载        |      Custom ClassLoader  |    ↓    ---------> 通过java.lang.ClassLoader的子类自定义加载class
+         ⬆           +-------------------------+     ↓
+         ⬆                                           ↓
+	
+	3)定义类加载器和初始类加载器
+	  -若有一个类加载器能够成功加载用户自己编写的Test类，那么这个类加载器被成为定义类加载器  
+ 	  -所有能成功返回Class对象引用的类加载（包括定义类加载器）都被成为初始类加载器
+          -比如 1）图中所示，loader1尝试加载 Sample类，最终实际上是系统类加载器加载成功，那么此时系统类加载器就被称为定义类加载器，
+		   因为sample类对象的引用是从loader1中返回的，因此loader1是初始类加载器，loader1的父亲也是处是类加载器
 
+	4)使用类加载器加载class
+	  源码见 project/jvm_lecture项目 com.sandro.classloader.Test11
+	  
