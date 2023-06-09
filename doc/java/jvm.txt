@@ -331,7 +331,7 @@
          ⬆ 经        |                          |    ↓ 载
 	 ⬆ 加        |                          |    ↓ 类 
 	 ⬆ 载        |      Custom ClassLoader  |    ↓    ---------> 通过java.lang.ClassLoader的子类自定义加载class
-         ⬆           +-------------------------+     ↓
+         ⬆           +--------------------------+    ↓
          ⬆                                           ↓
 	
 	3)定义类加载器和初始类加载器
@@ -343,3 +343,18 @@
 	4)使用类加载器加载class
 	  源码见 project/jvm_lecture项目 com.sandro.classloader.Test11
 	  
+11、类加载器与类初始化案例
+	1）演示类的常量和静态变量读取时，类的初始化例子
+	   源码见 project/jvm_lecture项目 com.sandro.classloader.Test8
+	
+	2）演示类加载和初始化顺序的例子
+	   源码见 project/jvm_lecture项目 com.sandro.classloader.Test12
+	
+        3）类的实例化导致初始化的例子
+           源码见 project/jvm_lecture项目 com.sandro.classloader.Test13
+
+	4）通过子类调用父类的静态变量和静态方法，都只能算是对父类的主动使用 案例
+	   源码见 project/jvm_lecture项目 com.sandro.classloader.Test14
+
+	5）通过classloader加载的class对象不会初始化，通过反射加载的class对象会让类初始化
+	   源码见 project/jvm_lecture项目 com.sandro.classloader.Test14	
