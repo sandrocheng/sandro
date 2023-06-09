@@ -357,4 +357,19 @@
 	   源码见 project/jvm_lecture项目 com.sandro.classloader.Test14
 
 	5）通过classloader加载的class对象不会初始化，通过反射加载的class对象会让类初始化
-	   源码见 project/jvm_lecture项目 com.sandro.classloader.Test14	
+	   源码见 project/jvm_lecture项目 com.sandro.classloader.Test15	
+
+12、不同的类加载器作用与加载器动作分析
+	1) 读取系统类加载器，并循环读取其所有的父加载器
+	   源码见 project/jvm_lecture项目 com.sandro.classloader.Test16
+
+	2) 上下文类加载器，通过类加载器读取资源在磁盘上的路径
+	   源码见 project/jvm_lecture项目 com.sandro.classloader.Test17
+
+	3) 获得Classloader的途径
+	   clazz.getClassLoader();//获取当前类的ClassLoader
+	   Thread.currentThread().getContextClassLoader();//获得当前线程上下文的classloader
+	   ClassLoader.getSystemClassLoader();//获取系统类加载器
+	   DriverManager.getCallerClassLoader();//获得调用者的ClassLoader
+
+
