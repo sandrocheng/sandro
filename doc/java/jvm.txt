@@ -372,4 +372,17 @@
 	   ClassLoader.getSystemClassLoader();//获取系统类加载器
 	   DriverManager.getCallerClassLoader();//获得调用者的ClassLoader
 
-
+13、ClassLoader源码分析与实例剖析
+	ClassLoader抽象类，要自定义加载器必须要继承ClassLoader
+	ClassLoader加载类的时候需要二进制文件名
+	如：
+          "java.lang.String"
+    	  "javax.swing.JSpinner$DefaultEditor"
+          "java.security.KeyStore$Builder$FileBuilder$1"
+          "java.net.URLClassLoader$3$1"
+	每一个class对象都包含一个定义这个类的ClassLoader
+	
+	数组类型对应的class对象并不是classloader创建的，它是jvm根据需要自动创建的，数组使用的类加载器和数组元素的类加载器是一样的，如果数组中的元素是源是类型，那么数组类是没有类加载器的
+	案例： project/jvm_lecture项目 com.sandro.classloader.Test18
+	
+	

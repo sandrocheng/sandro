@@ -24,6 +24,5 @@ public class Test17 {
             URL url = urls.nextElement();
             System.out.println(url);
         }
-        
     }
 }
