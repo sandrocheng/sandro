@@ -2,6 +2,9 @@ package com.sandro.classloader;
 
 /**
  * 命名空间案例
+ * 命名空间中的类加载关系：
+ *        子加载器加载的类，可以访问父加载器加载过的类
+ *        而父加载器加载的类，不能访问子加载器加载的类
  */
 public class Test22 {
     public static void main(String[] args) throws ClassNotFoundException {
