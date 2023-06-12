@@ -66,7 +66,7 @@ public class Test19 {
          */
         @Override
         protected Class<?> findClass(String className) throws ClassNotFoundException {
-            System.out.println("MyClassLoader findClass : " + className);
+            System.out.println("MyClassLoader【 " + this.classLoaderName  + " 】 findClass : " + className);
             byte[] data = this.loadClassData(className);
             if(data == null){
                 throw new ClassNotFoundException("MyClassLoader findClass failed [" + className + "]");
