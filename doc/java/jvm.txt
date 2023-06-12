@@ -465,4 +465,19 @@
 		在~project/jvm_lecture/out/production/jvm_lecture目录下运行 设置扩展类加载器命令
 		java -Djava.ext.dirs=./ com.sandro.classloader.Test25
 		-D 一般是运行时设置，java.ext.dirs=./ 将当前目录设置为扩展类加载器需要加载的类路径
-     	
+
+23、平台特定的启动类加载器深入分析
+	project/jvm_lecture项目 com.sandro.classloader.Test25
+	在运行期，一个java类是由该类的完全限定名(binary name,二进制名)和用于加载该类的定义类加载器(defining loader)所共同决定的
+	如果同样名字(相同的完全限定名)的类是由两个不同的加载器所加载，那么这些类就是不同的，即使class文件的字节码完全一样，并且从相同的位值加载亦如此
+
+	ClassLoader存在于rt.jar，它是由启动类加载器加载的。启动类加载器是c++编写的它内建于jvm中。
+	扩展类加载器和应用类加载器是在jvm启动的时候被启动类加载器加载（Bootstrap ,这是一个特殊机器码，是特定于平台的机器指令，它负责开始整个加载过程）
+	加载第一个纯java类加载器就是启动类加载器的职责
+	启动类加载器还会负责加载供JRE正常运行所需要的基本组件，这包括java.util与java.lang包中的类等等。
+
+	
+	
+	
+	
+	     	

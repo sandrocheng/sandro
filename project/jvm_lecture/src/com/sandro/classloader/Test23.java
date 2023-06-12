@@ -32,7 +32,7 @@ public class Test23 {
      * 各加载器中文件的路径
      */
     private static void printClassPath(){
-        //系统类加载器 类文件路径
+        //根类加载器 类文件路径
         System.out.println(System.getProperty("sun.boot.class.path"));
         //扩展类加载器 类文件路径
         System.out.println(System.getProperty("java.ext.dirs"));
