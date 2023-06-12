@@ -433,4 +433,10 @@
 
 18、类加载器的命名空间案例
 	project/jvm_lecture项目 com.sandro.classloader.Test22
-		
+
+19、jvm各种加载器类的路径和设置
+	project/jvm_lecture项目 com.sandro.classloader.Test23	
+	
+	扩展类加载器类路径设置方法：
+		java -Djava.ext.dirs = ./com.xxx.xxxx.xxx
+		将当前目录中的类设置为扩展加载器加载的类路径，这样修改该以后，其他的所有扩展包都无法加载了，要小心使用

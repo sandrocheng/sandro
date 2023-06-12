@@ -95,15 +95,17 @@ public class Test19 {
                 }
                 data = baos.toByteArray();
             } catch (FileNotFoundException e) {
-                e.printStackTrace();
+                return null;
             } catch (IOException e) {
-                e.printStackTrace();
+                return null;
             }finally {
-                try {
-                    is.close();
-                    baos.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
+                if(is != null){
+                    try {
+                        is.close();
+                        baos.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
             return data;

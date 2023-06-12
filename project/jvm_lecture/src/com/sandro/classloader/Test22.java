@@ -1,5 +1,8 @@
 package com.sandro.classloader;
 
+/**
+ * 命名空间案例
+ */
 public class Test22 {
     public static void main(String[] args) throws ClassNotFoundException {
         Test19.MyClassLoader loader1 = new Test19.MyClassLoader("loader1");
