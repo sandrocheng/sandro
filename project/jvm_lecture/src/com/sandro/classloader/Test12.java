@@ -14,6 +14,9 @@ class Test12Child extends Test12Parent{
     }
 }
 
+/**
+ * 演示类加载和初始化顺序的例子
+ */
 public class Test12 {
     static {
         System.out.println("Test12 static block");

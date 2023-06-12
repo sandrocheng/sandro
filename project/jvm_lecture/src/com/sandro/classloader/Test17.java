@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Enumeration;
 
+/**
+ * 上下文类加载器，通过类加载器读取资源在磁盘上的路径
+ */
 public class Test17 {
     public static void main(String[] args) throws IOException {
         /**

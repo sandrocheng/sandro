@@ -2,6 +2,9 @@ package com.sandro.classloader;
 
 import java.util.Random;
 
+/**
+ * 演示类的常量和静态变量读取时，类的初始化例子
+ */
 public class Test8 {
     public static void main(String[] args) {
         /**

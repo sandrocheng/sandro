@@ -1,5 +1,8 @@
 package com.sandro.classloader;
 
+/**
+ * 自定义类加载器在复杂情况下的运行分析
+ */
 public class Test21 {
     public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
         Test19.MyClassLoader loader1 = new Test19.MyClassLoader("loader1");

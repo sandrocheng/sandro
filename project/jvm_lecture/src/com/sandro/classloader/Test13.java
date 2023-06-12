@@ -14,6 +14,9 @@ class Test13Child extends Test13Parent{
     }
 }
 
+/**
+ * 类的实例化导致初始化的例子
+ */
 public class Test13 {
     static {
         System.out.println("Test13 static block");

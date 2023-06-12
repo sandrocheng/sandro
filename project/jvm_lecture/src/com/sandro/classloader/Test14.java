@@ -17,6 +17,9 @@ class Test14Child extends Test14Parent{
     }
 }
 
+/**
+ * 通过子类调用父类的静态变量和静态方法，都只能算是对父类的主动使用 案例
+ */
 public class Test14 {
     public static void main(String[] args) {
         /**

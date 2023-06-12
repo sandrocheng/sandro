@@ -2,6 +2,9 @@ package com.sandro.classloader;
 
 import java.util.Random;
 
+/**
+ * 接口初始化规则
+ */
 public class Test6 {
 
     /**

@@ -1,5 +1,8 @@
 package com.sandro.classloader;
 
+/**
+ * 数组类型对应的class对象并不是classloader创建的
+ */
 public class Test18 {
     public static void main(String[] args) {
         String[] strArr = new String[]{"1","2"};

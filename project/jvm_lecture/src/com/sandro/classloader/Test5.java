@@ -1,5 +1,8 @@
 package com.sandro.classloader;
 
+/**
+ * 数组创建本质分析
+ */
 public class Test5 {
     public static void main(String[] args) {
         /**

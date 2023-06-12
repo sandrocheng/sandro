@@ -1,7 +1,8 @@
 package com.sandro.classloader;
 
-import java.sql.DriverManager;
-
+/**
+ * 读取系统类加载器，并循环读取其所有的父加载器
+ */
 public class Test16 {
     public static void main(String[] args) {
         ClassLoader classLoader = ClassLoader.getSystemClassLoader();

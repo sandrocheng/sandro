@@ -3,6 +3,9 @@ package com.sandro.classloader;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 对于静态字段来说，只有直接定义了这个字段的类在首次主动使用的时候才会初始化，通过子类调用父类的静态字段，子类不会在首次主动使用的时候初始化
+ */
 public class Test3 {
     public static void main(String[] args) {
         /**

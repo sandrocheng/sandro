@@ -191,7 +191,7 @@
 		      -java.lang.ClassLoader的子类
 		      -用户可以定制类的加载方式
          -类加载器并不需要等到某个类被“首次主动使用”时再加载它，比如使用-XX:+TraceClassLoading 就能看到每个类加载的顺序  
-	  源码分析详见 project/jvm_lecture项目 com.sandro.classloader.Test1
+	  源码分析详见 project/jvm_lecture项目 com.sandro.classloader.Test7
 	  原因：
 		1)jvm规范允许类加载器在预料某个类将要被使用时就预先加载它。
 		  如果在预先加载的过程中遇到了.class文件缺失或存在错误，类加载器必须在程序首次主动使用该类时才报告错误(LinkageError错误)
@@ -454,7 +454,15 @@
 	3)不同的类加载器可以为相同名称(binary name)的类创建额外的命名空间，相同名称的类可以并存在jvm中只需要用不同的类加载器来加载他们即可。
 	  不同类加载器所加载的类之间是不兼容的，这就相当于在jvm内部创建了一个又一个相互隔离的java类空间，这类技术在多框架中都得到了实际的应用。
         4)某些框架比如tomcat 会修改双亲委托模型以满足web开发的需要
-    
-      
-	
 
+22、扩展类加载器类路径设置要点
+	project/jvm_lecture项目 com.sandro.classloader.Test25
+	-扩展类加载器默认是加载jar包的，而不是class文件
+	 在class目录下运行jar命令给Test1打成jar包，并命名为test.jar
+	project/jvm_lecture/out/production/jvm_lecture$ jar cvf test.jar com/sandro/classloader/Test1.class
+	
+	-运行时设置扩展类加载器：
+		在~project/jvm_lecture/out/production/jvm_lecture目录下运行 设置扩展类加载器命令
+		java -Djava.ext.dirs=./ com.sandro.classloader.Test25
+		-D 一般是运行时设置，java.ext.dirs=./ 将当前目录设置为扩展类加载器需要加载的类路径
+     	
