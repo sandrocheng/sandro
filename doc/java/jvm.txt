@@ -423,4 +423,7 @@
 	 此外，所有java类都有一个静态属性class，它引用代表这个类的class对象
 
 	-类卸载的例子：project/jvm_lecture项目 com.sandro.classloader.Test20
+
+17、自定义类加载器在复杂情况下的运行分析
+	project/jvm_lecture项目 com.sandro.classloader.Test21
 		
