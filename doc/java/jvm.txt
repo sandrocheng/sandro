@@ -467,7 +467,7 @@
 		-D 一般是运行时设置，java.ext.dirs=./ 将当前目录设置为扩展类加载器需要加载的类路径
 
 23、平台特定的启动类加载器深入分析
-	project/jvm_lecture项目 com.sandro.classloader.Test25
+	project/jvm_lecture项目 com.sandro.classloader.Test26
 	在运行期，一个java类是由该类的完全限定名(binary name,二进制名)和用于加载该类的定义类加载器(defining loader)所共同决定的
 	如果同样名字(相同的完全限定名)的类是由两个不同的加载器所加载，那么这些类就是不同的，即使class文件的字节码完全一样，并且从相同的位值加载亦如此
 
@@ -476,8 +476,37 @@
 	加载第一个纯java类加载器就是启动类加载器的职责
 	启动类加载器还会负责加载供JRE正常运行所需要的基本组件，这包括java.util与java.lang包中的类等等。
 
-	
-	
-	
-	
-	     	
+24、类加载器源码分析
+	1）ClassLoader.getSystemClassLoader()
+	   -返回用于委托的系统类加载器。它是所有新的ClassLoader实例的默认的委托双亲。它也是通常用于启动应用的类加载器
+	    这个方法首先在运行期启动很早的时候就被调用，在被调用的时刻会创建系统类加载器，并且将其设置为所在线程的上下文类加载器(context class loader)	
+	    默认的系统类加载器是与这个类实现相关的实例
+	    如果系统属性 java.system.class.loader指定了一个类，那么这个类就会替换条默认的系统类加载器。这个类默认是系统类加载器加载的。这个类必须是ClassLoader的子类，并且实现了设置双亲的构造函数
+	    	protected ClassLoader(ClassLoader parent) 
+	    系统类加载器会作为这个自定义系统类加载器的父加载器
+	   
+           -源码说明：
+		initSystemClassLoader:ClassLoader创建的时候调用，
+                                      sclSet：如果设置了系统类加载器，就不再设置了
+				      scl:静态变量，保存当前系统类加载器
+				      sun.misc.Launcher:这里面定义了系统类加载器和应用类加载器，sun的Launcher没有开源，如果想看开源的代码可以查看openjdk开源代码
+                                                        官网:openjdk.java.net			
+	   	                                        在launcher构造方法中
+								1）创建扩展类加载器 ExtClassLoader.getExtClassLoader()
+								   在静态块中ClassLoader.registerAsParallerCapable()，注册了可以并行加载的接口
+								   这里面可以看到java.ext.dirs属性的作用，会读取这个属性目录的类文件
+								   并对每一个文件进行权限校验			
+								2）创建应用类加载器AppClassLoader.getAppClassLoader(extclassloader)
+								   这个对象赋值给一个Launcher的成员变量
+								   appclassloader从java.class.path路径中加载，并运行在一个安全受限的上下文中
+								   将extclassloader赋值给appclassloader的父加载器
+                                                                3) Thread.currentThread().setContetClassLoader(loader)
+                                                                   为当前的执行线程设置上下文类加载器
+								4）设置安全管理器
+                                      将Launchuer中的loader,实际上就是应用类夹杂器赋值给scl		   		
+				      对scl进行权限验证：SystemClassLoaderAction(scl)	              
+							 1)读取java.system.class.loader系统属性
+	                                                 2)如果为空，使用原有的应用类加载器
+							   如果不为空，反射生成对应的类加载器实例，并且把当前的应用类加载器设置为新实例的父加载器
+	     						 3)将新的应用类加载器设置到当前线程的上下文类加载器中
+					      			  
