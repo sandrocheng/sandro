@@ -540,4 +540,12 @@
 	-不使用jvm的双亲委托模式的理论子：tomact，tomcat为了让服务隔离，也重新实现了自己的类加载器，如果子类能加载，就加载，不去委托父加载器，这和传统的双亲委托模式完全相反了
 	 但是能非常好的使用服务器上多个web服务同时执行的情况
 
+26、上下文类加载器应用实例
+	-project/jvm_lecture项目 com.sandro.contextclassloader.Test102
+	 线程上下文类加载器的一般使用模式（获取->使用->还原）
+         当高层提供了统一的接口让底层区实现，同时又要在高层加载(实例化)底层的类时，就必须要通过上下文类加载器来帮助高层的ClassLoader找到并加载该类
+        
+	-jvm ServiceLoader通过上下文加载器加载mysql jdbc 驱动实现类的例子
+	 project/jvm_lecture项目 com.sandro.contextclassloader.Test103
+	
 				      			  
