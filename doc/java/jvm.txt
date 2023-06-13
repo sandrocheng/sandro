@@ -509,4 +509,35 @@
 	                                                 2)如果为空，使用原有的应用类加载器
 							   如果不为空，反射生成对应的类加载器实例，并且把当前的应用类加载器设置为新实例的父加载器
 	     						 3)将新的应用类加载器设置到当前线程的上下文类加载器中
-					      			  
+
+25、上下文类加载器
+	-project/jvm_lecture项目 com.sandro.contextclassloader.Test101
+	 当前类加载器：current Classloader ,用于加载当前类的加载器
+                      每各类都会使用自己的类加载器（即加载自身的类加载器）去加载其他类(这个类所依赖的其他类)
+		      比如：classX引用了classY,那么classX的加载器去加载classY(前提是classY没有被加载过)
+	-线程上下文类加载器：Context ClassLoader
+		            线程上下文类加载器，从JDK1.2开始引入
+			    get/setContextLoader()用于获取和设置一个类加载器
+		            如果没有设置的情况下，线程将继承其父线程上下文类加载器
+			    java应用运行时的初始线程的上下文类加载器，是应用类加载器
+        		    在线程中运行的代码可以同过该类加载器来加载类与资源
+	
+	-线程上下文类加载器的重要性
+ 	 比如JDBC连接方式：
+		Class.forName("com.mysql.driver.Driver");
+		Connection conn = Driver.getConnection();
+		Statement st = conn.getStatment();
+         JDBC是一套连接标准，它提供了基本的接口和标准类，这些类是在java核心库rt.jar的 java.sql中，比如java.sql.Connection
+	 这些接口是由启动加载器加载的，具体的实现是在各厂商数据库实现中，而厂商的类库是放在classpath中的，由应用类加载器加载                 
+	 基于加载器的双亲委托模式，启动类加载的类和接口（SPI，Service Provider Interface）无法加载应用类加载器中的类(厂商的接口实现)
+	 为了解决这个问题，jvm提供了线程上下文类加载器：父ClassLoader可以使用当前线程的Thread.currentThread().getContextClassLoader()去加载classpath中的类
+	 这就解决了父classloader不能使用子classloader加载的类的问题，即改变了双亲委托模型
+	
+        -总结：在双亲委托模型下，类加载是由下至上的，即下层的类加载器会委托上层加载器加载，但是对于SPI，有些接口是java核心库提供的
+               java核心库由启动类加载器加载，这些接口实现却来自与不同的jar包（厂商提供），java的启动类加载是不会加载其他来源的jar包
+	       这样传统双亲模型就无法满足SPI的要求，而通过给当前线程设置上下文类加载器，就可以由设置的上下文类加载器来加载接口实现类
+	-常见的SPI:JDBC，JNDI(java命名和目录接口标准)，JAXP(xml解析标准)，这些SPI接口实现类的加载都需要打破双亲委托模式才能执行。
+	-不使用jvm的双亲委托模式的理论子：tomact，tomcat为了让服务隔离，也重新实现了自己的类加载器，如果子类能加载，就加载，不去委托父加载器，这和传统的双亲委托模式完全相反了
+	 但是能非常好的使用服务器上多个web服务同时执行的情况
+
+				      			  
