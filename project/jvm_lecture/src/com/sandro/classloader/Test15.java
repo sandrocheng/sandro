@@ -8,6 +8,7 @@ class Test15Parent{
 }
 
 /**
+ * Class.forName 和 ClassLoader.loadclass 生成class的区别
  * 通过classloader加载的class对象不会初始化，通过反射加载的class对象会让类初始化
  */
 public class Test15 {
