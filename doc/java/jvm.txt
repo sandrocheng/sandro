@@ -767,6 +767,63 @@
 	     #15 = Utf8               <init>
 	..... 		 		     
         			
-	     
+	    	
+31、Access Flags 访问标志符 u2
+	-访问标志信息包括该Class文件是类还是接口，是否被定义成public，是否是abstract，如果是类，是否被声明成final。 	
+	 ACC_PUBLIC     0X0001  public类型
+	 ACC_PRIVATE    0X0002  private类型
+	 ACC_FINAL      0X0010  final 类型
+	 ACC_SUPER      0X0020  子类调用父类的方法
+	 ACC_INTERFACE  0X0200  接口类
+	 ACC_ABSTRACT   0X0400  抽象类
+	 ACC_SYNTHETIC  0X1000  不在源代码中
+	 ACC_ANNOTATION 0X2000  注解
+	 ACC_ENUM       0X4000  枚举
 	
+	               常量池常量列表结束
+	- 00000270  72 69 6e 67 3b 29 56]   00  21 00 06 00 0c 00 00 00  |ring;)V.!.......|
+        	
+	-访问标志符接在常量池后面两个字节 ：00 21 
+	 实际上是 0x0001 和 0x0020的并集，表示 ACC_PUBLIC和ACC_SUPER
+
+32、This Class Name 当前类名 u2
+                     常量池常量列表结束	     Access Flags  This class name
+	- 00000270  72 69 6e 67 3b 29 56]   [00  21]      [00 06]         00 0c 00 00 00  |ring;)V.!.......|
 	
+	00 06 : 对应常量池6号索引  #6 = Class              #37            // com/sandro/bytecode/Test1
+
+32、Super Class Name 当前类的父类 u2
+
+                      常量池常量列表结束      Access Flags  This class name   super class name
+         - 00000270  72 69 6e 67 3b 29 56]   [00  21]      [00 06]           [00 0c]          00 00 00  |ring;)V.!.......|
+         
+         00 0c : 对应常量池12号索引  #12 = Class              #45            // java/lang/Object
+
+33、interfaces 接口列表 2 + n个字节
+                       常量池常量列表结束      Access Flags  This class name  super class name        接口数量
+          - 00000270  72 69 6e 67 3b 29 56]   [00  21]      [00 06]           [00 0c]                 [00 00] 00  |ring;)V.!.......|
+	   数量：00 00 ，此时接口数量是0，所以接口列表就没有内容了直接连接下一个数据
+
+34、Fields 2 + n个字节
+	-字段表用于描述类和接口中声明的变量。这里的字段包含了类级别变量(静态变量)以及实例变量(成员变量)，但是不包括方法内部声明的局部变量 
+                        常量池常量列表结束      Access Flags  This class name  super class name        接口数量 属性的数量
+        - 00000270  72 69 6e 67 3b 29 56]   [00  21]      [00 06]           [00 0c]                 [00 00] [00             |ring;)V.!.......|	
+	                 属性列表  
+	  00000280  01] [00 02 00 0d 00 0e 00 00] 00 04 00 01 00 0f 00  |................|
+          字段数量00 01 ，说名只有一个
+	  	
+	-字段表数据结构
+	 access_flags u2， 访问符号 
+         name_index u2 ，名字索引
+         descriptor_index u2 ，描述索引
+	 attributes_count u2 ，字段附加信息长度，如果是0，则后面的atribute_info就没有了
+         attribute_info ，附加信息内容，长度为 attributes_count
+	
+	- 00 02 00 0d 00 0e 00
+	  0002 access_flags为private
+	  000d name_index,对应 #13 = Utf8               a
+	  000e 描述索引,对应   #14 = Utf8               I
+	  0000 附加信息长度 0，代表没有附加信息
+	  因此当前字段就是一个名字为a 的 private的整形变量
+
+
