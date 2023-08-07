@@ -206,6 +206,7 @@ package com.sandro.bytecode;
  *                 .....
  */
 public class Test1 {
+
     private int a = 1;
 
     public void setA(int a) {
