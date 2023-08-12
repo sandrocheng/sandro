@@ -624,7 +624,9 @@
 		000003a0  00 10 00 13 00 00 00 0c  00 01 00 00 00 1e 00 1c  |................|
 		000003b0  00 1d 00 00 00 01 00 1e  00 00 00 02 00 1f        |..............|
 		000003be
-	
+	jclasslib:https://github.com/ingokegel/jclasslib
+	          这是一个java class字节码查看工具相对与javap命令更详细的展示class各字节含义	
+	          在idea中 setting->plugin 中可以搜索jclasslib 并安装，就可以直接在编译器上方便的查看了，安装之后重启，就能找到Bytecode viewer，在这里就可以查看了
 	java 字节码整体结构：
 		Magic Number(4个字节) :魔数 值为0xCAFEBABE(咖啡宝贝) ，由java创始人James Gosling制定
 		Version(2 + 2 个字节) :包括minor_version和major_version: 1.1(45),1.2(46),1.3(47),1.4(48),1.5(49),1.6(50),1.7(51),1.8(52).指令集多年不变，但是版本号每次发布都变化
@@ -826,4 +828,165 @@
 	  0000 附加信息长度 0，代表没有附加信息
 	  因此当前字段就是一个名字为a 的 private的整形变量
 
+35、Methods 方法表 2+n个字节
+			属性列表                 方法数量  第一个方法
+	00000280  01] [00 02 00 0d 00 0e 00 00] [00 04]   [00 01 00 0f 00  |................|
+				 attribute_length = 56  attribute结构体字节码		
+        00000290  10 00 01 00 11 (00 00 00 38)         (00 02 00 01 00 00 00  |........8.......|
+        000002a0  0a 2a b7 00 01 2a 04 b5  00 02 b1 00 00 00 02 00  |.*...*..........|
+        000002b0  12 00 00 00 0a 00 02 00  00 00 03 00 04 00 04 00  |................|
+        000002c0  13 00 00 00 0c 00 01 00  00 00 0a 00 14 00 15 00  |................|
+        000002d0  00)] 00 01 00 16 00 17 00  01 00 11 00 00 00 3e 00  |..............>.|
 
+        - 0x0004 = 4 ： 方法的数量是4个
+	-方法表数据结构
+	 {
+	 	access_flags u2， 访问符号 
+         	name_index u2 ，名字索引
+         	descriptor_index u2 ，描述索引
+         	attributes_count u2 ，字段附加信息长度，如果是0，则后面的atribute_info就没有了
+	 	attribute_info ，附加信息数据表 表长是 attribute_count
+	
+	 attribute_info数据体结构
+	 {
+	  	attribute_name_index u2
+          	attribute_length u4
+          	info[attribute_length] u1 长度为attribute_length的1个字节为单位的数组保存
+ 	 }
+	
+	 code的结构：当attribute_name_index 在常量池中指向的是code的时候需要用code结构体分析数据
+	 {
+		attribute_name_index u2
+		attribute_length u4 ，表示attribute所包含的字节数，不包含attribute_name_index和 attribute_length字段
+		max_stack u2，表示这个方法运行的任何时刻所能达到的操作数栈的最大深度 
+	 	max_locals u2 表示方法执行期间粗昂见的局部变量的数目，包含用来表示传入的参数的局部变量
+	        code_length u4 表示该方法所包含的字节码的字节数以及具体的指令码
+		code[code_length],单位是1个字节 , 具体字节码即是该方法被调用时虚拟机执行的自己码
+		exception_table_length u2
+		exception_table[exception_table_length]
+		exception_table 元数据结构体{这里存放的是处理异常的信息
+			start_pc u2
+			end_pc u2
+			handler_pc u2
+			catch_type u2
+		}
+		attributes_count u2,code属性长度
+		attribute_info[attributes_count]，code属性信息
+		{
+			
+		}
+	 }
+
+	-第一个方法
+	 00 01 00 0f 00 10 00 01 00 11 00 00 00 38...后面56个字节
+	 00 01 ，access_flags=ACC_PUBLIC
+	 00 0f , name_index = 15
+		 #15 = Utf8               <init>
+	 00 10 , descriptor_index = 16
+	         #16 = Utf8               ()V
+	 00 01 , attributes_count = 1 说明有一个attribute数据
+	 00 11 , attribute_info[1].attribute_name_index = 17
+	         #17 = Utf8               Code 
+		 code代表执行代码，用助记符的方式描述方法体
+	 00 00 00 38,attribute_info[1].attribute_length = 56 
+
+	 code : 因为.attribute_name_index指向常量池中的常量是code,所以需要用code结构体来分析 info[56]这部分数据
+		code是每个方法最重要的属性，这个属性几乎总是存在的
+	        00 02 00 01 00 00 00 0a  2a b7 00 01 2a 04 b5 00 
+		02 b1 00 00 00 02 00 12  00 00 00 0a 00 02 00 00 
+		00 03 00 04 00 04 00 13  00 00 00 0c 00 01 00 00 
+		00 0a 00 14 00 15 00 00  	 
+          {      
+                 max_stack u2，00 02->2
+                 max_locals u2 , 00 01 ->1
+                 code_length u4,00 00 00 0a ->10
+                 code[code_length],单位是1个字节，2a b7 00 01 2a 04 b5 00 02 b1
+				   通过查表可以将16进制和具体的助记符关联起来
+				   官网地址：https://docs.oracle.com/javase/specs/jvms/se19/html/index.html（Chapter 6. The Java Virtual Machine Instruction Set ）
+				   -2a,aload_0, 将索引为0的元素推送到操作栈的栈顶，准备调用 
+				   -b7 [00 01],  invokespecial 1 -> #1 = Methodref          #12.#32        // java/lang/Object."<init>":()V
+						这里是调用了父类的构造方法
+				   -2a, aload_0
+				   -04, iconst_1 ，推送整形1到栈顶，从这里看到非静态全局变量实际上是在默认的构造方法中赋值的
+				   -b5 [00 02] ,putfield 2 -> #2 = Fieldref           #6.#33         // com/sandro/bytecode/Test1.a:I
+						给成员变量赋值（此时要赋的值已经在上一行放到栈顶了）
+			           -b1 ,return		
+                 exception_table_length u2，00 00 = 0
+                 exception_table[exception_table_length]，此时为空
+                 attributes_count u2,00 02 = 2，
+                 attribute_info[0]：00 12 [00 00 00 0a 00 02 00 00 00 03 00 04 00 04] 00 13  00 00 00 0c 00 01 00 00 00 0a 00 14 00 15 00 00
+		 { 
+			00 12(18)：第一个属性索引#18 = Utf8               LineNumberTable
+			LineNumberTable：行号和字节码的对应关系，方便代码和执行位值关联，用于定位代码使用
+			LineNumberTable struct{
+				length u4 ,00 00 00 0a 长度为10个字节
+					   00 02 00 00 00 03 00 04 00 04
+				liner_number_table_length u2 00 02->2
+				line_number_table{	
+					start_pc u2
+					line_number u2
+				}->table[0].start_pc = 0000 table[0].line_number=0003 //这里怀疑是因为代码中注释的原因导致行号没有对齐，javap中看 liner_number是208和210
+				   table[1].start_pc = 0004 table[1].line_nmuber=0004
+			}
+          	}
+		attribute_info[1]：00 13 00 00 00 0c 00 01 00 00 00 0a 00 14 00 15 00 00
+		{
+			00 13(19): 第二个属性索引 #19 = Utf8               LocalVariableTable
+			LocalVariableTable 局部变量表，
+					   在java当中每一个非静态方法中都有一个this的，在字节码中这个this就是通过第一个局部变量隐式的传递进来的
+			{
+				length u4, 00 00 0c = 12 ,说明后面12个字节都是LocalVariableTable的数据
+					   00 01 00 00 00 0a 00 14 00 15 00 00
+				count u2, 00 01 =1  ，局部变量的个数是1个
+				start u2, 00 00 = 0 起始位值是0
+				length u2,00 0a = 10 长度是10
+				name_index u2 ,0x0014 = 20 ->  #20 = Utf8               this
+					       		
+ 				desc_index u2 ,0x0015 = 21 ->  #21 = Utf8               Lcom/sandro/bytecode/Test1;
+				校验检查位 u2,0x0000 = 0
+			}
+		}
+			 
+	}
+	
+	-第2个方法：	      第二个方法开始
+				public   index=22 setA   (I)V    1个attri    code结构    len=62       code_data
+	         000002d0  00 [(00 01)  (00 16)        (00 17)  (00 01)     (00 11)   （00 00 00 3e）(00  
+                 000002e0  02 00 02 00 00 00 06 2a  1b b5 00 02 b1 00 00 00  
+                 000002f0  02 00 12 00 00 00 0a 00  02 00 00 00 07 00 05 00 
+                 00000300  08 00 13 00 00 00 16 00  02 00 00 00 06 00 14 00  
+                 00000310  15 00 00 00 00 00 06 00  0d 00 0e 00 01)] 00 01 00 
+
+	-第3个方法：                                                public   index=34 getA		 
+		 00000310  15 00 00 00 00 00 06 00  0d 00 0e 00 01 [(00 01  (00 
+				()I     1个 attri  code结构     len=47        code_data
+                 00000320  18) (00 19) (00 01)   (00 11)     （00 00 00 2f）(00 01 00 01 00  
+                 00000330  00 00 05 2a b4 00 02 ac  00 00 00 02 00 12 00 00  
+                 00000340  00 06 00 01 00 00 00 0b  00 13 00 00 00 0c 00 01  
+                 00000350  00 00 00 05 00 14 00 15  00 00)] 00 09 00 1a 00 1b  
+                 00000360  00 01 00 11 00 00 00 4c  00 03 00 01 00 00 00 1e  
+
+	-第4个方法
+		                                            public static index=26 main  ([Ljava/lang/String;)V
+                 00000350  00 00 00 05 00 14 00 15  00 00 [(00 09)        (00 1a)        (00 1b)
+			    1个attri  code结构	  len=76	code_data	
+                 00000360  (00 01)   (00 11)   （00 00 00 4c） (00 03 00 01 00 00 00 1e 
+                 00000370  b2 00 03 bb 00 04 59 b7  00 05 12 06 b6 00 07 b6  
+                 00000380  00 08 12 09 b6 00 08 b6  00 0a b6 00 0b b1 00 00  
+                 00000390  00 02 00 12 00 00 00 0a  00 02 00 00 00 0f 00 1d  
+                 000003a0  00 10 00 13 00 00 00 0c  00 01 00 00 00 1e 00 1c  
+                 000003b0  00 1d 00 00)] 00 01 00 1e  00 00 00 02 00 1f        
+
+	
+35、字节码文件的attribute
+	class文件自己的一些属性信息
+	000003b0  00 1d 00 00 [00 01 00 1e  00 00 00 02 00 1f]
+	
+	count u2 ,0x0001=1 ,只有一个属性信息
+	index u2,0x001e = 30  #30 = Utf8               SourceFile
+	len u4 ,0x00000002 = 2,长度只占据两个字节
+	socefile_index u2, 0x001f=31  #31 = Utf8               Test1.java
+
+	
+	
+	
