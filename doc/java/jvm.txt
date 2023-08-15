@@ -866,7 +866,11 @@
 		code[code_length],单位是1个字节 , 具体字节码即是该方法被调用时虚拟机执行的自己码
 		exception_table_length u2
 		exception_table[exception_table_length]
-		exception_table 元数据结构体{这里存放的是处理异常的信息
+		exception_table 元数据结构体{
+			//这里存放的是处理异常的信息
+			//每个exception_table表由start_pc,end_pc,handler_pc,catch_type组成
+			//start_pc和end_pc表示在code数组中的从start_pc到end_pc处(包含start_pc,不包含end_pc)的指令抛出的异常会由这个表项来处理
+		        //handler_pc表示会被处理的异常类型，它指向常量池里的一个异常类。当catch_type为0时，表示处理所有的异常
 			start_pc u2
 			end_pc u2
 			handler_pc u2
@@ -883,7 +887,11 @@
 	 00 01 00 0f 00 10 00 01 00 11 00 00 00 38...后面56个字节
 	 00 01 ，access_flags=ACC_PUBLIC
 	 00 0f , name_index = 15
-		 #15 = Utf8               <init>
+		 #15 = Utf8               <init>,构造方法
+		 构造方法统一都使用 <init>助记符
+	         默认的无参数构造方法，如果自己实现了无参数的构造方法，生成的字节码也是这样的，在默认的构造方法中会将成员变量赋值
+		 多个构造方法，就会有多个 <init> 方法体
+		 如果自己实现了一个有参数的构造方法，实际上在有参数的构造方法中也会给每个成员变量赋值
 	 00 10 , descriptor_index = 16
 	         #16 = Utf8               ()V
 	 00 01 , attributes_count = 1 说明有一个attribute数据
@@ -1328,7 +1336,9 @@
 
         }
         methods[3].access_flags = 0x0008 static代码块
-        methods[3].name_index = 0x0020 , #32 = Utf8 <clinit>
+        methods[3].name_index = 0x0020 , #32 = Utf8 <clinit> ，
+			        在这个代码块中对静态变量进行赋值
+				如果有多个static代码块，和多个静态变量，字节码实际上会统一合并到一起，放到<clinit>这个方法中去按照代码顺序执行
         methods[3].descriptor_index = 0x0012 , #18 = Utf8 ()V
         methods[3].attributes_count = 0x0001
         methods[3].attribute_info[0].attribute_name_index = 0x0013,  #19 = Utf8               Code
@@ -1365,7 +1375,7 @@
 
 
 36、synchronized关键字
-	project/jvm_lecture项目 com.sandro.bytecode.Test2
+	project/jvm_lecture项目 com.sandro.bytecode.Test3
 	
 	-synchronized修饰实例方法
 	 反编译后普通方法和synchronized方法：
@@ -1456,4 +1466,108 @@
 	         line 21: 0
 	 对于静态同步方法，在code中依然没有moniterenter和moniterexit，此时上锁实际上是放在的当前类上，此时锁标记位值已经为1了，相当于隐含的使用了上锁和释放锁的操作了
 	 
-	 
+37、异常表的作用和this关键字在方法中的原理
+	java字节码对于异常的处理方式：
+		-统一采用异常表的方式对异常进行处理。
+		-在jdk1.4.2之前的版本中，并不是使用异常表的方式来对异常进行处理的，二是采用特定的指令的方式
+		-当异常处理存在finally语句块时，现代化的jvm采取的处理方式是将finally块的字节码拼接到每一个catch块后面
+		 换句话说程序中存在多少个catch块，就会在每一个catch块后面重复多少个finally语句块的字节码
+	
+	project/jvm_lecture项目 com.sandro.bytecode.Test4
+	反编译后test方法的code部分如下：
+	  public void test();
+	    descriptor: ()V
+	    flags: ACC_PUBLIC
+	    Code:
+	      stack=3,             //java对于方法调用是基于栈的操作，这里指运行时刻，最深的栈深度是3
+	      locals=4,            //局部变量是4，this,is,sc,第四个局部变量是三个catch中的一个Excetpion，因为catch中的异常只能进入一个。这里的locals是最多的局部变量数，所以是4
+	      args_size=1          //对于非静态方法（实例方法）第一个参数默认会把this当作参数传递该给方法，所以args_size是1
+			           //这个操作是由javac编译器在编译的时候将对this的访问转化为对一个普通实例方法参数的访问，接下来在运行期间由jvm在调用实例方法时，自动传入该this
+	         0: new           #2                  // class java/io/FileInputStream
+	         3: dup
+	         4: ldc           #3                  // String aaa.txt
+	         6: invokespecial #4                  // Method java/io/FileInputStream."<init>":(Ljava/lang/String;)V
+	         9: astore_1      将实例引用存储到了一个局部变量中去
+	        10: aload_1
+	        11: invokevirtual #5                  // Method java/io/InputStream.close:()V
+	        14: new           #6                  // class java/net/ServerSocket
+	        17: dup
+	        18: sipush        9999
+	        21: invokespecial #7                  // Method java/net/ServerSocket."<init>":(I)V
+	        24: astore_2
+	        25: aload_2
+	        26: invokevirtual #8                  // Method java/net/ServerSocket.accept:()Ljava/net/Socket;
+	        29: pop
+	        30: getstatic     #9                  // Field java/lang/System.out:Ljava/io/PrintStream;
+						      // 这里因为cathch中没有代码，所以直接列出的是finally中的代码，如果有catch则会列处catch中的代码助记符
+	        33: ldc           #10                 // String finally
+	        35: invokevirtual #11                 // Method java/io/PrintStream.println:(Ljava/lang/String;)V
+	        38: goto          88
+	        41: astore_1
+	        42: getstatic     #9                  // Field java/lang/System.out:Ljava/io/PrintStream;
+	        45: ldc           #10                 // String finally
+	        47: invokevirtual #11                 // Method java/io/PrintStream.println:(Ljava/lang/String;)V
+	        50: goto          88
+	        53: astore_1
+	        54: getstatic     #9                  // Field java/lang/System.out:Ljava/io/PrintStream;
+	        57: ldc           #10                 // String finally
+	        59: invokevirtual #11                 // Method java/io/PrintStream.println:(Ljava/lang/String;)V
+	        62: goto          88
+	        65: astore_1
+	        66: getstatic     #9                  // Field java/lang/System.out:Ljava/io/PrintStream;
+	        69: ldc           #10                 // String finally
+	        71: invokevirtual #11                 // Method java/io/PrintStream.println:(Ljava/lang/String;)V
+	        74: goto          88
+	        77: astore_3
+	        78: getstatic     #9                  // Field java/lang/System.out:Ljava/io/PrintStream;
+	        81: ldc           #10                 // String finally
+	        83: invokevirtual #11                 // Method java/io/PrintStream.println:(Ljava/lang/String;)V
+	        86: aload_3
+	        87: athrow
+	        88: return
+	      Exception table:
+	         from    to  target type
+	             0    30    41   Class java/io/FileNotFoundException//从0到29行中，如果捕获FileFoundException则转到41行处理，从41开始由于catch中没有代码实际上就执行finally了
+									//41行处实际上是 FileNotFoundException ex这句话
+				                                        //然后在50行处goto到了return处 
+	             0    30    53   Class java/io/IOException
+	             0    30    65   Class java/lang/Exception
+	             0    30    77   //any ,any就是0，如果上面3个异常都没有捕获则由0号也就是any来处理异常
+                                     //这部分助记符是编译器自动加上去的
+	      LineNumberTable:
+	        line 12: 0
+	        line 13: 10
+	        line 14: 14
+	        line 15: 25
+	        line 21: 30
+	        line 22: 38
+	        line 17: 41
+	        line 21: 42
+	        line 22: 50
+	        line 18: 53
+	        line 21: 54
+	        line 22: 62
+	        line 19: 65
+	        line 21: 66
+	        line 22: 74
+	        line 21: 77
+	        line 22: 86
+	        line 23: 88
+	      LocalVariableTable: //局部变量表中 由于在编译期并不知道哪个异常会被捕获，所以只列出了其他的局部变量
+	        Start  Length  Slot  Name   Signature
+	           10      20     1    is   Ljava/io/InputStream;
+	           25       5     2    sc   Ljava/net/ServerSocket;
+	            0      89     0  this   Lcom/sandro/bytecode/Test4;
+	      StackMapTable: number_of_entries = 5 //1.7之后引用的校验表，对于数据类型的校验上提供了更强的性能
+	        frame_type = 105 /* same_locals_1_stack_item */
+	          stack = [ class java/io/FileNotFoundException ]
+	        frame_type = 75 /* same_locals_1_stack_item */
+	          stack = [ class java/io/IOException ]
+	        frame_type = 75 /* same_locals_1_stack_item */
+	          stack = [ class java/lang/Exception ]
+	        frame_type = 75 /* same_locals_1_stack_item */
+	          stack = [ class java/lang/Throwable ]
+	        frame_type = 10 /* same */
+	
+
+
