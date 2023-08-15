@@ -1364,5 +1364,96 @@
 	sourcefile_index = 0x0022, #34 = Utf8               Test2.java
 
 
+36、synchronized关键字
+	project/jvm_lecture项目 com.sandro.bytecode.Test2
 	
+	-synchronized修饰实例方法
+	 反编译后普通方法和synchronized方法：
 
+	  private void setData();
+	    descriptor: ()V
+	    flags: ACC_PRIVATE
+	    Code:
+	      stack=0, locals=1, args_size=1
+	         0: return
+	      LineNumberTable:
+	        line 6: 0
+	      LocalVariableTable:
+	        Start  Length  Slot  Name   Signature
+	            0       1     0  this   Lcom/sandro/bytecode/Test3;
+
+	  private synchronized void setData2();
+	    descriptor: ()V
+	    flags: ACC_PRIVATE, ACC_SYNCHRONIZED
+	    Code:
+	      stack=0, locals=1, args_size=1
+	         0: return
+	      LineNumberTable:
+	        line 10: 0
+	      LocalVariableTable:
+	        Start  Length  Slot  Name   Signature
+	            0       1     0  this   Lcom/sandro/bytecode/Test3;
+	
+	 这两个方法的区别就在flags上，synchronized方法会在flags上增加一个ACC_SYNCHRONIZED标志，其他都一样
+	 原因是当synchronized修饰在一个实例方法上的时候，在code中其是已经隐含了使用moniterenter  和 moniterexit 即加锁和释放锁的指令了
+	
+	-使用syncronized修饰变量
+	  private void test();
+	     descriptor: ()V
+	     flags: ACC_PRIVATE
+	     Code:
+	       stack=2, locals=3, args_size=1
+	          0: aload_0
+ 	          1: getfield      #3                  // Field lockObj:Ljava/lang/Object;
+	          4: dup
+	          5: astore_1
+	          6: monitorenter
+	          7: getstatic     #4                  // Field java/lang/System.out:Ljava/io/PrintStream;
+	         10: aload_0
+	         11: getfield      #3                  // Field lockObj:Ljava/lang/Object;
+	         14: invokevirtual #5                  // Method java/lang/Object.hashCode:()I
+	         17: invokevirtual #6                  // Method java/io/PrintStream.println:(I)V
+	         20: aload_1
+	         21: monitorexit
+	         22: goto          30
+	         25: astore_2
+	         26: aload_1
+	         27: monitorexit
+	         28: aload_2
+	         29: athrow
+	         30: return
+	       Exception table:
+	          from    to  target type
+	              7    22    25   any
+	             25    28    25   any
+	       LineNumberTable:
+	         line 14: 0
+	         line 15: 7
+	         line 16: 20
+	         line 17: 30
+	       LocalVariableTable:
+	         Start  Length  Slot  Name   Signature
+	             0      31     0  this   Lcom/sandro/bytecode/Test3;
+	       StackMapTable: number_of_entries = 2
+	         frame_type = 255 /* full_frame */
+	           offset_delta = 25
+	           locals = [ class com/sandro/bytecode/Test3, class java/lang/Object ]
+	           stack = [ class java/lang/Throwable ]
+	         frame_type = 250 /* chop */
+	           offset_delta = 4
+	 
+	 由于是在方法内使用synchronized修饰变量 ，可以在code中看到 monitorenter 和 moniterexit 来上锁和释放锁的指令
+	 从25行开始，虚拟机又增加了异常处理，保证当System.out.println出现异常后依然能够调用moniterexit保证锁的释放
+	 
+	-synchronized修饰静态方法
+	   private static synchronized void test2();
+	     descriptor: ()V
+	     flags: ACC_PRIVATE, ACC_STATIC, ACC_SYNCHRONIZED
+	     Code:
+	       stack=0, locals=0, args_size=0
+	          0: return
+	       LineNumberTable:
+	         line 21: 0
+	 对于静态同步方法，在code中依然没有moniterenter和moniterexit，此时上锁实际上是放在的当前类上，此时锁标记位值已经为1了，相当于隐含的使用了上锁和释放锁的操作了
+	 
+	 
