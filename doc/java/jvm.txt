@@ -1670,6 +1670,43 @@
 	
 
 41、方法重载与invokevitural字节码指令关系	
-	project/jvm_lecture项目 com.sandro.bytecode.Test7
-	案例分析,见代码注释
+	project/jvm_lecture项目 com.sandro.bytecode.Test7	
+	
+	方法的静态分派:
+		案例中 Grandpa g1 = new Father();
+		g1的静态类型是Grandpa，而个g1的实际类型(真正指向的类型)是Father.
+		变量的静态类型是不会变化的，而变量的实际类型根据代码的走向是有可能变化的(多态的一种体现)，实际类型是在运行期才能确定
+
+	方法的重载：
+		在方法的重载对于jvm来说是一种静态行为，重载方法的参数是根据静态参数来确定到底是调用哪个版本的方法
+		比如 Test7.test(Grandpa  g),不管参数的实际类型是什么，对于test方法来说只认传参时参数的静态类型
+		这种静态行为在编译器就可以完全确定的
+
+	main方法的字节码：
+	        public static void main(java.lang.String[]);
+	          descriptor: ([Ljava/lang/String;)V
+	          flags: ACC_PUBLIC, ACC_STATIC
+	          Code:
+	            stack=2, locals=4, args_size=1
+	               0: new           #7                  // class com/sandro/bytecode/Father
+	               3: dup
+	               4: invokespecial #8                  // Method com/sandro/bytecode/Father."<init>":()V
+	               7: astore_1
+	               8: new           #9                  // class com/sandro/bytecode/Son
+	              11: dup
+	              12: invokespecial #10                 // Method com/sandro/bytecode/Son."<init>":()V
+	              15: astore_2
+	              16: new           #11                 // class com/sandro/bytecode/Test7
+	              19: dup
+	              20: invokespecial #12                 // Method "<init>":()V
+	              23: astore_3
+	              24: aload_3
+	              25: aload_1
+	              26: invokevirtual #13                 // Method test:(Lcom/sandro/bytecode/Grandpa;)V
+	              29: aload_3
+	              30: aload_2
+	              31: invokevirtual #13                 // Method test:(Lcom/sandro/bytecode/Grandpa;)V
+	              34: return
+		
+		26 31行 调用了test方法 使用的是invokevitrual指令
 

@@ -17,6 +17,10 @@ public class Test7 {
         Grandpa g1 = new Father();
         Grandpa g2 = new Son();
         Test7 test7 = new Test7();
+
+        //尽管g1和g2都是子类实例，但是在调用的时候，还是调用的父类参数的接口 test(Grandpa  g)
+        //原因分析:
+
         test7.test(g1);
         test7.test(g2);
     }
