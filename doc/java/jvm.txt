@@ -1759,16 +1759,74 @@
 
 	比较方法重载(overload)和方法重写(override)，方法重载是静态的，是编译器行为；方法重写是动态的是运行期行为
 
+43、虚方法表与动态分配机制详解
+	project/jvm_lecture项目 com.sandro.bytecode.Test9
 	
+	案例中的字节码方法体:
+	  public static void main(java.lang.String[]);
+	    descriptor: ([Ljava/lang/String;)V
+	    flags: ACC_PUBLIC, ACC_STATIC
+	    Code:
+	      stack=3, locals=3, args_size=1
+	         0: new           #2                  // class com/sandro/bytecode/Animal
+	         3: dup
+	         4: invokespecial #3                  // Method com/sandro/bytecode/Animal."<init>":()V
+	         7: astore_1
+	         8: new           #4                  // class com/sandro/bytecode/Dog
+	        11: dup
+	        12: invokespecial #5                  // Method com/sandro/bytecode/Dog."<init>":()V
+	        15: astore_2
+	        16: aload_1
+	        17: ldc           #6                  // String hello
+	        19: invokevirtual #7                  // Method com/sandro/bytecode/Animal.test:(Ljava/lang/String;)V
+	        22: aload_2
+	        23: new           #8                  // class java/util/Date
+	        26: dup
+	        27: invokespecial #9                  // Method java/util/Date."<init>":()V
+	        30: invokevirtual #10                 // Method com/sandro/bytecode/Animal.test:(Ljava/util/Date;)V
+	        33: return
+	     LineNumberTable:
+		...
+	     LocalVariableTable:
+	        Start  Length  Slot  Name   Signature
+	            0      34     0  args   [Ljava/lang/String;
+	            8      26     1 animal   Lcom/sandro/bytecode/Animal;
+	           16      18     2   dog   Lcom/sandro/bytecode/Animal;
+	
+	虚方法表：针对于方法调用动态分派的过程，虚拟机会在类的方法区，建立一个虚方法表的数据结构(virtual method table,vtable)
+	接口方法表：针对于invokeinterface指令来说，虚拟机会建立一个叫做结构方法表的数据结构(interface method table,itable)
 
+	                |-----------------|
+			|      animal     |---->方法1 ，方法2，方法3 
+			|_________________|
+				 ^
+		                 | 继承		
+                                 |
+	                |-----------------|
+			|       dog       |---->方法1,方法2  
+			|_________________|
+		
+		在虚方法表中父类animal和子类dog的方法都有各自的记录，除了方法3，因为方法3子类没有重写，此时子类的方法3实际上保存的是父类方法3的入口地址，这样提升了查找效率同时，更节省空间
+	
+	vtable ,itable是在类加载的连接阶段初始化完成的	
+	
+	案例：
+		public class Parent{
+			void test();
+		}
 
+		public class Child extends Parent{
+			void test();
+			void test1();
+		}
+	
+		调用：
+			Parent child = new Child();
+			child.test1()
+		
+	从java语法上讲，child对象被声明为Parent类型，尽管被赋值为一个Child对象，但是在调用的时候依然是按照Parent类型来使用的，而Parent类没有test1方法，所以会编译失败
+	而从jvm编译的角度讲，child.test1()这条语句，由于是动态分配，因此会使用invokevirtul指令，此时这个指令指向的是child的声明类型也就是Parent,而Parent没有test1方法，因此编译失败
 
-
-
-
-
-
-
-
+	
 
 
