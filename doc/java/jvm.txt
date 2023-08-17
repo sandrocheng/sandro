@@ -1849,6 +1849,44 @@
 45、jvm执行栈指令集实例分析
 	project/jvm_lecture项目 com.sandro.bytecode.Test10
 	
+	案例中的指令代码如下：
+	  public int cal();
+	    descriptor: ()I
+	    flags: ACC_PUBLIC
+	    Code:
+	      stack = 2, //栈的最大深度是2，在方法内指令集对操作数栈的使用最多就用了两个栈帧
+	      locals = 6,  //最大的局部变量是6
+	      args_size = 1 //参数数量，这里是默认的this参数
+	         0: iconst_1	    , 将数字1推送到操作数栈中
+	         1: istore_1	    ，将栈顶(此时是1)弹栈，1号slot中的数据设置为弹栈的值(变量a)，就是int a = 1;的操作
+	         2: iconst_2	    , 将数字2推送到操作数栈中
+	         3: istore_2	    ，将栈顶(此时是2)弹栈，2号slot中的数据设置为弹栈的值(变量b)，就是int b = 2;的操作
+	         4: iconst_3	    , 将数字3推送到操作数栈中
+	         5: istore_3	    , 将栈顶(此时是3)弹栈，3号slot中的数据设置为弹栈的值(变量c)，就是int c = 3;的操作
+	         6: iconst_4	    , 将数字4推送到操作数栈中
+	         7: istore        4 , 将栈顶(此时是4)弹栈，4号slot中的数据设置为弹栈的值(变量d)，就是int d = 4;的操作
+				      因为没有istore_4这个指令，这里使用了通用指令 istore xxx
+	         9: iload_1	    , 把1号slot的值(a)压栈
+	        10: iload_2	    , 把2号slot的值(b)压栈
+	        11: iadd	    ，将栈顶和栈顶下一个元素弹栈，并执行加法，然后将结果压栈	
+	        12: iload_3	    ，把3号slot的值(c)压栈	
+	        13: isub	    , 此时栈顶是3，栈顶下一个元素也是3，将这两个元素弹栈并相减，并把结果压栈
+	        14: iload         4 ，把4号slot的值(d)压栈
+	        16: imul	    , 从栈顶弹出两个值，计算乘法，并把结果压栈
+	        17: istore        5 ，把栈顶元素弹栈，保存到5号slot(result变量)中去
+	        19: iload         5 ，将5号slot的值压栈 
+	        21: ireturn	    ，把栈顶元素(必须是int类型)return，并清空操作数栈中的剩下的所有栈帧
+	      LineNumberTable:
+	     	  ...
+	      LocalVariableTable:
+	        Start  Length  Slot  Name   Signature
+	            0      22     0  this   Lcom/sandro/bytecode/Test10;
+	            2      20     1     a   I
+	            4      18     2     b   I
+	            6      16     3     c   I
+	            9      13     4     d   I
+	           19       3     5 result   I
+		
 
 
 
