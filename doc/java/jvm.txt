@@ -1887,7 +1887,18 @@
 	            9      13     4     d   I
 	           19       3     5 result   I
 		
-
+46、java动态代理的字节码
+	project/jvm_lecture项目 com.sandro.bytecode.Test11
+	案例中动态代理返回的实例是com.sun.proxy.$Proxy0 对象，其父类是class java.lang.reflect.Proxy
+	这个对象的生成是在java.lang.reflect.Proxy类中的内部类ProxyClassFactory.apply方法生成的
+	在ProxyClassFactory.apply 中看到了 byte[] proxyClassFile = ProxyGenerator.generateProxyClass(proxyName, interfaces, accessFlags);
+	这里说明动态类实际上是jvm生成的class文件
+	ProxyGenerator是sun.misc不开源的代码，这里有一个逻辑是:   
+	 private static final boolean saveGeneratedFiles = (Boolean)AccessController.doPrivileged(new GetBooleanAction("sun.misc.ProxyGenerator.saveGeneratedFiles"))
+	通过系统属性开关，判断是否保存生成的class文件
+	因此可以通过设置这个开关，看到系统生成的代理类的class字节码文件。
+		System.getProperties().put("sun.misc.ProxyGenerator.saveGeneratedFiles","true");
+	运行后在项目下多出来了一个com目录，里面会有com.sun.proxy.$Proxy0的字节码文件
 
 
 
