@@ -1706,7 +1706,69 @@
 	              29: aload_3
 	              30: aload_2
 	              31: invokevirtual #13                 // Method test:(Lcom/sandro/bytecode/Grandpa;)V
-	              34: return
-		
+	              34: return		
+
 		26 31行 调用了test方法 使用的是invokevitrual指令
+
+42、通过字节码分析java的静态分派和动态分派机制
+	project/jvm_lecture项目 com.sandro.bytecode.Test8
+
+	案例中main方法的指令部分内容：
+          public static void main(java.lang.String[]);
+            descriptor: ([Ljava/lang/String;)V
+            flags: ACC_PUBLIC, ACC_STATIC
+            Code:
+              stack=2, locals=3, args_size=1
+                 0: new           #2                  // class com/sandro/bytecode/Apple
+                 3: dup
+                 4: invokespecial #3                  // Method com/sandro/bytecode/Apple."<init>":()V
+                 7: astore_1      //将栈顶引用存入到第一个localVariable中，当前localVariable的就是apple对象
+			          //astore_n的序号对应于LocalVariableTable中的序号(slot)
+				  //比如astore_1对应Localvariable中序号是1的变量，也就是apple
+                 8: new           #4                  // class com/sandro/bytecode/Orange
+                11: dup
+                12: invokespecial #5                  // Method com/sandro/bytecode/Orange."<init>":()V
+                15: astore_2     //将引用存入到第二个localVariable中，当前localVariable的就是orange对象
+                16: aload_1      //从局部变量中加载一个引用，也就是LocalVariableTable中slot是1的对象apple
+                17: invokevirtual #6                  // Method com/sandro/bytecode/Fruit.test:()V
+				 //因为apple的test方法是父类重载的，因此用invokevirtual指令	
+                20: aload_2
+                21: invokevirtual #6                  // Method com/sandro/bytecode/Fruit.test:()V
+                24: new           #4                  // class com/sandro/bytecode/Orange
+                27: dup
+                28: invokespecial #5                  // Method com/sandro/bytecode/Orange."<init>":()V
+                31: astore_1
+                32: aload_1
+                33: invokevirtual #6                  // Method com/sandro/bytecode/Fruit.test:()V
+                36: return
+              LineNumberTable:
+                ...
+              LocalVariableTable:
+	        Start  Length  Slot  Name   Signature
+        	    0      37     0  args   [Ljava/lang/String;
+          	    8      29     1 apple   Lcom/sandro/bytecode/Fruit;
+                   16      21     2 orange  Lcom/sandro/bytecode/Fruit;
+      	      
+	
+	方法的动态分派涉及到一个重要的概念-方法接收者
+	
+	invokevirtual字节码指令的多态查找流程：
+		-到操作数栈顶元素指向的对象的实际类型
+		-找到以后,如果名称，类型，权限都符合，则查找成功
+		-如果找不到，就按照继承的关系从子类到父类逐个查找，直到找到为止
+
+	比较方法重载(overload)和方法重写(override)，方法重载是静态的，是编译器行为；方法重写是动态的是运行期行为
+
+	
+
+
+
+
+
+
+
+
+
+
+
 
