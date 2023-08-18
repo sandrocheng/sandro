@@ -892,6 +892,8 @@
 	         默认的无参数构造方法，如果自己实现了无参数的构造方法，生成的字节码也是这样的，在默认的构造方法中会将成员变量赋值
 		 多个构造方法，就会有多个 <init> 方法体
 		 如果自己实现了一个有参数的构造方法，实际上在有参数的构造方法中也会给每个成员变量赋值
+		 大部分类的字节码都会有<init>,但不是所有的类，比如接口，就没有<init> , 另外jvm和java语言是两套规范二者不能混为一谈，比如kotlin的kt文件都是静态的也没有<init>，但是依然可以被jvm执行
+
 	 00 10 , descriptor_index = 16
 	         #16 = Utf8               ()V
 	 00 01 , attributes_count = 1 说明有一个attribute数据
@@ -1889,6 +1891,9 @@
 		
 46、java动态代理的字节码
 	project/jvm_lecture项目 com.sandro.bytecode.Test11
+	
+	java1.8之后代理类的生成做了较大改变，采用了java8的Supplier 函数式编程实现的
+	
 	案例中动态代理返回的实例是com.sun.proxy.$Proxy0 对象，其父类是class java.lang.reflect.Proxy
 	这个对象的生成是在java.lang.reflect.Proxy类中的内部类ProxyClassFactory.apply方法生成的
 	在ProxyClassFactory.apply 中看到了 byte[] proxyClassFile = ProxyGenerator.generateProxyClass(proxyName, interfaces, accessFlags);
@@ -1899,6 +1904,8 @@
 	因此可以通过设置这个开关，看到系统生成的代理类的class字节码文件。
 		System.getProperties().put("sun.misc.ProxyGenerator.saveGeneratedFiles","true");
 	运行后在项目下多出来了一个com目录，里面会有com.sun.proxy.$Proxy0的字节码文件
+
+47、 
 
 
 
