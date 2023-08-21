@@ -1913,7 +1913,7 @@
 	 栈的深度在编译后就已经确定好了
 	 线程独有的内存空间，当线程创建的时候与之相关的虚拟机栈就创建了，线程结束以后，虚拟机栈也会消亡	 
 	 引用类型，类似c语言的指针，但是不能直接操作，只能通过引用在堆上找到对应的对象来操作数据
-	 常见的错误是 stack overflow,栈溢出错误		
+	 常见的错误是 stack overflow,栈溢出错误	,极少数会有oom错误	
 
 	-程序计数器 program counter (pc)
 	 主要描述字节码执行的位值，是一块很小的内存空间。
@@ -1936,6 +1936,7 @@
 		 可以通过一些参数的设置，把新生的对象直接放置到老年代
 		-Eden空间，From Survivor空间，To Survivor空间
 	 堆空间可以是连续的也可以是不连续的	      
+	 最常见的错误就是oom错误
 
  
 	 对象:
@@ -2246,9 +2247,85 @@
 
 
 51、线程死锁检测与分析工具
+	project/jvm_lecture项目 com.sandro.memory.Test3
+	案例演示了死锁的情况，运行后通过jconsole查看线程
+	在线程列表中此时会看到没有结束的 thread_a  thread_b这两个线程,此时main方法已经执行完成，所以看不到main线程
+		名称: thread_a
+		状态: java.lang.Class@4594cc19上的BLOCKED, 拥有者: thread_b
+		总阻止数: 1, 总等待数: 1
+		
+		堆栈跟踪: 
+		com.sandro.memory.B.method(Test3.java:36)
+		com.sandro.memory.A.method(Test3.java:27)
+		   - 已锁定 java.lang.Class@17f69de9
+		com.sandro.memory.Test3$1.run(Test3.java:8)
+		
+		名称: thread_b
+		状态: java.lang.Class@17f69de9上的BLOCKED, 拥有者: thread_a
+		总阻止数: 1, 总等待数: 1
+		
+		堆栈跟踪: 
+		com.sandro.memory.A.method(Test3.java:23)
+		com.sandro.memory.B.method(Test3.java:39)
+		   - 已锁定 java.lang.Class@4594cc19
+		com.sandro.memory.Test3$2.run(Test3.java:14)
 	
+	从信息中能够清晰的看出thread_a 被阻塞了，而锁的拥有者是thread_b。 thread_b也阻塞了，锁的拥有者是thread_a
+	通过“检测死锁”就可以更明确的看到哪些线程死锁了
 
+	在jvisualvm中 打开后立刻就能看到 死锁的提示，通过线程dump也能查看死锁的现场信息
+		
+		...
+		"thread_b" #11 prio=5 os_prio=0 tid=0x00007effb8217800 nid=0x185c4 waiting for monitor entry [0x00007eff74ae3000]
+		   java.lang.Thread.State: BLOCKED (on object monitor)
+		        at com.sandro.memory.A.method(Test3.java:23)
+		        - waiting to lock <0x000000076d68e230> (a java.lang.Class for com.sandro.memory.A) //这里能更清晰的指出哪个对象被锁住了
+		        at com.sandro.memory.B.method(Test3.java:39)
+		        - locked <0x000000076d408ec0> (a java.lang.Class for com.sandro.memory.B)
+		        at com.sandro.memory.Test3$2.run(Test3.java:14)
+		
+		   Locked ownable synchronizers:
+		        - None
+		
+		"thread_a" #10 prio=5 os_prio=0 tid=0x00007effb8215800 nid=0x185c3 waiting for monitor entry [0x00007eff74be4000]
+		   java.lang.Thread.State: BLOCKED (on object monitor)
+		        at com.sandro.memory.B.method(Test3.java:36)
+		        - waiting to lock <0x000000076d408ec0> (a java.lang.Class for com.sandro.memory.B)
+		        at com.sandro.memory.A.method(Test3.java:27)
+		        - locked <0x000000076d68e230> (a java.lang.Class for com.sandro.memory.A)
+		        at com.sandro.memory.Test3$1.run(Test3.java:8)
+		
+		   Locked ownable synchronizers:
+		        - None
+		
+		...
 
-
-
+		Found one Java-level deadlock:
+		=============================
+		"thread_b":
+		  waiting to lock monitor 0x00007eff8c006568 (object 0x000000076d68e230, a java.lang.Class),
+		  which is held by "thread_a"
+		"thread_a":
+		  waiting to lock monitor 0x00007eff8c0050c8 (object 0x000000076d408ec0, a java.lang.Class),
+		  which is held by "thread_b"
+		
+		Java stack information for the threads listed above:
+		===================================================
+		"thread_b":
+		        at com.sandro.memory.A.method(Test3.java:23)
+		        - waiting to lock <0x000000076d68e230> (a java.lang.Class for com.sandro.memory.A)
+		        at com.sandro.memory.B.method(Test3.java:39)
+		        - locked <0x000000076d408ec0> (a java.lang.Class for com.sandro.memory.B)
+		        at com.sandro.memory.Test3$2.run(Test3.java:14)
+		"thread_a":
+		        at com.sandro.memory.B.method(Test3.java:36)
+		        - waiting to lock <0x000000076d408ec0> (a java.lang.Class for com.sandro.memory.B)
+		        at com.sandro.memory.A.method(Test3.java:27)
+		        - locked <0x000000076d68e230> (a java.lang.Class for com.sandro.memory.A)
+		        at com.sandro.memory.Test3$1.run(Test3.java:8)
+		
+		Found 1 deadlock.
+	
+	
+	
 	
