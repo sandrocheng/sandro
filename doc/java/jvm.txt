@@ -2058,5 +2058,197 @@
 			线程：显示当前所有线程，正在运行的线程，完成的线程等信息
 			抽样器：可以查看的cpu 内存的动态信息
 			
-			      
+50、线程栈溢出监控与分析详解
+	project/jvm_lecture项目 com.sandro.memory.Test2	 
+	该案例是,虚拟机栈溢出的演示 ,stack overflow
+	运行后会有 java.lang.StackOverflowError 发生,这时length=13863
 
+	当设置了虚拟机参数 -Xss100k 在运行后，返回如下信息
+		Error: Could not create the Java Virtual Machine.
+		Error: A fatal exception has occurred. Program will exit.
+
+		The stack size specified is too small, Specify at least 228k
+	-Xss100k是设置虚拟机栈最大空间100k的意思，当设置太小的时候 java虚拟机都无法创建，改称228k后运行正常。这时候 length = 1517
+	但是错误发生的时候栈深度length比没有设置的时候会小很多。 
+	  
+	通过jvisualvm监控虚拟栈
+		在test方法前sleep以下，这样不会让程序立刻出错
+		在jvisualvm attach到进程以后，动态观察进程的运行情况
+		在线程视图下，点击线程Dump,此时会生成一个threaddump临时文件的展示界面
+		此时会把jvm中所有执行的线程现场调用情况和数据都会呈现出来
+
+		2023-08-21 16:14:19
+		Full thread dump Java HotSpot(TM) 64-Bit Server VM (25.291-b10 mixed mode):
+		
+		"RMI TCP Connection(2)-127.0.0.1" #16 daemon prio=9 os_prio=0 tid=0x00007f8f48003000 nid=0x17e7c runnable [0x00007f8f80e3e000]
+		   java.lang.Thread.State: RUNNABLE
+		        at java.net.SocketInputStream.socketRead0(Native Method)
+		        。。。
+		        - locked <0x000000076e46b6d8> (a java.io.BufferedInputStream)
+		        at java.io.FilterInputStream.read(FilterInputStream.java:83)
+		        。。。。
+		
+		   Locked ownable synchronizers:
+		        - <0x000000076de21cb8> (a java.util.concurrent.ThreadPoolExecutor$Worker)
+		
+		"JMX server connection timeout 15" #15 daemon prio=9 os_prio=0 tid=0x00007f8f4c014000 nid=0x17e78 in Object.wait() [0x00007f8f80f40000]
+		   java.lang.Thread.State: TIMED_WAITING (on object monitor)
+		        at java.lang.Object.wait(Native Method)
+		        at com.sun.jmx.remote.internal.ServerCommunicatorAdmin$Timeout.run(ServerCommunicatorAdmin.java:168)
+		        - locked <0x000000076dfe1ad8> (a [I)
+		        at java.lang.Thread.run(Thread.java:748)
+		
+		   Locked ownable synchronizers:
+		        - None
+		
+		"RMI Scheduler(0)" #14 daemon prio=9 os_prio=0 tid=0x00007f8f4c011800 nid=0x17e77 waiting on condition [0x00007f8f81041000]
+		   java.lang.Thread.State: TIMED_WAITING (parking)
+		        at sun.misc.Unsafe.park(Native Method)
+		        - parking to wait for  <0x000000076dce4910> (a java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject)
+		        at java.util.concurrent.locks.LockSupport.parkNanos(LockSupport.java:215)
+		        at java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.awaitNanos(AbstractQueuedSynchronizer.java:2078)
+		        。。。
+		
+		   Locked ownable synchronizers:
+		        - None
+		
+		"RMI TCP Accept-0" #12 daemon prio=9 os_prio=0 tid=0x00007f8f54163000 nid=0x17e74 runnable [0x00007f8f81243000]
+		   java.lang.Thread.State: RUNNABLE
+		        at java.net.PlainSocketImpl.socketAccept(Native Method)
+		        。。。
+		
+		   Locked ownable synchronizers:
+		        - None
+		
+		"Attach Listener" #10 daemon prio=9 os_prio=0 tid=0x00007f8f6c001000 nid=0x17e6a waiting on condition [0x0000000000000000]
+		   java.lang.Thread.State: RUNNABLE
+		
+		   Locked ownable synchronizers:
+		        - None
+		
+		"Service Thread" #9 daemon prio=9 os_prio=0 tid=0x00007f8fac20b800 nid=0x17e5d runnable [0x0000000000000000]
+		   java.lang.Thread.State: RUNNABLE
+		
+		   Locked ownable synchronizers:
+		        - None
+		
+		"C1 CompilerThread2" #8 daemon prio=9 os_prio=0 tid=0x00007f8fac209000 nid=0x17e5c waiting on condition [0x0000000000000000]
+		   java.lang.Thread.State: RUNNABLE
+		
+		   Locked ownable synchronizers:
+		        - None
+		
+		"C2 CompilerThread1" #7 daemon prio=9 os_prio=0 tid=0x00007f8fac207000 nid=0x17e5b waiting on condition [0x0000000000000000]
+		   java.lang.Thread.State: RUNNABLE
+		
+		   Locked ownable synchronizers:
+		        - None
+		
+		"C2 CompilerThread0" #6 daemon prio=9 os_prio=0 tid=0x00007f8fac205000 nid=0x17e5a waiting on condition [0x0000000000000000]
+		   java.lang.Thread.State: RUNNABLE
+		
+		   Locked ownable synchronizers:
+		        - None
+		
+		"Monitor Ctrl-Break" #5 daemon prio=5 os_prio=0 tid=0x00007f8fac202800 nid=0x17e59 runnable [0x00007f8f81f7d000]
+		   java.lang.Thread.State: RUNNABLE
+		        at java.net.SocketInputStream.socketRead0(Native Method)
+		        at java.net.SocketInputStream.socketRead(SocketInputStream.java:116)
+		        。。。。
+		        - locked <0x000000076d305558> (a java.io.InputStreamReader)
+		        at java.io.InputStreamReader.read(InputStreamReader.java:184)
+		        at java.io.BufferedReader.fill(BufferedReader.java:161)
+		        at java.io.BufferedReader.readLine(BufferedReader.java:324)
+		        - locked <0x000000076d305558> (a java.io.InputStreamReader)
+		        at java.io.BufferedReader.readLine(BufferedReader.java:389)
+		        at com.intellij.rt.execution.application.AppMainV2$1.run(AppMainV2.java:56)
+		
+		   Locked ownable synchronizers:
+		        - None
+		
+		"Signal Dispatcher" #4 daemon prio=9 os_prio=0 tid=0x00007f8fac182000 nid=0x17e50 runnable [0x0000000000000000]
+		   java.lang.Thread.State: RUNNABLE
+		
+		   Locked ownable synchronizers:
+		        - None
+		
+		"Finalizer" #3 daemon prio=8 os_prio=0 tid=0x00007f8fac14f800 nid=0x17e4e in Object.wait() [0x00007f8f829f0000]
+		   java.lang.Thread.State: WAITING (on object monitor)
+		        at java.lang.Object.wait(Native Method)
+		        - waiting on <0x000000076d188ee0> (a java.lang.ref.ReferenceQueue$Lock)
+		        at java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:144)
+		        - locked <0x000000076d188ee0> (a java.lang.ref.ReferenceQueue$Lock)
+		        at java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:165)
+		        at java.lang.ref.Finalizer$FinalizerThread.run(Finalizer.java:216)
+		
+		   Locked ownable synchronizers:
+		        - None
+		
+		"Reference Handler" #2 daemon prio=10 os_prio=0 tid=0x00007f8fac14b000 nid=0x17e4d in Object.wait() [0x00007f8f82af1000]
+		   java.lang.Thread.State: WAITING (on object monitor)
+		        at java.lang.Object.wait(Native Method)
+		        - waiting on <0x000000076d186c00> (a java.lang.ref.Reference$Lock)
+		        at java.lang.Object.wait(Object.java:502)
+		        at java.lang.ref.Reference.tryHandlePending(Reference.java:191)
+		        - locked <0x000000076d186c00> (a java.lang.ref.Reference$Lock)
+		        at java.lang.ref.Reference$ReferenceHandler.run(Reference.java:153)
+		
+		   Locked ownable synchronizers:
+		        - None
+		
+		"main" #1 prio=5 os_prio=0 tid=0x00007f8fac00c000 nid=0x17e42 waiting on condition [0x00007f8fb1a22000]
+		   java.lang.Thread.State: TIMED_WAITING (sleeping)
+		        at java.lang.Thread.sleep(Native Method)
+		        at com.sandro.memory.Test2.test(Test2.java:13)
+		        at com.sandro.memory.Test2.test(Test2.java:14)   
+			...下面省略无数行。。
+		Locked ownable synchronizers:
+		        - None
+		
+		"VM Thread" os_prio=0 tid=0x00007f8fac141000 nid=0x17e4c runnable 
+		
+		"GC task thread#0 (ParallelGC)" os_prio=0 tid=0x00007f8fac021000 nid=0x17e43 runnable 
+		
+		"GC task thread#1 (ParallelGC)" os_prio=0 tid=0x00007f8fac023000 nid=0x17e44 runnable 
+		
+		"GC task thread#2 (ParallelGC)" os_prio=0 tid=0x00007f8fac024800 nid=0x17e45 runnable 
+		
+		"GC task thread#3 (ParallelGC)" os_prio=0 tid=0x00007f8fac026800 nid=0x17e46 runnable 
+		
+		"VM Periodic Task Thread" os_prio=0 tid=0x00007f8fac20e800 nid=0x17e5e waiting on condition 
+		
+		JNI global references: 352
+		
+		虽然当前很多线程都在运行，但是实际上和应用相关的线程只有main线程
+			 "main" #1 prio=5 os_prio=0 tid=0x00007f8fac00c000 nid=0x17e42 waiting on condition [0x00007f8fb1a22000]
+			 	prio = 5 ，优先级是5 ，java线程的优先级是 1～10，数字越高优先级越高，默认是5
+			 	os_prio=0 ，系统的优先级
+			 java.lang.Thread.State: TIMED_WAITING (sleeping)
+				当前状态是sleeping状态，每次执行test的时候都会sleep(300),所以加载现场的时候大概率是在线程睡眠的时候
+		
+	
+	使用jconsole也能监控java进程运行情况
+		启动后连接到当前进程
+		连接后在线程中也能看到main线程，双击就能查看main线程的堆栈跟踪信息
+			名称: main
+			状态: TIMED_WAITING
+			总阻止数: 0, 当前线程阻止其他线程的数量
+			总等待数: 696,当前线程等待了多少次
+	
+			堆栈跟踪: 
+			java.lang.Thread.sleep(Native Method)
+			com.sandro.memory.Test2.test(Test2.java:13)
+			com.sandro.memory.Test2.test(Test2.java:14)
+			com.sandro.memory.Test2.test(Test2.java:14)
+			。。。
+	
+		在"线程"视图中选中要关注的线程后，点击下面的"检测死锁"，可以检查是否有死锁的情况
+
+
+51、线程死锁检测与分析工具
+	
+
+
+
+
+	
