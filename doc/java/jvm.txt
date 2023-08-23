@@ -2460,8 +2460,101 @@
 			 如果设置了Maxspacesize 当MC达到最大值的时候就会oom
 		MU:782.2 ,Metaspace Utilization(KB)，当前元空间已经占用的KB数
 		
+
+54、jps、jcmd命令
+	jps 命令，直接查看java虚拟机进程
+	jps -nkvV , 带有java 虚拟机参数的进程信息
+	jps -l 进程号+包名
+
+	jcmd ,jdk 1.7之后增加的重要java命令
+	jcmd ：直接使用该命令，和jps类似
+	
+	jcmd <pid> VM.flags : 输出<pid>进程启动参数
+		109548:
+		-XX:CICompilerCount=3 -XX:CompressedClassSpaceSize=12582912 -XX:InitialHeapSize=262144000 -XX:MaxHeapSize=4173332480 
+		-XX:MaxMetaspaceSize=20971520 -XX:MaxNewSize=1390936064 -XX:MinHeapDeltaBytes=524288 -XX:NewSize=87031808 -XX:OldSize=175112192 
+		-XX:+UseCompressedClassPointers -XX:+UseCompressedOops -XX:+UseFastUnorderedTimeStamps -XX:+UseParallelGC 
 	
 
-
-
+	jcmd <pid> help 列出当前java进程可以执行的操作
+		109828:
+		The following commands are available:
+		JFR.stop       
+		JFR.start
+		JFR.dump
+		JFR.check
+		VM.native_memory
+		VM.check_commercial_features
+		VM.unlock_commercial_features
+		ManagementAgent.stop
+		ManagementAgent.start_local
+		ManagementAgent.start
+		VM.classloader_stats
+		GC.rotate_log
+		Thread.print
+		GC.class_stats
+		GC.class_histogram
+		GC.heap_dump
+		GC.finalizer_info
+		GC.heap_info
+		GC.run_finalization
+		GC.run
+		VM.uptime
+		VM.dynlibs
+		VM.flags
+		VM.system_properties
+		VM.command_line
+		VM.version
+		help
 	
+	jcmd <pid> help JFR.dump:查看JFR.dump命令的帮助信息
+
+	cmd <pid> PerfCounter.print ： 列出jvm性能相关的参数
+
+	jcmd <pid> VM.uptime : 查看某个进程jvm的启动时长
+
+	jcmd 109828 GC.class_histogram：查看进程中类的统计信息
+		109828:
+		
+		 num     #instances         #bytes  class name
+		----------------------------------------------
+		   1:         20062        1765456  java.lang.reflect.Method
+		   2:          7305         580256  [C
+		   3:         18635         398112  [Ljava.lang.Class;
+		   4:          1836         246912  java.lang.Class
+		   5:          7289         174936  java.lang.String
+		   6:          6407         153768  net.sf.cglib.core.Signature
+		....
+	jcmd <pid> Thread.print 查看线程堆栈信息,也会列出死锁的情况，和jconsole或者jvisualvm中基本一样的
+
+	jcmd <pid> GC.heap_dump ~/mywork/test.phrof 把heap dump信息保存到文件中去
+
+	jcmd <pid> VM.system_properties 输出进程的jvm属性信息
+		110369:
+		#Wed Aug 23 17:37:27 CST 2023
+		java.runtime.name=Java(TM) SE Runtime Environment
+		sun.boot.library.path=/usr/jdk1.8.0_291/jre/lib/amd64
+		java.vm.version=25.291-b10
+		java.vm.vendor=Oracle Corporation
+		java.vendor.url=http\://java.oracle.com/
+		path.separator=\:
+		java.vm.name=Java HotSpot(TM) 64-Bit Server VM
+		file.encoding.pkg=sun.io
+		user.country=CN
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
