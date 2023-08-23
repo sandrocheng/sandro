@@ -2542,12 +2542,37 @@
 		file.encoding.pkg=sun.io
 		user.country=CN
 
+	jcmd <pid> VM.version 查看目标JVM进程的版本信息
+		Java HotSpot(TM) 64-Bit Server VM version 25.291-b10
+		JDK 8.0_291
+
+	jcmd <pid> VM.command_line 查看JVM启动的命令行参数信息
+
+	
+55、jstack、jmc、jhat
+	jstack:可以查看或者导出java应用程序中线程的信息和jcmd <pid> Thread.print 是一样的
+		jstack <pid>
+
+	jmc : java mission control java任务控制，是一个一体化的图形界面工具
+	jfr: java Flight Recorder: java飞行记录器，实时获取java进程的信息
+		
+	jhat <文件>:堆转储存文件分析
+		Reading from java_pid111543.hprof...
+		Dump file created Wed Aug 23 23:15:25 CST 2023
+		Snapshot read, resolving...
+		Resolving 97290 objects...
+		Chasing references, expect 19 dots...................
+		Eliminating duplicate references...................
+		Snapshot resolved.
+		Started HTTP server on port 7000
+		Server is ready.
+	
+		此时，使用浏览器查看内容 http://locallost:7000
+		Execute Object Query Language (OQL) query 使用类似sql语法的方式查找信息
+			如：select classof(classloader).name from instanceof java.lang.ClassLoader classloader
 
 
-
-
-
-
+			
 
 
 

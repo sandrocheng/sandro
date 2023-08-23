@@ -9,7 +9,7 @@ public class Test1 {
         List<Test1> list = new ArrayList<>();
         for(;;){
             list.add(new Test1());
-            Thread.sleep(1);
+//            Thread.sleep(1);
 //            System.gc();
         }
     }
