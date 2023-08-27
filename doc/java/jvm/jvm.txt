@@ -2822,17 +2822,93 @@
 		如果一个List只需要顺序访问，不需要随机访问(Random Access) ，用LinkedList代替ArrayList
 			LinkList本质是链表，不需要resize，但只适用于顺序访问。 
 
+58、垃圾回收日志与算法深度解读
+	project/jvm_lecture项目 com.sandro.gc.Test1
+	设置jvm启动参数：
+		-verbose:gc //会输出虚拟机中详细的垃圾回收日志
+		-Xms20M  //jvm启动时堆容量初始值20M
+		-Xmx20M //jvm在运行时堆容量最大值20M，通过设置最小和最大值，能够保证垃圾回收时内存没有抖动
+			//设置的小一些保证能够发生gc操作
+		-Xmn10M //堆空间中新生代的大小是10M
+		-XX:+PrintGCDetails //打印出垃圾回收的详细信息
+		-XX:+SurvivorRatio=8,新生代 Eden和Survivor的比例是8:1，这样的话Eden是8 ，from Survivor是1，to Survivor也是1
 
+	运行后日志如下：此时只有当前内存的占用情况，并没有发生GC
+		Heap 
+		 PSYoungGen      total 9216K, used 7833K [0x00000000ff600000, 0x0000000100000000, 0x0000000100000000)
+		  eden space 8192K, 95% used [0x00000000ff600000,0x00000000ffda6408,0x00000000ffe00000)
+		  from space 1024K, 0% used [0x00000000fff00000,0x00000000fff00000,0x0000000100000000)
+		  to   space 1024K, 0% used [0x00000000ffe00000,0x00000000ffe00000,0x00000000fff00000)
+		 ParOldGen       total 10240K, used 0K [0x00000000fec00000, 0x00000000ff600000, 0x00000000ff600000)
+		  object space 10240K, 0% used [0x00000000fec00000,0x00000000fec00000,0x00000000ff600000)
+		 Metaspace       used 3098K, capacity 4496K, committed 4864K, reserved 1056768K
+		  class space    used 340K, capacity 388K, committed 512K, reserved 1048576K	
+	
+	修改代码增大内存占用的空间到6.5M时候(需要不断尝试，不一定是多少),此时看到了只有GC操作的日志：
+	        //GC (Allocation Failure) ：MinorGC日志（ScavengeGC）新对象生成时，Eden空间满了触发,Allocation Failure是触发的原因,分配失败
+		//[PSYoungGen: 8192K->416K(9216K)]：Parallel Scavenge收集器中的新生代占据空间从8192k减少到416k，
+						    总大小是9216k也就是9M，也就是Eden(8M)+一个Survivor的大小
+		//8192K->416K(19456K), 0.0016629 secs : GC之前堆中对象的的大小(新生代+老年代)是8291K，
+							GC之后堆中对象的大小减少到416K
+							总的堆的容量是 19456k 也就是19M=新生代9M(有一个suriver不能使用所以不算) + 老年代10M
+							此次gc总耗时0.0016629秒
+		//[Times: user=0.01 sys=0.00, real=0.00 secs]：在用户空间用了0.01秒，内核空间是0.00秒，实际时间是0.00秒
+		[GC (Allocation Failure) [PSYoungGen: 8192K->416K(9216K)] 8192K->416K(19456K), 0.0016629 secs] [Times: user=0.01 sys=0.00, real=0.00 secs] 
+		Heap//堆汇总信息
+		 PSYoungGen      total 9216K, used 584K [0x00000000ff600000, 0x0000000100000000, 0x0000000100000000)
+		  eden space 8192K, 2% used [0x00000000ff600000,0x00000000ff62a248,0x00000000ffe00000)
+		  from space 1024K, 40% used [0x00000000ffe00000,0x00000000ffe68000,0x00000000fff00000)
+		  to   space 1024K, 0% used [0x00000000fff00000,0x00000000fff00000,0x0000000100000000)
+		//ParOldGen:老年代，使用的垃圾收集器是Parallel Old收集器
+		//老年代总大小是10M，GC后使用了0K
+		//新生代释放后：共释放了8192-416 = 7776大小的空间
+		//整个堆释放后，共释放了8192-416 - 7776大小的空间
+		//因此此次GC没有晋升进入到老年代，如果新生代释放的比较多，整个堆释放的比较少，这时才会有对象晋升到老年代
+		 ParOldGen       total 10240K, used 0K [0x00000000fec00000, 0x00000000ff600000, 0x00000000ff600000)
+		  object space 10240K, 0% used [0x00000000fec00000,0x00000000fec00000,0x00000000ff600000)
+		 Metaspace       used 3087K, capacity 4496K, committed 4864K, reserved 1056768K
+		  class space    used 338K, capacity 388K, committed 512K, reserved 1048576K
+	
+	修改代码增大内存占用的空间到8M,看到GC操作的日志，此时看到了GC和FullGC的日志：
+		[GC (Allocation Failure) [PSYoungGen: 7668K->480K(9216K)] 7668K->6632K(19456K), 0.0047084 secs] [Times: user=0.02 sys=0.00, real=0.01 secs] 
+		[Full GC (Ergonomics) //FullGC 发生了，原因是Ergonomics
+			[PSYoungGen: 480K->0K(9216K)] 新生代垃圾又进一次回收，这时新生代完全回收了
+			[ParOldGen: 6152K->6500K(10240K)] 6632K->6500K(19456K), 老年代垃圾回收，老年代此次回收不但没有减少反而增多了，原因是新生代的一部分对象被晋升了
+										但是堆的总空间减少了(6632K->6500K)
+			[Metaspace: 3073K->3073K(1056768K)], 元空间的垃圾回收,元空间回收的空间一般都很小
+		0.0069378 secs] 
+		[Times: user=0.01 sys=0.00, real=0.01 secs] 
+		hello world
+		Heap
+		 PSYoungGen      total 9216K, used 2372K [0x00000000ff600000, 0x0000000100000000, 0x0000000100000000)
+		  eden space 8192K, 28% used [0x00000000ff600000,0x00000000ff851210,0x00000000ffe00000)
+		  from space 1024K, 0% used [0x00000000ffe00000,0x00000000ffe00000,0x00000000fff00000)
+		  to   space 1024K, 0% used [0x00000000fff00000,0x00000000fff00000,0x0000000100000000)
+		 ParOldGen       total 10240K, used 6500K [0x00000000fec00000, 0x00000000ff600000, 0x00000000ff600000)
+		  object space 10240K, 63% used [0x00000000fec00000,0x00000000ff2590d0,0x00000000ff600000)
+		 Metaspace       used 3098K, capacity 4496K, committed 4864K, reserved 1056768K
+		  class space    used 340K, capacity 388K, committed 512K, reserved 1048576K
 
-
-
-
-
-
-
-
-
-
+	修改代码增大内存占用的空间到10M也就是设置的新生代的最大的大小,看到GC操作的日志，此时没有发现Full GC
+		[GC (Allocation Failure) [PSYoungGen: 5620K->512K(9216K)] 5620K->4616K(19456K), 0.0034860 secs] [Times: user=0.01 sys=0.00, real=0.00 secs] 
+		Heap
+		 PSYoungGen      total 9216K, used 6894K [0x00000000ff600000, 0x0000000100000000, 0x0000000100000000)
+		  eden space 8192K, 77% used [0x00000000ff600000,0x00000000ffc3bb90,0x00000000ffe00000)
+		  from space 1024K, 50% used [0x00000000ffe00000,0x00000000ffe80000,0x00000000fff00000)
+		  to   space 1024K, 0% used [0x00000000fff00000,0x00000000fff00000,0x0000000100000000)
+		 ParOldGen       total 10240K, used 4104K [0x00000000fec00000, 0x00000000ff600000, 0x00000000ff600000)
+		  object space 10240K, 40% used [0x00000000fec00000,0x00000000ff002020,0x00000000ff600000)
+		 Metaspace       used 3099K, capacity 4496K, committed 4864K, reserved 1056768K
+		  class space    used 340K, capacity 388K, committed 512K, reserved 1048576K
+		原因分析：
+			byte[] myAlloc1 = new byte[2*size];
+		        byte[] myAlloc2 = new byte[2*size];
+		        byte[] myAlloc3 = new byte[3*size];//这一部执行完，内存已经分配了7M
+		        byte[] myAlloc4 = new byte[3*size];//这时Eden空间 + Survivor都用用完了，此时新的对象会晋升到老年代去诞生
+			年轻代满了之后触发了GC，新的对象由于直接在老年代分配，所以没有再触发FullGC
+			
+	垃圾收集器 PSYoungGen + ParOldGen，说明再jdk1.8 种默认的垃圾收集器是 Parallel Scavenge + Parallel Old 组合	
+	
 
 
 
