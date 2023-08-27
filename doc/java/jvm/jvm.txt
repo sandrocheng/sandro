@@ -2778,4 +2778,61 @@
 			UseCMSCompactAtFullCollection：使用CMS收集器在完成垃圾回收后是否要进行一次内存随便整理，仅在使用CMS收集器时生效
 			CMSFullGCsBeforeCompaction:设置CMS收集器在进行若干次垃圾收集后再启动一次内存碎片整理。仅在使用CMS收集器时生效
 
+57、java内存泄漏经典原因分析
+	-对象定义在错误的范围(Wrong Scope)
+		例：如果Fool实例对象的生命周期比较长，会导致临时性内存泄漏（这里的names变量实际上只有临时作用）
+			class Foo{
+				private String[] name;
+				public void doIt(int length){
+					names = new String[length];
+					populate(names);
+					print(names);
+				}
+			}
+		jvm喜欢生命周期短的对象这样做已经足够高效,把names从成员变量换成方法的局部变量
+			class Foo{
+				public void doIt(int length){
+					names = new String[length];
+					populate(names);
+					print(names);
+				}
+			}		
 		
+	-异常(Exception)处理不当
+		Connection conn = DriverManager.getConnection(url,name,passwd);
+		try{
+			String sql = "select * from table";
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			ResultSet rs = stmt.executeQuery();
+			while(rs.next()){
+				doWork(rs);	
+			}
+			rs.close();
+			stmt.close();
+			conn.close();
+		}catch(Exception e){
+			//如果doWork()抛出异常，rs.colse ,stmt.close和conn.close不会被调用，导致内存泄漏和db连接泄漏
+		}
+		正确的做法是永远要把资源释放 rs.colse() stmt.close 和 conn.close放到finally中去
+
+	-集合数据管理不当	
+		当使用Array-based的数据结构（ArrayList , HashMap等）时，尽量减少resize
+			比如： new ArrayList时，尽量估算size,在创建的时候把size确定
+			减少resize可以避免没有必要的array copying,gc碎片等问题
+		如果一个List只需要顺序访问，不需要随机访问(Random Access) ，用LinkedList代替ArrayList
+			LinkList本质是链表，不需要resize，但只适用于顺序访问。 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
