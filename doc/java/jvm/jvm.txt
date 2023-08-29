@@ -2909,6 +2909,179 @@
 			
 	垃圾收集器 PSYoungGen + ParOldGen，说明再jdk1.8 种默认的垃圾收集器是 Parallel Scavenge + Parallel Old 组合	
 	
+59、阈值和垃圾收集器类型对于对象分配的影响
+	project/jvm_lecture项目 com.sandro.gc.Test2
+	
+	输出以下当前虚拟机版本号和默认的启动参数：java -XX:+PrintCommandLineFlags -version
+		-XX:InitialHeapSize=260552704   //初始的堆大小 (字节) 等价与 Xms
+		-XX:MaxHeapSize=4168843264      //最大的堆大小(字节)等价于Xmx 
+		-XX:+PrintCommandLineFlags      //打印jvm启动信息
+		-XX:+UseCompressedClassPointers //启用指针压缩，这样可以节省空间
+		-XX:+UseCompressedOops          //从32位jvm迁移到64位jvm的时候指针会经历一次膨胀，导致指针也会变大，那么jvm启动的时候也会占用更大的空间，
+						//使用这个参数的时候，会对一些特定的指针进行压缩，尽量减少空间的占用
+		-XX:+UseParallelGC 		//使用Parallel Scavenge + Parallel Old 的收集器组合进行内存回收
+		java version "1.8.0_291"
+		Java(TM) SE Runtime Environment (build 1.8.0_291-b10)
+		Java HotSpot(TM) 64-Bit Server VM (build 25.291-b10, mixed mode)
+	
+	运行进程前，设置一下jvm启动参数
+		-verbose:gc
+		-Xms20M
+		-Xmx20M
+		-Xmn10M
+		-XX:+PrintGCDetails
+		-XX:SurvivorRatio=8
+		-XX:PretenureSizeThreshold=4194304,当新创建的对象已经超过这个值(单位字节,这里是4M)的时候 ，被创建的对象直接到老年代去做内存的分配	
+	运行后gc日志如下：
+		Heap
+		 PSYoungGen      total 9216K, used 6808K [0x00000000ff600000, 0x0000000100000000, 0x0000000100000000)
+		  eden space 8192K, 83% used [0x00000000ff600000,0x00000000ffca63e8,0x00000000ffe00000)
+		  from space 1024K, 0% used [0x00000000fff00000,0x00000000fff00000,0x0000000100000000)
+		  to   space 1024K, 0% used [0x00000000ffe00000,0x00000000ffe00000,0x00000000fff00000)
+		 ParOldGen       total 10240K, used 0K [0x00000000fec00000, 0x00000000ff600000, 0x00000000ff600000)
+		  object space 10240K, 0% used [0x00000000fec00000,0x00000000fec00000,0x00000000ff600000)
+		 Metaspace       used 3098K, capacity 4496K, committed 4864K, reserved 1056768K
+		  class space    used 340K, capacity 388K, committed 512K, reserved 1048576K
+	
+		案例中 byte数组大小是5M,PretenureSizeThreshold设置的是4M，案例中应该有1M的对象是要分配到老年代中的
+		但是从日志中看到 此时ParOldGen used 0K,说明案例中分配的内存没有进入到老年代	
+		原因：
+			jvm中的很多参数是交织在一起的，比如A参数设置以后，才会使用B参数的值
+			PretenureSizeThreshold必须搭配Serial收集器才会其作用，而当前默认的收集器是UseParallelGC 
+			因此需要设置 使用-XX:+UseSerialGC 才可以，使用Serial + Serial Old的收集器组合进行内存回收
+	
+	重新设置了启动参数后，日志如下：
+		Heap
+		 def new generation   total 9216K, used 1688K [0x00000000fec00000, 0x00000000ff600000, 0x00000000ff600000)
+		  eden space 8192K,  20% used [0x00000000fec00000, 0x00000000feda63d8, 0x00000000ff400000)
+		  from space 1024K,   0% used [0x00000000ff400000, 0x00000000ff400000, 0x00000000ff500000)
+		  to   space 1024K,   0% used [0x00000000ff500000, 0x00000000ff500000, 0x00000000ff600000)
+		 tenured generation   total 10240K, used 5120K [0x00000000ff600000, 0x0000000100000000, 0x0000000100000000)
+		   the space 10240K,  50% used [0x00000000ff600000, 0x00000000ffb00010, 0x00000000ffb00200, 0x0000000100000000)
+		 Metaspace       used 3062K, capacity 4496K, committed 4864K, reserved 1056768K
+		  class space    used 335K, capacity 388K, committed 512K, reserved 1048576K		
+	此时新生代的垃圾收集器变成了 def new generation,老年代的垃圾收集器变成了 tenured generation
+	在老年代里直接创建了5120K的对象，说明PretenureSizeThreshold起作用了
+	byte[] myAlloc = new byte[5*size]; //myAlloc在创建的时候就确定了必须一次性创建5M的连续空间的内存
+	
+	案例二，将myAlloc对象的大小设置为8M，还是使用默认PS垃圾收集器(把UseSerialGC删掉就行)
+	GC日志：
+		Heap
+		 PSYoungGen      total 9216K, used 1688K [0x00000000ff600000, 0x0000000100000000, 0x0000000100000000)
+		  eden space 8192K, 20% used [0x00000000ff600000,0x00000000ff7a63d8,0x00000000ffe00000)
+		  from space 1024K, 0% used [0x00000000fff00000,0x00000000fff00000,0x0000000100000000)
+		  to   space 1024K, 0% used [0x00000000ffe00000,0x00000000ffe00000,0x00000000fff00000)
+		 ParOldGen       total 10240K, used 8192K [0x00000000fec00000, 0x00000000ff600000, 0x00000000ff600000)
+		  object space 10240K, 80% used [0x00000000fec00000,0x00000000ff400010,0x00000000ff600000)
+		 Metaspace       used 3099K, capacity 4496K, committed 4864K, reserved 1056768K
+		  class space    used 340K, capacity 388K, committed 512K, reserved 1048576K
+	此时由于对象创建需要8M空间，eden容纳不下，所以直接在老年代中创建了。所以一个对象的内存创建不会出现一部分在新生代，一部分在老年代这种情况
+	
+	案例三：将myAlloc对象的大小设置为10M
+		[GC (Allocation Failure) [PSYoungGen: 1524K->400K(9216K)] 1524K->400K(19456K), 0.0014334 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
+		[GC (Allocation Failure) [PSYoungGen: 400K->368K(9216K)] 400K->368K(19456K), 0.0010503 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
+		[Full GC (Allocation Failure) [PSYoungGen: 368K->0K(9216K)] [ParOldGen: 0K->355K(10240K)] 368K->355K(19456K), [Metaspace: 3051K->3051K(1056768K)], 0.0044725 secs] 
+			[Times: user=0.00 sys=0.00, real=0.01 secs] 
+		[GC (Allocation Failure) [PSYoungGen: 0K->0K(9216K)] 355K->355K(19456K), 0.0006438 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
+		[Full GC (Allocation Failure) [PSYoungGen: 0K->0K(9216K)] [ParOldGen: 355K->337K(10240K)] 355K->337K(19456K), [Metaspace: 3051K->3051K(1056768K)], 0.0038796 secs] 
+			[Times: user=0.01 sys=0.00, real=0.01 secs] 
+		Heap
+		 PSYoungGen      total 9216K, used 410K [0x00000000ff600000, 0x0000000100000000, 0x0000000100000000)
+		  eden space 8192K, 5% used [0x00000000ff600000,0x00000000ff666800,0x00000000ffe00000)
+		  from space 1024K, 0% used [0x00000000ffe00000,0x00000000ffe00000,0x00000000fff00000)
+		  to   space 1024K, 0% used [0x00000000fff00000,0x00000000fff00000,0x0000000100000000)
+		 ParOldGen       total 10240K, used 337K [0x00000000fec00000, 0x00000000ff600000, 0x00000000ff600000)
+		  object space 10240K, 3% used [0x00000000fec00000,0x00000000fec54718,0x00000000ff600000)
+		 Metaspace       used 3088K, capacity 4496K, committed 4864K, reserved 1056768K
+		  class space    used 338K, capacity 388K, committed 512K, reserved 1048576K
+		Exception in thread "main" java.lang.OutOfMemoryError: Java heap space
+			at com.sandro.gc.Test2.main(Test2.java:7)
+	此时出现了内存溢出的情况，可以看到在溢出前，gc做了多次的尝试，也做了多次的FullGC的尝试，最终才程序异常	
+	
+	案例四：将myAlloc对象的大小设置为5M，同时增加-XX:+UseSerialGC 设置使用serial垃圾收集器
+		为了使用工具查看内存，增加一个Thread.sleep，保证程序不会立刻死掉
+
+		运行jvisualvm查看进程
+		进程参数：
+			-verbose:gc
+			-Xms20M
+			-Xmx20M
+			-Xmn10M
+			-XX:+PrintGCDetails
+			-XX:SurvivorRatio=8
+			-XX:PretenureSizeThreshold=4194304
+			-XX:+UseSerialGC
+			-javaagent:/home/sandro/software/idea-IC-223.8617.56/lib/idea_rt.jar=34625:/home/sandro/software/idea-IC-223.8617.56/bin
+			-Dfile.encoding=UTF-8
+		在启动工具的时候发现 有GClog日志出现，原因是工具往往使用attch进行的方式监控进程，这样有可能会导致内存不够的情况因此出现了gc操作
+		在GC的时候在工具的监控中 可以看到堆内存有个较大的减少，也可以手动在工具中点击“执行垃圾回收”的操作，可以也可以看到内存有较大减少的情况，同时看到GC日志中出现了Full GC的log
+		[Full GC (System.gc())],说明此次垃圾回收是 System.gc()触发的
+		除了System.gc(),jvm只有在创建对象的时候才会进行垃圾回收。
+		System.gc()调用以后，也不是立刻执行垃圾回收，而是由jvm选择一个合适的时间点才去执行
+		
+		运行jmc查看进程：
+			在内存视图页面 可以看到Eden Space ,Survivor Space ,Tenured Space，具体的实时情况
+			可以看到当Eden Space满了以后会立刻执行GC，同时内存会有一个较大的减少
+			运行JFR(飞行记录器)
+				在内存->堆视图中也可以更直观的看到堆在GC时的变化和数据
+				在内存->分配中可以看到TLAB分配
+					TLAB 分配概念: TLAB,全称Thread Local Allocation Buffer, 即:线程本地分配缓存。这是一块线程专用的内存分配区域。TLAB占用的是eden区的空间。
+		
+		运行 jcmd <pid> VM.flags，查看当前进程的启动参数:
+			-XX:CICompilerCount=3 -XX:InitialHeapSize=20971520 -XX:MaxHeapSize=20971520 -XX:MaxNewSize=10485760 
+			-XX:MinHeapDeltaBytes=196608 
+			-XX:NewSize=10485760 //新生代的大小
+			-XX:OldSize=10485760 //老年代的大小
+			-XX:PretenureSizeThreshold=4194304 -XX:+PrintGC 
+			-XX:+PrintGCDetails -XX:SurvivorRatio=8 -XX:+UseCompressedClassPointers -XX:+UseCompressedOops -XX:+UseFastUnorderedTimeStamps -XX:+UseSerialGC 
+
+60、本地线程分配缓冲——TLAB
+	-TLAB是虚拟机在堆内存的划分出来的一块专用空间，是线程专属的。
+	-在TLAB启动的情况下，在线程初始化时，虚拟机会为每个线程分配一块TLAB空间，只给当前线程使用，这样每个线程都单独拥有一个空间，如果需要分配内存，就在自己的空间上分配，
+	 这样就不存在竞争的情况，可以大大提升分配效率。		
+
+	-这里说线程独享的堆内存，只是在“内存分配”这个动作上是线程独享的，至于在读取、垃圾回收等动作上都是线程共享的。即是指其他线程可以在这个区域读取、操作数据，但是无法在这个区域中分配内存。
+
+	-TLAB 生命周期
+		在分代收集的垃圾回收器中，TLAB是在eden区分配的。TLAB 是从堆上 Eden 区的分配的一块线程本地私有内存。
+		线程初始化的时候，如果 JVM 启用了 TLAB（默认是启用的， 可以通过 -XX:-UseTLAB 关闭），则会创建并初始化 TLAB。
+		同时，在 GC 扫描对象发生之后，线程第一次尝试分配对象的时候，也会创建并初始化 TLAB。
+		
+		在 TLAB 已经满了或者接近于满了的时候，TLAB 可能会被释放回 Eden。GC 扫描对象发生时，TLAB 会被释放回 Eden。
+		TLAB 的生命周期只存在于一个 GC 扫描周期内。在 JVM 中，一个 GC 扫描周期，就是一个epoch。那么，可以知道，TLAB 内分配内存一定是线性分配的。
+
+	-TLAB的大小,如图：60_TLAB的大小
+		TLAB的初始大小可由参数-XX:TLABSize指定，若指定了TLAB的值，TLAB初始大小就是TLABSize。否则，TLAB大小为分配线程的平均值。
+
+		TLAB 的大小的最小值：通过MinTLABSize指定
+		TLAB 的大小的最大值：不同GC中有不同的最大值。例如G1 GC中，TLAB的最大值为大对象的大小，即是Region的一半；ZGC中的最大值为１／８的Region，
+				     在大部分情况下 Shenandoah GC 也是每个 Region 大小的 8 分之一。对于其他的 GC，则是 int 数组的最大大小。
+		
+		TLAB空间大小的动态调整：-XX:ResizeTLAB
+			resize开关是默认开启的，JVM可以对TLAB空间大小进行调整。
+
+	-对象的慢分配
+		当TLAB内存充足时，分配新对象的方式称为快分配。当TLAB内存不足，分配新对象的方式称为“慢分配”。
+		慢分配有两种处理方式：
+			当TLAB剩余内存空间小于TLAB最大浪费空间时，丢弃当前 TLAB 回归 Eden，线程获取新的 TLAB 分配对象
+			当TLAB剩余内存空间大于TLAB最大浪费空间时，对象直接在Eden区分配内存
+
+	-TLAB最大浪费空间
+		最大浪费空间是一个动态值，TLAB最大浪费空间初始值＝TLAB大小／TLABRefillWasteFraction。TLABRefillWasteFraction默认为64，所以TLAB最大浪费空间初始值为TLAB大小的1/64。
+		伴随着每次慢分配，这个TLAB最大浪费空间会每次递增 TLABWasteIncrement 大小的空间。
+
+	-TLAB流程总结，如图：60_TLAB流程总结
+	-参数总结：
+		UseTLAB	是否启用 TLAB，默认是启用的。
+		ResizeTLAB	TLAB 是否是自适应可变的，默认为是
+		TLABSize	初始 TLAB 大小，单位是字节 。默认为0，0 就是不主动设置 TLAB 初始大小，而是通过 JVM 自己计算每一个线程的初始大小。例如：-XX:TLABSize=65536
+		MinTLABSize	最小 TLAB 大小。单位是字节，默认2048。例如-XX:MinTLABSize=4096
+		TLABRefillWasteFraction	在一次 TLAB 再填充（refill）发生的时候，最大的 TLAB 浪费。默认为64，和TLAB最大浪费空间有关 。TLAB最大浪费空间= TLAB大小/TLABRefillWasteFraction
+		TLABWasteIncrement	TLAB 慢分配时允许的 TLAB 浪费增量
+	
+
+
+
 
 
 
