@@ -3079,9 +3079,118 @@
 		TLABRefillWasteFraction	在一次 TLAB 再填充（refill）发生的时候，最大的 TLAB 浪费。默认为64，和TLAB最大浪费空间有关 。TLAB最大浪费空间= TLAB大小/TLABRefillWasteFraction
 		TLABWasteIncrement	TLAB 慢分配时允许的 TLAB 浪费增量
 	
+61、MaxTenuringThreshold与阈值动态调整
+	project/jvm_lecture项目 com.sandro.gc.Test3
 
+	vm运行参数：
+ 		-verbose:gc
+ 		-Xms20M
+ 		-Xmx20M
+ 		-Xmn10M
+ 		-XX:+PrintGCDetails
+ 		-XX:+PrintCommandLineFlags  //在jvm启动的时候 输出jvm启动参数
+		-XX:+SurvivorRatio=8
+		-XX:MaxTenuringThreshold=5  //设置可以晋升到老年代的最大年龄
+					    //当一个对象在新生代每经历过一次Minor GC后，对象年龄就会+1，设置MaxTenuringThreshold=5，是让对象年龄>5后晋升到老年代
+					    //这个值是理论上的最大值，对象晋升的实际年龄也可能<5,因为对象晋升的年龄jvm也会自动调节，但是绝对不会>5还不晋升。
+					    //该设置的默认值是15，在CMS中默认是6，G1中默认为15(在jvm中，该数值是由4个bit来表示的，所以最大值是1111也就是15)
+					    //经历了多次GC后，新生代存活的对象会在from survivor 与 to survivor之间存放，而这里面的前提是这两个空间有足够的大小来存放这些数据
+					    //在GC算法中会计算每个对象年龄的大小，如果达到某个年龄后发现总大小已经大于了survivor空间的50%，
+					    //那么这时候就需要调整阈值，不能再继续等到默认的15次GC后才完成晋升
+				            //因为这样会导致surivivor空间不足，调整阈值是为了让这些存活对象尽快完成晋升
+		-XX:+PrintTenuringDistribution //打印年龄信息
 
-
-
-
+	运行后日志：
+		//启动参数
+		-XX:InitialHeapSize=20971520 -XX:InitialTenuringThreshold=5 -XX:MaxHeapSize=20971520 
+		-XX:MaxNewSize=10485760 -XX:MaxTenuringThreshold=5 -XX:NewSize=10485760 
+		-XX:+PrintCommandLineFlags -XX:+PrintGC -XX:+PrintGCDetails -XX:+PrintTenuringDistribution 
+		-XX:SurvivorRatio=8 -XX:+UseCompressedClassPointers -XX:+UseCompressedOops -XX:+UseParallelGC 
+		
+		[GC (Allocation Failure) 
+		Desired survivor size 1048576 bytes, new threshold 5 (max 5) //当前最大对象年龄是5，new threshold，这个是动态计算的值是5，随着运行时间越来越就，这个值可能会小与5
+									     //Desird survivor size  是1M
+		[PSYoungGen: 7668K->464K(9216K)] 7668K->6608K(19456K), 0.0044398 secs] [Times: user=0.01 sys=0.00, real=0.00 secs] 
+		[Full GC (Ergonomics) [PSYoungGen: 464K->0K(9216K)] 
+			[ParOldGen: 6144K->6524K(10240K)] 6608K->6524K(19456K), [Metaspace: 3093K->3093K(1056768K)], 0.0047949 secs] [Times: user=0.01 sys=0.00, real=0.01 secs] 
+		Heap
+		 PSYoungGen      total 9216K, used 2130K [0x00000000ff600000, 0x0000000100000000, 0x0000000100000000)
+		  eden space 8192K, 26% used [0x00000000ff600000,0x00000000ff814930,0x00000000ffe00000)
+		  from space 1024K, 0% used [0x00000000ffe00000,0x00000000ffe00000,0x00000000fff00000)
+		  to   space 1024K, 0% used [0x00000000fff00000,0x00000000fff00000,0x0000000100000000)
+		 ParOldGen       total 10240K, used 6524K [0x00000000fec00000, 0x00000000ff600000, 0x00000000ff600000)
+		  object space 10240K, 63% used [0x00000000fec00000,0x00000000ff25f328,0x00000000ff600000)
+		 Metaspace       used 3100K, capacity 4496K, committed 4864K, reserved 1056768K
+		  class space    used 340K, capacity 388K, committed 512K, reserved 1048576K
+		
+	project/jvm_lecture项目 com.sandro.gc.Test4
+	这个案例演示了对象从新生代晋升到老年代年龄阈值动态调整的过程
+	运行参数：
+		-verbose:gc
+		-Xmx200M
+		-Xmn50M
+		-XX:TargetSurvivorRatio=60 ，当某一个survivor的空间被占据了60%，就需要重新计算对象晋升的阈值，而不是默认或者设置的值
+		-XX:+PrintTenuringDistribution
+		-XX:+PrintGCDetails
+		-XX:+PrintGCDateStamps ,打印GC发生的时间戳
+		-XX:+UseConcMarkSweepGC,使用 cms 垃圾回收器进行老年代垃圾回收
+		-XX:+UseParNewGC,使用ParNew垃圾回收器进行新生代的垃圾回收
+		-XX:MaxTenuringThreshold=3
+	运行日志：
+		//第一次垃圾回收，所需survivor是3M左右，超过3M就要重新设置阈值
+		//3M是因为设置了xmn新生代50M，由于默认Eden和Survivor比例是8:1,所以Eden是40M，survivor是5M，设置的TargetSurvivorRatio=60，所以达到3M的时候需要重新计算对象晋升阈值
+		2023-08-29T23:00:57.913+0800: [GC (Allocation Failure) 2023-08-29T23:00:57.913+0800: [ParNew
+		Desired survivor size 3145728 bytes, new threshold 3 (max 3)
+		- age   1:    1532512 bytes,    1532512 total  年龄是1的对象大小
+		: 40954K->1507K(46080K), 0.0027042 secs] 40954K->1507K(199680K), 0.0027637 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
+		finish1---------------
+		//第二次垃圾回收
+		2023-08-29T23:00:58.920+0800: [GC (Allocation Failure) 2023-08-29T23:00:58.920+0800: [ParNew
+		Desired survivor size 3145728 bytes, new threshold 3 (max 3)
+		- age   1:       1696 bytes,       1696 total
+		- age   2:    1522336 bytes,    1524032 total //原来是1的变成了2
+		: 42042K->1571K(46080K), 0.0011964 secs] 42042K->1571K(199680K), 0.0012525 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
+		finish2---------------
+		//第三次垃圾回收
+		2023-08-29T23:00:59.930+0800: [GC (Allocation Failure) 2023-08-29T23:00:59.930+0800: [ParNew
+		Desired survivor size 3145728 bytes, new threshold 3 (max 3)
+		- age   1:     342280 bytes,     342280 total
+		- age   2:       1696 bytes,     343976 total
+		- age   3:    1521168 bytes,    1865144 total
+		: 42118K->1967K(46080K), 0.0011513 secs] 42118K->1967K(199680K), 0.0011908 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
+		finish3---------------
+		//第四次垃圾回收，此时之前年龄是3的对象被晋升到了老年代
+		2023-08-29T23:00:59.935+0800: [GC (Allocation Failure) 2023-08-29T23:00:59.935+0800: [ParNew
+		Desired survivor size 3145728 bytes, new threshold 3 (max 3)
+		- age   1:         88 bytes,         88 total
+		- age   2:     341816 bytes,     341904 total
+		- age   3:       1696 bytes,     343600 total
+		: 42681K->769K(46080K), 0.0022618 secs] 42681K->2267K(199680K), 0.0023072 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
+		finish4---------------
+		//第五次垃圾回收，此时定义了3个1M的数组，暂时无法释放
+		//因为一次性加了3M数据达到了之前的阈值设定，所以此时重新调整最大对象晋升年龄，这个时候jvm从3调整到了1
+		2023-08-29T23:00:59.941+0800: [GC (Allocation Failure) 2023-08-29T23:00:59.941+0800: [ParNew
+		Desired survivor size 3145728 bytes, new threshold 1 (max 3)
+		- age   1:    3145864 bytes,    3145864 total
+		- age   2:         88 bytes,    3145952 total
+		- age   3:     341816 bytes,    3487768 total
+		: 41492K->3488K(46080K), 0.0024113 secs] 42990K->4987K(199680K), 0.0024590 secs] [Times: user=0.01 sys=0.00, real=0.00 secs] 
+		finish5---------------
+		//第6次垃圾回收，由于对象晋升年龄被重新调整到1，所以此时年龄>1的对象都放到了老年代
+		2023-08-29T23:01:00.952+0800: [GC (Allocation Failure) 2023-08-29T23:01:00.952+0800: [ParNew
+		Desired survivor size 3145728 bytes, new threshold 3 (max 3)
+		- age   1:         88 bytes,         88 total
+		: 44217K->77K(46080K), 0.0033390 secs] 45716K->4983K(199680K), 0.0033844 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
+		finish6---------------
+		finish all------------
+		Heap
+		 par new generation   total 46080K, used 17053K [0x00000000f3800000, 0x00000000f6a00000, 0x00000000f6a00000)
+		  eden space 40960K,  41% used [0x00000000f3800000, 0x00000000f4894028, 0x00000000f6000000)
+		  from space 5120K,   1% used [0x00000000f6000000, 0x00000000f60135f0, 0x00000000f6500000)
+		  to   space 5120K,   0% used [0x00000000f6500000, 0x00000000f6500000, 0x00000000f6a00000)
+		 //老年代的数据达到了4M多
+		 concurrent mark-sweep generation total 153600K, used 4905K [0x00000000f6a00000, 0x0000000100000000, 0x0000000100000000)
+		 Metaspace       used 3606K, capacity 4536K, committed 4864K, reserved 1056768K
+		  class space    used 399K, capacity 428K, committed 512K, reserved 1048576K
+		
 
