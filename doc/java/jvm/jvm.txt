@@ -3298,9 +3298,56 @@
 		concurrent都代表并发执行，不会stop the world
 		
 	
+63、CMS垃圾收集器实例分析
+	project/jvm_lecture项目 com.sandro.gc.Test5
+	运行参数：
+		-verbose:gc
+                -Xms20M
+                -Xmx20M
+                -Xmn10M
+                -XX:+PrintGCDetails
+                -XX:SurvivorRatio=8
+		-XX:+UseConcMarkSweepGC //使用cms进行老年代垃圾回收
 
-
-
+	运行结果：
+		//第一次申请4M空间，没有触发GC
+		finish1---------------
+		//第二次申请4M空间 ，此时一共申请了8M内存，而Eden目前一共只有8M,因此Minor GC 发生
+		//新生代此时使用的是ParNew垃圾收集器，新生代的内存大幅减少，因为都晋升到老年代了
+		[GC (Allocation Failure) [ParNew: 5620K->397K(9216K), 0.0236590 secs] 5620K->4495K(19456K), 0.0237252 secs] [Times: user=0.02 sys=0.00, real=0.02 secs] 
+		finish2---------------
+		//第三次又申请了4M内存，系统再次触发了Minor GC
+		[GC (Allocation Failure) [ParNew: 4649K->594K(9216K), 0.0074808 secs] 8747K->8790K(19456K), 0.0075096 secs] [Times: user=0.01 sys=0.00, real=0.01 secs] 
+		//老年代也发生了垃圾收集，当前占用了8196k,老年代总大小10240k
+		[GC (CMS Initial Mark) [1 CMS-initial-mark: 8196K(10240K)] 12886K(19456K), 0.0015382 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
+		[CMS-concurrent-mark-start]
+		[CMS-concurrent-mark: 0.000/0.000 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
+		[CMS-concurrent-preclean-start]
+		[CMS-concurrent-preclean: 0.000/0.000 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
+		[CMS-concurrent-abortable-preclean-start]
+		[CMS-concurrent-abortable-preclean: 0.000/0.000 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
+		[GC (CMS Final Remark) [YG occupancy: 4690 K (9216 K)]//年轻代大小
+			[Rescan (parallel) , 0.0008620 secs] //重新扫描
+			[weak refs processing, 0.0000081 secs]//弱引用扫描
+			[class unloading, 0.0002519 secs]//类的卸载
+			[scrub symbol table, 0.0004190 secs]//符号表处理
+			[scrub string table, 0.0001793 secs]//字符串表处理
+			[1 CMS-remark: 8196K(10240K)] 12886K(19456K), 0.0017944 secs] 
+			[Times: user=0.00 sys=0.00, real=0.00 secs] 
+		finish3---------------
+		[CMS-concurrent-sweep-start] //此时用户线程和GC线程的CMS垃圾回收器并发进行，CMS继续后面的两个步骤
+		[CMS-concurrent-sweep: 0.000/0.000 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
+		[CMS-concurrent-reset-start]
+		[CMS-concurrent-reset: 0.000/0.000 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
+		finish4---------------
+		Heap
+		 par new generation   total 9216K, used 7060K [0x00000000fec00000, 0x00000000ff600000, 0x00000000ff600000)
+		  eden space 8192K,  78% used [0x00000000fec00000, 0x00000000ff2505e8, 0x00000000ff400000)
+		  from space 1024K,  58% used [0x00000000ff400000, 0x00000000ff494b10, 0x00000000ff500000)
+		  to   space 1024K,   0% used [0x00000000ff500000, 0x00000000ff500000, 0x00000000ff600000)
+		 concurrent mark-sweep generation total 10240K, used 8196K [0x00000000ff600000, 0x0000000100000000, 0x0000000100000000)
+		 Metaspace       used 3099K, capacity 4496K, committed 4864K, reserved 1056768K
+		  class space    used 340K, capacity 388K, committed 512K, reserved 1048576K
 
 
 
