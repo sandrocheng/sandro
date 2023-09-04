@@ -3352,7 +3352,7 @@
 		  class space    used 340K, capacity 388K, committed 512K, reserved 1048576K
 
 64、G1垃圾收集器设计目标
-	Garbage First Collector,最早是出现在jdk6的某一个小版本中，直译就是垃圾优先的收集器
+	Garbage First Collector,最早是出现在jdk6的某一个小版本中，直译就是垃圾优先的收集器，从jdk9开始已经是默认的垃圾收集器，未来G1会越来越重要
 	
 	评价系统的两个重要的指标是吞吐量、响应能力
 	-吞吐量
@@ -3385,6 +3385,11 @@
 
 		目前对于响应要求更高但是对吞吐量没有太大要求的服务器，CMS更好一点
 
+	-G1的适合场景
+		服务器多核CPU、JVM内存占用较大的应用
+		应用在运行过程中会产生大量内存碎片、需要经常压缩空间
+		想要更可控、可预期的GC停顿周期；防止高并发下应用雪崩的现象
+
 	-对于从 CMS 或者 Parallel Old切换到G1 的应用在如下方面会有提升
 		频繁或者长时间GC的应用
 		对象分配率或晋升率差异很大
@@ -3399,17 +3404,21 @@
 	传统垃圾收集器堆结构，如图：65_传统垃圾收集器堆结构
 
 	G1垃圾收集器结构，如图：65_G1垃圾收集器结构
-		-heap被划分为一个个相等的不连续的内存区域(regions),每个region都有一个分代的角色:eden,survivor,old
-		-对每个角色的数量并没有强制的限定，也就是说对每种分代内存的大小，可以动态变化
+		-heap被划分为一个个相等的不连续的内存区域(regions),每个region都有一个分代的角色:eden,survivor,old，每种类型的区域数量是时时刻刻在变化的，不像传统分区那么死板
+		-对每个角色的数量并没有强制的限定，也就是说对每种分代内存的大小，可以动态变化，除了三种确定类型的分区还有未适用的内存，所以总共有4中类型的分区
 		-G1最大的特点就是高效的执行回收，优先去执行那些大量对象可回收的区域(region)
 		-G1使用了gc停顿可预测的模型，来满足用户设定的gc停顿时间，根据用户设定的目标时间，G1会自动地选择哪些region要清除，一次清除多少个region
 		-G1从多个region中复制存活的对象，然后集中放入一个region中，同时整理、清除内存(region算法)	
 	
 	G1 vs CMS
-		-对比适用标记清除的CMS，G1适用的是copying算法不会造成内存碎片
+		-对比适用标记清除的CMS，G1使用的是copying算法并将内存空间分成区域(region)的方法避免造成内存碎片,G1在压缩空间方便比较有优势
 		-对比Parallel Scavenge(基于copying)、Parallel Old收集器(基于标记整理算法)，Parallel会对整个区域做整理导致gc停顿会比较长，而G1只是特定的整理几个region
 		-G1并非是一个实时的收集器，与parallel scavenge一样，对gc停顿时间的设置并不绝对生效，只是g1有较高的几率保证不超过设定的gc停顿时间
 		 与之前的GC收集器对比，G1会根据用户设定的gc停顿时间，智能评估哪几个region需要被回收可以满足用户的设定。
+		-eden、survivor、Old区不在固定，在内存适用效率上来说更灵活
+		-G1可以通过设置预期停顿时间(Pause Time)来控制垃圾收集时间，避免应用雪崩的现象
+		-G1在回收内存后马上同时做合并空闲内存的操作，而CMS默认是在STW的时候做
+		-G1会在年轻代GC中适用，而CMS只能在Old区使用。
 	
 	G1的重要概念：
 		-分区(region)：G1采取了不同的策略来解决并行、串性和CMS收集器的碎片、暂停时间不可控等问题——G1将整个堆分成相同大小的分区(region)。
@@ -3482,5 +3491,52 @@
 		Copying/CleanUp Phase,复制/清理阶段
 			-新生代和老年代的复制清理是同时进行的
 			-老年代的区域会基于其中对象的存活性进行选择
+
+67、G1中的GC模式与重要JVM参数
+	-G1提供了两种GC模式：Young GC和Mixed GC,这两种模式都是完全STW的
+		Young GC ：选定所有年轻代里的Region。通过控制年轻代的Region个数，即年轻代内存大小，来控制Young GC的时间开销
+		Mixed GC : 选定所有年轻代里的Region,外加根据global concurrent marking统计得出收集收益高的若干老年代Region。在用户指定的开销目标范围内尽可能选择收益高的老年代Region。
+			   Mixed GC不是Full GC，它只能收集部分老年代的Region，如果Mixed GC 实在无法跟上程序分配内存的速度，导致老年代填满无法继续进行Mixed GC，就会使用serial old GC(Full GC)来
+			   收集整个GC heap。所以本质上G1是不提供Full GC的。
+	
+	-global concurrent marking，执行过程类似于CMS，不同的是在G1 GC中，它主要是为Mixed GC提供标记服务的，并不是一次GC过程的一个必须环节
+	 主要分为四个步骤：
+		初始标记(inital mark,STW)：它标记了从GC Root开始直接可达的对象。
+					   这个阶段是共用了Young GC的暂停，这是因为他们可以复用 root scan操作，所以可以说global concurrent marking是伴随Young GC而发生的
+		并发标记(Concurrent Marking):这个阶段从GC Root开始对heap中的对象进行标记，标记线程与应用线程并发执行，并接收集各个Region的存活对象信息
+		重新标记(Remark ，STW)：标记那些在并发标记阶段发生变化的对象，将被回收
+		清理(Cleanup)：清除空Region(没有存活对象的)，加入到free list，这些region未来可能会变换类型，比如eden变成survivor		
+			       这个阶段只是回收了没有存活对象的Region，所以它并不需要STW。		
+
+	-G1在运行过程中的主要模式
+		-YGC:不同于CMS，CMS无法使用到新生代
+		     Young GC是在Eden充满时触发，在回收之后所有之前属于Eden的Region全部变成空白，即不属于任何一个分区(eden,survivo,old)
+		并发阶段
+		混合模式Mixed GC:触发时机由以下参数控制，另外这些参数也控制者哪些老年代Region会被选入CSet（收集集合）
+			-G1HeapWastePercent:在global concurrent marking结束之后，我们可以知道old gen regions中有多少空间要被回收，每次YGC之后和再次发生Mixd GC之前，会检查垃圾占比是否达到次参数
+					    只有达到了，下次才会发生MixedGC
+			-G1MixedGCLieThresholdPercent:old gen region中的存活对象的占比，只有在次参数只下，才会被选入CSet。因为存活对象越少，垃圾就越多，收集起来收益就越高
+			-G1MixedGCCountTarget:一次 global concurrent marking之后，最多执行Mixed GC的次数
+			-G1OldCSetRegionThresholdPercent:一次Mixed GC中能被选入CSet的最多Old generation region的数量
+		Full GC(一般是G1出现问题时发生)
+
+	-G1 GC的其他JVM参数
+		-XX:G1HeapRegionSize=n   设置Region的大小，并非最终值
+		-XX:MaxGCPauseMillis     设置G1收集过程目标时间，默认值200ms，不是硬性条件
+		-XX:G1NewSizePercent	 新生代占总内存的最小值，默认是5%
+		-XX:G1MaxNewSizePercent	 新生代占总内存的最大值，默认是60%
+		-XX:ParallelGCThreads	 STW期间，并行GC线程数量
+		-XX:ConcGCThreads=n      并发标记阶段，并行执行的线程数
+		-XX:InitiatingHeapOccupancyPercent 设置触发标记周期时，java堆占用阈值。默认值是45%，这里的java堆占比指的是non_young_capacity_bytes，包括old + humongous
+
+
+
+
+
+
+
+
+
+
 
 
