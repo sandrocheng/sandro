@@ -3480,6 +3480,7 @@
 		-Copying/Cleanup结束后
 		 如图：66_After Copying_Cleanup,所选择的区域已经被收集和压缩(图中深蓝和深绿的区域)
 
+	
 	-总结：
 		Concurrent Marking Phase，并发标记阶段
 			-该阶段和应用线程并发执行，对象的存活情况会被计算出来
@@ -3498,6 +3499,11 @@
 		Mixed GC : 选定所有年轻代里的Region,外加根据global concurrent marking统计得出收集收益高的若干老年代Region。在用户指定的开销目标范围内尽可能选择收益高的老年代Region。
 			   Mixed GC不是Full GC，它只能收集部分老年代的Region，如果Mixed GC 实在无法跟上程序分配内存的速度，导致老年代填满无法继续进行Mixed GC，就会使用serial old GC(Full GC)来
 			   收集整个GC heap。所以本质上G1是不提供Full GC的。
+		无论是YGC还是Mixed GC都只是并发拷贝的阶段
+
+	-分代G1模式下选择CSet由两种子模式分别对应Young GC 和 Mixed GC
+		YGC，CSet中保存所有年轻代里面的Region
+		Mixed GC,CSet中保存的是所有年轻代里的Region 和 全局并发标记阶段标记出来的收益高的Region
 	
 	-global concurrent marking，执行过程类似于CMS，不同的是在G1 GC中，它主要是为Mixed GC提供标记服务的，并不是一次GC过程的一个必须环节
 	 主要分为四个步骤：
@@ -3519,6 +3525,13 @@
 			-G1MixedGCCountTarget:一次 global concurrent marking之后，最多执行Mixed GC的次数
 			-G1OldCSetRegionThresholdPercent:一次Mixed GC中能被选入CSet的最多Old generation region的数量
 		Full GC(一般是G1出现问题时发生)
+
+	-G1运行的过程：
+                会在YGC和Mixed GC之间不断的切换运行，同时定期的做全局并发标记。
+		在实在赶不上对象创建速度的情况下退化成Full GC(Serial GC)，这一点是需要重点调优的地方。
+	
+	-初始标记是在YGC上执行的，在进行全局并发标记的时候不会做Mixed GC,在做Mixed GC的时候也不会启动初始标记阶段
+
 
 	-G1 GC的其他JVM参数
 		-XX:G1HeapRegionSize=n   设置Region的大小，并非最终值
@@ -3624,7 +3637,10 @@
 		 对于第一种情况，利用post-write barrier,记录所有新增的引用关系，然后根据这些引用关系为根重新扫描一遍
 		 对于第二种情况，利用pre-write barrier，将所有即将被删除的引用关系的旧引用记录下来，最后以这些旧引用为根重新扫描一遍。
 
-	
+71、停顿预测模型
+	-G1收集器突出表现出来的一点是通过一个停顿预测模型根据用户配置的停顿时间来选择CSet的大小，从而达到用户期待的应用程序暂停时间
+	-通过-XX:MaxGCPauseMillis参数来设置。这一点类似于ParallelScavenge收集器。关于停顿时间的设置不是越短越好
+	 设置的时间越短意味着每次收集的CSet越小，导致垃圾逐步积累变多，最终不得不退化成Serial GC，停顿时间设置的过长，那么会导致每次都会产生长时间的停顿，影响了程序对外的响应时间
 
 
 
