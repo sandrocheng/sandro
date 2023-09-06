@@ -2722,6 +2722,11 @@
 					 主要触发时机:1、Old满了；2、Perm满了；3）system.gc()
 					 效率很低，尽量减少Full GC。
 				
+			-火车算法
+				目前已经木有主流JVM用火车算法了。事实上大概10年前就已经没什么JVM用了
+				曾几何时几乎所有主流JVM都实现过火车算法作为增量式GC的实现Oracle/Sun JDK里的HotSpot VM，
+				针对低延迟GC的解决方案，最初是train GC（增量式），接下来是CMS GC（并发式，也有可选的增量模式但已被废弃），现在是G1 GC（增量式）。
+
 	 	垃圾回收器的实现和选择
 			-综合前面几种GC算法的优缺点，针对不同生命周期的对象采用不同的GC算法，比如新生代用复制算方法，老年代用标记清除或者标记整理算法
 			
@@ -3506,6 +3511,7 @@
 		Mixed GC,CSet中保存的是所有年轻代里的Region 和 全局并发标记阶段标记出来的收益高的Region
 	
 	-global concurrent marking，执行过程类似于CMS，不同的是在G1 GC中，它主要是为Mixed GC提供标记服务的，并不是一次GC过程的一个必须环节
+	 全局并发标记之后Mixed GC可以根据每个分区统计出来的垃圾大小选择收益最高的老年代Region去回收垃圾。
 	 主要分为四个步骤：
 		初始标记(inital mark,STW)：它标记了从GC Root开始直接可达的对象。
 					   这个阶段是共用了Young GC的暂停，这是因为他们可以复用 root scan操作，所以可以说global concurrent marking是伴随Young GC而发生的
@@ -3515,13 +3521,16 @@
 			       这个阶段只是回收了没有存活对象的Region，所以它并不需要STW。		
 
 	-G1在运行过程中的主要模式
-		-YGC:不同于CMS，CMS无法使用到新生代
-		     Young GC是在Eden充满时触发，在回收之后所有之前属于Eden的Region全部变成空白，即不属于任何一个分区(eden,survivo,old)
-		并发阶段
+		YGC:不同于CMS，CMS无法使用到新生代
+			Young GC是在Eden充满时触发，在回收之后所有之前属于Eden的Region全部变成空白，即不属于任何一个分区(eden,survivo,old)
+			
+		并发阶段global concurrent marking
+                        为接下来的Mixed GC提供依据
+          
 		混合模式Mixed GC:触发时机由以下参数控制，另外这些参数也控制者哪些老年代Region会被选入CSet（收集集合）
 			-G1HeapWastePercent:在global concurrent marking结束之后，我们可以知道old gen regions中有多少空间要被回收，每次YGC之后和再次发生Mixd GC之前，会检查垃圾占比是否达到次参数
 					    只有达到了，下次才会发生MixedGC
-			-G1MixedGCLieThresholdPercent:old gen region中的存活对象的占比，只有在次参数只下，才会被选入CSet。因为存活对象越少，垃圾就越多，收集起来收益就越高
+			-G1MixedGCLieThresholdPercent:old gen region中的存活对象的占比，只有在此参数只下，才会被选入CSet。因为存活对象越少，垃圾就越多，收集起来收益就越高
 			-G1MixedGCCountTarget:一次 global concurrent marking之后，最多执行Mixed GC的次数
 			-G1OldCSetRegionThresholdPercent:一次Mixed GC中能被选入CSet的最多Old generation region的数量
 		Full GC(一般是G1出现问题时发生)
@@ -3575,7 +3584,7 @@
 
 	 YGC的各阶段：
 		根扫描：静态和本地对象被扫描
-		更新RS：处理dirty card对列更新RS
+		更新RS：处理dirty card对列更新RS(找到哪些对象引用到当前区域的对象)
 		处理RS：检测从年轻代指向老年代的对象
 		拷贝对象：拷贝存活的对象到survivor/old区域
 		处理引用对列：软引用，若引用，虚引用的处理
@@ -3653,6 +3662,13 @@
 		-手动设置了新生代的大小相当于放弃了G1为我们做的自动调优。我们需要做的只是设置整个堆内存的大小，剩下的交给G1自己去分配各个代的大小即可。
 
 	3、关注Evacuation Failure
-		Evacuation Failure类似于CMS里面的晋升失败，堆空间的垃圾太多导致无法完成Region之间的拷贝，与是不得不退化成Full GC来做一次全局范围内的垃圾收集
+		Evacuation Failure类似于CMS里面的晋升失败，堆空间的垃圾太多导致无法完成Region之间的拷贝，于是不得不退化成Full GC来做一次全局范围内的垃圾收集
+
+73、openJDK 源码阅读
+	官网：https://openjdk.org/
+	查看源码的方式
+		官网web代码：在官网的主页上有 Browse the code 入口，跳转到github上查看
+			
+		源码下载编译：官网上source导航栏提供了一个Mercurial 工具下载和编译jvm
 
 	
