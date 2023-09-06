@@ -2596,9 +2596,10 @@
 			 给对象添加一个引用计数器，当有一个地方引用它，计数器就+1，当引用失效，计数器-1，任何时刻计数器为0的对象就是不可能再被引用的
 			 引用计数算法无法解决对象的循环引用的问题，如图：56_对象的循环引用
 			 因此一般都是结合其他手段规避掉这个问题，比如ObjectC就主要使用了引用计数算法和其他算化混合的方式回收垃圾
+			 虽然主流的很多语言的虚拟机都还是使用了引用计数算法，但是最新的java虚拟机中的垃圾回收器里已经很少使用了
 				
 			-根搜索算法 GC Roots Tracing
-			 在实际的生产语言中(java,c#等)，都时使用根搜索算法判定对象是否存活
+			 在实际的生产语言中(java,c#等)，都是使用根搜索算法判定对象是否存活
 			 算法基本思路就是通过一系列称为"GC Roots"的点作为起始点进行向下搜索，当一个对象到GC Roots都没有任何以用链(Reference Chain)相连，则证明此对象是不可用的
                          在java语言中，GC Roots包括
                                  在VM栈（帧中的本地变量）中的引用
@@ -2657,9 +2658,8 @@
 			 	标记过程仍然一样，但是后续步骤不是进行直接清理，而是另所有存活的对象向一端移动，然后直接清理掉这端边界以外的内存
 				特点：
 					没有内存碎片
-					比标记清除算法耗费更多时间进行整理
+					比标记清除算法耗费更多时间进行整理,需要STW
 				
-
 			-复制搜集算法 Copying
                                 -将可用内存划分为两块，每次只使用其中的一块，当半区内存用完了，仅将还存活的对象复制到另外一块上面，然后就把原来整块内存空间一次性清理掉
                                  这样使得每次内存回收都是对整个半区的回收，内存分配时也就不用考虑内存碎片等复杂情况，只要移动堆顶指针，按顺序分配内存就可以了。
@@ -2681,6 +2681,7 @@
 					需要浪费额外的内存作为复制区
 					复制算法非常适合生命周期比较短的对象，因为每次GC总能回收大部分的对象，复制的开销比较小。
 					根据IBM的专门研究，98%的java对象只会存活1个GC周期，对这些对象很适合使用复制算法。而且不用1:1的划分工作区和复制区的空间
+
 			-分代算法 Generational
 				当前商业虚拟机的垃圾收集都是采用“分代收集”算法，根据对象不同的存活周期将内存划分为几块
 				一般是把java堆分做新生代和老年代，这样就可以根据各个年代的特点采用最适当的收集算法，比如新生代每次GC都有大批对象死去，那就适合使用复制算法
@@ -2688,10 +2689,16 @@
 		
 				年轻代 young generation
 					-新生成的对象都放在年轻代，年轻代用复制算法进行GC
+					 年轻代使用复制算法的原因：
+						-年轻代的对象大多生命周期大多都很短，能够晋升的对象不多，所以使用复制算法代价不高，而复制算法不会产生碎片，非常有利于新生代对象频繁创建
+						-年轻代晋升有分配担保的机制，就是虚拟机发现年轻代不够用的时候可以直接把对象晋升到老年代中
+						 如果老年代使用复制算法，则无法使用分配担保的策略。
+						
 					-年轻代分为三个区，一个Eden区，两个Survivor(可以通过修改参数设置Survivor个数)。对象在Eden区中生成，当这个Eden区满时还存活的对象将被复制到一个Survivor区域
 					 当这个Survivor区满时，此区存活的对象将被复制到另外一个Survivor区，当第二个Survivor区也满的时候，从第一个Surivivor区复制过来的并且此时还存活的对象将被复制
 					 到老年代。2个Survivor是完全对称的，轮流替换
 					-Eden和2个Survivor的默认比例是8:1:1,也就是10%的空间会被浪费。可以根据GC log的信息调整大小的比例
+					
 
 				老年代 old generation
 					-存放了经过一次或多次GC还存活的对象
@@ -3672,3 +3679,70 @@
 		源码下载编译：官网上source导航栏提供了一个Mercurial 工具下载和编译jvm
 
 	
+74、G1回收器日志内容分析
+	project/jvm_lecture项目 com.sandro.gc.G1Test1
+	vm运行参数：
+		-verbose:gc
+		-Xms10m
+		-Xmx10m
+		-XX:+UseG1GC  //使用G1垃圾收集器
+		-XX:+PrintGCDetails
+		-XX:+PrintGCDateStamps
+		-XX:MaxGCPauseMillis=200m //设置最大GC停顿时间
+
+	运行日志：
+		//因为一个对象有1M，当前G1认为这个对象是巨型对象，所以放到了年轻代的H区
+		//G1年轻代GC
+		2023-09-06T22:32:03.213+0800: [GC pause (G1 Humongous Allocation) (young) (initial-mark), 0.0033704 secs]//初始标记并STW
+		   [Parallel Time: 2.6 ms, GC Workers: 4]//并行时间，使用了4个线程并行
+		      [GC Worker Start (ms): Min: 161.0, Avg: 161.7, Max: 161.9, Diff: 1.0]//线程时间统计结果，最小，平均，最大 ，相差时间
+		      [Ext Root Scanning (ms): Min: 0.0, Avg: 1.3, Max: 2.2, Diff: 2.1, Sum: 5.2]//根扫描
+		      [Update RS (ms): Min: 0.0, Avg: 0.0, Max: 0.0, Diff: 0.0, Sum: 0.0]//更新RSet
+		         [Processed Buffers: Min: 0, Avg: 0.0, Max: 0, Diff: 0, Sum: 0]//处理Rset,记录引用变化的缓存空间
+		      [Scan RS (ms): Min: 0.0, Avg: 0.0, Max: 0.0, Diff: 0.0, Sum: 0.0]//扫描RSet
+		      [Code Root Scanning (ms): Min: 0.0, Avg: 0.0, Max: 0.0, Diff: 0.0, Sum: 0.0]//根扫描的时间
+		      [Object Copy (ms): Min: 0.0, Avg: 0.3, Max: 1.1, Diff: 1.1, Sum: 1.2]//对象拷贝
+		      [Termination (ms): Min: 0.0, Avg: 0.2, Max: 0.5, Diff: 0.5, Sum: 0.8]//处理引用队列，检查是否还有软引用，若引用，虚引用的时间
+		         [Termination Attempts: Min: 1, Avg: 1.0, Max: 1, Diff: 0, Sum: 4]
+		      [GC Worker Other (ms): Min: 0.0, Avg: 0.0, Max: 0.0, Diff: 0.0, Sum: 0.0]
+		      [GC Worker Total (ms): Min: 1.6, Avg: 1.8, Max: 2.5, Diff: 0.9, Sum: 7.3]
+		      [GC Worker End (ms): Min: 163.5, Avg: 163.5, Max: 163.5, Diff: 0.0]
+		   [Code Root Fixup: 0.0 ms]
+		   [Code Root Purge: 0.0 ms]
+		   [Clear CT: 0.0 ms] //清空Card Table的耗时
+		   [Other: 0.7 ms]
+		      [Choose CSet: 0.0 ms]//CSet选择耗费的时间
+		      [Ref Proc: 0.6 ms]//引用的处理花费的时间
+		      [Ref Enq: 0.0 ms]//引用处理进入队列花费的时间
+		      [Redirty Cards: 0.0 ms]
+		      [Humongous Register: 0.0 ms]
+		      [Humongous Reclaim: 0.0 ms]
+		      [Free CSet: 0.0 ms]
+		   //执行完YGC之后，eden survivors 堆总空间的变化
+		   [Eden: 2048.0K(6144.0K)->0.0B(2048.0K) Survivors: 0.0B->1024.0K Heap: 3508.4K(10.0M)->2516.1K(10.0M)]
+		 [Times: user=0.01 sys=0.00, real=0.00 secs] 
+
+		//以下是并发标记的处理
+		2023-09-06T22:32:03.218+0800: [GC concurrent-root-region-scan-start]
+		2023-09-06T22:32:03.219+0800: [GC concurrent-root-region-scan-end, 0.0012822 secs]
+		2023-09-06T22:32:03.219+0800: [GC concurrent-mark-start]
+		2023-09-06T22:32:03.219+0800: [GC concurrent-mark-end, 0.0000532 secs]
+		2023-09-06T22:32:03.220+0800: [GC remark 2023-09-06T22:32:03.220+0800: [Finalize Marking, 0.0004442 secs] 
+		2023-09-06T22:32:03.220+0800: [GC ref-proc, 0.0001537 secs] 
+
+		2023-09-06T22:32:03.220+0800: [Unloading, 0.0011136 secs], 0.0018376 secs]
+		 [Times: user=0.00 sys=0.00, real=0.01 secs] 
+		2023-09-06T22:32:03.222+0800: [GC cleanup 4605K->4605K(10M), 0.0002228 secs]
+		 [Times: user=0.00 sys=0.00, real=0.00 secs] 
+		hello world
+		Heap
+		 //此时G1堆的总大小是10M 使用了4M，region的大小是1M，共两个region作为年轻代，1个survivor(也就是说eden是1个)，其他的是老年代，也可能是没使用的空间
+		 garbage-first heap   total 10240K, used 4564K [0x00000000ff600000, 0x00000000ff700050, 0x0000000100000000)
+		  region size 1024K, 2 young (2048K), 1 survivors (1024K)
+		 Metaspace       used 3099K, capacity 4496K, committed 4864K, reserved 1056768K
+		  class space    used 340K, capacity 388K, committed 512K, reserved 1048576K
+
+		
+
+
+
