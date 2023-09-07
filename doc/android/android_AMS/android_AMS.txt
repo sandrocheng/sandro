@@ -1,0 +1,21 @@
+1、android整体启动流程
+	如图：1_android启动流程
+	从init进程开始就用户空间进程就开始了，它fork出的zygote进程是android进程的基础
+	zygote通过fork分裂创建第一个进程system_server，它是首次进入java环境的进程
+	system_server：系统服务，AMS、 WMS、PackageManagerServer都是从system_server中fork出来的。
+	APP虽然依赖system_server中的服务，但实际上，app应该是属于zygote创建出来的
+	
+2、zygote启动流程
+	-源码位值：frameworks/base/cmds/app_process/app_main.cpp
+		int main(int argc,char* const argv[])
+		
+	-app_main.cpp的作用如图：1_app_main的作用
+		图中ZygoteInit.main()中的preload()的作用是可以加快后面应用进程的启动，原因如图：1_android应用进程共享内存图
+		 
+	-为什么要用zygote去fork应用进程，而不是init,system_server进程去fork进程？
+		1)init除了创建zygote以外还要创建很多其他进程，比如audioserver,cameraserver等（使用ps命令 父进程是1的都是init进程创建的）
+		2)虚拟机的创建是放在zygote里创建的，init的时候不会去创建虚拟机
+		3)system_server里面会启动很多系统服务（接近100个），通过system_server fork 应用进程，那么每个应用进程就不得不继承父进程的服务
+		  而这些服务并不需要放到每个应用进程中，这样内存就会极大浪费		 
+
+
