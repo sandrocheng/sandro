@@ -18,4 +18,106 @@
 		3)system_server里面会启动很多系统服务（接近100个），通过system_server fork 应用进程，那么每个应用进程就不得不继承父进程的服务
 		  而这些服务并不需要放到每个应用进程中，这样内存就会极大浪费		 
 
+3、system_server进程的创建
+	1) zygote fork system_server,如图：1_app_main的作用
+	   源码路径：framework/base/core/java/com/android/internal/os/ZygoteInit
+		ZygoteInit.main() -> ZygoteInit.forkSystemServer() 
+ 			...
+		        /* Hardcoded command line to start the system server */
+		        String[] args = {
+		                "--setuid=1000",
+		                "--setgid=1000",
+		                "--setgroups=1001,1002,1003,1004,1005,1006,1007,1008,1009,1010,1018,1021,1023,"
+		                        + "1024,1032,1065,3001,3002,3003,3006,3007,3009,3010,3011,3012",
+		                "--capabilities=" + capabilities + "," + capabilities,
+		                "--nice-name=system_server",
+		                "--runtime-args",
+		                "--target-sdk-version=" + VMRuntime.SDK_VERSION_CUR_DEVELOPMENT,
+		                "com.android.server.SystemServer",
+		        };
+			...
+           		/* Request to fork the system server process */
+            		pid = Zygote.forkSystemServer(...);
+			...
+			//Finish remaining work for the newly forked system server process.
+			handleSystemServerProcess(..)
+	   代码里可以看到是通过反射的方式，fork出system_server进程,成功后，通过handleSystemServerProcess()方法完成后续的system_server的初始话工作
+	   fork出的子进程由于方法栈，计数器都会复制，所以新的system_server进程还是从fork返回的地方继续执行如下：
+		handleSystemServerProcess->zygoteInit->frameworks/base/core/java/com/android/internal/os/RuntimeInit.application();	
+		RuntimeInit.application->findStaticMain()
+			...
+			Method m;
+		        try {
+		            m = cl.getMethod("main", new Class[] { String[].class });
+		        } catch (NoSuchMethodException ex) {
+		            throw new RuntimeException(
+		                    "Missing static main on " + className, ex);
+		        } catch (SecurityException ex) {
+		            throw new RuntimeException(
+		                    "Problem getting static main on " + className, ex);
+		        }
+		
+		        int modifiers = m.getModifiers();
+		        if (! (Modifier.isStatic(modifiers) && Modifier.isPublic(modifiers))) {
+		            throw new RuntimeException(
+		                    "Main method is not public and static on " + className);
+		        }
+			...
+	   在findStaticMain方法中可以看到通过类名(com.android.server.SystemServer) + main方法的方式反射运行 SystemServer.main方法，从而初始化system_server这个进程
+	2)SystemServer.main
+	  源码位值：frameworks/base/servies/java/com/android/server/SystemServer
+	  AMS是在startBootstrapServices中启动的，WMS是在startOtherService中启动的，原因WMS依赖AMS服务，AMS更偏向基础服务，所以启动的比较早
+	
+	  在SystemServer.startBootstrapServices方法中 可以看到         
+		ActivityTaskManagerService atm = mSystemServiceManager.startService(ActivityTaskManagerService.Lifecycle.class).getService();
+		mActivityManagerService = ActivityManagerService.Lifecycle.startService(mSystemServiceManager, atm);
+	  ATM 和 AMS的 启动，ATM是10.0之后添加的		
+	  mSystemServiceManager.startService：通过反射创建对象，并调用对象的onStart方法，启动服务
 
+		-ATM创建
+	  	 源码位值：frameworks/base/services/core/java/com/android/server/wm/ActivityTaskManagerService
+	  	 android 10.0之后新增的服务，从AMS中分裂出来的一个服务，生命周期调用是在它内部类Lifecycle中实现的
+	         ATM创建流程
+			-ActivityTaskManagerService的构造函数中 mLifecycleManager = new ClientLifecycleManager();//创建activity生命周期管理类	
+			-Lifecycle.onStart()->publicBinderService->将ATM保存到ServiceManager中去，这样其他服务或者app就可以从SystemService中使用ATM了
+
+		-AMS创建
+			源码位值：frameworks/base/services/core/java/com/android/server/am/ActivityManagerService
+			AMS创建主要流程
+			ActivityManagerService构造函数
+				...
+				->mActivityTaskManager.initialize(mIntentFirewall, mPendingIntentController,DisplayThread.get().getLooper());
+					...					
+			 		->mTaskSupervisor = createTaskSupervisor();//ATM中创建Activity栈管理对象
+					...
+					->setRecentTasks(new RecentTasks(this, mTaskSupervisor));//设置当前任务栈
+
+		-ATM和AMS创建之后在SystemServer.startBootstrapServices方法中继续调用AMS的接口
+		 ...
+		 mActivityManagerService.setSystemProcess();//把构造方法里创建的AMS对象设置到ServiceManager中
+							   //设置meminfo binder服务等各种服务
+	   	meminfo binder服务就是adb 被命令  dumpsys meminfo的实现接口，这个命令是查看进程的内存信息
+	   
+	
+		-WMS的创建
+			SystemServer.startOtherServices()中创建了WMS
+				wm = WindowManagerService.main(context, inputManager, !mFirstBoot, mOnlyCore,new PhoneWindowManager(), mActivityManagerService.mActivityTaskManager);
+				...
+				mActivityManagerService.setWindowManager(wm);//将生成的WMS对象设置到AMS中去
+		-AMS创建结束
+			SystemServer.startOtherServices()中当所有AMS需要创建的对象都创建完成之后
+			mActivityManagerService.systemReady(..)//调用该接口通知AMS启动完成
+				...
+				->mAtmInternal.resumeTopActivities();//在这里启动launcher界面
+	3)SystemServer类的启动流程,如图：2_SystemServer启动流程
+
+4、SystemServerManager 和 ServiceManager
+	-ServiceManager是系统服务中的“大管家”，其他进程或服务在使用系统服务的时候同时通过ServiceManager去请求的
+	 AMS ATM的服务构造成功以后都是通过 ServiceManager.addService方法注册到ServiceManager中去的
+	 需要的时候就通过getService方法获取响应的服务
+	 在C++代码中 frameworks/native/libs/binder/ndk/service_manager这个和ServiceManager的功能是一样的
+
+	-SystemServerManager是管理 SystemServer生命周期的，大部分服务AMS ATM等都有一个Lifecycle的内部类，这个内部类都是继承了SystemServer的
+         
+5、AMS的核心原理
+		
