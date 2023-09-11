@@ -119,5 +119,58 @@
 
 	-SystemServerManager是管理 SystemServer生命周期的，大部分服务AMS ATM等都有一个Lifecycle的内部类，这个内部类都是继承了SystemServer的
          
-5、AMS的核心原理
+5、ATM/AMS启动Activity的流程
+	-Activity的启动过程 ， 我们可以对 AMS / ATMS 有了个直观的理解。
+	 它们均在 system_server 进程，区别是 AMS 在am包 ， ATMS 在 wm包:com.android.server.am.ActivityManagerService 和 com.android.server.wm.ActivityTaskManagerService
+	 AMS -> ATMS
+		AMS: 将Activity 封装成 ActivityRecord 处理。
+		ATMS: 在 AMS 的基础上，将 ActivityRecord封装成 Task, 再继续处理	 
+	 从 APP层的 Activity 到 SystemServer层的ActivityRecord/Task，层层封装。使得每一层的职责更加单一，降低耦合度。
+	 ATMS -> AMS
+		这个过程在 ATMS 使用了 AMI(ActivityManagerInternal) 接口， 这个接口由 AMS 实现.
+		(AMS 实现 AMI 并把它添加到 LocalServices 中， 实际是Key+Value组合，即 AMI.class+ AMS内部类LocalService对象)
+	
+	-ATM/AMS主要工作就是对Activity进行管理 Acitivity启动流程，如图：4_Activity启动流程
+
+	-启动应用或者打开一个页面，最终打开Activity的时候，执行如下,android12.0代码和11.0之前的代码有一定的变化：
+		-Activity.startActivity(Intent i,Bundle o)->startActivityForResult()
+			->Instrumentation.ActivityResult ar = mInstrumentation.execStartActivity(this, mMainThread.getApplicationThread(), mToken, this, intent, requestCode, options);
+			->ActivityTaskManager.getService().startActivity//通过ATM获取到的AcitivityTaskManagerService 调用startActivity
+			->AcitivityTaskManagerService.startActivity()->startActivityAsUser()->getActivityStartController().obtainStarter(..).execute()
+			->ActivityStarter.execute()->executeRequest(mRequest)->startActivityUnchecked(...)->startActivityInner()
+			->RootWindowContainer.resumeFocusedTasksTopActivities()
+			->Task.resumeTopActivityUncheckedLocked() -> resumeTopActivityInnerLocked()->topFragment.resumeTopActivity
+			->TaskFragment.resumeTopActivity->mTaskSupervisor.startSpecificActivity(next, true, false);
+			->ActivityTaskSupervisor.startSpecificActivity->realStartActivityLocked()//如果进程存在则调用这个接口否则调用的是mService.startProcessAsync，去启动进程了 		
+				
+		-Instrumentation:<=android 9.0及9.0之前的版本是调用AMS.startActivity() 直接打开的，使用的是binder方式跨进程调用的
+		       	        >android 9.0 的版本是 ATM.startActivity() 打开的，也是使用binder方式跨进程调用的。
+		-11.0之前 用的是 ActivityStack和ActivityStackSupervisor，12.0这里变成了Task和ActivityTaskSupervisor
+		-走到ActivityTaskSupervisor.startSpecificActivity这里后，如果进程存在则继续执行realStartActivityLocked启动acitvity去了后面的接口调用如图：4_Activity启动时序图（11.0）
+		 如果进程不存在则调用mService.startProcessAsync去fork进程，后面fork进程成功后还是会走到这里，通过realStartAcitivityLocked去启动Activity
+	
+	-ATM获取方式：IBinder b = ServiceMansger.getService(Context.ACTIVITY_TASK_SERVICE)
+		     这里使用了代理模式
+	-AMS获取方式：ActivityManager.getService()
+	
+	-AMS fork进程流程
+		-当有Activity打开请求的时候ActivityTaskSupervisor.startSpecificActivity这里会判断进程是否存在，如果不存在则通过ActivityTaskManagerService.startProcessAsync去启动进程
+		-ActivityTaskManagerService.startProcessAsync启动进程的流程
+			->AcitivityManagerService.startProcess()->startProcessLocked()
+			->ProcessList.startProcessLocked(...)->startProcessLocked(...)->startProcess()
+			->Process.start()
+			->ZygeteProcess.start()->startViaZygote()->zygoteSendArgsAndGetResult()//这里是通过socket和zygote进程通信，通知zygote fork出进程
 		
+		-AMS 和 zygote建立通信
+		 ZygeteProcess.startViaZygote中，在通知zygote进程fork app 应用进程前调用了openZygoteSocketIfNeeded尝试建立socket连接
+		 通过attemptConnectionToPrimaryZygote优先使用主连接，如果失败再attemptConnectionToSecondaryZygote使用备用连接
+		 
+	-zygote fork应用进程后，应用进程的ApplicationThread attach AMS的流程
+	 	zygote fork进程后，会使用反射的方式调用ActivityManagerProxy的接口，通过binder的方式把Activity的句柄注册到AMS中去
+		ActivityThread.main()->attach()	
+		->ActivityManagerSerice.attachApplication()//在这里，应用进程把自己的ApplicationThread注册到了AMS中去
+		
+		ApplicationThread是一个binder句柄，AMS得到这个句柄就可以和当前应用通信了
+
+
+
