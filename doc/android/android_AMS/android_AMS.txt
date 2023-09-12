@@ -170,7 +170,4 @@
 		ActivityThread.main()->attach()	
 		->ActivityManagerSerice.attachApplication()//在这里，应用进程把自己的ApplicationThread注册到了AMS中去
 		
-		ApplicationThread是一个binder句柄，AMS得到这个句柄就可以和当前应用通信了
-
-
-
+		ApplicationThread是一个binder句柄，AMS得到这个句柄就可以和当前应用
