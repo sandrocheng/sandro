@@ -1,27 +1,51 @@
 1 android binder是什么
-	跨进程（IPC）机制
-	从OpenBinder演化进来
-	从Android应用层角度来说，binder是客户端和服务端进行通信的媒介
-	
-	Android Binder机制大部分都是使用的IPC，进程间通信机制有很多种，例如linux中可以采用管道，消息队列，信号，共享内存，socket等，这些都可以实现进程间的通信。
-	
-	如图：binder学习笔记_1_android  CS通信机制。Android Binder机制通信是基于Service与Client的，有一个ServiceManager的守护进程管理着系统的各个服务，它负责监听是否有其他程序向其发送请求。
-	如果有请求就响应。每个服务都要在ServiceManager中注册，而请求服务的客户端去ServiceManager请求服务。
-	
-	binder的通信操作类似线程迁移（thread migration），binder的用户空间为每一个进程维护着一个可用的线程池, 用来处理到来的IPC以及执行本地消息。
-	两个进程间通信就好像是一个进程进入另一个进程执行代码然后带着执行的结果返回，Android和驱动程序通信采用linux的ioctl机制。
+	-从OpenBinder演化进来
+	 从Android应用层角度来说，binder是客户端和服务端进行通信的媒介(Java类)
+	 从驱动的角度来说，Binder是一个虚拟物理设备驱动
+	 从机制来说，Binder是一种进程间通信机制(IPC)
+	 从Famework/Native角度来说，Binder连接了Client、Server、Service Manager 和 Binder驱动程序，形成一套C/S的通信架构
 
-2、IPC原理
-	IPC原理，如图：binder学习笔记_2_IPC原理
+	-Android Binder机制大部分都是使用的IPC，进程间通信机制有很多种，例如linux中可以采用管道，消息队列，信号，共享内存，socket等，这些都可以实现进程间的通信。
 	
-	ioctl是什么：
+	-如图：binder学习笔记_1_android  CS通信机制。Android Binder机制通信是基于Service与Client的，有一个ServiceManager的守护进程管理着系统的各个服务，它负责监听是否有其他程序向其发送请求。
+	-如果有请求就响应。每个服务都要在ServiceManager中注册，而请求服务的客户端去ServiceManager请求服务。
+	
+	-binder的通信操作类似线程迁移（thread migration），binder的用户空间为每一个进程维护着一个可用的线程池, 用来处理到来的IPC以及执行本地消息。
+	 两个进程间通信就好像是一个进程进入另一个进程执行代码然后带着执行的结果返回，Android和驱动程序通信采用linux的ioctl机制。
+
+	-android应用在使用闹钟服务，蓝牙服务等系统服务的时候都是利用的binder进行跨进程通信的。
+	 再android中Activity，Service等组件都需要和AMS通信，这种跨进程的通信也是通过Binder完成的。
+
+	-binder和传统IPC对比，如图：binder学习笔记_1_binder与传统IPC对比
+	 管道，消息队列，Socket在传输数据的时候都需要两次拷贝，binder只有一次，从安全性上讲，由于binder可以获取进程方的UID PID，因此更安全
+
+	-android程序中的多进程
+		虚拟机分配给各个进程的运行内存是有限制的，LMK(Low Memory Kill)也会优先回收对系统资源占用多的进程
+		多进程的好处如下：
+			-突破进程内存限制，如图库占用内存过多；
+			-功能稳定性：独立的通信进程保持长连接的稳定性,比如网络通信单独使用一个进程
+			-规避系统内存泄漏：独立的WebView进程阻隔内存泄漏导致的问题
+			-隔离风险：对于不稳定的功能放入独立进程，避免导致主进程崩溃	
+	
+2、IPC原理
+	-IPC原理，如图：binder学习笔记_2_IPC原理
+	 内存被操作系统划分为两块：用户空间和内核空间，用户空间是用户程序代码运行的地方，内核空间是内核代码运行的地方，内核空间由所有进程共享。
+         为了安全，他们是隔离的，即使用户的程序崩溃了，内核也不受影响	
+	 在进程中用户空间和内核空间的通信即不是进程内通信，也不是进程间通信，是一种特殊的通信方式，类似父子间的接口调用，需要使用内核接口，比如copy_from_user, copy_to_user
+		
+	-传统IO的写文件流程：如图：binder学习笔记_2_传统IO的写文件流程
+		1、调用write,告诉内核需要写入数据的开始地址和长度
+		2、内核将数据拷贝到内核页缓存
+		3、由系统调用，将数据拷贝到磁盘，完成写入	
+	
+	-ioctl是什么：
 		ioctl是设备驱动程序中对设备的I/O通道进行管理的函数。
 		所谓对I/O通道进行管理，就是对设备的一些特性进行控制，例如串口的传输波特率、 马达的转速等等。
 		它的调用函数如下：int ioctl(int fd, ind cmd, …)；
-		其中fd就是用户程序打开设备时使用open函数返回的文件标示符，cmd就是用户程序对设备的控制命令，至于后面的省略号。 那是一些补充参数，一般最多一个，有或没有是和cmd的意义相关的。
+		其中fd就是用户程序打开设备时使用open函数返回的文件描述符，cmd就是用户程序对设备的控制命令，至于后面的省略号。 那是一些补充参数，一般最多一个，有或没有是和cmd的意义相关的。
 		ioctl函数是文件结构中的一个属性分量。就是说如果你的驱动程序提供了对ioctl的支持，用户就可以在用户程序中使用ioctl函数控制设备的I/O通道。
 	
-	ioctl的必要性 
+	-ioctl的必要性 
 		如果不用ioctl的话，也可以实现对设备I/O通道的控制，但那就太复杂了。
 		例如，我们可以在驱动程序中实现write的时候检查一下是否有特殊约定的数据流通过。如果有的话，那么后面就跟着控制命令（一般在socket编程中常常这样做）。
 		但是如果这样做的话，会导致代码分工不明，程序结构混乱。 
@@ -35,12 +59,287 @@
 		这些错误都会导致不可预料的事情发生，而当程序员发现了这些奇怪的事情的时候，再来调试程序查找错误，那将是非常困难的事情。
 
 3、binder机制的关键概念
-	binder通信模型，如图：binder学习笔记_3_binder通信模型
 	
-	binder实体对象，binder引用对象，binder代理对象，IBinder对象之间的关系如图：binder学习笔记_3_binder对象和关系
+	-虚拟内存和物理内存
+	 
+	
+	-binder通信模型，如图：binder学习笔记_3_binder通信模型、binder学习笔记_3_binder通信结构图
+	
+	-binder实体对象，binder引用对象，binder代理对象，IBinder对象之间的关系如图：binder学习笔记_3_binder对象和关系
 
-	binder的通信过程
+	-binder的通信过程
 		-注册过程，如图：binder学习笔记_3_注册过程
 		-获取服务，如图：binder学习笔记_3_获取服务
 		-使用服务，如图：binder学习笔记_3_使用服务
+	
+	-binder数据拷贝，如图：binder学习笔记_3_binder数据拷贝
+	
+	-android进程binder的初始化
+	 在zygote孵化进程的时候 onZygoteInit里会为每个进程生成一个ProcessState对象用于对应每个进程的状态，在ProcessState创建的时候就会进行binder的初始化，包括使用mmap函数进行内存映射
+	 源码位值：
+		 app_main.cpp(frameworks/base/cmds/app_process/)
+			 ->onZygoteInit()
+				 ->sp<ProcessState> proc = ProcessState::self()
+					 ->ProcessState.cpp (frameworks/native/libs/binder/)
+						 ->ProcessState::ProcessState(const char *driver)
+	 因此每个进程在孵化后就已经为binder做好了内存映射，并具备了使用binder进行进程间通信的能力	
 
+4、AIDL
+	-AIDL 意思即 Android Interface Definition Language，翻译过来就是Android接口定义语言，是用于定义服务器和客户端通信接口的一种描述语言，可以拿来生成用于IPC的代码。
+	从某种意义上说AIDL其实是一个模板，因为在使用过程中，实际起作用的并不是AIDL文件，而是据此而生成的一个IInterface的实例代码，AIDL其实是为了避免我们重复编写代码而出现的一个模板
+
+	-AIDL文件以 .aidl 为后缀名
+
+	-AIDL支持的数据类型包括以下几种：
+    		Java基本数据类型：int，long，char，double，byte，float，boolean； 不包括short
+    		CharSequence类型，如String、SpannableString等；
+    		ArrayList，并且T必须是AIDL所支持的数据类型；
+    		HashMap<K，V>，并且K和V必须是AIDL所支持的数据类型；
+    		所有Parcelable接口的实现类，因为跨进程传输对象时，本质上是序列化与反序列化的过程；
+    		AIDL接口，所有的AIDL接口本身也可以作为可支持的数据类型；
+
+	-Serializable
+		在Parcelable对象中可以直接使用Serializable类型的对象
+		优点：
+			实现简单，不需要开发者手动编写大量代码
+		缺点：
+			使用了反射机制，效率低，而且会产生大量的临时变量，增加内存开销，而Parcelable对象直接在内存中读写，效率更高
+		一般来说，如果需要将数据通过网络传输或者持久化到本地，建议使用serializable接口，如果只是在进程间进行数据传递，建议使用Parcelable接口。	
+
+	-AIDL 分为服务端和客户端使用的时候必须是先启动服务端再启动客户端	
+
+	-Bundle对象传递
+		如果需要传递一些复杂的对象或者多个对象以及数量不定的对象时，可以使用Bundle类来封装这些数据，然后通过AIDL接口传递Bundle对象
+		Bundle类是一个键值对的容器，它可以存储不同类型的数据，并且实现了Parcelable接口，所以可以在进程间传递
+
+		如果AIDL接口包含接收Bundle作为参数(预计包含Parcelable类型)的方法，则在尝试从Bundle读取之前，请务必通过调用Bundle.setClassLoader(ClassLoader)设置Bundle的类加载器。
+		否则，即使在应用中正确定义Parcelable类型，也会遇到ClassNotFoundException
+		如果bundle中的Parcelable的实现类不在当前的类加载器中(比如class类在磁盘上而不是在应用包里)则需要自己实现类加载器并设置类的位值	
+
+	-AIDL调用时序如图：binder学习笔记_4_AIDL时序图
+	
+	-AIDL文件可以分为两类
+		一类用来声明实现了Parcelable接口的数据类型，以供其他AIDL文件使用那些非默认支持的数据类型。
+		还有一类是用来定义接口方法，声明要薄露哪些接口给客户端调用，定向Tag就是用来标注这些方法的参数值。
+		
+	-定向Tag
+		定向Tag表示在跨进程通信中数据的流向，用于标注方法的参数值，分为 in、out、inout 三种。
+		in 表示数据只能由客户端流向服务端， 
+		out 表示数据只能由服务端流向客户端，
+		inout 则表示数据可在服务端与客户端之间双向流通。
+
+		其中，数据流向是针对在客户端中的那个传入方法的对象而言的。
+		in 为定向 tag 的话表现为服务端将会接收到一个那个对象的完整数据，但是客户端的那个对象不会因为服务端对传参的修改而发生变动；
+		out 的话表现为服务端将会接收到那个对象的参数为空的对象，但是在服务端对接收到的空对象有任何修改之后客户端将会同步变动；
+		    传输的对象需要实现Parcelable，并且要定义一个方法，public xxxclass readFromParcel(Parcel parcel) 
+		    使用out的时候 对象类需要实现一个空参的构造函数
+		    out 有什么用呢？caller 连数据都不发送？却要读 callee 写回来的数据？
+		    	使用返回值需要重新创建一个对象，这个开销比较大。
+			使用返回值如果不创建新对象，就只能使用原有对象，这时原有对象可能不希望被更改，或者更改逻辑需要自定义，无法支持。
+			使用返回值在多个 out 参数的场景实现非常麻烦，需要再包一层对象。
+			
+		inout 为定向 tag 的情况下，服务端将会接收到客户端传来对象的完整信息，并且客户端将会同步服务端对该对象的任何变动。	
+		inout对AIDL接口的性能有者不小的影响，不要滥用
+
+		不管是out tag 还是 inout tag 在使用的是时候由于系统已经new好了，不能在方法中重新new，否则客户端无法拿到数据
+		例子：这里不能这么写 outInfo=new ServerDataInfo(-2,"xxxx")，只能使用参数中的对象(outInfo)进行赋值
+    			@Override
+    			public void testOutTag(ServerDataInfo outInfo) throws RemoteException {
+        			outInfo.name = "out info";
+        			outInfo.number = -2;
+    			}
+		
+                此外，如果AIDL方法接口的参数值类型是：基本数据类型、String、CharSequence或者其他AIDL文件定义的方法接口，
+                那么这些参数值的定向 Tag 默认是且只能是 in，其他参数值都需要明确标注使用哪种定向Tag。
+
+	
+	-明确导包。在AIDL文件中需要明确标明引用到的数据类型所在的包名，即使两个文件处在同个包名下
+	
+	-传递大文件
+		AIDL是一种基于Binder实现的跨进程通信方案，Binder对传输数据大小有限制，传输超过1M的文件就会报android.os.TransactionTooLargeException异常
+		android提供了ParcelFileDescriptor文件描述符的方案传输大文件
+		ParcelFileDescriptor比直接传递文件地址的好处：
+			-不用考虑服务端是否有sd卡的读写权限，即使服务端没有读写权限，依然能够通过文件描述符得到文件流，服务端得到文件流后可以直接使用或者保存到自己的/data/data目录下使用。
+			-如果客户端没有sd卡的读写权限，依然可以把客户端中的/data/data中的文件传递给服务端
+			-只有客户端和服务端都有sd卡的读写权限，并且客户端把文件保存在sd卡上，传递文件地址才有意义
+	-耗时操作
+		android AIDL通信本身是一个耗时操作，因为它涉及到进程间的数据传输和序列化/反序列化的过程。如果在客户端的主线程中调用AIDL接口，而且服务端的方法执行比较耗时
+		就会导致客户端主线程被阻塞，从而引发ANR
+
+		为了避免AIDL引起的ANR，可以采取以下措施：
+			-不要在主线程中调用AIDL接口，而是使用子线程或者异步任务来执行IPC
+			-不要再OnServiceConected(),或者 onServiceDisconnected()中直接操作服务端方法，因为这些方法是在主线程中执行的。
+			-使用oneway关键字来修饰AIDL接口，使用IPC调用变成非阻塞
+
+	-oneway
+		oneway是AIDL定义接口时可选的关键字，它可以修饰AIDL接口中的方法，修改远程调用的行为。
+		oneway主要有以下两个特征：
+			-将远程调用改为“异步”调用，使得远程调用变成非阻塞的，客户端不需要等待服务端的处理，只是发送数据并立即返回。
+			-oneway修饰方法，在同一个IBinder对象调用中，会按照调用顺序依次执行
+		使用oneway的使用场景
+			当不需要等待服务端的返回值或者回调时，可以提高IPC的效率。例如向服务端发送一些控制命令或者通知，而不关心是否处理成功
+			oneway可以用来修饰在interface之前，这样会使interface内所有的方法都隐士地带上，也可以修饰在interface里的各个方法之前	
+		注意：
+			oneway修饰本地调用没有效果，仍然是同步的，客户端需要等待服务端的处理
+			oneway不能修饰有返回值的方法，或者抛出异常，因为客户端无法接收到这些信息
+			同一个IBinder对象进行oneway调用，这些调用会按照原始调用的顺序依次执行。不同的IBinder对象可能导致调用顺序和执行顺序不一致。
+			oneway要谨慎用于修饰调用极其频繁的IPC接口，当服务器的处理较慢，但是客户端的oneway方法调用非常频繁时，来不及处理的调用会占满binder驱动的缓存，导致transaction failed
+	
+	-RemoteCallbackList
+		-RemoteCallbackList是一个类，它用于管理一组已经注册的interface回调，并在它们的进程消失的时候自动从列表中清理他们。
+		-RemoteCallbackList通常用于执行从Service到其客户端的回调，实现跨进程通信。
+		-它有如下优势：
+			-通过调用IInterface.asBinder()方法，根据底层的唯一Binder来识别每个注册的接口。
+			-它给每个注册的接口父加了一个IBinder.DeathRecipient，这样如果接口锁在的进程死亡了，它就可以从列表中清除掉。
+			-它对底层接口列表进行了加锁处理，以应对多线程的并发调用，同时提供了一种线程安全的方式来遍历列表的快照，而不需要持有锁。
+		-要使用这个类，需要创建一个实例，并调用它的register(E)和unregister(E)方法作为客户端注册和注销的操作。要回调到注册的客户端，请使用beginBroadcast()、getBraodcastItem(int)
+		 和finishBroadcast()方法
+
+	-BinderPool
+		-当客户端需要与服务端进行多种不同的业务交互时候，就需要在服务端定义多个Binder实例，此时可以使用BinderPool机制来优化这种场景
+		-BinderPool是一个用于管理和分发Binder的机制，它可以让不同的模块之间通过一个统一的Service进行Binder通信，客户端通过一个Binder连接到服务端，然后根据不同的业务需求，获取到对应的Binder
+		 实例，从而实现跨进程通信。这样可以减少客户端和服务端之间的连接数，提高稳定性和性能
+
+	-AIDL的权限控制
+		-控制客户端的绑定权限
+		 在对外暴露AIDL接口时，我们并不希望所有的客户端都可以连接到Service中，那么我们可以自定义权限，限制具有指定权限的应用才可以绑定到服务端
+		 protectionLevel的级别:
+			normal:默认值，表示低风险权限，系统会自动授予请求的权限，无需用户同意
+			dangerous：表示高风险权限，涉及用户私人数据或设备控制权，系统会向用户显示并确认是否授予请求的应用
+			signature: 表示只有当请求的应用和声明权限的应用使用相同的证书签名时，系统才会授予权限
+			signatureOrSystem：表示只有当请求的应用和声明权限的应用使用相同的证书签名，或者请求的应用位与系统映像的专用文件夹中时，系统才会授予权限
+	                                   这个参数在API级别23中已弃用，建议使用signature
+
+			
+		-控制客户端对接口的权限
+		 除了控制连接Service的权限，多数时候我们还需要控制AIDL接口的请求权限，避免客户端可以随意访问一些危险的AIDL接口
+		 checkCallingPermission()和enforceCallingPermission()都可以用于权限检查，区别在于
+			int checkCallingPermission(String permission):检查调用者是否有指定的权限。如果没有调用者或者调用者不是IPC，则返回-1，如果IPC调用者有指定的权限则返回0
+			void enforceCallingPermission:检查调用者是否有指定的权限，如果没有或者没有调用者不是IPC，则抛出SecurityException异常
+	
+	-获取调用者PID、UID、包名、签名
+		Binder.getCallingPid()和Binder.getCallingUid()都是用来获取调用者(即发送Binder请求的进程)的信息的
+			-Binder.getCallingPid()方法返回调用者的进程ID，它是一个int类型的值，可以用来区分不同进程
+			-Binder.getCallingUid()方法返回调用者的用户ID，它是一个int类型的值，可以用来区分不同用户或应用。可以通过uid获取调用者包名，来进一步验证安全性，如：
+				MainApp.getMainContext().getPackageManager().getNameForUid(Binder.getCallingUid())
+				
+				根据包名就可以进行签名的获取：
+				PackageInfo info = MainApp.getMainContext().getPackageManager().getPackageInfo(pkgName, PackageManager.GET_SIGNATURES);
+				info.signatures得到签名
+
+		这两个方法都只能在AIDL中定义的方法中调用，否则会返回当前进程或者用户的ID。他们可以用来检查调用者是否拥有某些权限，或者进行一些安全验证。
+		注意，如果AIDL方法是oneway的 pid会获取不到，
+	
+5、bindService
+	bindService是常用的客户端获取服务端连接(Connection)的方法
+	bindService流程 如图：binder学习笔记_5_bindService流程，binder学习笔记_5_bindService通信过程
+
+
+6、使用Binder进行跨进程通信的案例
+	~/project/BinderExams项目
+	-ipc_sdk项目：sdk项目，用于定义通信用的AIDL,定义成library项目
+		创建aidl：
+			ServerDataInfo：用于封装传输数据的对象 
+					这个aidl文件只是定义ServerDataInfo的数据类型，以下两句话就可以了
+						package com.sandro.ipc;
+						parcelable ServerDataInfo;
+					还需要在相同包名下定义ServerDataInfo类需要实现Parcelable，并且要定义一个方法，readFromParcel，用于out 和 inout TAG
+
+			IServer：用于定义传输接口
+				 因为用到了ServerDataInfo，即便这两个类在一个包下，依然要在aidl里 import com.sandro.ipc.ServerDataInfo
+				 如下：
+				package com.sandro.ipc;
+				import com.sandro.ipc.ServerDataInfo;
+				import com.sandro.ipc.IClient;
+
+				interface IServer {
+					//向服务器发送数据info，服务会把所有数据放到allData中返回给客户端
+					//该方法是oneway的，非阻塞
+    					oneway void sendData(in ServerDataInfo info);
+					
+					//返回所有数据
+    					ServerDataInfo[] getAllData();
+					
+					//info是 inout Tag类型的，客户端把info传给服务，服务根据number找到对性的数据，并把这两个数据合并，
+					//合并后的数据会放到info对象中返回给客户端
+    					void mergeData(inout ServerDataInfo info);
+
+					//测试out tag参数的方法
+					void testOutTag(out ServerDataInfo outInfo);
+
+					//测试bundle的传递
+					void testBundle(in Bundle bundle);
+
+					//测试大文件传输接口ParcelFileDescriptor
+					void testFileDescriptor(ParcelFileDescriptor pfd);
+
+					//注册和注销客户端
+					oneway void registerIClient(IClient iClient);
+    					oneway void unRegisterIClient(IClient iClient);
+
+					//在该方法内部会检查调用者是否有权限
+					oneway void checkPermissionTest();
+				}
+
+			IClient:当客户端连接上服务端后，将IClient 传递给服务端，服务端用IClient给客户端传递数据
+				package com.sandro.ipc;
+				import com.sandro.ipc.ServerDataInfo;
+
+				interface IClient {
+					//通知客户端数据刷新
+					oneway void refreshData(in ServerDataInfo[] infos);
+				}
+			
+		创建后，Rebuild Project 后，会在build/generated/aidl_source_output_dir/debug/out/com.sandro.ipc目录下看到生成的java文件
+	
+	-binder_server:服务端项目，设置为依赖ipc_sdk module
+		MyService：android service服务，
+			   注意： 一个Service不管是被启动或是被绑定，默认是运行在后台的。
+			   有一种特殊的服务叫前台服务，是一种能被用户意识到它存在的服务，默认是不会被系统自动销毁的，但是必须提供一个状态栏Notification
+
+			   权限：
+				    <permission
+        				android:name="sandro.permission.fetchData"
+        				android:permissionGroup="sandroFetchData"
+        				android:protectionLevel="normal" />	
+				  
+				   为了提升安全性，增加一个自定义权限，并在service中配置这个权限 
+				  
+				   <service android:name=".MyService"
+            				android:permission="sandro.permission.fetchData"
+        				...
+        			  </service>
+				   	
+	-binder_client:客户端项目，设置为依赖ipc_sdk module
+			使用server定义的权限
+				    <uses-permission android:name="sandro.permission.fetchData" />	
+
+7、binder常见问题
+	-为什么intent不能传递大数据
+	 使用intent传递数据本质上还是使用binder传递数据，由于binder是基于MMAP将物理地址映射到内存中的，而binder在初始化的时候就已经指定了内存映射区的大小	
+	 binder内存映射的大小是在 /frameworks/natie/libs/binder/ProcessState.cpp中定义的 大小是： ((1 * 1024 * 1024) - sysconf(_SC_PAGE_SIZE) * 2) 也就是1M-8K。
+	 实际上因为还要包括binder本身的协议数据，binder最大的数据是比(1M - 8K)还要小一点
+	 另外，如果AIDL的接口是 oneway 的时候，最大数据就只能是 （1024 -8 ）/ 2 
+	 binder不擅长大数据的进程间通信，它更擅长进程间的接口调用，因此不需要那么大的内存映射空间
+	
+	-为什么oneway的AIDL接口只能传递最大不超过 (1024 - 8)/2 大小的数据
+	 oneway接口对应的transact接口参数是 boolean _status = mRemote.transact(Stub.TRANSACTION_registerIClient, _data, null, android.os.IBinder.FLAG_ONEWAY);
+	 android.os.IBinder.FLAG_ONEWAY代表当前接口是异步调用
+	 这部分代码在内核代码中，将异步的可用空闲空间大小设置为了总大小的一半，
+	 源码位值：http://androidxref.com/kernel_3.18/xref/drivers/staging/android/binder.c =>binder_mmap
+		proc->free_async_space = proc->buffer_size / 2;
+	 binder.c=>binder_alloc_buf
+		//申请内存时，剩余异步可用内存不得小于所需要内存
+		if (is_async && proc->free_async_space < size + sizeof(struct binder_buffer)) {
+			binder_debug(BINDER_DEBUG_BUFFER_ALLOC,
+			     "%d: binder_alloc_buf size %zd failed, no async space left\n",
+			      proc->pid, size);
+			return NULL;
+		}
+	 	...
+		//将异步剩余可用内存减去本次申请内存
+		if (is_async) {
+			proc->free_async_space -= size + sizeof(struct binder_buffer);
+			...
+		}
+	

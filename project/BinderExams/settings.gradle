@@ -1,0 +1,5 @@
+rootProject.name = "BinderExams"
+include ':ipc_sdk'
+include ':binder_client'
+include ':binder_server'
+
