@@ -1,0 +1,174 @@
+1、handler.sendMessage流程
+	[Handler]sendMessage
+	->...
+	->private boolean enqueueMessage(MessageQueue queue, Message msg,long uptimeMillis) {
+		//Message中也有Handler的引用在这里被赋值，这里是导致内存泄漏的地方
+		msg.target = this;
+		...
+	 }
+	->[MessageQueue]boolean enqueueMessage(Message msg, long when) //Message入队列
+	  	1、MessageQueue是管理Message的队列，Handler中有一个全局的MessageQueue,它是在Handler的构造函数中从Looper中获取的
+	  	   而每个Looper都会把MessageQueue放到一个 ThreadLocal中，也就是说一个线程的多个Handler都共享一个MessageQueue
+	  
+	  	2、主线程的Looper初始化是在ActivityThread.main()函数中 通过Looper.prepareMainLooper();初始化的，并通过Looper.loop();让当前线程(主线程)的looper开始执行
+	  	   Looper.loop():一个无限循环，保证主线程一直在执行，如果退出，说明进程关闭
+		   	         在循环中不断从messageQueue中获取messsage(Message = mQueue.next())，并执行message
+		                 执行message是通过 message.target.dispatchMessage-> handler.handleMessage来执行的
+				 
+          
+	  	3、Looper.prepareMainLooper(){
+			 	parepare(); //设置当前线程的ThreadLocal，sThreadLocal.set(new Looper(quitAllowed));
+				...
+ 				sMainLooper = myLooper();//设置主线程Looper
+			}
+	  	4、ActivityThread.main()函数是zygote进程启动的时候执行的，入口在framework/base/core/java/com/android/internal/os/ZygoteInit.java -> zygoteInit方法
+	  	   在zygoteInit方法中调用了native方法  ZygoteInit.nativeZygoteInit() 这个方法的实现在androidRuntime.cpp中，
+	           通过反射创建程序入口的Method对象，并返回Runable对象 ActivityThread.main();SystemServer
+		
+2、Looper轮询获取Message的流程
+	当Loop.loop执行后
+	Looper从ThreadLocal中得到当前线程的MessageQueue
+		1 MessaegQueue.next()->Message.next()得到Message
+		2 通过Message.target得是哪个Handler添加的Message
+		3 调用Handler.dispatchMessage
+		4 通过handleCallback或者handleMessage回调外部执行需要的操作
+	
+	MesageQueue管理Message如图:2_MessageQueue
+
+3、handler native层源码分析
+	-handler native层接口主要在 MessageQueue中，主要接口如下：
+		private native static long nativeInit();
+		private native static void nativeDestroy(long ptr);
+		private native void nativePollOnce(long ptr, int timeoutMillis); /*non-static for callbacks*/
+		private native static void nativeWake(long ptr);
+		private native static boolean nativeIsPolling(long ptr);
+		private native static void nativeSetFileDescriptorEvents(long ptr, int fd, int events);
+	比较重要的接口是nativeInit、nativePollOnce、nativeWake
+	
+	-JNI接口注册：
+	 这些接口注册的位值在/frameworks/base/core/jni/android_os_MessageQueue.cpp中
+		//定义需要注册的接口信息
+		static const JNINativeMethod gMessageQueueMethods[] = {
+   			 /* name, signature, funcPtr */
+    			{ "nativeInit", "()J", (void*)android_os_MessageQueue_nativeInit },
+    			{ "nativeDestroy", "(J)V", (void*)android_os_MessageQueue_nativeDestroy },
+    			{ "nativePollOnce", "(JI)V", (void*)android_os_MessageQueue_nativePollOnce },
+    			{ "nativeWake", "(J)V", (void*)android_os_MessageQueue_nativeWake },
+    			{ "nativeIsPolling", "(J)Z", (void*)android_os_MessageQueue_nativeIsPolling },
+    			{ "nativeSetFileDescriptorEvents", "(JII)V",
+            		(void*)android_os_MessageQueue_nativeSetFileDescriptorEvents },
+		};
+		
+		//执行注册JNI的方法，Framework中的接口注册统一在 framework/bases/core/jni/AndroidRuntime.cpp中的int AndroidTuntime::startRet(JNIENV* env)执行
+		int register_android_os_MessageQueue(JNIEnv* env) {
+   		 	int res = RegisterMethodsOrDie(env, "android/os/MessageQueue", gMessageQueueMethods,
+                                   NELEM(gMessageQueueMethods));
+			...
+    			return res;
+		}
+		
+	
+Q、常见面试题
+	-子线程给主线程通信有哪些方式
+	 Rxjava,协程等，但本质上都是通过handler
+
+	-子线程主线程的通信原理
+         利用了全局变量是线程共享的，在Looper中有一个静态变量用于保存主线程的Looper，这个主线程的Looper中会有MessageQueue，其他线程想和主线程通信的时候
+	 就会利用handler向这个全局Looper中的Messagequeue添加Message,主线程Looper在轮询的时候取得message达到子线程向主线程通信的功能
+
+	-主线程可以创建多少个Handler?如果想要在子线程中创建Handler要注意什么?
+	 主线程创建Handler没有上限，只要是创建的Handler使用的是主线程的Looper他们都是一个Messagequeue
+	 子线程创建Handler时侯
+		new Thread(){
+			public void run(){
+				Looper.prepare();
+				threadHandler = new Handler(Looper.myLoop(),new Handler.CallBack(){
+					public boolean handleMessage(Message msg){
+						return false;
+					}
+				});
+				Looper.loop()
+			}
+		}.start();
+		这中写法的缺陷，只能创建一个Handler
+
+		
+		使用中有可能会需要创建多个Handler他们使用一个Looper
+			public class MyHandlerThread extends Thread{
+				Looper looper;
+			
+				MyHandlerThread(String name) {super(name);}
+			
+				public void run(){
+					super.run();
+					Looper.prepare();
+					looper = Looper.myLooper();
+					Looper.loop();
+				}		
+				Looper getLooper() {return looper;}
+
+				public synchronized void start(){ super.start();}	
+			}
+		通过封装，将looper暴露出来,在创建Hander的时候就可以使用同一个Looper来保证多个Hander都能使用
+		比如在主线程中执行如下：
+			MyHandlerThread threadHandler  = new MyHandler("thread_1");
+			threadHandler.start();
+			Handler handler1 = new Handler(threadHandler.getLooper());
+			Handler handler2 = new Handler(threadHandler.getLooper());
+			...
+		这种写法的缺陷是 threadHandler.getLooper() 是在主线程中执行的，而Looper的初始化是在子线程中执行的，这样会导致多线程的问题，当Handler在初始化的时候有可能Looper还没有完成初始化
+			
+		可以使用HandlerThread类，避免并发问题
+			HandlerThread threadHandler = new HandlerThread("thread_2");
+			threadHandler.start();
+		 	Handler handler1 = new Handler(threadHandler.getLooper());
+ 			Handler handler2 = new Handler(threadHandler.getLooper());
+			
+		在HandlerThread.getLooper方法中使用了锁，只有当线程的run方法执行完毕后，getLooper才能解锁并继续执行，从而避免的并发问题
+	
+	-handler内存泄漏的原因是什么
+	 hander内存泄漏的根本原因是引用链泄漏，从jvm的角度说被GC Roots引用的对象都不会被释放
+	 比如，handler内部类有Activity的引用
+	       Looper->MessageQuenue->Message->Handler,对与主线程来说，主线程的Looper是  Looper的一个内部静态引用 Looper.sMainLooper
+	       所以当一个有Activity引用的Message还在MessageQuenue中的时候，Activity是无法被释放的。
+	 
+	-如何避免Handler导致的内存泄漏
+	 使用Handler内部类的时候可以用static来修饰比如：
+		private static Handler handler = new Handler(){
+			public void handlerMessage(Message msg){}
+		}
+	    因为在使用静态内部类的时候 内部类中不能直接使用外部类的方法和变量
+	 
+	-子线程中维护的Looper，消息队列不会再有消息的时候该怎么处理，有什么用，主线程呢？
+	 子线程的Looper是通过调用Looper.loop()开始进入死循环，如果没有消息，循环内会wait，这样子线程就无法退出，一直占用资源
+	 当子线程Looper消息都处理完了，业务上也不会有新消息的时候，应该使用Looper.quit(),释放线程资源
+	 当调用Looper.quit()的时候，实际上是调用Looper中的MessageQueue.quit(),这里会清空队列中的所有Message，并标记当前 mQuitting=true;此时外部再也无法添加新消息，并且Looper中的死循环会被唤醒
+	 唤醒的时候，Looper会通过MessageQueue去获取next Message,在next方法中判断mQuitting是true，会返回null,外部死循环当发现next返回的是null的时候，就会return出死循环，这样子线程也就执行完毕了
+
+	 主线程由于要持续使用Looper处理业务和系统的消息，所以不需要手动quit
+	 实际上，ActivityThread也就是app的主线程UI刷新的频率是60HZ，主线程存活的情况下每隔16.7ms就需要刷新一次，每次刷新都是通过android.view.Choregrapher的doFrame()来执行的。而doFrame就是在
+	 handler中执行的。另外AMS往往通过进程间通信调用到ActivityThread，调用到ActivityThread之后往往也需要通过主线程的Handler去继续后面的调用
+	
+	-handler如何发送延迟消息的
+         Message通过enqueueMessage入队时，有一个时间的参数，MessageQueue会根据这个时间来确定什么时候可以执行Message,如图：Q_MessageQueue入队函数
+	 MessageQueue.next获取Message的时候，如果拿到的Message没有达到要求的时间的时候，会重新计算需要等待的时间，并进入下一个next中的for循环，
+	 在下一个循环中通过nativePollOnce这个native方法等待到足够的时间再继续执行，这个方法使用的是linux的epoll机制来完成的等待
+	
+	-使用Message时应该如何创建
+	 推荐使用Message.obtion的方式获取
+	 在Message中有一个静态Messsage对象sPool，它保存的是已经使用过的Message链表的头，从这些已使用的Message链表中拿出一个Message，避免了每次事件都通过new对象的方式获取。
+	 因为在android应用中handler的使用是非常频繁的，比如一般来讲手机屏幕刷新频率是60HZ，每秒就要创建60次的刷新事件，实际上每次刷新操作以用要用到3个Message,
+	 也就是说每秒至少要有180个Message被创建，通过obtion能够极大的减少创建Message的消耗，如果不用obtion，那么每秒不仅要创建大量对象，同时这些对象的垃圾回收负担也会很大，导致内存抖动
+	 内存抖动往往导致虚拟机fullGC来回收垃圾，而FullGC会STOP THE WORLD。从而造成卡顿
+	 
+         handler解决频繁创建对象的设计模式叫享元模式
+
+	-handler没有消息处理时，是阻塞的还是非阻塞的?为什么不会ANR
+	 是阻塞的，没有消息的时候Looper在调用MessageQueue.next的时候是阻塞的，是阻塞在nativePollOnce这里
+	 
+	 ANR主要产生在 Service(前台 20S，后台200S)，Broadcast(前台 10S，后台60S),Provider(10S),Input按键事件(5s)当中
+	 比如Service的startService是在binder通信前在ActivityManager里设置一个定时器，如果当定时器到时间时候，binder还没有回消息就会ANR。其他的ANR场景都是用类似的方法
+	 input(按键事件)，是当一个按键事件发生的时候，当下一次按键事件到达，两个事件时间间隔大于5s会ANR
+	 所以ANR的产生和handler中的message为空的阻塞没有关系，或者说messageQueue为空的时候，实际上是没有机会产生ANR的
+	 但是如果message中的任务处理比较耗时，有可能导致ANR计时器超时从而引起ANR
+
