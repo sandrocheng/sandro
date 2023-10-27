@@ -92,7 +92,14 @@
 		sdk_phone_x86_64-eng 目标：64位的模拟器完整编译，aosp_arm-eng是32位的，编译后模拟器非常慢，推荐使用x86会好很多。
 		如果没有目标的情况下,lunch会提示从菜单中选择，所有的目标可以参考官网：使用入门->构建->刷写设备[选择设备]页面
 
-	3) 构建代码
+	3) 打开生成CMakeLists.txt的编译开发,
+	   如果编译的目的是为了调试native代码，目标最好使用sdk_phone_x86_64-eng,这样生成的CMakelist里面编译的时候才会使用x86_64指令架构否则native编译的时候会提示没有armv8-a指令集
+	   android C++部分的代码默认是用clion开发的，为了能够使用clion编译c++代码，提供了环境变量
+		 export SOONG_GEN_CMAKEFILES=1
+		 export SOONG_GEN_CMAKEFILES_DEBUG=1
+	   构建代码前设置这两个变量，让编译器能够生成每个项目的CMakeLists.txt
+	   
+	4) 构建代码
 		m: 使用“m”构建所有内容	, 
 		构建之前，要使用m clean，清理一下上次编译的文件，该命令与 rm -rf out/相同
 		m -jN
@@ -100,10 +107,11 @@
 			可以根据内存大小选择适当的线程数量,一般来讲16G物理内存+足够的swap(至少8G)，就可以用16个线程。
 			线程数跟cpu也有关系，在内存足够的情况下，线程数=2*逻辑cpu数，  逻辑cpu数 = cpu个数 * 每个cpu的核数。linux下,使用lscpu查看cup个数和核数。
 		
-	4）编译成功后，所有的编译目标文件都存放到了 /out 目录。
+	5）编译成功后，所有的编译目标文件都存放到了 /out 目录。
+	   如果设置了SOONG_GEN_CMAKEFILES=1和SOONG_GEN_CMAKEFILES_DEBUG=1，/out/development/ide/clion 目录下会生成各c++项目编译用的的CMakeLists.txt
 	   编译过程比较慢，使用i7cpu,4核8线程32G内存的电脑编译androiod12的源码，也得1～2个小时。
 
-	5）编译命令m,mm,mmm
+	6）编译命令m,mm,mmm
 		源码编译后，会有很多系统app,启动模拟器后 通过adb shell 会发现这些app基本都会 /system/app  和 /system/priv-app目录中。
 		对应编译apk，存在于/out/target/product/emulator_x86_64/system  中的app目录和 priv-app目录中
 		当修改某个apk源码后，可以重新单独编译一个apk，而不用每次都全部编译，然后重启android，就能看到效果了

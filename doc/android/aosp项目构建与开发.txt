@@ -179,4 +179,74 @@
 		例如：
 			$(warning $(LOCAL_XXX)),输出 LOCAL_XXX的内容
 	
-	
+3、android源码查看
+	3.1）java 部分一般使用android stuido就可以看
+	     实际上Android的源码中已经专门存在了文档来告诉我们如何使用IDE来编辑Android源码,位置是源码路径/development/tools/idegen/README 
+	     因为我们现在都使用AndroidStudio了,所以只需要关心其中的IntelliJ部分就好了,Eclipse就不用看了
+
+	     androidStudio的初期配置:
+	     文档上说,由于Android太大了,所以我们需要给IDE更多的内存:
+             在Help > Edit Custom VM 中添加:
+			-Xms1024m
+			-Xmx5120m
+	     
+             然后是AndroidStudio的类大小配置,在Help -> Edit custom properties中添加:
+		idea.max.intellisense.filesize=100000
+	     这个参数是定义AS默认的类大小的,默认值是2500,会导致太大的Java文件不能被识别,把这个数调大了之后,就可以导入更大的Java文件	
+	     
+             源码导入:
+	     	-使用 envsetup.sh 脚本初始化环境：source build/envsetup.sh
+		-lunch [目标名称] : lunch aosp_flame-userdebug
+		-编译生成idegen.jar:mmm development/tools/idegen,
+		 这里需要注意的是,虽然google的脚本说支持zsh,但是如果你用zsh就会出现Couldn't locate the directory development/tools/idegen 这个错误,使用bash再来一遍就可以了
+		-生成完idegen.jar之后,就可以使用命令来扫描生成ipr文件了:sudo ./development/tools/idegen/idegen.sh
+		-AndroidStudio的其他配置
+		 project setting(File中的Project Structure) -> 
+			project: 设置AndroidAPI 31(因为下载的源码是android12),java版本为Java8
+			SDK:仅仅保留Java1.8和Android API 28,剩下的都删除掉,如图：aosp项目构建与开发_3_SDK设置
+			Modules:将所有的Jar删除,因为基本上我们用不到jar,看源码就够了,如果确实需要哪个的话,再酌情保留,如图：aosp项目构建与开发_3_modules设置
+		 
+
+	3.2) C/C++代码查看
+	    -使用AS查看android的c代码，没有索引，查阅起来并不是很方便，常规的方法是使用官方生成的Clion CMakelist文件 
+	     源码编译前需要设置SOONG_GEN_CMAKEFILES=1和SOONG_GEN_CMAKEFILES_DEBUG=1，编译成功后会在/out/development/ide/目录下，生成clion文件夹这里是各个项目下的CMakeLists.txt文件
+
+	    -clion安装：https://www.jetbrains.com/clion/download/download-thanks.html?platform=windows
+	               默认有30天免费期，过期需要密钥激活
+
+	    -MinGW安装：
+			-全称为 Minimalist GNU for Windows，它实际上是将经典的开源 C 语言编译器 GCC 移植到了 Windows 平台下，并且包含了 Win32 API ，
+	                 因此可以将源代码编译为可在 Windows 中运行的可执行程序。而且还可以使用一些 Windows 平台不具备的，但是 Linux 平台具备的开发工具和 API 函数，即MinGW 就是 GCC 的 Windows 版本
+			-MinGW-w64 原本是 MinGW 项目的分支，后来成为独立发展得项目
+			-MinGW 只能编译生成 32 位可执行程序，而 MinGW-w64 则可以编译生成 64 位或 32 位可执行程序。
+			-下载地址 https://sourceforge.net/projects/mingw-w64/files/
+			 选择 x86_64-posix-sjlj 版本下载。
+                         posix 或 win32 ：posix（Portable Operating System Interface，可移植操作系统接口），是 UNIX 系统的一个 API设计标准，很多类 UNIX 系统也在支持兼容这个标准，
+					  如 Linux 操作系统。posix: 启用了C++ 11 多线程特性，win32: 未启用
+			 x86_64或i686：x86_64简称X64，64位操作系统；i686: 32位操作系统 (i386的子集)，差不多奔腾2(1997年5月)之后的CPU都是可以用的
+			 DWARF：一种带调试信息(DWARF- 2（DW2）EH)的包, 所以比一般的包尺寸大，仅支持32位系统
+			 SJLJ：跨平台，支持32，64位系统，缺点是：运行速度稍慢
+			 SEH: 调用系统机制处理异常，支持32，64位系统，缺点是：GCC不支持（即将支持）
+			 DWARF DWARF- 2（DW2）EH ，这需要使用DWARF-2（或DWARF-3）调试信息。 DW-2 EH可以导致可执行文件略显膨胀，因为大的调用堆栈解开表必须包含在可执行文件中。
+			 setjmp / longjmp（SJLJ）。基于SJLJ的EH比DW2 EH慢得多（在没有异常时会惩罚甚至正常执行），但是可以在没有使用GCC编译的代码或没有调用堆栈的代码上工作。
+			 结构化异常处理（SEH） （Structured Exception Handling）Windows使用自己的异常处理机制。	
+            		-解压到目录下即可使用，\mingw64\bin  目录下有gcc命令，可以在该目录下运行命令：./g++ -v 或者 ./gcc -v ，也可以把该目录添加到环境变量中去
+
+	    -在clion中配置MinGW,如图：aosp项目构建与开发_3_clion配置MinGW
+	    
+	    -native代码编译			
+	     在clion中直接打开代码所在项目(有CMakeLists.txt)的目录即可
+	     比如：想打开android_os_MessageQueue.cpp所在的项目，先通过find查找目录
+		   	find ./ -name "android_os_MessageQueue.cpp"
+		   返回的目录名是 ./frameworks/base/core/jni/android_os_MessageQueue.cpp
+		   在/out/development/ide/clion/frameworks/base/ 目录下面可以看到一个CMakeLists.txt文件，里面是project(frameworks_base)工程配置。所以打开这个目录就可以了
+		   打开后会自动编译，编译成功后会在External Libraries中看到依赖的头文件
+	     把项目打开方式从project 改称 Project Source Files就可以当先项目的cpp源文件了，编译后的源文件已经建立了索引，可以方便的进行阅读
+		
+	     打开对应的项目目录后,会自动编译，编译成功会在External Libraries中看到关联的源码
+	     常见问题：
+		     -如果是在linux环境下编译cmakelist，然后把代码拷贝到windows环境中去查看，注意每个CMakeLists.txt里由有一个root路径这个路径是在编译期间生成的
+		      如果更换目录这个地方需要批量修改 如：set(ANDROID_ROOT D:/myworks/android-12.1.0_r11)，如果不修改，编译期间也会提示这里的问题
+		     -指令集修改：编译的时候有的时候会提示 对应指令集的目录不存在，可以到实际的目录中看看一般改成 -86_64 就可以
+			          比如 add_subdirectory(libs/hwui/libhwui-arm64-android) 改称 add_subdirectory(libs/hwui/libhwui-x86_64-android)
+		     
