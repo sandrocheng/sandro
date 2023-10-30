@@ -45,7 +45,7 @@
 		private native static void nativeSetFileDescriptorEvents(long ptr, int fd, int events);
 	比较重要的接口是nativeInit、nativePollOnce、nativeWake
 	
-	-JNI接口注册：
+	-JNI接口注册：如图，3_handlerJNI注册时序图
 	 这些接口注册的位值在/frameworks/base/core/jni/android_os_MessageQueue.cpp中
 		//定义需要注册的接口信息
 		static const JNINativeMethod gMessageQueueMethods[] = {
@@ -59,7 +59,8 @@
             		(void*)android_os_MessageQueue_nativeSetFileDescriptorEvents },
 		};
 		
-		//执行注册JNI的方法，Framework中的接口注册统一在 framework/bases/core/jni/AndroidRuntime.cpp中的int AndroidTuntime::startRet(JNIENV* env)执行
+		//执行注册JNI的方法，Framework中的接口注册统一在 framework/bases/core/jni/AndroidRuntime.cpp中的int AndroidRuntime::startReg(JNIENV* env)执行
+		//AndroidRunTime启动后会统一注册所有jni接口，其中就包括MessageQueue
 		int register_android_os_MessageQueue(JNIEnv* env) {
    		 	int res = RegisterMethodsOrDie(env, "android/os/MessageQueue", gMessageQueueMethods,
                                    NELEM(gMessageQueueMethods));
@@ -67,7 +68,94 @@
     			return res;
 		}
 		
+	-android_os_MessageQueue,如图：3_NativeMessageQueue
+	 图中EventFd是一个文件描述符，他用来进行事件的通知，等待，响应机制，是通过系统调用来实现的，这里使用的是epoll机制
+	 
+	-nativeInit
+	 在java层的MessageQueue构造函数里调用了nativeInit,并把返回值赋值给mPtr变量，返回值是一个NativeMessageQueue对象的指针
 	
+	-nativePollOnce
+	 在java层的MessageQueue通过next方法获取Message，如果获取的message需要等待一段时间才能执行，会通过nativePollOnce去等待
+	 通过mPtr得到nativeMessageQueue，并调用pollOnce方法，最终是调用到Looper的pollOnce方法，Looper是/System/core下的代码Looper使用的就是epoll机制进行定时阻塞的
+	
+	-nativeWake
+	 java层enqueuqMessage，添加Message的时候，通过nativeWake唤醒Looper
+
+4、System中的Looper
+	/system/core/libutils/Looper.cpp
+	framework中android_os_messagequeue对消息的阻塞,唤醒操作主要是调用系统中Looper的接口来实现的
+	-Looper::Looper
+		/**
+		*  
+		*  在Looper::Looper构造函数中初始化：
+		*	mWakeEventFd.reset(eventfd(0, EFD_NONBLOCK | EFD_CLOEXEC));
+                *       rebuildEpollLocked();  
+		**/
+		android::base::unique_fd mWakeEventFd
+	
+                /**
+                *       在rebuildEpollLocked()中初始化
+                *		mEpollFd.reset(epoll_create1(EPOLL_CLOEXEC));
+		*       初始化成功后通过epoll_ctl注册
+		*       	struct epoll_event eventItem;
+		*		memset(& eventItem, 0, sizeof(epoll_event)); // zero out unused members of data field union
+		*               eventItem.events = EPOLLIN;
+		*               eventItem.data.fd = mWakeEventFd.get();
+		*       	int epollResult = epoll_ctl(mEpollFd.get(), EPOLL_CTL_ADD, request.fd, &eventItem);
+                **/
+                android::base::unique_fd mEpollFd
+		
+		在经过epoll_ctl注册以后，mWakeEventFd文件描述符对应的文件有读写事件发生的时候，就会通知给mEpollFd
+		
+	-Looper::pollInner(int timeoutMillis)
+	 android_os_MessageQueue.nativePollOnce -> Looper.pollOnce -> Looper.pollInner()
+	 handler最终是通过Looper::pollInner来阻塞的，函数内部调用的是系统接口 epoll_wait，来阻塞
+		 //当timeoutMillis=-1 的时候就一直阻塞直到被唤醒，否则就等待timeoutMillis的时长
+	 	 epoll_wait(mEpollFd.get(), eventItems, EPOLL_MAX_EVENTS, timeoutMillis);
+	 
+	-Looper::wake
+	  	nativeWake就是调用Looper的wake方法唤醒messagequeue的
+	        	TEMP_FAILURE_RETRY(write(mWakeEventFd.get(), &inc, sizeof(uint64_t)));
+		实际上是向mWakeEventFd写入了一个整数，由于mEpollFd已经和mWakeEventFd关联了，当mWakeEventFd文件被写入时，mEpollFd就会收到通知并被唤醒
+		
+	-Looper::awoken()
+	       当mWakeEventFd被写入时，需要读出数据避免文件被写满
+	       		TEMP_FAILURE_RETRY(read(mWakeEventFd.get(), &counter, sizeof(uint64_t)));	
+
+	
+5、为什么java层需要的阻塞机制，最后由android系统底层来实现
+	1、底层的阻塞和唤醒用的是系统调用，效率更高
+	2、底层的消息队列不只给java层的handler使用，还给其他的业务模块使用，android在这里实际上是复用这个消息队列，减少重复代码
+
+6、System Looper中的MessageEvelope、MessageHandler、Message
+	/system/core/libutils/include/utils/Looper.h
+	Looper.h中定义了 MessageEvelope、MessageHandler、Message来实现android内核中的消息队列，在内核层和native层的消息队列都是用的这几个类
+	
+	-Vector<MessageEnvelop> mMessageEnvelopers;
+	 在Looper.h中 使用vector用来保存消息的集合，当作消息队列的载体，所有消息的读写操作都会被上锁
+
+	-void Looper::sendMessageAtTime(nsecs_t uptime, const sp<MessageHandler>& handler, const Message& message)
+	 发送消息的接口
+	 	uptime:消息响应的时间 
+		handler:消息处理对象，消息交由哪个实现去处理
+		message:消息
+	 插入的时候先遍历mMessageEnvelopers这个消息队列，按照时间顺序插入消息，如果当前插入的消息在消息队列的头部，就立刻调用wake方法唤醒looper
+	 如果插入的消息不再头部，说明当前头部消息还没有到执行的时间，所以不用唤醒。
+
+7、android_os_MessageQueue 和 System Looper的关系
+	-nativeInit:创建native层的消息队列和消息监听机制	 		
+	 	创建NativeMessageQueue
+		创建Looper
+		创建wakeEventFd
+		使用epoll_ctl注册监听
+
+	-nativePollOnce：消息阻塞
+		使用epoll_wait 阻塞
+		阻塞后，使用read wakeEventFd 把文件数据读出，避免文件增大
+
+	-nativeWake:消息唤醒
+		使用write wakeEventFd，通过写数据的方法解除阻塞
+		
 Q、常见面试题
 	-子线程给主线程通信有哪些方式
 	 Rxjava,协程等，但本质上都是通过handler
