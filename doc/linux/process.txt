@@ -65,7 +65,7 @@
 
 5、创建进程
 	5.1)fork函数
-		详见/c-pro/cProjects/linuxProcess 项目
+		详见/c-pro/linuxProjects/linuxProcess 项目
 
             父子进程全局变量共享：
 		父子进程的全局变量的虚拟地址是一样的。
@@ -80,7 +80,7 @@
 	详细见 linux常用命令.txt
 
 7、exec函数族
-	详见/c-pro/cProjects/linuxProcess 项目
+	详见/c-pro/linuxProjects/linuxProcess 项目
 
 8、进程的资源回收
 	当一个进程退出之后，进程能够回收自己的用户区资源，但是不能回收内核空间的PCB资源，必须由他的父亲进程调用wait 或者 waitpid 函数完成对子进程的回收，避免造成系统资源的浪费
@@ -95,5 +95,5 @@
 		要想杀死僵尸进程，可以kill其父进程，父进程死掉以后，该僵尸进程会被init进程领养，init进程会回收该僵尸进程
 		系统内如果僵尸进程过多，会占用资源，当资源被占满后，就无法创建新的进程，系统将会变得极为不稳定。
         8.3) 子进程资源回收 wait waitpid
-		详见/c-pro/cProjects/linuxProcess 项目
+		详见/c-pro/linuxProjects/linuxProcess 项目
 

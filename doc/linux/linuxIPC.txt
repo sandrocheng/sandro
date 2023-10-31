@@ -90,7 +90,7 @@
  	查看管道缓冲区大小
 		命令：ulimit -a
 		函数 :  long fpathconf(int fd, int name);
-		 	详见/c-pro/cProjects/linuxIPC 项目
+		 	详见/c-pro/linuxProjects/linuxIPC 项目
 
 4 、FIFO
 	FIFO常被称为命名管道，用来区分管道(pipe)。管道(pipe)只能用于“有血缘关系”的进程间通信。但通过FIFO,不相关的进程也能通信
@@ -161,7 +161,7 @@
                                               |            | --- 
 
 	mmap函数
-		详见/c-pro/cProjects/linuxIPC 项目
+		详见/c-pro/linuxProjects/linuxIPC 项目
 	
 	mmap注意事项
 		创建映射区的过程中，隐含着一次对映射文件的读操作，将文件内容读到映射区

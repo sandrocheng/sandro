@@ -71,15 +71,15 @@ int checkArgs(int argc,char* argv[]){
 	return returnNO;
 }
 
-char *path = "/home/sandro/mywork/gitwork/sandro/c-pro/cProjects/linuxIO/tmp";
+char *path = "/home/sandro/mywork/gitwork/sandro/c-pro/linuxProjects/linuxIO/tmp";
 void showHelp(){
 	printf("\n==help===================================================================================================================================================\n");
 	printf("fwp n, 创建n个子进程，并使用waitpid回收子进程资源 如: fwp 3\n");
 	printf("fw n, 创建n个子进程，并使用wait回收子进程资源 如: fw 3 \n");
 	printf("fork ,使用fork，创建一个进程\n");
 	printf("fork n,使用fork，创建n个进程, 例如: fork 3 \n");
-	printf("execfile path filename arg1,arg2....arg5,使用exec执行一个程序 执行参数最多执行5个, 例如: execfile /home/sandro/mywork/gitwork/sandro/c-pro/cProjects/linuxIO/Debug/linuxIO ");
-	printf("  linuxIO fcntl /home/sandro/mywork/gitwork/sandro/c-pro/cProjects/linuxIO/tmp/log  \n");
+	printf("execfile path filename arg1,arg2....arg5,使用exec执行一个程序 执行参数最多执行5个, 例如: execfile /home/sandro/mywork/gitwork/sandro/c-pro/linuxProjects/linuxIO/Debug/linuxIO ");
+	printf("  linuxIO fcntl /home/sandro/mywork/gitwork/sandro/c-pro/linuxProjects/linuxIO/tmp/log  \n");
 	printf("execCMD cmd arg1 arg2...arg5 ,使用exec执行一个系统命令（命令需要PATH里有配置）； 执行参数最多执行5个, 例如: execCMD ls -al \n");
 	printf("=========================================================================================================================================================\n");
 }

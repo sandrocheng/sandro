@@ -70,7 +70,7 @@
 	
 
 3、信号相关函数
-	详见/c-pro/cProjects/linuxSignal项目
+	详见/c-pro/linuxProjects/linuxSignal项目
 
 4、信号集相关
 	4.1)未决信号集和阻塞信号集的关系
@@ -111,7 +111,7 @@
 		详见/c-pro/cProjects/linuxSignal项目
 
 5、信号捕捉函数
-	详见/c-pro/cProjects/linuxSignal项目	
+	详见/c-pro/linuxProjects/linuxSignal项目	
 
 6、SIGCHLD信号
 	6.1)产生SIGCHLD信号的条件
@@ -128,7 +128,7 @@
 		1）有可能未完成的信号处理函数时子进程都退出了，所以需要在fork之前先将SIGCHLD信号阻塞，当完成信号处理函数的注册以后在解除阻塞
 		2）当SIGCHLD信号处理期间，SIGCHLD信号若再次产生是被阻塞的，而且，若产生了多次，则该信号只会被处理一次，这样可能会产生僵尸进程
 		   解决方法：可以在信号处理函数里面使用while(1)循环回收，这样就有可能出现捕获一次SIGCHLD信号，但是回收了多个子进程的情况，从而避免产生僵尸进程。
-		详见/c-pro/cProjects/linuxSignal项目
+		详见/c-pro/linuxProjects/linuxSignal项目
 
 7、内核实现信号捕捉的过程
 	如果信号的处理动作是用户的自定义函数，在信号递达时就调用这个函数，这称为捕捉信号。由于信号处理函数的代码是在用户空间的，处理过程比较复杂，举例如下

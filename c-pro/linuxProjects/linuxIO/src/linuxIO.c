@@ -114,7 +114,7 @@ void checkArgs(int argc,char* argv[]){
 	showHelp();
 }
 
-char *path = "/home/sandro/mywork/gitwork/sandro/c-pro/cProjects/linuxIO/tmp";
+char *path = "/home/sandro/mywork/gitwork/sandro/c-pro/linuxProjects/linuxIO/tmp";
 void showHelp(){
 	printf("\n==help===================================================================================================================================================\n");
 	printf("fcntl filepath ,打开文件,如果文件不存在则创建一个文件,使用fcntl复制文件描述符，修改属性等操作,如: fcntl %s/log  \n",path);

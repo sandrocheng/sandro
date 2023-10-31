@@ -48,3 +48,7 @@
 		
 	6)执行核心操作
 		守护进程的核心代码
+
+4、例子
+	c-pro/linuxProjects/linuxDaemon
+	主进程fork守护进程后，会立刻退出，守护进程会存活一段时间，存活期间每隔1秒向/tmp/目录下的log.txt文件输出当前状态
