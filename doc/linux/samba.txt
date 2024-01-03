@@ -1,0 +1,59 @@
+1、安装samba
+	Samba是在Linux和UNIX系统上实现SMB协议的一个免费软件，由服务器及客户端程序构成。
+	SMB（Server Messages Block，信息服务块）是一种在局域网上共享文件和打印机的一种通信协议，它为局域网内的不同计算机之间提供文件及打印机等资源的共享服务。
+	有了samba，就可以在windows上远程修改和查看linux上的文件了。
+	ps:不建议在windows进程创建，然后弄到linux里。如果一定要这么做的话，要注意编码格式问题。有可能创建的脚本文件格式不对，导致执行编译出错。
+	
+2、samb安装和使用：
+	1）linux安装命令 : sudo apt-get install samba samba-common
+	2) 添加用户: sudo smbpasswd -a sandro，sandro是当前ubuntu用户的用户名
+		执行后，会要求设置这个用户的密码，比如1234qwer
+		这个用户名就是windows登陆的用户名和密码。
+	3）修改配置文件，增加可访问的项目目录
+		配置文件是 /etc/samba/smb.conf 文件，这个文件主要分三个部分:
+			[global],全局配置
+			[homes], 用户自己有home目录共享配置
+			[printers], 打印机共享配置
+			还可以继续增加[自定义共享名称]，自定义共享配置
+		
+		在global节点加入： security = user
+			ubuntu下配置文件默认没有这句，需要自己加上，表示指定samba的安全等级，安全等级分4种
+			a)share,其他人不需要账号密码即可访问共享目录
+			b)user 检查账号密码
+			c)server,表示检查密码由另外
+			d)domain,指定windows域控制服务器来验证用户的账号和密码
+			注意：samba 4不再支持 security = share
+		        
+		在global 节点加入：server min protocol = NT1，使用smb1.0协议，有些设备比如投影仪只能使用1.0版本协议
+	
+		在文件最后面追加一个自定义节点[mywork],用来共享/home/sandro/mywork 目录下的文件
+			[mywork]
+			# 描述
+			comment = mywork share
+			# 是否可以预览
+			browseable = yes
+			# 路径
+			path = /home/sandro/mywork
+			# 上传文件的权限
+			cteate mask = 0700
+			# 创建目录的权限
+			directory mask = 0700
+			# 访问用户，如果不指定，都可以访问，多个用户用","隔开
+			valid users = sandro
+			# 是否公开
+			public = yes
+			# 是否可用
+			available = yes
+			# 是否可写
+			writable = yes
+	4) 重启samba服务：service smbd restart
+        5) ifconfig 查看ip ,比如：192.168.0.111
+	6) 在windows下面打开 \\192.168.0.111，打开后会看到mywork目录，点击打开输入用户名密码 ，sandro ,1234qwer,就可以打开了。
+	        
+3、samba命令：
+	smbd --version,查看版本
+	sudo pdbedit -L:列出samba用户列表，读取passdb.tdb数据库文件
+	sudo pdbedit -Lv:列出samba用户列表详细信息。
+	sudo pdbedit -c "[D]" -u username ,暂停该samba用户账号
+	pdbedit -c "" -u username:恢复该Samba用户账号
+

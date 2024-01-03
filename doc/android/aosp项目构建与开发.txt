@@ -1,66 +1,9 @@
-1、安装samba
-	Samba是在Linux和UNIX系统上实现SMB协议的一个免费软件，由服务器及客户端程序构成。
-	SMB（Server Messages Block，信息服务块）是一种在局域网上共享文件和打印机的一种通信协议，它为局域网内的不同计算机之间提供文件及打印机等资源的共享服务。
-	有了samba，就可以在windows上远程修改和查看linux上的文件了。
-	ps:不建议在windows进程创建，然后弄到linux里。如果一定要这么做的话，要注意编码格式问题。有可能创建的脚本文件格式不对，导致执行编译出错。
-	
-	samb安装和使用：
-		1）linux安装命令 : sudo apt-get install samba samba-common
-		2) 添加用户: sudo smbpasswd -a sandro，sandro是当前ubuntu用户的用户名
-			执行后，会要求设置这个用户的密码，比如1234qwer
-			这个用户名就是windows登陆的用户名和密码。
-		3）修改配置文件，增加可访问的项目目录
-			配置文件是 /etc/samba/smb.conf 文件，这个文件主要分三个部分:
-				[global],全局配置
-				[homes], 用户自己有home目录共享配置
-				[printers], 打印机共享配置
-				还可以继续增加[自定义共享名称]，自定义共享配置
-			
-			在global节点加入： security = user
-				ubuntu下配置文件默认没有这句，需要自己加上，表示指定samba的安全等级，安全等级分4种
-				a)share,其他人不需要账号密码即可访问共享目录
-				b)user 检查账号密码
-				c)server,表示检查密码由另外
-				d)domain,指定windows域控制服务器来验证用户的账号和密码
-				注意：samba 4不再支持 security = share
-			
-			在文件最后面追加一个自定义节点[mywork],用来共享/home/sandro/mywork 目录下的文件
-				[mywork]
-				# 描述
-				comment = mywork share
-				# 是否可以预览
-				browseable = yes
-				# 路径
-				path = /home/sandro/mywork
-				# 上传文件的权限
-				cteate mask = 0700
-				# 创建目录的权限
-				directory mask = 0700
-				# 访问用户，如果不指定，都可以访问，多个用户用","隔开
-				valid users = sandro
-				# 是否公开
-				public = yes
-				# 是否可用
-				available = yes
-				# 是否可写
-				writable = yes
-		4) 重启samba服务：service smbd restart
-                5) ifconfig 查看ip ,比如：192.168.0.111
-		6) 在windows下面打开 \\192.168.0.111，打开后会看到mywork目录，点击打开输入用户名密码 ，sandro ,1234qwer,就可以打开了。
-	
-	samba命令：
-		smbd --version,查看版本
-		sudo pdbedit -L:列出samba用户列表，读取passdb.tdb数据库文件
-		sudo pedit -Lv:列出samba用户列表详细信息。
-		sudo pdbedit -c "[D]" -u username ,暂停该samba用户账号
-		pdbedit -c "" -u username:恢复该Samba用户账号
-			
-2、Android.mk的使用 
+1、Android.mk的使用 
 	
 	大部分项目下还是会用Android.mk编译文件，它是当前android项目的编译入口文件。
 	Android.mk是Android提供的一种makefile文件，用来指定诸如编译生成so库名、引用的头文件目录、需要编译的.c/.cpp文件和.a静态库文件等。要掌握jni，就必须熟练掌握Android.mk的语法规范。
 	
-	2.1）文件结构
+	1.1）文件结构
 		这些mk文件的基本结构如下：
 			1）LOCAL_PATH:= $(call my-dir) #定义一个当前目录的值
 			   每个Android.mk文件必须以定义LOCAL_PATH为开始。它用于在开发tree中查找源文件。宏my-dir 则由Build System提供。返回包含Android.mk的目录路径。
@@ -89,7 +32,7 @@
 	
 			6）清空变量，调用子mk
 	
-	2.2）通过Android.mk编译jar包    
+	1.2）通过Android.mk编译jar包    
 		源码位值：project/aospSandro/ ,将这个工程下的aosp_lib源码文件，拷贝到package/apps中，只保留java文件 Android.mk 和 proguard.flags文件,重新命名为：AospSandroJavaLib
 		AospSandroJavaLib.mk,内容如下：
 			LOCAL_PATH:= $(call my-dir) 
@@ -111,7 +54,7 @@
 										
 		配置好后，在项目根目录下执行mm，编译成功后，jar包会输出到 /out/target/common/obj/JAVA_LIBRARIES/aosp-sandro-java-lib_intermediates目录中
 						
-	2.3) 通过Android.mk编译apk包
+	1.3) 通过Android.mk编译apk包
 		在package/apps中新建一个项目目录，比如命名位AospSandroLogDemo,
 		源码位值：project/aospSandro/ ,将这个工程下的app源码文件，package/apps/AospSandroLogDemo中，只保留android源文件 Android.mk 和 proguard.flags文件
 		把Android.mk文件和proguard.flags移到上一层目录中
@@ -152,7 +95,7 @@
     		编译成功后 apk 会保存到 out/target/product/emulator_x86_64/system/app/AospLogDemo/AospLogDemo.apk 位置中。
 		注意此时只是编译成功，模拟器启动后，不会默认安装，老版本这么编译会直接默认安装到系统app中。通过make snod 命令刷新system.img。重启模拟器就直接安装了。
 		
-	2.4) BUILD_JAVA_LIBRARY和BUILD_STATIC_JAVA_LIBRARY的区别
+	1.4) BUILD_JAVA_LIBRARY和BUILD_STATIC_JAVA_LIBRARY的区别
 		BUILD_JAVA_LIBRARY,编译出来的是动态库（共享库），共享库不会编译到自己的apk里，加载的时候会动态加载。
 				   编译好的jar包会保存到，/out/target/common/obj/JAVA_LIBRARIES/ 和 /out/target/product/emulator_x86_64/system/framework目录下
 		BUILD_STATIC_JAVA_LIBRARY，编译出来的是静态库，会编译到自己的apk里。		
@@ -160,7 +103,7 @@
 	    jar包以静态库的方式编译，include $(BUILD_STATIC_JAVA_LIBRARY)  ，依赖的时候必须使用静态库依赖，LOCAL_STATIC_JAVA_LIBRARIES := aosp-sandro-java-lib
             jar包以共享库的方式编译，include $(BUILD_JAVA_LIBRARY)  ，依赖的时候必须使用静态库依赖，LOCAL_JAVA_LIBRARIES := aosp-sandro-java-lib
 
-	2.5) mk文件里 := 与 += 的使用方法
+	1.5) mk文件里 := 与 += 的使用方法
 		a) := ,变量赋值
 			LOCAL_XXX := \
 				var1 \
@@ -173,14 +116,14 @@
 			LOCAL_XXX += var2 #后面追加 
 			LOCAL_XXX += var3 	
 
-	2.6) mk输出函数
+	1.6) mk输出函数
 		$(warning 输出内容)，打印输出内容
 		$(error 输出内容)，打印输出内容，并终止编译
 		例如：
 			$(warning $(LOCAL_XXX)),输出 LOCAL_XXX的内容
 	
-3、android源码查看
-	3.1）java 部分一般使用android stuido就可以看
+2、android源码查看
+	2.1）java 部分一般使用android stuido就可以看
 	     实际上Android的源码中已经专门存在了文档来告诉我们如何使用IDE来编辑Android源码,位置是源码路径/development/tools/idegen/README 
 	     因为我们现在都使用AndroidStudio了,所以只需要关心其中的IntelliJ部分就好了,Eclipse就不用看了
 
@@ -207,7 +150,7 @@
 			Modules:将所有的Jar删除,因为基本上我们用不到jar,看源码就够了,如果确实需要哪个的话,再酌情保留,如图：aosp项目构建与开发_3_modules设置
 		 
 
-	3.2) C/C++代码查看
+	2.2) C/C++代码查看
 	    -使用AS查看android的c代码，没有索引，查阅起来并不是很方便，常规的方法是使用官方生成的Clion CMakelist文件 
 	     源码编译前需要设置SOONG_GEN_CMAKEFILES=1和SOONG_GEN_CMAKEFILES_DEBUG=1，编译成功后会在/out/development/ide/目录下，生成clion文件夹这里是各个项目下的CMakeLists.txt文件
 

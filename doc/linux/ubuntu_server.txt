@@ -1,0 +1,82 @@
+1、设置root密码
+	sudo passwd root
+   根据提示设置root的密码
+
+2、设置时区
+	sudo timedatectl set-timezone Asia/Shanghai
+
+3、usb无线网卡
+	ip -a :查看网卡信息
+
+	系统安装的时候无线网卡相关的命令没有装，先通过有线网安装无线网卡需要的工具包
+	sudo apt install net-tools:ifconfig命令
+	sudo apt install network-manager wpasupplicant wireless-tools
+		network-manager - 网络管理工具
+		wpasupplicant - 提供对 WPA 加密的支持
+		wireless-tools - 提供 iwconfig、iwlist 等无线网络配置工具
+	
+	lsusb:查看usb设备
+	
+	sudo lshw -class network :查看无线网卡驱动，如果驱动安装，能看到vender product和驱动等信息
+	如：
+		*-network:1
+       		description: Wireless interface
+       		physical id: 2
+       		bus info: firewire@2
+       		logical name: wlxbc307eab0f1b
+       		serial: bc:30:7e:ab:0f:1b
+       		capabilities: ethernet physical wireless
+       		configuration: broadcast=yes driver=brcmfmac driverversion=5.90.188.22 firmware=5.90.188.22 ip=192.168.0.110 multicast=yes wireless=IEEE 802.11
+
+	网卡ip配置
+	/etc/netplan/目录下
+	修改后 
+		sudo netplan try:测试配置文件是否正常
+		sudo netplan generate:生成 renderers 所需的配置文件
+		sudo netplan apply  # 应用 netplan 新配置，将自动重启 network-manager 使修改生效
+
+	iwconfig，查看无线网卡是否正常
+
+	usb-devices he lsusb对比，观察usb无线网卡是否挂载正常，如果没挂载上应该是驱动的问题
+	如：
+		Bus=02 Lev=01 Prnt=01 Port=02 Cnt=02 Dev#=  8 Spd=480 MxCh= 0
+		Ver= 2.00 Cls=ff(vend.) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+		Vendor=0a5c ProdID=bd17 Rev=00.01
+		Manufacturer=Broadcom
+		Product=Remote Download Wireless Adapter
+		SerialNumber=000000000001
+		#Ifs= 1 Cfg#= 1 Atr=80 MxPwr=200mA
+		If#=0x0 Alt= 0 #EPs= 4 Cls=ff(vend.) Sub=02 Prot=ff Driver=brcmfmac
+	对应的lsusb中
+		Bus 002 Device 008: ID 0a5c:bd17 Broadcom Corp. BCM43236 802.11abgn Wireless Adapter
+	如果没有，尝试换一个usb口
+
+4、创建一个新用户
+	sudo adduser new_user
+	使用adduser命令可以交互式地创建新用户，系统将提示您输入所需的信息，例如新用户名、密码等。这个命令还会为新用户创建一个主目录。
+	
+	新用户增加以后，在执行sudo命令时会有如下提示：
+		xx is not in the sudoers file. This incident will be reported.
+	原因分析：一般这种情况是创建了新用户，没有对应修改sudoers文件或者group文件。
+	
+	1 如果除了root用户，还有别的用户，可以切换到别的用户，然后切换到root用户下，修改sudoers文件
+	2 切换后，执行 sudo visudo
+	3 在 # User privilege specification下面有root用户的信息
+	  在 root用户下面添加用户，比如 morgan  ALL(ALL:ALL) ALL	
+	
+
+5、分区设置为全硬盘大小
+	ubuntu server安装的时候默认是保留一部分freespace的，这会导致磁盘可使用的大小只有一部分，可以通过如下命令把freespace扩充当前卷中
+	sudo vgdisplay : 查看现有的卷组
+	sudo lvextend -l +100%FREE /dev/mapper/ubuntu--vg-ubuntu--lv : 把FREE部分全部扩展到/dev/mapper/ubuntu--vg-ubuntu--lv 卷组中去
+	通过df -h可以看到全部磁盘都可以使用了
+
+6、查看当前系统版本
+	lsb_release -a
+	返回：
+		No LSB modules are available.
+		Distributor ID:	Ubuntu
+		Description:	Ubuntu 22.04.3 LTS
+		Release:	22.04
+		Codename:	jammy
+

@@ -1,0 +1,55 @@
+1、使用ssh命令远程登陆
+	ssh username@ip 
+	如：ssh sandro@192.168.0.1,之后根据提示输入密码即可
+	
+	ssh -t username@ip 'cd path;bash' ,直接登陆到具体的目录下
+	如：ssh -t sandro@192.168.0.190 'cd family_samba_root ; bash'
+	-t 表示强制伪终端分配，即使标准输入不是终端 也可以把后面的语句执行出来，然后bash进入linux输入终端
+
+	ssh -t sandro@192.168.0.190 'cd family_samba_root && exec bash -l'	
+	-l 选项将这个bash设置为登陆shell
+
+	如果不知道远程服务器所使用的shell解释器，可以使用$SHELL
+	如:ssh -t sandro@192.168.0.190 'cd family_samba_root && exec $SHELL'
+
+	多个命令在登陆时一起执行
+	ssh -t sandro@192.168.0.190 'cd family_samba_root && ls -al && exec $SHELL'
+
+2、使用ssh密钥登陆
+	使用ssh命令登陆时，每次都需要输入密码，可以通过设置密钥的方式，简化登陆。
+	
+	使用ssky-kengen 和 ssh-copy-id这两个命令
+	1）在本地创建公钥和密钥
+		ssh-keygen -t rsa
+	   一般会提示密钥保存的位值，可以用默认位值的默认文件名，也可以重新换一个文件名 比如保存到/home/sandro/.ssh/family_root_rsa
+	   成功后会在目录下生成两个文件，如：family_root_rsa私钥文件 和 family_root_rsa.pub公钥文件
+
+	2) 拷贝公钥文件到服务端
+	   	ssh-copy-id -i /home/sandro/.ssh/family_root_rsa.pub sandro@192.168.0.190
+	   
+    	   执行成功后，使用sandro这个用户登陆就不再需要密码了
+
+3、使用rsync命令拷贝文件
+	1)本地文件拷贝到远程服务器
+		rsync filename username@ip:filepath
+		如：rsync /home/sandro/tools/jdk-8u291-linux-x64.tar.gz sandro@192.168.0.190:/home/sandro/tools
+	
+	2)本地目录拷贝到远程服务器
+		rsync -r dirpath username@ip:dirPath
+		如：rsync -r /home/sandro/tools/test sandro@192.168.0.190:/home/sandro/tools
+	
+	3)拷贝远程服务器文件到本地
+		rsync username@ip:filepath . 
+		如：rsync sandro@192.168.0.190:/home/sandro/tools/test/1.txt .
+		注意 : . 代表当前目录 ,如果想要拷贝到其他目录可以把.换成目标目录名
+	
+	4)拷贝远程文件夹到本地
+		rsync -r sandro@192.168.0.190:/home/sandro/tools/test/ .
+		拷贝远程文件夹test的所有文件到当前目录下
+	
+		rsync -r sandro@192.168.0.190:/home/sandro/tools/test/ ./test3
+		拷贝远程test文件架下所有文件到当前目录的test3文件夹中去。如果test3不存在，则会新建一个文件夹test3.如果test3存在，则相同路径的文件会被覆盖
+
+	5)查看传输进度
+		rsync -r --progress sourcePath destPath
+
