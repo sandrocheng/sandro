@@ -80,3 +80,20 @@
 		Release:	22.04
 		Codename:	jammy
 
+7、通过tar.gz压缩包安装java
+	-oracle官网下载需要的tar包
+	-sudo mkdir -p /usr/local/java  在usr中创建java目录
+	-tar -vzxf jdk-8u161-linux-x64.tar.gz -C /usr/local/java/  将tar包解压缩到java目录中去
+	
+	-添加环境变量，编辑配置文件
+	 sudo vi /etc/profile
+	
+	 在文件最下方或者指定文件添加
+	 export JAVA_HOME=/usr/local/java/jdkxxxxxxx.xx
+	 export CLASSPATH=$CLASSPATH:$JAVA_HOME/lib/
+	 export PATH=$PATH:$JAVA_HOME/bin
+ 
+	 source /etc/profile 运行环境变量设置
+	 java -version 查看版本好，确认安装成功
+
+	

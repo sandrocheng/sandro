@@ -1,0 +1,210 @@
+1、ArrayList
+	-类结构图，如图:1_ArrayList类图结构
+	-声明的属性
+		DEFAULT_CAPACITY:默认的数组容量，arrayList里面实际上是用一个数组保存数据，初始化的时候会默认数组的长度，每次添加元素的时候如果长度不够则会自动
+				 重新申请一个更大的数组，并把旧数据拷贝到新的数组中去。
+		EMPTY_ELEMENTDATA：用于共享的空实例数组
+		DEFAULTCAPACITY_EMPTY_ELEMENTDATA：也是一个空的实例数组
+		elementData：这个是ArrayList中真实存储数据的容器
+		size：记录集合中的元素的个数
+
+	-添加元素的方法
+		public boolean add(E e);//将指定的元素追加到此列表的末尾。
+		public void add(int index,E element);//在此列表中的指定位值添加元素。
+		public boolean addAll(Collection<?> c);//按指定集合的Iterator返回的顺序将指定集合中的所有元素追加到此列表的末尾。
+		public boolean addAll(int index,Collection<? extends E> c);//将指定集合中的所有元素插入到此列表中，从指定位值开始。
+
+	-扩容的核心代码
+		private void grow(int minCapacity) {
+       			// 记录数组的实际长度，
+        		int oldCapacity = elementData.length;
+			// 扩容到原来的1.5倍
+        		int newCapacity = oldCapacity + (oldCapacity >> 1);
+        		if (newCapacity - minCapacity < 0)
+            			newCapacity = minCapacity;
+			//如果新容量比最大容量还要大，则计算出一个超大容量
+        		if (newCapacity - MAX_ARRAY_SIZE > 0)
+            			newCapacity = hugeCapacity(minCapacity);
+        		// minCapacity is usually close to size, so this is a win:
+        		elementData = Arrays.copyOf(elementData, newCapacity);
+    		}
+
+2、Vector
+	-类结构图，如图，2_Vector类结构图
+	-和ArrayList的区别
+		每个涉及到数组读/写操作的方法都增加了synchronized关键字修饰，因此Vector比ArrayList线程安全
+			public synchronized void insertElementAt(E obj, int index);
+			public synchronized void setElementAt(E obj, int index) ;
+			public synchronized void addElement(E obj);
+			public synchronized E remove(int index);
+			public synchronized E get(int index)
+			...
+
+3、HashSet
+	-类结构图，如图,3_HashSet类结构图
+	-HashSet的本质
+	 HashSet的本质其是就是HashMap,这个通过HashSet的构造方法可以看到
+		public HashSet() {
+        		map = new HashMap<>();
+    		}	
+
+		private transient HashMap<E,Object> map;
+	 里面的map中的value实际上是一个空Object
+	    	private static final Object PRESENT = new Object();
+	 在HashSet的add方法中用到了这个空的PRESENT
+		public boolean add(E e) {
+        		return map.put(e, PRESENT)==null;
+    		}
+
+4、TreeSet
+	-类结构图，如图,4_TreeSet类结构图
+	-TreeSet的本质
+		public TreeSet() {
+        		this(new TreeMap<E,Object>());
+    		}
+	 在TreeSet的构造里创建了一个TreeMap来储存数据，其本质还是一个TreeMap
+	 和HashSet一样，TreeSet中只保存key值，value值都是一个默认的Object	
+
+5、TreeMap
+	-类结构图，如图,5_TreeMap类结构图
+	-源码分析
+		TreeMap实现的本质就是红黑树，完全使用红黑树的算法来保存元素
+		
+		其中Entry就是树的节点类
+		static final class Entry<K,V> implements Map.Entry<K,V> {
+        		K key;
+        		V value;
+        		Entry<K,V> left;
+        		Entry<K,V> right;
+        		Entry<K,V> parent;
+        		boolean color = BLACK;
+		...
+		}
+
+		//红黑树的root节点
+		private transient Entry<K,V> root;
+	
+		//记录红黑树元素个数
+		private transient int size = 0;
+		
+		//对树进行结构修改的次数
+    		private transient int modCount = 0;
+		
+		//树的左旋和右旋操作
+		private void rotateLeft(Entry<K,V> p) 
+		private void rotateRight(Entry<K,V> p)
+		
+		//红黑树节点插入
+		public V put(K key, V value)
+
+		//节点插入后，对红黑树进行变色和节点调整，保证黑高一致
+		private void fixAfterInsertion(Entry<K,V> x)
+
+	
+		//节点删除对外接口
+		public V remove(Object key) 
+		//节点删除操作
+		private void deleteEntry(Entry<K,V> p)
+		//节点删除后，对红黑树进行变色和节点调整，保证黑高一致
+		private void fixAfterDeletion(Entry<K,V> x)
+		
+		//查找当前节点的后继节点
+		static <K,V> TreeMap.Entry<K,V> successor(Entry<K,V> t) 
+
+6、 HashMap
+	-类结构图，如图,6_HashMap类结构图
+	-设计原理
+		HashMap基于哈希表的Map接口实现，使用key-value存储形式，即主要用来存放键值对。HashMap的实现不是同步的，这意味着它不是线程安全的。
+		它的key、value都可以为null,此外，HashMap中的映射不是有序的。
+
+		jdk1.8之前HashMap由数组+链表组成，数组是HashMap的主体，链表则是主要为了解决哈希冲突（拉链法）。
+		jdk1.8以后在解决哈希冲突时有了较大的变化，当链表长度大于阈值(或者红黑树的默认值：8)，并且当前数组的长度大于64时，此时此索引位置上的所有数据改为使用红黑树存储。
+		哈希冲突：对象调用的hashCode方法计算的哈希值经哈希函数算出来的的地址被别的元素占用。
+
+		将链表转换为红黑树前会判断，即便阈值大于8，但是数组长度小于64，此时并不会将链表转换为红黑树，而是选择进行数组扩容
+		这样做的目的是因为数组比较小，尽量避开红黑树的结构，这种情况下变为红黑树，反而会降低效率，因为红黑树需要进行左旋，右旋，变色这些操作来保持平衡。
+		同时数组长度小于64时，搜索时间相对要快些。所以结上所述为了提高性能减少搜索时间，底层阈值大于8并且数组长度大于64时，链表才转换为红黑树，具体可以参考treefyBin()方法
+
+		虽然增加了红黑树做为底层数据结构，结构变复杂了，但是在阈值大于8并且数组长度大于64时，链表转换为红黑树的效率会更高。
+
+	-HashMap特点：
+		存储是无序的
+		key和value都可以是null,但是只能有一个key是null
+		key是唯一的，是底层的数据机构控制的
+		jdk1.8前数据结构是链表+数组，jdk1.8之后是链表+数组+红黑树
+		链表长度>8并且数组长度大于64，才将链表转化为红黑树，变为红黑树的目的是为了高效的查询
+
+	-jdk1.7 HashMap的实现
+		如图 6_jdk1.7 HashMap的实现
+
+	-jdk1.8 HashMap的实现
+		如图 6_jdk1.8_HashMap的实现
+
+	-HashMap数组扩容
+		HashMap在初始化的时候会默认数组长度为16，随着元素的增加，该数组长度也会不断增加，hashmap会自动扩容，方式如图：6_HashMap数组扩容
+		进行扩容的时候，会伴随着一次重新hash分配，并且会遍历hash表中的所有元素，是非常耗时的。在编写程序的时候，应该尽量避免resize。
+		HashMap在扩容的时候，使用的refash方式非常巧妙，因为每次扩容都是翻倍的，与原来计算(n-1)&hash的结果相比，只是多了一个bit位，所以节点要么就在原来的位值，要么就在"原位值+旧容量"这个位值
+
+	-源码分析
+		//数组默认长度，16
+		static final int DEFAULT_INITIAL_CAPACITY = 1 << 4; // aka 16
+
+		//默认的负载因子，hashmap中的元素数量(数组中的元素 + 链表中的元素 + 红黑树中的元素)/数组长度，默认当比值大于0.75的时候就需要扩容
+		static final float DEFAULT_LOAD_FACTOR = 0.75f;
+
+		//数组的最大容量2的30次方，10亿多
+		static final int MAXIMUM_CAPACITY = 1 << 30;
+
+		//链表长度大于8，需要转换成红黑树（数组长度大于64）
+		static final int TREEIFY_THRESHOLD = 8;
+
+		//空参构造中，使用的是默认的负载因子0.75
+		//没有初始化数组，当put元素的时候，如果数组没有初始化过，会构建一个16长度的空数组
+		public HashMap() {
+        		this.loadFactor = DEFAULT_LOAD_FACTOR; // all other fields defaulted
+    		}
+		
+		//构造一个具有指定的初始容量和默认负载因子(0.75)的HashMap
+		public HashMap(int initialCapacity) {
+        		this(initialCapacity, DEFAULT_LOAD_FACTOR);
+    		}
+
+		//指定数组的初始容量，和负载因子
+		public HashMap(int initialCapacity, float loadFactor) {
+        		if (initialCapacity < 0)
+            			throw new IllegalArgumentException("Illegal initial capacity: " +
+                                               initialCapacity);
+        		if (initialCapacity > MAXIMUM_CAPACITY)//容量大小最大也就只能是MAXIMUM_CAPACITY这么大
+            			initialCapacity = MAXIMUM_CAPACITY;
+        		if (loadFactor <= 0 || Float.isNaN(loadFactor))
+            			throw new IllegalArgumentException("Illegal load factor: " +
+                                               loadFactor);
+        		this.loadFactor = loadFactor;
+        		this.threshold = tableSizeFor(initialCapacity);
+    		}
+
+		//返回比指定初始化容量最大的最小的2的n次幂
+		//比如，cap=1,返回2; cap=3,返回4; cap=7,返回8; cap=15,返回16;如果cap=33,返回64;
+		static final int tableSizeFor(int cap) {
+        		int n = cap - 1;
+        		n |= n >>> 1;
+        		n |= n >>> 2;
+        		n |= n >>> 4;
+        		n |= n >>> 8;
+        		n |= n >>> 16;
+        		return (n < 0) ? 1 : (n >= MAXIMUM_CAPACITY) ? MAXIMUM_CAPACITY : n + 1;
+    		}
+
+		put方法：
+			-先通过hash值计算出key映射到数组中的哪个位值
+			-如果数组上该位值没有碰撞冲突，则直接赋值
+			-如果出现碰撞冲突了，则需要处理冲突：
+				-如果该位值的数据已经是红黑树的数据结构，则调用红黑树的插入方法插入
+				-否则采用传统链表的方式插入。插入后，如果链表的长度大于阈值，则把链表转变为红黑树
+			-如果该位值存在重复的key值，则该位值的value将会被覆盖
+			-如果size大于阈值threshold，则进行扩容
+
+		remove方法
+			注意，元素如果是在红黑树上，移除后，会判断红黑树的元素数量是否<6，如果小与6，则会转换成链表
+
+		
