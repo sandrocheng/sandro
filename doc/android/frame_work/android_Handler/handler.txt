@@ -25,10 +25,46 @@
 	  	   在zygoteInit方法中调用了native方法  ZygoteInit.nativeZygoteInit() 这个方法的实现在androidRuntime.cpp中，
 	           通过反射创建程序入口的Method对象，并返回Runable对象 ActivityThread.main();SystemServer
 		
+		5、messagequeue内部使用的是一个Message链表来保存所有Message的，当有新的Message添加进来的时候时候
+			如果Message.when==0 说明该message不需要delay则直接添加到链表的头部
+				
+            			msg.when = when;//给当前message的执行时间赋值
+            			Message p = mMessages;//获取当前链表的表头
+            			boolean needWake;
+            			if (p == null || when == 0 || when < p.when) {
+					//链表为空
+					//当前message的执行时间是0，
+					//当前message比第一个要执行的message要早执行
+                			// New head, wake up the event queue if blocked.
+                			msg.next = p;
+                			mMessages = msg;
+                			needWake = mBlocked;
+            			}
+			否则,会逐个比对队列中每个Message的执行时间，并把新的Message放到正确的位值上
+				for (;;) {
+                    			prev = p;
+                    			p = p.next;
+                    			if (p == null || when < p.when) {//通过每个Message的执行时间when找到第一个正确的位值，
+                        			break;
+                    			}
+                    			if (needWake && p.isAsynchronous()) {
+                        			needWake = false;
+                    			}
+                		}
+                		msg.next = p; // invariant: p == prev.next
+                		prev.next = msg;		
+		 6、handler在添加Message的时候会立刻计算将要执行的具体时间，如果是立刻执行，则执行时间是当前时间，如果是延迟执行，则执行时间是当前时间+delay时间
+
 2、Looper轮询获取Message的流程
 	当Loop.loop执行后
 	Looper从ThreadLocal中得到当前线程的MessageQueue
-		1 MessaegQueue.next()->Message.next()得到Message
+	
+		1 Looper.loop->loopOnce()中通过MessaegQueue.next()->Message.next()得到Message
+			-当Looper通过loop方法启动的时候，会循环调用loopOnce()不断的读取MessageQueue中的Message
+			-在next方法中，获取Message是一个死循环，不断轮询，如果第一个Message的执行时间没有到，则会通过nativePollOnce阻塞住
+			-这里有个问题，如果在nativePollOnce阻塞期间有新的Message加入，并且该Message需要立刻执行的时候怎么办
+			 实际上当阻塞期间，如果有新的Message加入的时候(enqueueMessage)。如果此时队列是阻塞的状态，那么会通过nativeWake解除阻塞
+                         阻塞解除后，nativePollOnce后面的代码就能继续执行下去了，后面的代码实际上就是重新计算等待时间，如果不需要等待则直接返回第一个需要执行的Message
 		2 通过Message.target得是哪个Handler添加的Message
 		3 调用Handler.dispatchMessage
 		4 通过handleCallback或者handleMessage回调外部执行需要的操作
@@ -110,7 +146,7 @@
 	-Looper::pollInner(int timeoutMillis)
 	 android_os_MessageQueue.nativePollOnce -> Looper.pollOnce -> Looper.pollInner()
 	 handler最终是通过Looper::pollInner来阻塞的，函数内部调用的是系统接口 epoll_wait，来阻塞
-		 //当timeoutMillis=-1 的时候就一直阻塞直到被唤醒，否则就等待timeoutMillis的时长
+		 //当timeoutMillis=-1 的时候就一直阻塞直到被唤醒，否则就等待timeoutMillis的时长，epoll机制详见 /doc/linux/linux多路复用/linux多路复用.txt
 	 	 epoll_wait(mEpollFd.get(), eventItems, EPOLL_MAX_EVENTS, timeoutMillis);
 	 
 	-Looper::wake
