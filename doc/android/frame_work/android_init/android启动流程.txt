@@ -1,0 +1,1042 @@
+1 android系统启动的主要流程
+	开机 -> 桌面启动 -> 运行APP
+
+	开机
+		-启动电源以及系统启动
+	 	当电源按下时，引导芯片代码开始从预定的地方(固化在ROM)开始执行。加载引导程序Bootloader到RAM，然后执行。
+	
+		-引导程序Bootloader
+	 	 引导程序Bootloader是在Android操作系统开始运行前的一个小程序，它的主要作用是把系统OS拉起来并运行
+		 当按下设备电源键时，最先运行的就是 bootloader。固化在ROM的程序bootloader 的主要作用就是硬件设备如 CPU、flash、内存的初始化并加载到RAM。
+		 通过建立内存空间映射为装载 Linux 内核做好准备。如果 bootloader 在运行期间按下预定义的组合按键可以进入系统fastboot模式 或者 Receiver 模式。 
+		 当用户按下开机键时，引导芯片代码开始从预定义的地方(固定在ROM中)开始加载BootLoader到内存中执行。
+		 BootLoader是在操作系统内核运行之前运行的一段小程序。
+		 通过这段小程序初始化硬件设备、建立内存空间映射图，从而将系统的软硬件环境带到一个合适状态。以便为最终调用操作系统内核准备好正确的环境。最终目标是将系统OS拉起并运行。
+		 整个系统的加载任务都是由BootLoader完成的。
+
+		-linux内核启动
+	 	 内核启动时，设置缓存、被保护存储器、计划列表、加载驱动。
+         	 当内核完成系统设置，它首先在系统文件中寻找init.rc文件，并启动init进程。
+		
+		 在编译完AOSP时会生成boot.img或者boot_debug.img。该镜像就是 Linux 内核和根文件系统。
+		 bootloader 会把该镜像装载到内存中。然后 linux 内核会执行整个系统的初始化，完成后装载根文件系统，最后启动 init 进程。
+		 当内核启动时设置缓存、被保护存储器、计划列表、加载驱动。
+		 在内核完成系统设置后，它首先在系统文件中寻找init.rc 并启动init进程
+		 kernel会去启动init 启动log如下:
+			01-05 23:45:42.396     1     1 I         : Run /init as init process
+			01-05 23:45:42.396     1     1 D with arguments:  
+			01-05 23:45:42.396     1     1 D         : /init
+			01-05 23:45:42.396     1     1 D with environment:  
+			01-05 23:45:42.396     1     1 D         : HOME&#61;/
+			01-05 23:45:42.396     1     1 D         : TERM&#61;linux
+		
+
+		-init进程启动
+	 	 初始化和启动属性服务，并且启动Zygote进程。
+	
+		-Zygote进程启动
+         	 创建javaVM并为javaVM注册JNI，创建服务端socket，启动SystemServer进程。
+
+ 		-SystemServer进程启动
+         	 启动binder线程池和SystemServiceManager并且启动各种系统服务
+
+	桌面(launcher)启动
+		-被SystemServer进程启动的AMS会启动Launcher，Launcher启动后会将已经安装应用的快捷图标显示到界面上
+
+2、内核启动init进程
+	当kernel启动后会开始启动init进程,kernel中的代码不在aosp中，需要单独下载
+	//文件路径： kernel/common/init/main.c
+	static int __ref kernel_init(void *unused)
+	{
+		int ret;
+ 
+    		//执行/bin/init程序
+		if (!try_to_run_init_process("/sbin/init") ||
+	    		!try_to_run_init_process("/etc/init") ||
+	    		!try_to_run_init_process("/bin/init") ||
+	    		!try_to_run_init_process("/bin/sh"))
+				return 0;
+	}
+	init进程的执行程序是 /bin/init 执行文件，在内核启动后会首次触发init的执行
+	
+	init是被kernel拉起来的。
+	init进程是Android系统启动后由内核启动的第一个用户级进程,init的进程号为1。
+	Android中所有进程都是由init进程创建并运行的。
+
+3、init进程 
+	-设置init进程优先级，并创建/dev/.booting设备块
+	-初始化属性服务，读取property_context文件内容和build.prop内容，通过MMAP映射到全局内存中，实现所有进程共享资源
+		-build.prop
+		 android系统启动时加载的资源文件，比如Build类中的常量就是从这个文件中加载的
+		 文件路径：/system/build.prop  ,需要有root权限才能看
+
+		 例如 android.os.Build类读取数据中可以了解到数据是保存在MMAP中的
+			getString
+			-> android.os.Systemproperties.native_get()
+			-> android_os_SystemProperties.register_android_os_SystemProperties()方法注册native_get JNI接口
+			-> android_os_SystemProperties.SystemProperties_getSS
+			-> system_property_api.__System_property_find
+			-> system_properties.Find()
+			-> prop_area.find()
+                	-> prop_area.find_property
+			在prop_area.cpp中可以看到数据是保存到MMAP中的，然后通过framework层的调用拿到对应的数据
+	
+	-init进程启动源码
+		-system/core/init/main.cpp
+		 init进程启动是通过main方法触发的
+		
+		 int main(int argc, char** argv) {
+			#if __has_feature(address_sanitizer)
+    				__asan_set_error_report_callback(AsanReportCallback);
+			#endif
+ 			
+			//setpriority(int which, int who, int prio);
+			//prio范围为-20~20,prio越小优先级越大。
+			//which为PRIO_PROCESS时,含义为设置进程号为who的优先级为prio,如果 who 为 0，那么使用调用者的进程 ID
+			//设置init进程的优先级为最高优先级
+			setpriority(PRIO_PROCESS, 0, -20);			
+
+    			// 创建设备节点、权限设定等
+    			if (!strcmp(basename(argv[0]), "ueventd")) {
+        			return ueventd_main(argc, argv);
+    			}
+ 
+    			if (argc > 1) {
+        			// 初始化日志系统
+        			if (!strcmp(argv[1], "subcontext")) {
+            				android::base::InitLogging(argv, &android::base::KernelLogger);
+            				const BuiltinFunctionMap function_map;
+            				return SubcontextMain(argc, argv, &function_map);
+        			}
+
+        			// 2. 创建增强型Linux
+        			if (!strcmp(argv[1], "selinux_setup")) {
+            				return SetupSelinux(argv);
+        			}
+
+        			// 3. 解析init.rc文件、提供服务、创建epoll与处理子进程的终止等
+        			if (!strcmp(argv[1], "second_stage")) {
+            				return SecondStageMain(argc, argv);
+        			}
+    			}
+
+    			// 1. 挂载相关文件系统
+    			return FirstStageMain(argc, argv);
+		}
+		
+		在main.cpp的main方法中，主要分为三步
+			1.FirstStageMain
+			2.SetupSelinux
+			3.SecondStageMain
+4、FirstStageMain
+	init进程启动后，首先会走它的main方法，首先会设置init进程优先级为最大。再根据携带的参数决定走哪个方法由于kernel启动的时候没有携带参数所以argc是1。
+	因此会执行到FirstageMain方法
+	
+	-第一步：InstallRebootSignalHandlers , 源码在/system/core/init/reboot_util.cpp
+	  判断当init崩溃时，为了防止内核进入panic状态会重新启动BootLoader。
+		int FirstStageMain(int argc, char** argv) {
+    			if (REBOOT_BOOTLOADER_ON_PANIC) {
+        			InstallRebootSignalHandlers();
+    			}
+			... ...
+		}
+	  InstallRebootSignalHandlers主要做了一下几件事情：
+		1. 初始化了一个自定义信号集，将其所有信号都填充满。即将信号集中的所有的标志位都置为1。
+		   使得这个集合包含所有可接受的信号也就是阻塞所有信号。这个函数可以用于快速创建一个包含所有信号的信号集，然后可以根据需要删除其中的某些信号。 
+	        2. init创建出来的子进程不做处理，直接exit。如果不是子进程 则代表是init进程，则执行InitFatalReboot
+		3. 通过syscall向内核发送重启命令
+		4. 捕获一些信号
+		
+		void InstallRebootSignalHandlers() {
+    			struct sigaction action;
+    			memset(&action, 0, sizeof(action));
+			//用于初始化一个自定义信号集，将其所有信号都填充满，也就是将信号集中的所有的
+			//标志位置为1使得这个集合包含所有可接受的信号
+			//这个函数可以用于快速创建一个包含所有信号的信号集然后可以根据需要删除其中的某些信号。
+    			sigfillset(&action.sa_mask);
+    			action.sa_handler = [](int signal) {
+				//从init派生的进程也会捕获这些信号处理程序，但是我们不希望它们触发重新启动
+				//所以在这里直接为子进程调用_exit()退出进程。
+        			if (getpid() != 1) {
+            				_exit(signal);
+        			}
+				//调用DoReboot()或LOG(FATAL)不是一个好的选择，因为这是一个信号处理程序。
+				//RebootSystem使用syscall()
+	        		InitFatalReboot(signal);
+    			};
+    			action.sa_flags = SA_RESTART;
+			//sigaction(int signum, const struct sigaction *act,struct sigaction *oldact)
+			//参数1 要捕获的信号
+			//参数2 接收到信号之后对信号进行处理的结构体
+			//参数3 接收到信号之后，保存原来对此信号处理的各种方式与信号(可用来做备份)。如果不需要备份,此处可以填NULL
+    			sigaction(SIGABRT, &action, nullptr);
+    			sigaction(SIGBUS, &action, nullptr);
+    			sigaction(SIGFPE, &action, nullptr);
+    			sigaction(SIGILL, &action, nullptr);
+    			sigaction(SIGSEGV, &action, nullptr);
+			#if defined(SIGSTKFLT)
+    				sigaction(SIGSTKFLT, &action, nullptr);
+			#endif
+    			sigaction(SIGSYS, &action, nullptr);
+    			sigaction(SIGTRAP, &action, nullptr);
+		}	
+		
+	 InitFatalReboot：当接收到系统发送的异常信号后最终通过InitFatalReboot执行init进程的重启或退出，InitFatalReboot做了以下几件事：
+		1. 判断init是否可以创建子进程。如果不能创建则直接重启;如果能创建则sleep 5ms再重启子进程。
+		2. 如果是init进程,则获取异常的backtrace。
+		3. 如果init进程被标记为异常了.则往/proc/sysrq-trigger写c,让系统陷入崩溃然后直接退出。
+			echo b > /proc/sysrq-trigger    立即重启
+			echo o > /proc/sysrq-trigger    立即关机
+			echo c > /proc/sysrq-trigger    立即让系统崩溃
+			echo t > /proc/sysrq-trigger    导出线程状态信息
+			echo u > /proc/sysrq-trigger    立即重新挂载所有的文件系统为只读
+		4.如果init没有被标记为异常,则重启init进程。
+		
+		void __attribute__((noreturn)) InitFatalReboot(int signal_number) {
+    			auto pid = fork();//创建子进程 成功0;失败-1
+
+    			if (pid == -1) {
+				//不能创建子进程,不用尝试获取backtrace&直接重启
+        			RebootSystem(ANDROID_RB_RESTART2, init_fatal_reboot_target);
+    			} else if (pid == 0) {
+				// 可以创建子进程,说明当前在子进程上,并且子进程需确保能重启
+        			sleep(5);
+				//子进程重启
+				//static std::string init_fatal_reboot_target = "bootloader";
+				//这里已经定义了init_fatal_reboot_target是 bootloader 
+        			RebootSystem(ANDROID_RB_RESTART2, init_fatal_reboot_target);
+    			}
+			//尝试获取init的backtrace再关机重启
+    			LOG(ERROR) << __FUNCTION__ << ": signal " << signal_number;
+    			std::unique_ptr<Backtrace> backtrace(Backtrace::Create(BACKTRACE_CURRENT_PROCESS, BACKTRACE_CURRENT_THREAD));
+    			if (!backtrace->Unwind(0)) {
+        			LOG(ERROR) << __FUNCTION__ << ": Failed to unwind callstack.";
+    			}
+    			for (size_t i = 0; i < backtrace->NumFrames(); i++) {
+        			LOG(ERROR) << backtrace->FormatFrameData(i);
+    			}
+			//判断init是否被标记为异常
+			//异常时,/proc/cmdline中有节点androidboot.init_fatal_panic并且其值为true
+    			if (init_fatal_panic) {
+        			LOG(ERROR) << __FUNCTION__ << ": Trigger crash";
+				//往/proc/sysrq-trigger写c
+        			android::base::WriteStringToFile("c", PROC_SYSRQ);
+        			LOG(ERROR) << __FUNCTION__ << ": Sys-Rq failed to crash the system; fallback to exit().";
+        			_exit(signal_number);
+    			}
+			//init重启
+    			RebootSystem(ANDROID_RB_RESTART2, init_fatal_reboot_target);
+		}
+	 RebootSystem：走到这个函数，说明就要发送重启命令了，是通过syscall去发送的。
+		      在用户空间和内核空间之间，通过syscall(系统调用, system call)的中间层来通信，它是连接用户态和内核态的桥梁。
+		      用户空间通过向内核空间发出Syscall，产生软中断，从而让程序陷入内核态，执行相应的操作。
+			
+		      void __attribute__((noreturn)) RebootSystem(unsigned int cmd, const std::string& rebootTarget) {
+    				LOG(INFO) << "Reboot ending, jumping to kernel";
+
+    				if (!IsRebootCapable()) {
+        				// On systems where init does not have the capability of rebooting the
+        				// device, just exit cleanly.
+        				exit(0);
+    				}
+
+    				switch (cmd) {
+        				case ANDROID_RB_POWEROFF:
+            					reboot(RB_POWER_OFF);
+            				break;
+					//在InitFatalReboot中传递的cmd是ANDROID_RB_RESTART2，发送重启命令
+					//Syscall是连接用户态和内核态的桥梁。
+					//用户空间通过向内核空间发出Syscall&产生软中断，从而让程序陷入内核态，执行相应的操作
+        				case ANDROID_RB_RESTART2:
+            					syscall(__NR_reboot, LINUX_REBOOT_MAGIC1, LINUX_REBOOT_MAGIC2,
+                    					LINUX_REBOOT_CMD_RESTART2, rebootTarget.c_str());
+            				break;
+
+        				case ANDROID_RB_THERMOFF:
+            					if (android::base::GetBoolProperty("ro.thermal_warmreset", false)) {
+                					LOG(INFO) << "Try to trigger a warm reset for thermal shutdown";
+                					static constexpr const char kThermalShutdownTarget[] = "shutdown,thermal";
+                					syscall(__NR_reboot, LINUX_REBOOT_MAGIC1, LINUX_REBOOT_MAGIC2,
+                        					LINUX_REBOOT_CMD_RESTART2, kThermalShutdownTarget);
+            					} else {
+                					reboot(RB_POWER_OFF);
+            					}
+            				break;
+    				}
+    				// In normal case, reboot should not return.
+    				PLOG(ERROR) << "reboot call returned";
+    				abort();
+			}
+	
+	-第二步主要是创建和挂载文件系统
+		int FirstStageMain(int argc, char** argv) {
+			... ...
+    			// Clear the umask.
+			//设置允许当前进程创建文件或者目录最大可操作的权限
+    			umask(0);
+
+			//清除环境变量
+    			CHECKCALL(clearenv());
+
+			//设置环境变量
+    			CHECKCALL(setenv("PATH", _PATH_DEFPATH, 1));
+
+    			// Get the basic filesystem setup we need put together in the initramdisk
+    			// on / and then we'll let the rc file figure out the rest.
+			//设置/dev为tmpfs类型,并挂载且权限为0755.本进程可读可写可执行。本组和其他组只能读写
+    			CHECKCALL(mount("tmpfs", "/dev", "tmpfs", MS_NOSUID, "mode=0755"));
+
+    			CHECKCALL(mkdir("/dev/pts", 0755));
+    			CHECKCALL(mkdir("/dev/socket", 0755));
+    			CHECKCALL(mkdir("/dev/dm-user", 0755));
+
+			//设置/dev/pts为devpts类型，并挂载
+    			CHECKCALL(mount("devpts", "/dev/pts", "devpts", 0, NULL));
+
+			#define MAKE_STR(x) __STRING(x)
+    				CHECKCALL(mount("proc", "/proc", "proc", 0, "hidepid=2,gid=" MAKE_STR(AID_READPROC)));
+			#undef MAKE_STR
+			
+    			// Don't expose the raw commandline to unprivileged processes.
+			// 读取操作系统的启动参数
+    			CHECKCALL(chmod("/proc/cmdline", 0440));
+	
+    			std::string cmdline;
+    			android::base::ReadFileToString("/proc/cmdline", &cmdline);
+    			// Don't expose the raw bootconfig to unprivileged processes.
+    			chmod("/proc/bootconfig", 0440);
+    			std::string bootconfig;
+    			android::base::ReadFileToString("/proc/bootconfig", &bootconfig);
+    			gid_t groups[] = {AID_READPROC};
+    			CHECKCALL(setgroups(arraysize(groups), groups));
+    			CHECKCALL(mount("sysfs", "/sys", "sysfs", 0, NULL));
+    			CHECKCALL(mount("selinuxfs", "/sys/fs/selinux", "selinuxfs", 0, NULL));
+			
+			//创建kernel log节点
+    			CHECKCALL(mknod("/dev/kmsg", S_IFCHR | 0600, makedev(1, 11)));
+
+    			if constexpr (WORLD_WRITABLE_KMSG) {
+        			CHECKCALL(mknod("/dev/kmsg_debug", S_IFCHR | 0622, makedev(1, 11)));
+    			}
+
+			//随机数
+    			CHECKCALL(mknod("/dev/random", S_IFCHR | 0666, makedev(1, 8)));
+    			CHECKCALL(mknod("/dev/urandom", S_IFCHR | 0666, makedev(1, 9)));
+
+    			// This is needed for log wrapper, which gets called before ueventd runs.
+    			CHECKCALL(mknod("/dev/ptmx", S_IFCHR | 0666, makedev(5, 2)));
+    			CHECKCALL(mknod("/dev/null", S_IFCHR | 0666, makedev(1, 3)));
+
+    			// These below mounts are done in first stage init so that first stage mount can mount
+    			// subdirectories of /mnt/{vendor,product}/.  Other mounts, not required by first stage mount,
+    			// should be done in rc files.
+   	 		// Mount staging areas for devices managed by vold
+    			// See storage config details at http://source.android.com/devices/storage/
+    			CHECKCALL(mount("tmpfs", "/mnt", "tmpfs", MS_NOEXEC | MS_NOSUID | MS_NODEV,"mode=0755,uid=0,gid=1000"));
+    			// /mnt/vendor is used to mount vendor-specific partitions that can not be
+    			// part of the vendor partition, e.g. because they are mounted read-write.
+    			CHECKCALL(mkdir("/mnt/vendor", 0755));
+    			// /mnt/product is used to mount product-specific partitions that can not be
+    			// part of the product partition, e.g. because they are mounted read-write.
+    			CHECKCALL(mkdir("/mnt/product", 0755));
+
+    			// /debug_ramdisk is used to preserve additional files from the debug ramdisk
+    			CHECKCALL(mount("tmpfs", "/debug_ramdisk", "tmpfs", MS_NOEXEC | MS_NOSUID | MS_NODEV,"mode=0755,uid=0,gid=0"));
+
+    			// /second_stage_resources is used to preserve files from first to second
+    			// stage init
+    			CHECKCALL(mount("tmpfs", kSecondStageRes, "tmpfs", MS_NOEXEC | MS_NOSUID | MS_NODEV,"mode=0755,uid=0,gid=0"))
+			#undef CHECKCALL
+			...
+		}
+		
+		查看机器的mount挂载详情表:   adb shell mount 。可以看到有很多种文件类型：
+			/dev/block/dm-5 on / type ext4 (ro,seclabel,relatime)
+			tmpfs on /dev type tmpfs (rw,seclabel,nosuid,relatime,mode=755)
+			devpts on /dev/pts type devpts (rw,seclabel,relatime,mode=600,ptmxmode=000)
+			proc on /proc type proc (rw,relatime,gid=3009,hidepid=2)
+			sysfs on /sys type sysfs (rw,seclabel,relatime)
+			selinuxfs on /sys/fs/selinux type selinuxfs (rw,relatime)
+			tmpfs on /mnt type tmpfs (rw,seclabel,nosuid,nodev,noexec,relatime,mode=755,gid=1000)
+			...
+			/dev/block/sda11 on /metadata type ext4 (rw,seclabel,nosuid,nodev,noatime,discard,nodelalloc,commit=1,data=journal)
+			...
+			none on /dev/blkio type cgroup (rw,nosuid,nodev,noexec,relatime,blkio)
+			...
+			tracefs on /sys/kernel/tracing type tracefs (rw,seclabel,relatime,gid=3012)
+			debugfs on /sys/kernel/debug type debugfs (rw,seclabel,relatime)
+			/dev/block/sda2 on /mnt/vendor/persist type ext4 (rw,seclabel,nosuid,nodev,noatime,data=ordered)
+			bpf on /sys/fs/bpf type bpf (rw,nosuid,nodev,noexec,relatime)
+			tracefs on /sys/kernel/debug/tracing type tracefs (rw,seclabel,relatime,gid=3012)
+			/dev/block/sda8 on /vendor/firmware_mnt type vfat 
+					(ro,context=u:object_r:firmware_file:s0,relatime,gid=1000,fmask=0337,dmask=0227,codepage=437,iocharset=iso8859-1,shortname=lower,errors=remount-ro)
+			
+			tmpfs on /storage type tmpfs (rw,seclabel,nosuid,nodev,noexec,relatime,mode=755,gid=1000)
+			/dev/block/dm-32 on /data type f2fs 
+					(rw,lazytime,seclabel,nosuid,nodev,noatime,background_gc=on,discard,no_heap,user_xattr,inline_xattr,
+					 acl,inline_data,inline_dentry,flush_merge,extent_cache,mode=adaptive,active_logs=6,
+					 reserve_root=32768,resuid=0,resgid=1065,alloc_mode=default,checkpoint_merge,fsync_mode=nobarrier)
+			
+			...
+			/dev/block/loop4 on /apex/com.android.appsearch@300000000 type ext4 (ro,dirsync,seclabel,nodev,noatime)
+			...
+			adb on /dev/usb-ffs/adb type functionfs (rw,relatime)
+			mtp on /dev/usb-ffs/mtp type functionfs (rw,relatime)
+			ptp on /dev/usb-ffs/ptp type functionfs (rw,relatime)
+			pstore on /sys/fs/pstore type pstore (rw,seclabel,relatime)
+			/data/media on /mnt/runtime/default/emulated type sdcardfs 
+				(rw,nosuid,nodev,noexec,noatime,fsuid=1023,fsgid=1023,gid=1015,multiuser,mask=6,derive_gid,default_normal,unshared_obb)
+			...
+			/dev/fuse on /mnt/installer/0/emulated type fuse (rw,lazytime,nosuid,nodev,noexec,noatime,user_id=0,group_id=0,allow_other)
+			...
+		 
+		含义：tmpfs on /dev type tmpfs (rw,seclabel,nosuid,relatime,size=7984680k,nr_inode=1996170,mode=755) 
+ 			tmpfs 挂载点
+ 			tmpfs:文件系统类型,在linux中，tmpfs是指临时文件系统，是一种基于内存的文件系统，可以使用用户的内存或swap分区来存储文件；
+			      简单来说，tmpfs主要存储暂存的文件。tmpfs系统的优势：1、动态文件系统的大小；2、拥有闪电般的速度。
+			      注意：tmpfs不具备持久性，重启后数据不保留
+			      在平常工作中，我们经常需要查看Linux服务器磁盘挂载使用情况，可以使用df命令,除了会查看到系统盘以及数据盘挂载情况，还会看到一个tmpfs也在挂载。	
+ 			/dev=设备文件名
+ 			ro: readonly,只读挂载;
+			rw: read and write, 读写挂载
+			nosuid 关闭set-user-identifier(设置用户ID)与set-group-identifer(设置组ID)设置位。
+ 			mode=755 挂载权限为0755;代表rwxr-xr-x,一般赋予目录0755权限,文件0644(rw-r--r--)权限。
+		
+	
+		查看设备节点内存,可以看到system,vendor,product都挂载到了哪里。
+			adb shell df -h
+
+			Filesystem        Size Used Avail Use% Mounted on
+			/dev/block/dm-5   791M 788M     0 100% /
+			tmpfs             2.6G 1.3M  2.6G   1% /dev
+			tmpfs             2.6G    0  2.6G   0% /mnt
+			/dev/block/dm-6   131M 131M     0 100% /system_ext
+			/dev/block/dm-7   798M 796M     0 100% /vendor
+			/dev/block/dm-8   262M 262M     0 100% /product
+			tmpfs             2.6G  12K  2.6G   1% /apex
+			/dev/block/dm-32  110G  42G   67G  39% /data
+			/dev/block/loop4  1.6M 1.6M     0 100% /apex/com.android.os.statsd@319999900
+			/dev/block/loop5  7.5M 7.4M     0 100% /apex/com.android.runtime@1
+			/dev/block/loop6  4.8M 4.7M     0 100% /apex/com.android.conscrypt@319999900
+			/dev/block/loop8  232K 152K   76K  67% /apex/com.android.scheduling@319999900
+			/dev/block/loop7  2.0M 2.0M     0 100% /apex/com.android.appsearch@300000000
+			/dev/block/loop9   40M  40M     0 100% /apex/com.android.vndk.v32@1
+			/dev/block/loop11  35M  35M     0 100% /apex/com.android.i18n@1
+			/dev/block/loop10 692K 664K   16K  98% /apex/com.android.sdkext@319999900
+			/dev/block/loop12 832K 804K   12K  99% /apex/com.android.tzdata@319999900
+			/dev/block/loop13 232K  88K  140K  39% /apex/com.android.apex.cts.shim@1
+			/dev/block/dm-29  8.2M 8.2M     0 100% /apex/com.android.adbd@319999999
+			/dev/block/dm-30  2.5M 2.5M     0 100% /apex/com.android.tethering@319999900
+			/dev/block/dm-28  692K 664K   16K  98% /apex/com.android.ipsec@319999900
+			/dev/block/dm-25  7.9M 7.9M     0 100% /apex/com.android.neuralnetworks@319999900
+			/dev/block/dm-24  2.4M 2.4M     0 100% /apex/com.android.resolv@319999900
+			/dev/block/dm-15   10M  10M     0 100% /apex/com.android.cellbroadcast@319999900
+			/dev/block/dm-17   19M  19M     0 100% /apex/com.android.media.swcodec@319999900
+			/dev/block/dm-20   18M  18M     0 100% /apex/com.android.permission@319999900
+			/dev/block/dm-16  5.5M 5.5M     0 100% /apex/com.android.wifi@319999900
+			/dev/block/dm-21   60M  60M     0 100% /apex/com.android.art@319999900
+			/dev/block/dm-18  5.3M 5.3M     0 100% /apex/com.android.extservices@319999900
+			/dev/block/dm-11  6.5M 6.4M     0 100% /apex/com.android.media@319999900
+			/dev/block/dm-10  4.1M 4.1M     0 100% /apex/com.android.mediaprovider@319999910
+			/dev/fuse         110G  42G   67G  39% /storage/emulated
+
+	-第三步 kernel log初始化
+		int FirstStageMain(int argc, char** argv) {
+			...
+			SetStdioToDevNull(argv);
+    			// Now that tmpfs is mounted on /dev and we have /dev/kmsg, we can actually
+    			// talk to the outside world...可以输出kernel log了,前面已经创建了/dev/kmsg
+    			InitKernelLogging(argv);
+
+    			if (!errors.empty()) {
+        			for (const auto& [error_string, error_errno] : errors) {
+            				LOG(ERROR) << error_string << " " << strerror(error_errno);
+        			}
+        			LOG(FATAL) << "Init encountered errors starting first stage, aborting";
+    			}
+			//此时log系统已经可以用了
+    			LOG(INFO) << "init first stage started!";
+			...
+
+	-第四步 加载/lib/moudles/下的ko文件, 打开串口log
+		实际上我的piexls 4 ko文件在/vender/lib/moudles中的，不知道这里是不是有加载上
+		//打开根目录
+		auto old_root_dir = std::unique_ptr<DIR, decltype(&closedir)>{opendir("/"), closedir};
+    		if (!old_root_dir) {
+        		PLOG(ERROR) << "Could not opendir(\"/\"), not freeing ramdisk";
+    		}
+
+    		struct stat old_root_info;
+    		if (stat("/", &old_root_info) != 0) {
+        		PLOG(ERROR) << "Could not stat(\"/\"), not freeing ramdisk";
+        		old_root_dir.reset();
+    		}
+
+    		auto want_console = ALLOW_FIRST_STAGE_CONSOLE ? FirstStageConsole(cmdline, bootconfig) : 0;
+
+    		boot_clock::time_point module_start_time = boot_clock::now();
+    		int module_count = 0;
+		//加载/lib/moudles/下的ko文件
+    		if (!LoadKernelModules(IsRecoveryMode() && !ForceNormalBoot(cmdline, bootconfig), want_console,module_count)) {
+        		if (want_console != FirstStageConsoleParam::DISABLED) {
+            			LOG(ERROR) << "Failed to load kernel modules, starting console";
+        		} else {
+            			LOG(FATAL) << "Failed to load kernel modules";
+        		}
+    		}
+    		if (module_count > 0) {
+        		auto module_elapse_time = std::chrono::duration_cast<std::chrono::milliseconds>(boot_clock::now() - module_start_time);
+        		setenv(kEnvInitModuleDurationMs, std::to_string(module_elapse_time.count()).c_str(), 1);
+        		LOG(INFO) << "Loaded " << module_count << " kernel modules took " << module_elapse_time.count() << " ms";
+    		}	
+
+
+    		bool created_devices = false;
+		//根据ALLOW_FIRST_STAGE_CONSOLE(want_console)决定是否打开串口log
+    		if (want_console == FirstStageConsoleParam::CONSOLE_ON_FAILURE) {
+        		if (!IsRecoveryMode()) {
+            			created_devices = DoCreateDevices();
+            			if (!created_devices){
+                			LOG(ERROR) << "Failed to create device nodes early";
+            			}
+        		}
+        		StartConsole(cmdline);
+    		}
+
+	-第五步 拷贝ramdisk prop文件，创建new ramdisk, 删除old ramdisk
+	 这一部分的代码主要功能如下：
+		-打开/system/etc/ramdisk/build.prop文件，如果可以打开，则创建/second_stage_resources/system/etc/ramdisk/build.prop文件。
+		 并将/system/etc/ramdisk/build.prop拷贝到second_stage_resources/system/etc/ramdisk/build.prop下。
+		-打开/force_debugable, 如果存在“/force_debugable”，则第二阶段init将使用userdebug sepolicy并加载adb_debug.prop以允许adb root
+		-创建/first_stage_ramdisk并挂载,然后将根目录切换到/first_stage_ramdisk
+		-挂载 system、vendor 、product等系统分区
+		-free old ramdisk
+	 在我的piexl 4中 没找到 first_stage_ramdisk目录，也没有找到/system/etc/ramdisk目录，只有一个空的second_stage_resources目录
+		int FirstStageMain(int argc, char** argv) {
+			...
+			//打开/system/etc/ramdisk/build.prop文件
+			if (access(kBootImageRamdiskProp, F_OK) == 0) {
+				//生成/second_stage_resources/system/etc/ramdisk/build.prop
+        			std::string dest = GetRamdiskPropForSecondStage();
+        			std::string dir = android::base::Dirname(dest);
+        			std::error_code ec;
+        			if (!fs::create_directories(dir, ec) && !!ec) {
+            				LOG(FATAL) << "Can't mkdir " << dir << ": " << ec.message();
+        			}
+        			if (!fs::copy_file(kBootImageRamdiskProp, dest, ec)) {
+            				LOG(FATAL) << "Can't copy " << kBootImageRamdiskProp << " to " << dest << ": "<< ec.message();
+        			}
+        			LOG(INFO) << "Copied ramdisk prop to " << dest;
+    			}
+
+    			// If "/force_debuggable" is present, the second-stage init will use a userdebug sepolicy and load adb_debug.prop to allow adb root, if the device is unlocked.
+			// 如果存在“/force_debugable”，则第二阶段init将使用userdebug sepolicy并加载adb_debug.prop以允许adb root
+    			// /userdebug_plat_sepolicy.cil属于selinux策略里的规则
+    			// 如果设备unlocked(解锁了),则会修改selinux规则,放大用户权限
+    			if (access("/force_debuggable", F_OK) == 0) {
+        			constexpr const char adb_debug_prop_src[] = "/adb_debug.prop";
+        			constexpr const char userdebug_plat_sepolicy_cil_src[] = "/userdebug_plat_sepolicy.cil";
+        			std::error_code ec;  // to invoke the overloaded copy_file() that won't throw.
+        			if (access(adb_debug_prop_src, F_OK) == 0 &&
+            				!fs::copy_file(adb_debug_prop_src, kDebugRamdiskProp, ec)) {
+            				LOG(WARNING) << "Can't copy " << adb_debug_prop_src << " to " << kDebugRamdiskProp
+                        			 << ": " << ec.message();
+        			}
+        			if (access(userdebug_plat_sepolicy_cil_src, F_OK) == 0 &&
+            				!fs::copy_file(userdebug_plat_sepolicy_cil_src, kDebugRamdiskSEPolicy, ec)) {
+            				LOG(WARNING) << "Can't copy " << userdebug_plat_sepolicy_cil_src << " to "
+                         			<< kDebugRamdiskSEPolicy << ": " << ec.message();
+        			}
+        			// setenv for second-stage init to read above kDebugRamdisk* files.
+				//在second init阶段可以用到
+        			setenv("INIT_FORCE_DEBUGGABLE", "true", 1);
+    			}
+
+    			if (ForceNormalBoot(cmdline, bootconfig)) {
+        			mkdir("/first_stage_ramdisk", 0755);
+        			// SwitchRoot() must be called with a mount point as the target, so we bind mount the
+        			// target directory to itself here.
+				//挂载first_stage_ramdisk到first_stage_ramdisk
+        			if (mount("/first_stage_ramdisk", "/first_stage_ramdisk", nullptr, MS_BIND, nullptr) != 0) {
+            				LOG(FATAL) << "Could not bind mount /first_stage_ramdisk to itself";
+        			}
+				//将根目录切换到/first_stage_ramdisk
+        			SwitchRoot("/first_stage_ramdisk");
+    			}
+
+			//挂载 system、vendor 、product等系统分区
+    			if (!DoFirstStageMount(!created_devices)) {
+        			LOG(FATAL) << "Failed to mount required partitions early ...";
+    			}
+
+    			struct stat new_root_info;
+			//new_root_info是/first_stage_ramdisk
+    			if (stat("/", &new_root_info) != 0) {
+        			PLOG(ERROR) << "Could not stat(\"/\"), not freeing ramdisk";
+        			old_root_dir.reset();
+    			}
+
+    			if (old_root_dir && old_root_info.st_dev != new_root_info.st_dev) {
+        			FreeRamdisk(old_root_dir.get(), old_root_info.st_dev);
+    			}
+
+    			SetInitAvbVersionInRecovery();
+		
+			//设置环境变量
+    			setenv(kEnvFirstStageStartedAt, std::to_string(start_time.time_since_epoch().count()).c_str(),1);
+
+			...
+
+		}
+	
+	-第六步 重新执行init进程并携带参数selinux_setup
+		int FirstStageMain(int argc, char** argv) {
+			...
+    			const char* path = "/system/bin/init";
+    			const char* args[] = {path, "selinux_setup", nullptr};
+    			auto fd = open("/dev/kmsg", O_WRONLY | O_CLOEXEC);
+    			dup2(fd, STDOUT_FILENO);
+    			dup2(fd, STDERR_FILENO);
+    			close(fd);
+			//重新执行/system/bin/init,并携带了参数selinux_setup
+    			execv(path, const_cast<char**>(args));
+
+    			// execv() only returns if an error happened, in which case we
+    			// panic and never fall through this conditional.
+    			PLOG(FATAL) << "execv(\"" << path << "\") failed";
+		    return 1;
+		}
+
+5、SetupSelinux
+	-Selinux
+	 Android 使用安全增强型 Linux (SELinux) 对所有进程强制执行强制访问控制 (MAC),甚至包括以 Root/超级用户权限运行的进程,Linux 功能。
+	 借助 SELinux,Android 可以更好地保护和限制系统服务、控制对应用数据和系统日志的访问、降低恶意软件的影响,并保护用户免遭移动设备上的代码可能存在的缺陷的影响。 
+	 SELinux 按照默认拒绝的原则运行,任何未经明确允许的行为都会被拒绝。SELinux 可按两种全局模式运行： 
+		宽容模式permissive，权限拒绝事件会被记录下来，但不会被强制执行。
+		强制模式enforcing，权限拒绝事件会被记录下来，并强制执行。 
+
+	 为什么要使用selinux:
+		并非所有安全问题都可以提前预测
+		selinux可以防止因为应用程序的漏洞而影响其他应用访问
+		selinux有一个额外的安全层，此外还有一层复杂结构，执行策略信息意味着系统某一部分的弱点不会扩散到其他部分
+	
+	 selinux如何保护资源：
+		selinux可允许或拒绝访问文件及其他资源，且精度相比用户权限大幅提高
+		selinux由若干组策略组组成，这些策略准确声明了对于应用使用的每个可执行文件、配置文件和数据文件，哪些操作和访问是被允许的，这被称为targeted policy.
+		策略声明了各程序，文件和网络端口的与定义label。
+
+	-Initialize SELinux, then exec init to run in the init SELinux context.
+	-SetupSelinux主要功能:
+		 -open sepolicy
+ 		 -load sepolicy
+ 		 -使能/关闭selinux
+	
+	-main.cpp
+		int main(int argc, char** argv) {
+			...
+    			if (argc > 1) {
+        			if (!strcmp(argv[1], "subcontext")) {
+            				android::base::InitLogging(argv, &android::base::KernelLogger);
+            				const BuiltinFunctionMap& function_map = GetBuiltinFunctionMap();
+
+            				return SubcontextMain(argc, argv, &function_map);
+        			}
+
+        			if (!strcmp(argv[1], "selinux_setup")) {
+					//从这里开始执行
+            				return SetupSelinux(argv);
+        			}
+
+        			if (!strcmp(argv[1], "second_stage")) {
+            				return SecondStageMain(argc, argv);
+        			}
+    			}
+
+    			return FirstStageMain(argc, argv);
+		}
+	
+	-SetupSelinux方法的源码在/system/core/init/selinux.cpp中
+	
+	-第一步 初始化kernel log
+	 1.初始化kernel log
+	 2.和FirstageMain方法一样，若系统发生了panic，则走InstallRebootSignalHandlers
+	
+		int SetupSelinux(char** argv) {
+			//重置stdin/stout/stderr这三个文件描述符，重置的原因可以看代码中的注释
+    			SetStdioToDevNull(argv);
+    			InitKernelLogging(argv);
+
+    			if (REBOOT_BOOTLOADER_ON_PANIC) {
+        			InstallRebootSignalHandlers();
+    			}
+
+    			boot_clock::time_point start_time = boot_clock::now();
+			//这是R上为了R system.img/system_ext.img作为system_ext.img工作在old vendor.img上。
+			//我们在init第二阶段挂载system_ext,因为在system-only OTA场景中boot.img的init第一阶段是不会被更新的。
+			// This is for R system.img/system_ext.img to work on old vendor.img as system_ext.img
+			// is introduced in R. We mount system_ext in second stage init because the first-stage
+			// init in boot.img won't be updated in the system-only OTA scenario.
+    			MountMissingSystemPartitions();
+
+    			SelinuxSetupKernelLogging();
+
+    			LOG(INFO) << "Opening SELinux policy";	
+			...
+		}
+	
+	-第二步 ReadPolicy
+	 ReadPolicy主要做了两件事:
+	 	1.open split policy 
+ 	 	2.读sepolicy
+	 这个是SetupSelinux的主要功能之一。
+	 	int SetupSelinux(char** argv) {
+    			...
+    			// Read the policy before potentially killing snapuserd.
+    			std::string policy;
+    			ReadPolicy(&policy);
+
+    			auto snapuserd_helper = SnapuserdSelinuxHelper::CreateIfNeeded();
+    			if (snapuserd_helper) {
+        			// Kill the old snapused to avoid audit messages. After this we cannot
+        			// read from /system (or other dynamic partitions) until we call
+        			// FinishTransition().
+        			snapuserd_helper->StartTransition();
+    			}
+			...
+		}
+		
+	 ReadPolicy的主要功能是: 
+		如果设备中存在/system/etc/selinux/plat_sepolicy.cil文件,并可以访问,则IsSplitPolicyDevice为true,会走OpenSplitPolicy流程,这个设备中默认都有这个文件的。
+	 
+	 	void ReadPolicy(std::string* policy) {
+    			PolicyFile policy_file;
+
+    			bool ok = IsSplitPolicyDevice() ? OpenSplitPolicy(&policy_file) : OpenMonolithicPolicy(&policy_file);
+    			if (!ok) {
+        			LOG(FATAL) << "Unable to open SELinux policy";
+    			}
+
+    			if (!android::base::ReadFdToString(policy_file.fd, policy)) {
+        			PLOG(FATAL) << "Failed to read policy file: " << policy_file.path;
+    			}
+		}
+	 
+	OpenSplitPolicy的主要功能是:
+		1.如果设备是userdebug版本+设备unlock+存在/debug_ramdisk/adb_debug.prop并且可以访问,则加载userdebug system sepolicy
+		2.从代码看是access system,vendor,system_ext和vendor下etc/selinux/mapping/下的.cil文件
+		3.再查看对应目录下的.cil文件内容是否为空,不为空则将对应目录下的.cil文件内容push进compile_args
+		4.执行compile_args并等待,决定include哪个mapping下的.cil文件
+ 		5.将临时文件/dev/sepolicy.XXXXXX的fd和path保存进policy_file->fd和 policy_file->path。
+	
+	OpenSplitPolicy 源码：
+		bool OpenSplitPolicy(PolicyFile* policy_file) {
+    			 // IMPLEMENTATION NOTE: Split policy consists of three CIL files:
+    			 // * platform -- policy needed due to logic contained in the system image,
+    			 // * non-platform -- policy needed due to logic contained in the vendor image,
+    			 // * mapping -- mapping policy which helps preserve forward-compatibility of non-platform policy
+    			 //   with newer versions of platform policy.
+    			 //
+    			 // secilc is invoked to compile the above three policy files into a single monolithic policy
+    			 // file. This file is then loaded into the kernel.
+
+			 //若存在/force_debuggable,则在init启动第一阶段,force_debuggable_env 环境变量已经设置好了
+    			 const auto userdebug_plat_sepolicy = GetUserdebugPlatformPolicyFile();
+			 //是userdebug版本,设备unlock+存在/debug_ramdisk/adb_debug.prop并且可以访问
+			 //则加载userdebug system sepolicy
+   			 const bool use_userdebug_policy = userdebug_plat_sepolicy.has_value();
+   			 if (use_userdebug_policy) {
+   			     LOG(INFO) << "Using userdebug system sepolicy " << *userdebug_plat_sepolicy;
+   			 }
+
+   			 // Load precompiled policy from vendor image, if a matching policy is found there. The policy
+   			 // must match the platform policy on the system image.
+   			 // use_userdebug_policy requires compiling sepolicy with userdebug_plat_sepolicy.cil.
+   			 // Thus it cannot use the precompiled policy from vendor image.
+    			 if (!use_userdebug_policy) {
+    			     if (auto res = FindPrecompiledSplitPolicy(); res.ok()) {
+    			         unique_fd fd(open(res->c_str(), O_RDONLY | O_CLOEXEC | O_BINARY));
+    			         if (fd != -1) {
+    			             policy_file->fd = std::move(fd);
+    			             policy_file->path = std::move(*res);
+    			             return true;
+    			         }
+    			     } else {
+    			         LOG(INFO) << res.error();
+    			     }
+    			 }
+   			 // No suitable precompiled policy could be loaded
+			 //没有合适的策略可以加载
+   			 LOG(INFO) << "Compiling SELinux policy";
+
+   			 // We store the output of the compilation on /dev because this is the most convenient tmpfs
+   			 // storage mount available this early in the boot sequence.
+   			 char compiled_sepolicy[] = "/dev/sepolicy.XXXXXX";
+			 //mkostemp&#xff1a;创建临时文件
+			 //创建临时文件/dev/sepolicy.XXXXXX,其fd为compiled_sepolicy_fd
+   			 unique_fd compiled_sepolicy_fd(mkostemp(compiled_sepolicy, O_CLOEXEC));
+   			 if (compiled_sepolicy_fd < 0) {
+   			     PLOG(ERROR) << "Failed to create temporary file " << compiled_sepolicy;
+   			     return false;
+   			 }
+
+   			 // Determine which mapping file to include
+			 //从代码看是access system,vendor,system_ext和vendor下etc/selinux/mapping/下的.cil文件
+			 //再查看对应目录下的.cil文件内容是否为空,不为空则将对应目录下的.cil文件内容push进compile_args
+			 //执行compile_args并等待
+			 //将临时文件/dev/sepolicy.XXXXXX的fd和path保存进policy_file->fd和 policy_file->path。
+			 //决定include哪个mapping下的.cil文件
+   			 std::string vend_plat_vers;
+   			 if (!GetVendorMappingVersion(&vend_plat_vers)) {
+   			     return false;
+   			 }
+   			 std::string plat_mapping_file("/system/etc/selinux/mapping/" + vend_plat_vers + ".cil");
+
+   			 std::string plat_compat_cil_file("/system/etc/selinux/mapping/" + vend_plat_vers +
+   			                                  ".compat.cil");
+   			 if (access(plat_compat_cil_file.c_str(), F_OK) == -1) {
+   			     plat_compat_cil_file.clear();
+   			 }
+
+   			 std::string system_ext_policy_cil_file("/system_ext/etc/selinux/system_ext_sepolicy.cil");
+   			 if (access(system_ext_policy_cil_file.c_str(), F_OK) == -1) {
+   			     system_ext_policy_cil_file.clear();
+   			 }
+
+   			 std::string system_ext_mapping_file("/system_ext/etc/selinux/mapping/" + vend_plat_vers +
+   			                                     ".cil");
+   			 if (access(system_ext_mapping_file.c_str(), F_OK) == -1) {
+   			     system_ext_mapping_file.clear();
+   			 }
+
+   			 std::string system_ext_compat_cil_file("/system_ext/etc/selinux/mapping/" + vend_plat_vers +
+   			                                        ".compat.cil");
+   			 if (access(system_ext_compat_cil_file.c_str(), F_OK) == -1) {
+   			     system_ext_compat_cil_file.clear();
+   			 }
+
+   			 std::string product_policy_cil_file("/product/etc/selinux/product_sepolicy.cil");
+   			 if (access(product_policy_cil_file.c_str(), F_OK) == -1) {
+   			     product_policy_cil_file.clear();
+   			 }
+
+   			 std::string product_mapping_file("/product/etc/selinux/mapping/" + vend_plat_vers + ".cil");
+   			 if (access(product_mapping_file.c_str(), F_OK) == -1) {
+   			     product_mapping_file.clear();
+   			 }
+
+   			 // vendor_sepolicy.cil and plat_pub_versioned.cil are the new design to replace
+   			 // nonplat_sepolicy.cil.
+   			 std::string plat_pub_versioned_cil_file("/vendor/etc/selinux/plat_pub_versioned.cil");
+   			 std::string vendor_policy_cil_file("/vendor/etc/selinux/vendor_sepolicy.cil");
+
+   			 if (access(vendor_policy_cil_file.c_str(), F_OK) == -1) {
+   			     // For backward compatibility.
+   			     // TODO: remove this after no device is using nonplat_sepolicy.cil.
+   			     vendor_policy_cil_file = "/vendor/etc/selinux/nonplat_sepolicy.cil";
+   			     plat_pub_versioned_cil_file.clear();
+   			 } else if (access(plat_pub_versioned_cil_file.c_str(), F_OK) == -1) {
+   			     LOG(ERROR) << "Missing " << plat_pub_versioned_cil_file;
+   			     return false;
+   			 }
+
+   			 // odm_sepolicy.cil is default but optional.
+   			 std::string odm_policy_cil_file("/odm/etc/selinux/odm_sepolicy.cil");
+   			 if (access(odm_policy_cil_file.c_str(), F_OK) == -1) {
+   			     odm_policy_cil_file.clear();
+   			 }
+   			 const std::string version_as_string = std::to_string(SEPOLICY_VERSION);
+
+   			 // clang-format off
+			 //有一些代码,我们并不想让clang-format调整格式,这时可以使用注释临时禁用clang-format
+   			 std::vector<const char*> compile_args {
+   			     "/system/bin/secilc",
+   			     use_userdebug_policy ? *userdebug_plat_sepolicy : plat_policy_cil_file,
+   			     "-m", "-M", "true", "-G", "-N",
+   			     "-c", version_as_string.c_str(),
+   			     plat_mapping_file.c_str(),
+   			     "-o", compiled_sepolicy,
+   			     // We don't care about file_contexts output by the compiler
+   			     "-f", "/sys/fs/selinux/null",  // /dev/null is not yet available
+   			 };
+   			 // clang-format on
+
+			 //将对应目录下的.cil文件内容push进compile_args
+   			 if (!plat_compat_cil_file.empty()) {
+   			     compile_args.push_back(plat_compat_cil_file.c_str());
+   			 }
+   			 if (!system_ext_policy_cil_file.empty()) {
+   			     compile_args.push_back(system_ext_policy_cil_file.c_str());
+   			 }
+   			 if (!system_ext_mapping_file.empty()) {
+   			     compile_args.push_back(system_ext_mapping_file.c_str());
+   			 }
+   			 if (!system_ext_compat_cil_file.empty()) {
+   			     compile_args.push_back(system_ext_compat_cil_file.c_str());
+   			 }
+   			 if (!product_policy_cil_file.empty()) {
+   			     compile_args.push_back(product_policy_cil_file.c_str());
+   			 }
+   			 if (!product_mapping_file.empty()) {
+   			     compile_args.push_back(product_mapping_file.c_str());
+   			 }
+   			 if (!plat_pub_versioned_cil_file.empty()) {
+   			     compile_args.push_back(plat_pub_versioned_cil_file.c_str());
+   			 }
+   			 if (!vendor_policy_cil_file.empty()) {
+   			     compile_args.push_back(vendor_policy_cil_file.c_str());
+   			 }
+   			 if (!odm_policy_cil_file.empty()) {
+   			     compile_args.push_back(odm_policy_cil_file.c_str());
+   			 }
+   			 compile_args.push_back(nullptr);
+			
+			 ////执行compile_args并等待
+   			 if (!ForkExecveAndWaitForCompletion(compile_args[0], (char**)compile_args.data())) {
+   			     unlink(compiled_sepolicy);
+   			     return false;
+   			 }
+   			 unlink(compiled_sepolicy);
+
+			 //将临时文件/dev/sepolicy.XXXXXX的fd和path保存进policy_file->fd和 policy_file->path。
+   			 policy_file->fd = std::move(compiled_sepolicy_fd);
+   			 policy_file->path = compiled_sepolicy;
+   			 return true;
+		} 
+
+	-第三步，加载策略
+	 也是SetupSelinux中最重要的功能之一。
+	 利用上一步中对policy进行的赋值，继续执行 LoadSelinuxPolicy(policy);
+		static void LoadSelinuxPolicy(std::string& policy) {
+    			LOG(INFO) << "Loading SELinux policy";
+
+    			set_selinuxmnt("/sys/fs/selinux");
+    			if (security_load_policy(policy.data(), policy.size()) < 0) {
+        			PLOG(FATAL) << "SELinux:  Could not load policy";
+    			}
+		}
+	
+	 security_load_policy,/external/selinux/libselinux/src/load_policy.c
+		主要功能是：
+		1 open $selinux_mnt</strong>/load&获取其对应fd 
+ 		2 根据fd将/dev/sepolicy.XXXXXX中的内容写入$selinux_mnt/load中。selinux_mnt如下 #define SELINUXMNT "/sys/fs/selinux"
+
+			int security_load_policy(void *data, size_t len){
+				char path[PATH_MAX];
+				int fd, ret;
+		
+				if (!selinux_mnt) {
+					errno = ENOENT;
+					return -1;
+				}
+		
+				snprintf(path, sizeof path, "%s/load", selinux_mnt);
+				fd = open(path, O_RDWR | O_CLOEXEC);
+				if (fd < 0)
+					return -1;
+		
+				ret = write(fd, data, len);
+				close(fd);
+				if (ret < 0)
+					return -1;
+				return 0;
+			}
+	-第四步，使能/关闭Selinux并写入节点
+	 获取selinux状态是否是enforce，然后将selinux状态is_enforcing写入 $selinux_mnt/enforce中。selinux_mnt如下	
+		#define SELINUXMNT "/sys/fs/selinux"
+	 	
+		int SetupSelinux(char** argv) {
+			...
+			if (snapuserd_helper) {
+        			// Before enforcing, finish the pending snapuserd transition.
+        			snapuserd_helper->FinishTransition();
+        			snapuserd_helper = nullptr;
+    			}
+
+    			SelinuxSetEnforcement();
+			...
+		}
+		
+		
+		void SelinuxSetEnforcement() {
+		    bool kernel_enforcing = (security_getenforce() == 1);
+		    //check selinux是否是enforce状态,开启selinux.
+		    bool is_enforcing = IsEnforcing();
+		    if (kernel_enforcing != is_enforcing) {
+		        if (security_setenforce(is_enforcing)) {
+		            PLOG(FATAL) << "security_setenforce(" << (is_enforcing ? "true" : "false")
+		                        << ") failed";
+		        }
+		    }
+		
+		    if (auto result = WriteFile("/sys/fs/selinux/checkreqprot", "0"); !result.ok()) {
+		        LOG(FATAL) << "Unable to write to /sys/fs/selinux/checkreqprot: " << result.error();
+		    }
+		}
+	
+		bool IsEnforcing() {
+		    //如果关闭系统的selinux,即将selinux置为permissive,此处直接返回false即可
+		    //return false;	
+		    if (ALLOW_PERMISSIVE_SELINUX) {
+		        return StatusFromProperty() == SELINUX_ENFORCING;
+		    }
+		    return true;
+		}
+						
+		/selinux/libselinux/src/setenforce.c
+		int security_setenforce(int value)
+		{
+			int fd, ret;
+			char path[PATH_MAX];
+			char buf[20];
+		
+			if (!selinux_mnt) {
+				errno = ENOENT;
+				return -1;
+			}
+		
+			snprintf(path, sizeof path, "%s/enforce", selinux_mnt);
+			fd = open(path, O_RDWR | O_CLOEXEC);
+			if (fd < 0)
+				return -1;
+		
+			snprintf(buf, sizeof buf, "%d", value);
+			ret = write(fd, buf, strlen(buf));
+			close(fd);
+			if (ret < 0)
+				return -1;
+		
+			return 0;
+		}
+
+	-第五步 selinux_android_restorecon
+		 	
+		int SetupSelinux(char** argv) {
+			...
+			// We're in the kernel domain and want to transition to the init domain.  File systems that
+			// store SELabels in their xattrs, such as ext4 do not need an explicit restorecon here,
+			// but other file systems do.  In particular, this is needed for ramdisks such as the
+			// recovery image for A/B devices.
+			//从kernel domain域过渡到init domain域。文件系统在xattrs中存储了SELabels，比如ext4不需要restorecon，但其他文件系统需要
+			if (selinux_android_restorecon("/system/bin/init", 0) == -1) {
+			    PLOG(FATAL) << "restorecon failed of /system/bin/init failed";
+			}					
+			...
+		}
+	 
+	-第六步 重新执行init进程并携带参数second_stage	 	
+		到了SetupSelinux的最后一步,这一步还是重新执行/system/bin/init,这样就会再次走init bin程序的main函数.由代码可以看到,此次携带了参数second_stage。
+		int SetupSelinux(char** argv) {
+			...
+			setenv(kEnvSelinuxStartedAt, std::to_string(start_time.time_since_epoch().count()).c_str(), 1);
+			
+			const char* path = "/system/bin/init";
+			const char* args[] = {path, "second_stage", nullptr};
+			execv(path, const_cast<char**>(args));
+			
+			// execv() only returns if an error happened, in which case we
+			// panic and never return from this function.
+			PLOG(FATAL) << "execv(\"" << path << "\") failed";
+			
+			return 1;							
+		}
+		

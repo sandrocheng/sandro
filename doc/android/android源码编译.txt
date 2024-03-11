@@ -168,7 +168,7 @@
 	编译前需要先了解当前分支版本号：
 		通过repo info 命令可以查看，显示的信息中包含如下信息
 			Manifest revision: refs/tags/android-12.1.0_r11
-	1) 下载pixel3驱动
+	1) 下载pixel4驱动
 		a)查找源码buildID :官网->关于->代号、标记、和细分版本号 ，源码标记和build 中，查找 android-12.1.0_r11 对应的ID( SQ3A.220705.003.A1  )
 		b)根据build在官网的驱动下载页面下载pixel4的驱动https://developers.google.cn/android/drivers，对应的驱动有两个
 			Vendor image
@@ -217,7 +217,21 @@
 		2>&1的含义:将标准错误输出重定向到标准输出。
  	3)printconfig,查看当前的编译环境变量
 
-13 常见问题总结
+13 源码中的android kernel部分
+	官网文档：https://source.android.google.cn/source/building-kernels?hl=zh-cn
+		  https://source.android.google.cn/docs/core/architecture/kernel/android-common?hl=zh_cn&authuser=0
+
+	Android 内核基于上游 Linux 长期支持 (LTS) 内核。在 Google，LTS 内核会与 Android 专用补丁结合，形成所谓的“Android 通用内核 (ACK)”。
+	
+	刷机成功后在设置->关于手机 点击 Android版本中能看到内核版本如下：
+		4.14.261-gdbc.......
+		#1 Thu May 12 09:07:20 UTC 2022
+	明显内核的编译时间不是当前时间，也就是说内核之前就已经编译过了，我们编译系统源码的时候并没有编译内核源码
+	那么编译好的内核文件放在了哪里呢？答案是device/<vendor>/<name>目录，
+	例如：针对Nexus 5 设备，就是device/lge/hammerhead-kernel
+	      pixel4设备 就是device/google/coral-kernel下的Image.lz4
+
+14 常见问题总结
 	1）老版本jdk-7 问题，如果要编译老版本比如 android 5.1，会提示要求openjdk-7,这个时候就得先卸载当前的jdk-8，但是openjdk-7目前已经没有了。
 	   通过find ./ -name "*.mk" | xargs grep "You asked for an OpenJDK" 找到脚本位值在 ./build/core/main.mk中
 	   发现这里要求如果是linux中必须要用onpenjdk,把这里改称不判断openjdk，然后下载oracle java_7 ,就可以了	 
