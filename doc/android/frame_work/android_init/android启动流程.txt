@@ -599,6 +599,10 @@
     			dup2(fd, STDERR_FILENO);
     			close(fd);
 			//重新执行/system/bin/init,并携带了参数selinux_setup
+			//execv会停止执行当前的进程，并且以path应用进程替换被停止执行的进程，进程ID没有改变。
+			//它有三个参数：第一个参数是可执行文件的路径名和文件名；第二个参数是一个字符串数组，该数组中的字符串被传递给新进程作为参数，
+			//第三个参数是一个环境变量数组,包含当前进程的环境变量。
+
     			execv(path, const_cast<char**>(args));
 
     			// execv() only returns if an error happened, in which case we
@@ -1031,6 +1035,9 @@
 			
 			const char* path = "/system/bin/init";
 			const char* args[] = {path, "second_stage", nullptr};
+			//execv会停止执行当前的进程，并且以path应用进程替换被停止执行的进程，进程ID没有改变。
+			//它有三个参数：第一个参数是可执行文件的路径名和文件名；第二个参数是一个字符串数组，该数组中的字符串被传递给新进程作为参数，
+			//第三个参数是一个环境变量数组,包含当前进程的环境变量。
 			execv(path, const_cast<char**>(args));
 			
 			// execv() only returns if an error happened, in which case we
@@ -1039,4 +1046,590 @@
 			
 			return 1;							
 		}
+
+6.SecondStageMain
+	-在上一步的最后，init进程重新使用execv执行自己，并使用了second_stage参数
+	 execv函数是最常用的exec系列函数之一，可以将另一个可执行文件(可执行文件的路径和文件名)作为参数传给execv，execv就可以把它替换成当前正在运行的程序。
+	
+		int main(int argc, char** argv) {
+		    ...	
+		    if (argc > 1) {
+		        ...
+		        if (!strcmp(argv[1], "second_stage")) {
+		            return SecondStageMain(argc, argv);
+		        }
+		    }
 		
+		    ...
+		} 
+
+	 init再次执行的时候就会走到 SecondStageMain函数中，该函数在/system/core/init/init.cpp中
+	
+	 -第一步 初始化log系统并设置环境变量 
+	  	1.InstallRebootSignalHandlers(和FirstStageMain、SetupSelinux一样第一步都会执行这个方法，设置重启策略)
+		2.初始化kernel log 
+		3.设置环境变量
+
+		int SecondStageMain(int argc, char** argv) {
+		    if (REBOOT_BOOTLOADER_ON_PANIC) {
+		        InstallRebootSignalHandlers();
+		    }
+		
+		    boot_clock::time_point start_time = boot_clock::now();
+		
+		    trigger_shutdown = [](const std::string& command) { shutdown_state.TriggerShutdown(command); };
+		
+		    SetStdioToDevNull(argv);
+		    InitKernelLogging(argv);
+		    LOG(INFO) << "init second stage started!";
+		
+		    // Update $PATH in the case the second stage init is newer than first stage init, where it is
+		    // first set.
+		    if (setenv("PATH", _PATH_DEFPATH, 1) != 0) {
+		        PLOG(FATAL) << "Could not set $PATH to '" << _PATH_DEFPATH << "' in second stage";
+		    }
+		    ...
+		}		
+
+
+	-第二步 重置SIGPIPE信号，设置init和它的子进程的oom_adj
+
+		int SecondStageMain(int argc, char** argv) {
+		    ...
+		    // Init should not crash because of a dependence on any other process, therefore we ignore
+		    // SIGPIPE and handle EPIPE at the call site directly.  Note that setting a signal to SIG_IGN
+		    // is inherited across exec, but custom signal handlers are not.  Since we do not want to
+		    // ignore SIGPIPE for child processes, we set a no-op function for the signal handler instead.
+		    {
+		        struct sigaction action = {.sa_flags = SA_RESTART};
+		        action.sa_handler = [](int) {};
+		        sigaction(SIGPIPE, &action, nullptr);
+		    }
+		
+		    // Set init and its forked children's oom_adj.
+		    //设置init和它的子进程的 oom_adj. 防止被杀，adj越小越不容易被杀
+  		    //static const int MIN_OOM_SCORE_ADJUST = -1000;
+		    //static const int MAX_OOM_SCORE_ADJUST = 1000;
+		    // service with default score is unkillable
+		    //static const int DEFAULT_OOM_SCORE_ADJUST = MIN_OOM_SCORE_ADJUST;
+		    if (auto result =
+		                WriteFile("/proc/1/oom_score_adj", StringPrintf("%d", DEFAULT_OOM_SCORE_ADJUST));
+		        !result.ok()) {
+		        LOG(ERROR) << "Unable to write " << DEFAULT_OOM_SCORE_ADJUST
+		                   << " to /proc/1/oom_score_adj: " << result.error();
+		    }
+		    ...
+		}
+
+	-第三步 一些基础设置
+		int SecondStageMain(int argc, char** argv) {
+		    ...
+		    // Set up a session keyring that all processes will have access to. It
+		    // will hold things like FBE encryption keys. No process should override
+		    // its session keyring.
+		    keyctl_get_keyring_ID(KEY_SPEC_SESSION_KEYRING, 1);
+		
+		    // Indicate that booting is in progress to background fw loaders, etc.
+		    close(open("/dev/.booting", O_WRONLY | O_CREAT | O_CLOEXEC, 0000));
+		
+		    // See if need to load debug props to allow adb root, when the device is unlocked.
+		    const char* force_debuggable_env = getenv("INIT_FORCE_DEBUGGABLE");
+		    bool load_debug_prop = false;
+
+		    //是debug版本+设别unlock
+		    if (force_debuggable_env && AvbHandle::IsDeviceUnlocked()) {
+		        load_debug_prop = "true"s == force_debuggable_env;
+		    }
+		    
+                    //清除环境变量
+		    unsetenv("INIT_FORCE_DEBUGGABLE");
+    		    // Umount the debug ramdisk so property service doesn't read .prop files from there, when it
+    		    // is not meant to.
+    		    if (!load_debug_prop) {
+        		UmountDebugRamdisk();
+    		    }
+		    ...
+		}	
+
+
+	-第四步 初始化property
+		系统属性初始化  各种各样的系统指纹的数据
+
+	 	int SecondStageMain(int argc, char** argv) {
+			...
+			PropertyInit();
+			...
+		}
+	 该函数主要是加载以下prop文件：
+	 	/system/build.prop, 
+		/system_ext/etc/build.prop, 
+		/system_ext/etc/default.prop， 
+		/vendor/default.prop, 
+		/vendor/build.prop, 
+		/vendor_dlkm/etc/build.prop, 
+		/odm_dlkm/etc/build.prop， 
+		/odm/etc/build.prop, 
+		/odm/etc/default.prop, 
+		/product/etc/build.prop， 
+		/product/etc/default.prop，
+		/debug_ramdisk/adb_debug.prop
+
+		/system/core/init/property_service.cpp
+		//创建 /dev/__properties__ 目录并初始化属性信息
+		void PropertyInit() {
+		    selinux_callback cb;
+		    cb.func_audit = PropertyAuditCallback;
+		    selinux_set_callback(SELINUX_CB_AUDIT, cb);
+		    //创建目录
+		    mkdir("/dev/__properties__", S_IRWXU | S_IXGRP | S_IXOTH);
+		    CreateSerializedPropertyInfo();
+		    //创建和设置系统属性存储所需的内存区域 共享内存区域
+		    if (__system_property_area_init()) {
+		        LOG(FATAL) << "Failed to initialize property area";
+		    }
+		    
+                    //加载数据 --> property_service/libpropertyinfoparser/property_info_property_api.cpp
+		    //加载系统属性文件 /dev/__properties__/property_info
+		    if (!property_info_area.LoadDefaultPath()) {
+		        LOG(FATAL) << "Failed to load serialized property info file";
+		    }
+		
+		    // If arguments are passed both on the command line and in DT,
+		    // properties set in DT always have priority over the command-line ones.
+		    // kernel的启动
+		    ProcessKernelDt();
+		    ProcessKernelCmdline();
+		    ProcessBootconfig();
+		
+		    // Propagate the kernel variables to internal variables
+		    // used by init as well as the current required properties.
+		    ExportKernelBootProps();
+		    
+                    //加载系统中各种各样的默认属性信息 build.prop
+		    PropertyLoadBootDefaults();
+		}
+
+	 PropertyLoadBootDefaults:加载各个目录下的prop文件
+		void PropertyLoadBootDefaults() {
+		    // We read the properties and their values into a map, in order to always allow properties
+		    // loaded in the later property files to override the properties in loaded in the earlier
+		    // property files, regardless of if they are "ro." properties or not.
+		    std::map<std::string, std::string> properties;
+		
+		    if (IsRecoveryMode()) {
+		        load_properties_from_file("/prop.default", nullptr, &properties);
+		    }
+		
+		    // /<part>/etc/build.prop is the canonical location of the build-time properties since S.
+		    // Falling back to /<part>/defalt.prop and /<part>/build.prop only when legacy path has to
+		    // be supported, which is controlled by the support_legacy_path_until argument.
+		    ----------------------------------------------------------------------
+		    //定义load_properties_from_partition 函数
+		    const auto load_properties_from_partition = [&properties](const std::string& partition,
+		                                                              int support_legacy_path_until) {
+		        auto path = "/" + partition + "/etc/build.prop";
+		        if (load_properties_from_file(path.c_str(), nullptr, &properties)) {
+		            return;
+		        }
+		        // To read ro.<partition>.build.version.sdk, temporarily load the legacy paths into a
+		        // separate map. Then by comparing its value with legacy_version, we know that if the
+		        // partition is old enough so that we need to respect the legacy paths.
+		        std::map<std::string, std::string> temp;
+		        auto legacy_path1 = "/" + partition + "/default.prop";
+		        auto legacy_path2 = "/" + partition + "/build.prop";
+		        load_properties_from_file(legacy_path1.c_str(), nullptr, &temp);
+		        load_properties_from_file(legacy_path2.c_str(), nullptr, &temp);
+		        bool support_legacy_path = false;
+		        auto version_prop_name = "ro." + partition + ".build.version.sdk";
+		        auto it = temp.find(version_prop_name);
+		        if (it == temp.end()) {
+		            // This is embarassing. Without the prop, we can't determine how old the partition is.
+		            // Let's be conservative by assuming it is very very old.
+		            support_legacy_path = true;
+		        } else if (int value;
+		                   ParseInt(it->second.c_str(), &value) && value <= support_legacy_path_until) {
+		            support_legacy_path = true;
+		        }
+		        if (support_legacy_path) {
+		            // We don't update temp into properties directly as it might skip any (future) logic
+		            // for resolving duplicates implemented in load_properties_from_file.  Instead, read
+		            // the files again into the properties map.
+		            load_properties_from_file(legacy_path1.c_str(), nullptr, &properties);
+		            load_properties_from_file(legacy_path2.c_str(), nullptr, &properties);
+		        } else {
+		            LOG(FATAL) << legacy_path1 << " and " << legacy_path2 << " were not loaded "
+		                       << "because " << version_prop_name << "(" << it->second << ") is newer "
+		                       << "than " << support_legacy_path_until;
+		        }
+		    };
+		    -----------------------------------------------------------------------------
+		    // Order matters here. The more the partition is specific to a product, the higher its
+		    // precedence is.
+		    LoadPropertiesFromSecondStageRes(&properties);
+		    load_properties_from_file("/system/build.prop", nullptr, &properties);
+		    load_properties_from_partition("system_ext", /* support_legacy_path_until */ 30);
+		    // TODO(b/117892318): uncomment the following condition when vendor.imgs for aosp_* targets are
+		    // all updated.
+		    // if (SelinuxGetVendorAndroidVersion() <= __ANDROID_API_R__) {
+		    load_properties_from_file("/vendor/default.prop", nullptr, &properties);
+		    // }
+		    load_properties_from_file("/vendor/build.prop", nullptr, &properties);
+		    load_properties_from_file("/vendor_dlkm/etc/build.prop", nullptr, &properties);
+		    load_properties_from_file("/odm_dlkm/etc/build.prop", nullptr, &properties);
+		    load_properties_from_partition("odm", /* support_legacy_path_until */ 28);
+		    load_properties_from_partition("product", /* support_legacy_path_until */ 30);
+		
+		    if (access(kDebugRamdiskProp, R_OK) == 0) {
+		        LOG(INFO) << "Loading " << kDebugRamdiskProp;
+		        load_properties_from_file(kDebugRamdiskProp, nullptr, &properties);
+		    }
+		
+		    for (const auto& [name, value] : properties) {
+		        std::string error;
+		        if (PropertySet(name, value, &error) != PROP_SUCCESS) {
+		            LOG(ERROR) << "Could not set '" << name << "' to '" << value
+		                       << "' while loading .prop files" << error;
+		        }
+		    }
+		
+		    property_initialize_ro_product_props();
+		    property_initialize_build_id();
+		    property_derive_build_fingerprint();
+		    property_derive_legacy_build_fingerprint();
+		    property_initialize_ro_cpu_abilist();
+		
+		    update_sys_usb_config();
+		}
+	
+	-第五步 umount + mount资源目录
+		int SecondStageMain(int argc, char** argv) {
+		    ...
+		    // Umount second stage resources after property service has read the .prop files.
+		    UmountSecondStageRes();
+		
+		    // Umount the debug ramdisk after property service has read the .prop files when it means to.
+		    if (load_debug_prop) {
+		        UmountDebugRamdisk();
+		    }
+		
+		    // Mount extra filesystems required during second stage init
+		    MountExtraFilesystems();
+		   ...
+		}		
+
+	-第六步 Selinux标签restore
+		int SecondStageMain(int argc, char** argv) {
+		    ...
+		    // Now set up SELinux for second stage.
+		    //防火墙相关的配置和初始化
+		    SelinuxSetupKernelLogging();//防火墙日志
+		    SelabelInitialize();//SELinux文件 目录和进程之前的关联标签初始化，确定进程方为控制策略
+		    SelinuxRestoreContext();//原始配置上下文，用于再某些情况下进行恢复或初始化
+		    ...
+		}	
+
+	 自启动的服务都是经过init进行域转换的，在转换之前标签是携带_exec的，在转化之后则不携带此后缀，所以是需要在sepolicy策略中增加init_daemon_domain。
+	 例如：如果/system/bin/testsh需要自启动，则需要在testsh_exec.te(此文件新增，根据selinux要求创建，以标签名+.te文件命名)中添加如下内容：
+		file_contexts 
+ 		+ /system/bin/testsh0    u:object_r:testsh0_exec:s0
+ 		testsh_exec.te
+ 		+typeattribute testsh0 coredomain;
+ 		+type testsh0_exec, exec_type, file_type, system_file_type,; 
+ 		+init_daemon_domain(testsh0)
+		 	
+	       init_daemon_domain定义如下：
+		define('init_daemon_domain','domain_auto_trans(init, $1_exec, $1)')
+		------------------------------------------------------------
+		define('domain_auto_trans', '
+		# Allow the necessary permissions.
+		domain_trans($1,$2,$3)
+		# Make the transition occur by default.
+		type_transition $1 $2:process $3;
+		')
+		------------------------------------------------------------
+		define('domain_trans', '
+		# Old domain may exec the file and transition to the new domain.
+		allow $1 $2:file { getattr open read execute map };
+		allow $1 $3:process transition;
+		# New domain is entered by executing the file.
+		allow $3 $2:file { entrypoint open read execute getattr map };
+		# New domain can send SIGCHLD to its caller.
+		ifelse($1, 'init', '', 'allow $3 $1:process sigchld;')
+		# Enable AT_SECURE, i.e. libc secure mode.
+		dontaudit $1 $3:process noatsecure;
+		# XXX dontaudit candidate but requires further study.
+		allow $1 $3:process { siginh rlimitinh };
+		')
+	 从定义就可以清楚的知道init在这其中所起到的作用了,以及自启动的bin是怎样将自己的标签转化的。 
+	 
+	 有一个知识点,比如新增了一个Selinux标签,并将相应文件push进了手机:
+		比如新增如下内容
+			file_contexts
+ 			+ /system/bin/testsh    u:object_r:testsh_exec:s0 
+ 			file.te 
+ 			+ type testsh_exec, exec_type, file_type, system_file_type,;
+	
+		执行make selinux_policy编译selinux模块：
+			adb push system/etc/selinux  /system_ext/etc/
+			adb reboot
+	
+	 如果新增了文件的标签,会在手机的/system/etc/selinux目录下的system_file_contexts中可以查看新增的标签。
+	 但是去/system/bin下执行命令ls -l -Z会发现新增的标签并没有效果,时如果在system/bin下执行:
+		restorecon testsh
+		即
+		restorecon 目录名
+	 然后再执行ls -l -Z就会发现新增的标签生效了,这个restorecon的在此时作用就是重新加载一下selinux的标签。
+	 对于节点和文件系统的新增标签都可以执行此命令,如果不执行不会重新加载,重启也不会重新加载,此命令如果遇到重启,需要再重新执行一次。
+	 当然,如果能够编译boot.img镜像或者刷机就不用执行以上步骤了,此步骤只针对push的场景。
+	 restorecon还有很多其他的功能,如果想了解,可以去百度一下。
+	
+	-第七步 ，启动属性服务	
+  	 	int SecondStageMain(int argc, char** argv) {
+		    ...
+		
+		    Epoll epoll;
+		    if (auto result = epoll.Open(); !result.ok()) {
+		        PLOG(FATAL) << result.error();
+		    }
+		    //安卓中的信号监控程序
+		    InstallSignalFdHandler(&epoll);
+		    //用于监控 处理系统初始化事件
+		    InstallInitNotifier(&epoll);
+		    //启动属性服务，提供全局共享属性功能 最后创建property_fd 用在与服务进行通讯
+		    StartPropertyService(&property_fd);
+		    ...
+		}
+	
+	
+		void StartPropertyService(int* epoll_socket) {
+		    InitPropertySet("ro.property_service.version", "2");
+		
+		    int sockets[2];
+		    if (socketpair(AF_UNIX, SOCK_SEQPACKET | SOCK_CLOEXEC, 0, sockets) != 0) {
+		        PLOG(FATAL) << "Failed to socketpair() between property_service and init";
+		    }
+		    *epoll_socket = from_init_socket = sockets[0];
+		    init_socket = sockets[1];
+		    StartSendingMessages();
+
+		    //创建property service的socket
+		    if (auto result = CreateSocket(PROP_SERVICE_NAME, SOCK_STREAM | SOCK_CLOEXEC | SOCK_NONBLOCK,
+		                                   false, 0666, 0, 0, {});
+		        result.ok()) {
+		        property_set_fd = *result;
+		    } else {
+		        LOG(FATAL) << "start_property_service socket creation failed: " << result.error();
+		    }
+		
+		    listen(property_set_fd, 8);
+		
+		    auto new_thread = std::thread{PropertyServiceThread};
+		    property_service_thread.swap(new_thread);
+		}				
+
+	-第八步 
+		int SecondStageMain(int argc, char** argv) {
+		    ...
+		    // Make the time that init stages started available for bootstat to log.
+		    RecordStageBoottimes(start_time);
+		
+		    // Set libavb version for Framework-only OTA match in Treble build.
+		    if (const char* avb_version = getenv("INIT_AVB_VERSION"); avb_version != nullptr) {
+		        SetProperty("ro.boot.avb_version", avb_version);
+		    }
+		    unsetenv("INIT_AVB_VERSION");
+		    //遍历所有的系统供应开发的文件系统，并将其覆盖到原文件系统
+		    //比如小米 华为他们自己会搞一些文件系统在这里进行挂载
+		    fs_mgr_vendor_overlay_mount_all();
+		    //OEM锁定状态
+		    export_oem_lock_status();
+		    //用于监听和处理各种的系统事件
+		    MountHandler mount_handler(&epoll);
+		    //设置usb控制器 初始化 配置usb控制器和管理
+		    SetUsbController();
+		    //设置内核版本
+		    SetKernelVersion();
+		   
+                    //获取内置函数的映射表
+		    const BuiltinFunctionMap& function_map = GetBuiltinFunctionMap();
+		    //设置内置函数的映射表
+		    Action::set_function_map(&function_map);
+		    //创建一个新的挂载命名空间，并将当前的文件系统结构复制给新的命名空间
+		    if (!SetupMountNamespaces()) {
+		        PLOG(FATAL) << "SetupMountNamespaces failed";
+		    }
+		    //
+		    InitializeSubcontext();
+		    ...
+		}
+	       
+                //导出OEM状态，1 解锁状态可以刷机，0则相反
+		static void export_oem_lock_status() {
+		    //后面有检测锁的程序，涉及到这三个文件，一般ro.开头的key都是只读的
+		    //在shell中可以使用getprop命令查看key对应的值，如：
+		    //   flame:/ $ su                                                                                                                        
+		    //   flame:/ # getprop ro.boot.verifiedbootstate
+		    //   orange
+		
+		    if (!android::base::GetBoolProperty("ro.oem_unlock_supported", false)) {
+		        return;
+		    }
+		    
+		    //根据ro.boot.verifiedbootstate 设置ro.boot.flash.locked 锁状态
+		    SetProperty(
+		            "ro.boot.flash.locked",
+		            android::base::GetProperty("ro.boot.verifiedbootstate", "") == "orange" ? "0" : "1");
+		}
+
+	-第九步，加载rc文件
+		int SecondStageMain(int argc, char** argv) {
+		    ...
+		    //用于管理系统级别的事件，比如 启动应用程序、发送广播等
+		    ActionManager& am = ActionManager::GetInstance();
+		    //用于管理系统服务的列表和状态
+		    ServiceList& sm = ServiceList::GetInstance();
+		    //加载系统启动脚本，比如加载init.rc	
+		    LoadBootScripts(am, sm);
+		
+		    // Turning this on and letting the INFO logging be discarded adds 0.2s to
+		    // Nexus 9 boot time, so it's disabled by default.
+		    if (false) DumpState();
+		
+		    // Make the GSI status available before scripts start running.
+		    //判断运行模式是否支持google基础服务
+		    auto is_running = android::gsi::IsGsiRunning() ? "1" : "0";
+		    SetProperty(gsi::kGsiBootedProp, is_running);
+		    //判断当前系统是否安装了Google基础服务
+		    auto is_installed = android::gsi::IsGsiInstalled() ? "1" : "0";
+		    SetProperty(gsi::kGsiInstalledProp, is_installed);
+		
+		    am.QueueBuiltinAction(SetupCgroupsAction, "SetupCgroups");
+		    am.QueueBuiltinAction(SetKptrRestrictAction, "SetKptrRestrict");
+		    am.QueueBuiltinAction(TestPerfEventSelinuxAction, "TestPerfEventSelinux");
+		    am.QueueEventTrigger("early-init");
+		
+		    // Queue an action that waits for coldboot done so we know ueventd has set up all of /dev...
+		    am.QueueBuiltinAction(wait_for_coldboot_done_action, "wait_for_coldboot_done");
+		    // ... so that we can start queuing up actions that require stuff from /dev.
+		    am.QueueBuiltinAction(SetMmapRndBitsAction, "SetMmapRndBits");
+		    Keychords keychords;
+		    am.QueueBuiltinAction(
+		            [&epoll, &keychords](const BuiltinArguments& args) -> Result<void> {
+		                for (const auto& svc : ServiceList::GetInstance()) {
+		                    keychords.Register(svc->keycodes());
+		                }
+		                keychords.Start(&epoll, HandleKeychord);
+		                return {};
+		            },
+		            "KeychordInit");
+		
+		    // Trigger all the boot actions to get us started.
+		    am.QueueEventTrigger("init");
+		
+		    // Don't mount filesystems or start core system services in charger mode.	
+		    //获取手机的启动模式 正常启动  恢复模式启动  引导程序启动
+		    std::string bootmode = GetProperty("ro.bootmode", "");
+		    if (bootmode == "charger") {
+		        am.QueueEventTrigger("charger");
+		    } else {
+		        am.QueueEventTrigger("late-init");
+		    }
+		
+		    // Run all property triggers based on current state of the properties.
+		    am.QueueBuiltinAction(queue_property_triggers_action, "queue_property_triggers");
+		    ...
+		}
+		
+		//解析/system/etc/init/hw/init.rc
+		//将/system/etc/init,/system_ext/etc/init,/vendor/etc/init,/odm/etc/init
+		//和/product/etc/init存入late_import_paths
+		//这个方法比较重要，可以说是frame_work层的入口
+                //zygote进程也是在这里启动的
+		//全目录搜索，会发现有多个init.rc 优先考虑同级目录 /system/core/rootdir/中的init.rc
+		//init.rc中基本都是linux命令，如：
+		//	# Now we can start zygote for devices with file based encryption，启动zygote进程 --> init.zygote64.rc ---> app_main.cpp--->main()
+		//      trigger zygote-start 
+		static void LoadBootScripts(ActionManager& action_manager, ServiceList& service_list) {
+		    Parser parser = CreateParser(action_manager, service_list);
+		    //在shell中使用getprop命令读取不到，应该是被selinux配置的安全规则限制了
+		    std::string bootscript = GetProperty("ro.boot.init_rc", "");
+		    if (bootscript.empty()) {
+		        parser.ParseConfig("/system/etc/init/hw/init.rc");
+		        if (!parser.ParseConfig("/system/etc/init")) {
+		            late_import_paths.emplace_back("/system/etc/init");
+		        }
+		        // late_import is available only in Q and earlier release. As we don't
+		        // have system_ext in those versions, skip late_import for system_ext.
+		        parser.ParseConfig("/system_ext/etc/init");
+		        if (!parser.ParseConfig("/vendor/etc/init")) {
+		            late_import_paths.emplace_back("/vendor/etc/init");
+		        }
+		        if (!parser.ParseConfig("/odm/etc/init")) {
+		            late_import_paths.emplace_back("/odm/etc/init");
+		        }
+		        if (!parser.ParseConfig("/product/etc/init")) {
+		            late_import_paths.emplace_back("/product/etc/init");
+		        }
+		    } else {
+		        parser.ParseConfig(bootscript);
+		    }
+		}		
+
+	-第十步，进入死循环，维持init进程不死，监听系统状态
+		
+		int SecondStageMain(int argc, char** argv) {
+		    ...
+		
+		    // Restore prio before main loop
+		    setpriority(PRIO_PROCESS, 0, 0);
+		    while (true) {
+		        // By default, sleep until something happens.
+		        auto epoll_timeout = std::optional<std::chrono::milliseconds>{};
+		        //检查系统是否关系或出于正在关机的状态下  根据状态保存一些配置文件，或者清除一些数据
+		        auto shutdown_command = shutdown_state.CheckShutdown();
+		        if (shutdown_command) {
+		            LOG(INFO) << "Got shutdown_command '" << *shutdown_command
+		                      << "' Calling HandlePowerctlMessage()";
+		            HandlePowerctlMessage(*shutdown_command);
+		            shutdown_state.set_do_shutdown(false);
+		        }
+		
+		        if (!(prop_waiter_state.MightBeWaiting() || Service::is_exec_service_running())) {
+		            am.ExecuteOneCommand();
+		        }
+		        if (!IsShuttingDown()) {
+		            auto next_process_action_time = HandleProcessActions();
+		
+		            // If there's a process that needs restarting, wake up in time for that.
+		            if (next_process_action_time) {
+		                epoll_timeout = std::chrono::ceil<std::chrono::milliseconds>(
+		                        *next_process_action_time - boot_clock::now());
+		                if (*epoll_timeout < 0ms) epoll_timeout = 0ms;
+		            }
+		        }
+		
+		        if (!(prop_waiter_state.MightBeWaiting() || Service::is_exec_service_running())) {
+		            // If there's more work to do, wake up again immediately.
+		            if (am.HasMoreCommands()) epoll_timeout = 0ms;
+		        }
+		
+		        auto pending_functions = epoll.Wait(epoll_timeout);
+		        if (!pending_functions.ok()) {
+		            LOG(ERROR) << pending_functions.error();
+		        } else if (!pending_functions->empty()) {
+		            // We always reap children before responding to the other pending functions. This is to
+		            // prevent a race where other daemons see that a service has exited and ask init to
+		            // start it again via ctl.start before init has reaped it.
+		            ReapAnyOutstandingChildren();
+		            for (const auto& function : *pending_functions) {
+		                (*function)();
+		            }
+		        }
+		        if (!IsShuttingDown()) {
+		            HandleControlMessages();
+		            SetUsbController();
+		        }
+		    }
+		
+		    return 0;
+		}
