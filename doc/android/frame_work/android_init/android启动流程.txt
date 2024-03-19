@@ -1605,7 +1605,7 @@
 		    while (true) {
 		        // By default, sleep until something happens.
 		        auto epoll_timeout = std::optional<std::chrono::milliseconds>{};
-		
+			//检查系统是否关机或处与正在关机的状态下，根据状态保存一些配置文件，或者清除一些数据	
 		        auto shutdown_command = shutdown_state.CheckShutdown();
 		        if (shutdown_command) {
 		            LOG(INFO) << "Got shutdown_command '" << *shutdown_command
