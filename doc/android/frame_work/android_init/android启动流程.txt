@@ -392,7 +392,7 @@
 		 
 		含义：tmpfs on /dev type tmpfs (rw,seclabel,nosuid,relatime,size=7984680k,nr_inode=1996170,mode=755) 
  			tmpfs 挂载点
- 			tmpfs:文件系统类型,在linux中，tmpfs是指临时文件系统，是一种基于内存的文件系统，可以使用用户的内存或swap分区来存储文件；
+ 			tmpfs:文件系统类型,在linux中，tmpfs是指临时虚拟文件系统，是一种基于内存的文件系统它会将内存和磁盘之间建立映射，可以使用用户的内存或swap分区来存储文件；
 			      简单来说，tmpfs主要存储暂存的文件。tmpfs系统的优势：1、动态文件系统的大小；2、拥有闪电般的速度。
 			      注意：tmpfs不具备持久性，重启后数据不保留
 			      在平常工作中，我们经常需要查看Linux服务器磁盘挂载使用情况，可以使用df命令,除了会查看到系统盘以及数据盘挂载情况，还会看到一个tmpfs也在挂载。	
@@ -401,8 +401,20 @@
 			rw: read and write, 读写挂载
 			nosuid 关闭set-user-identifier(设置用户ID)与set-group-identifer(设置组ID)设置位。
  			mode=755 挂载权限为0755;代表rwxr-xr-x,一般赋予目录0755权限,文件0644(rw-r--r--)权限。
+		       
+                      devpts on /dev/pts type devpts (rw,seclabel,relatime,mode=600,ptmxmode=000)
+		      devpts:是用来管理远程虚拟终端的文件设备
 		
-	
+		      proc on /proc type proc (rw,relatime,gid=3009,hidepid=2)
+		      proc是一个虚拟文件系统，通过proc可以获取系统的信息，同时可以修改特定的内核参数
+
+		      sysfs on /sys type sysfs (rw,seclabel,relatime)
+		      sysfs 和proc有一点类似，他把连接在系统上的设备和总线组成了一个分级的文件，可以让用户空间存取
+
+		      selinuxfs on /sys/fs/selinux type selinuxfs (rw,relatime)
+		      selinux linux的防火墙	 	
+		
+		      
 		查看设备节点内存,可以看到system,vendor,product都挂载到了哪里。
 			adb shell df -h
 
@@ -457,7 +469,21 @@
 			//此时log系统已经可以用了
     			LOG(INFO) << "init first stage started!";
 			...
+		}
 
+		void InitKernelLogging(char** argv) {
+		    SetFatalRebootTarget();
+		    android::base::InitLogging(argv, &android::base::KernelLogger, InitAborter);
+		}
+		android::base 命名空间的类原码基本都在 /system/libbase 目录下
+		android::base::InitLogging原码在/system/libbase/logging.cpp中
+		在KernelLoginLine中会看到
+			static int klog_fd = OpenKmsg();
+		OpenKmsg实际上是打开的 /dev/kmsg文件
+			flame:/dev # ls kmsg -al
+			crw------- 1 root root 1,  11 1971-07-07 22:34 kmsg 			
+		kmsg文件实际上是一个字符设备文件,可以直接使用cat查看实时log	
+                   
 	-第四步 加载/lib/moudles/下的ko文件, 打开串口log
 		实际上我的piexls 4 ko文件在/vender/lib/moudles中的，不知道这里是不是有加载上
 		//打开根目录
@@ -1396,6 +1422,7 @@
 		    //用于监控 处理系统初始化事件
 		    InstallInitNotifier(&epoll);
 		    //启动属性服务，提供全局共享属性功能 最后创建property_fd 用在与服务进行通讯
+		    //属性服务类似windows中的注册表
 		    StartPropertyService(&property_fd);
 		    ...
 		}
@@ -1503,13 +1530,6 @@
 		    auto is_installed = android::gsi::IsGsiInstalled() ? "1" : "0";
 		    SetProperty(gsi::kGsiInstalledProp, is_installed);
 		
-		    am.QueueBuiltinAction(SetupCgroupsAction, "SetupCgroups");
-		    am.QueueBuiltinAction(SetKptrRestrictAction, "SetKptrRestrict");
-		    am.QueueBuiltinAction(TestPerfEventSelinuxAction, "TestPerfEventSelinux");
-		    am.QueueEventTrigger("early-init");
-		
-		    // Queue an action that waits for coldboot done so we know ueventd has set up all of /dev...
-		    am.QueueBuiltinAction(wait_for_coldboot_done_action, "wait_for_coldboot_done");
 		    // ... so that we can start queuing up actions that require stuff from /dev.
 		    am.QueueBuiltinAction(SetMmapRndBitsAction, "SetMmapRndBits");
 		    Keychords keychords;
@@ -1526,8 +1546,7 @@
 		    // Trigger all the boot actions to get us started.
 		    am.QueueEventTrigger("init");
 		
-		    // Don't mount filesystems or start core system services in charger mode.	
-		    //获取手机的启动模式 正常启动  恢复模式启动  引导程序启动
+		    // Don't mount filesystems or start core system services in charger mode.
 		    std::string bootmode = GetProperty("ro.bootmode", "");
 		    if (bootmode == "charger") {
 		        am.QueueEventTrigger("charger");
@@ -1546,8 +1565,9 @@
 		//这个方法比较重要，可以说是frame_work层的入口
                 //zygote进程也是在这里启动的
 		//全目录搜索，会发现有多个init.rc 优先考虑同级目录 /system/core/rootdir/中的init.rc
-		//init.rc中基本都是linux命令，如：
+		//init.rc中的命令在readme中有比较详细的介绍，如：
 		//	# Now we can start zygote for devices with file based encryption，启动zygote进程 --> init.zygote64.rc ---> app_main.cpp--->main()
+
 		//      trigger zygote-start 
 		static void LoadBootScripts(ActionManager& action_manager, ServiceList& service_list) {
 		    Parser parser = CreateParser(action_manager, service_list);
@@ -1575,7 +1595,7 @@
 		    }
 		}		
 
-	-第十步，进入死循环，维持init进程不死，监听系统状态
+	-第十步，进入死循环，维持init进程不死，等待系统回调再继续
 		
 		int SecondStageMain(int argc, char** argv) {
 		    ...
@@ -1585,7 +1605,7 @@
 		    while (true) {
 		        // By default, sleep until something happens.
 		        auto epoll_timeout = std::optional<std::chrono::milliseconds>{};
-		        //检查系统是否关系或出于正在关机的状态下  根据状态保存一些配置文件，或者清除一些数据
+		
 		        auto shutdown_command = shutdown_state.CheckShutdown();
 		        if (shutdown_command) {
 		            LOG(INFO) << "Got shutdown_command '" << *shutdown_command
@@ -1633,3 +1653,11 @@
 		
 		    return 0;
 		}
+
+7、init进程总结
+	-FirstStageMain, 挂载文件系统,创建命令，重新执行init，通过设置"selinux_setup"执行SetupSelinux
+	-SetupSelinux , 设置系统安全机制，设置敏感权限的上下文检查
+	-SecondStageMain
+		init属性服务初始化并开启
+		使用epoll监听子进程信息情况，比如zygote子进程异常退出，linux会通过信号机制，把pid发回给init进程，由init进程根据init.rc文件中的zygote的启动信息重新启动。
+		加载init.rc中的脚本配置文件
