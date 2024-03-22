@@ -1,0 +1,105 @@
+1、什么是socket
+	socket可以看成是用户进程与内核网络协议栈的编程接口。
+	socket不仅可以用于本级的进程间通信，还可以用于网络上不同主机/系统的进程间通信，如图：1_TCPIP四层模型	
+	
+2、IPv4套接字地址结构
+	Ipv4套接口地址结构通常也称为“网际套接字地址结构”，它以"sockaddr_in"命名，定义在头文件<netinet/in.h>中
+	可以通过 man 7 ip 命令查看ip协议的手册
+		struct sockaddr_in{
+			//整个sockaddr_in结构的长度，在4.3BSD-Reno版本之前的第一个成员是sin_family
+			uint8_t sin_len;
+			//指定该地址家族，在这里必须设为AF_INET，
+			//socket不仅可以用于ipv4协议还可以用于linux域协议，ipv6协议等，设置为AF_INET，说明此时使用IPv4协议
+			sa_family_t sin_family;
+			//端口
+			in_port_t sin_port; //2个字节
+			//IPv4的地址
+			struct in_addr sin_addr;//4字节
+			//暂时不用，一般将其设置为0
+			char sin_zero[8];
+		};
+		
+		/* Internet address. */
+           	struct in_addr {
+               		uint32_t       s_addr;     /* 实际上是一个无符号的32位整数，并且是一个网络字节序 address in network byte order */
+           	};
+
+	通用地址接结构用来指定套接字关联的地址，由于不同协议会有不一样的地方，因此会有一个通用的协议，sockaddr_in只适用于ipv4的地址结构，而sockaddr可以用于任何协议的套接口
+		struct sockaddr{
+			//整个sockaddr结构体的长度
+			uint8_t sin_len;
+			
+			//指定该地址家族
+			sa_family_t sin_family;
+
+			由sin_family决定它的形式
+			char sa_data[14]
+		};
+
+3、字节序
+	-大端字节序(Big Endian)
+	 最高有效位(MSB: Most Significant Bit)存储于最低内存地址处，最低有效位(LSB:Lowest Significant Bit)存储于最高内存字节处。
+	-小端字节序(Little Endian)
+	 最高有效位(MSB:Most Significant Bit) 存储于最高内存地址处，最低有效位(LSB: Lowest Significant Bit)存储于最低内存地址处。
+	-如图 3_大端字节序和小端字节序	
+
+	-主机字节序
+	 不同的主机有不同的字节序，比如x86为小端字节序列，Motorola 6800为大端字节序，ARM字节序是可配置的。
+
+	-网络字节序
+	 网络字节序规定为大端字节序
+	
+	-当两个主机之间进行数据通信的时候，数据在发送端发送前，需要先把数据的字节序转换成网络字节序也就是大端字节序才能发送，数据到达目的主机后，需要把网络字节序转换成目的主机上的字节序。
+
+	-字节序转换函数
+	 man 3 htonl,查看详细文档
+		#include <arpa/inet.h>
+        	uint32_t htonl(uint32_t hostlong);//将4个字节的整数从主机字节序转换称为网络字节序
+        	uint16_t htons(uint16_t hostshort);//将2个字节的整数从主机字节序转换称为网络字节序
+        	uint32_t ntohl(uint32_t netlong);
+        	uint16_t ntohs(uint16_t netshort);
+	 上述的函数中，h代表host;n代表network s代表short,l代表long
+	
+	-查看当前系统使用的哪种字节序代码 ：c-pro/linuxProjects/linuxSocket/socketFun.c --> checkEdian函数
+
+
+4、地址转换
+	man 3 inet_aton ,查看详细文档
+		#include <netinet/in.h>
+        	#include <arpa/inet.h>
+		//将地址字符串cp转换为网络字节序的地址(inp)
+		int inet_aton(const char *cp, struct in_addr *inp);
+		
+		//将标准ip地址转换为32位整数：比如192.168.0.1转换为一个32位整数
+		in_addr_t inet_addr(const char *cp);
+
+		//将整形地址结构数据转换为 标准ip地址字符串
+		char *inet_ntoa(struct in_addr in);
+	
+	-代码 ：c-pro/linuxProjects/linuxSocket/socketFun.c --> addrRevert函数
+
+5、套接字类型
+	-流式套接字(SOCK_STREAM)	
+	 提供面向连接的、可靠的数据传输服务，数据无差错，无重复的发送，且按发送顺序接收。
+	 对应的是TCP协议
+	
+	-数据包式套接字(SOCK_DGRAM)
+	 提供无连接服务。不提供无错保证，数据可能丢失或重复，并且接收顺序混乱。
+	 
+	-原始套接字(SOCK_RAM)
+	 它提供一种能力，让我们直接跨于传输层，直接在IP层进行数据封装的套接字，通过原始套接字可以将应用层的数据直接封装成ip层能够认识的协议格式
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
