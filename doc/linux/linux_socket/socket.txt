@@ -89,6 +89,96 @@
 	-原始套接字(SOCK_RAM)
 	 它提供一种能力，让我们直接跨于传输层，直接在IP层进行数据封装的套接字，通过原始套接字可以将应用层的数据直接封装成ip层能够认识的协议格式
 
+6、c/s模型
+	-TCP c/s模型 如图：6_TCPCS模型	
+	
+	-回射 C/S模型 如图：6_回射CS模型
+	 回射 c/s模型是一种最简单的模型，数据通过输入输出流输入给客户端，客户端把数据通过网络发送给服务端，服务端收到后返回给客户端结果，客户端再把结果通过输入输出流返回
+
+7、创建socket
+	-创建socket用于通信，man 2 socket，查看手册
+		#include <sys/types.h>          /* See NOTES */
+       		#include <sys/socket.h>
+		/**
+		* domain:指定通信协议族(protocol family)
+		* type:指定socket类型
+		*      SOCK_STREAM：流式套接字
+		*      SOCK_DGRAM：数据报套接字
+		*      SOCK_RAW：原始套接字
+		* protocol:协议类型,默认网络协议是tcpip的就用 0.
+		*          The  protocol specifies a particular protocol to be used with the socket.  
+		*          Normally only a single protocol exists to support a particular socket type within a given protocol family, in which case protocol can be specified as 0	
+		* return : 非负数成功
+                *          失败返回 -1
+		*          它于文件描述符类似，我们把他称为套接字描述字
+		*/	
+       		int socket(int domain, int type, int protocol);
+	
+	-bind函数，用来绑定一个本地地址到套接字，man 2 bind查看手册
+		
+		#include <sys/types.h>          /* See NOTES */
+       		#include <sys/socket.h>
+
+		/**
+		* sockfd:socket函数返回的套接字
+		* addr:要绑定的地址,sockaddr是通用地址结构体，如果使用的是ipv4协议，可以使用sockaddr_in结构体，赋值会比较方便
+		* addrlen:地址长度
+		* return: 0，成功；-1，失败
+		*/
+       		int bind(int sockfd, const struct sockaddr *addr,socklen_t addrlen);
+
+	-listen函数，监听socket是否有连接,监听成功以后socket才会从close状态转换成监听状态，之后才能够接受连接。
+		listen函数调用成功以后，套接字sockfd就从主动套接字变成了被动套接字。
+			主动套接字：用来发起连接的，可以调用connect来连接其他socket。
+			被动套接字：用来接受连接的, 可以调用accpet等待其他socket来连接。
+		一般来说，listen函数应该在调用socket和bind函数之后，调用函数accept之前调用
+		对于给定的监听套接口，内核要维护两个队列：
+			1.已由客户发出并到达服务器，服务器正在等待完成相应的TCP三次握手过程的连接队列，这些连接尚未完成，状态是SYN_RCVD。
+		        2.已完成连接的队列。这些连接是ESTABLISHED状态
+		这两个队列中的连接数之和不能大于backlog
+		当连接close以后会从队列中移除。
+		因此backlog实际上就是一个socket能够并发连接的最大套接字数。
+		man 2 listen查看手册
+		
+		#include <sys/types.h>          /* See NOTES */
+       		#include <sys/socket.h>
+		/*
+		* sockfd:socket返回的套接字
+		* backlog:规定内核为次套接字排队的最大连接数,一般推荐SOMAXCONN作为参数
+		* return: 0，成功；-1,失败
+		*/
+       		int listen(int sockfd, int backlog);
+
+	-accept函数，从以完成连接队列中返回第一个连接，如果已完成连接队列为空则阻塞。
+		man 2 accept，查看手册
+			
+		#include <sys/types.h>          /* See NOTES */
+       		#include <sys/socket.h>
+		/**
+		* sockfd:服务器套接字
+		* addr:将返回对等方的套接字地址
+		* addrlen:返回对等方的套接字地址长度
+		* 
+		* return:成功，返回非负数文件描述符，可以使用read读取其中的数据了；失败返回-1
+		*/
+       		int accept(int sockfd, struct sockaddr *addr, socklen_t *addrlen);
+	
+	-connect函数，建立一个连接至addr所指定的套接字
+		#include <sys/types.h>          /* See NOTES */
+       		#include <sys/socket.h>
+		/**
+		* sockfd:套接字
+		* addr: 要连接的套接字地址
+		* addrlen:addr的长度
+		* 
+		* return:成功，返回0；失败返回-1
+		*/
+       		int connect(int sockfd, const struct sockaddr *addr,socklen_t addrlen);	
+
+	-代码 ：c-pro/linuxProjects/linuxSocket/socketFun.c --> createSocketServer ,创建一个回射服务器
+		c-pro/linuxProjects/linuxSocket/socketFun.c --> createSocketClient ,创建一个回射客户端
+
+	
 
 
 
@@ -98,8 +188,4 @@
 
 
 
-
-
-
-
-
+		

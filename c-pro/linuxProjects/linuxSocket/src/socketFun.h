@@ -12,6 +12,9 @@
 #include <string.h>//常规c标准库
 #include <arpa/inet.h>//字节序转换库函数
 #include <netinet/in.h>//网络库
+#include <sys/socket.h>//socket类库
+#include <sys/types.h>//OSIX Standard: 2.6 Primitive System Data Types
+#include <unistd.h>
 #include "tools.h"
 /**
  * 查看当前系统的字节序
@@ -25,5 +28,15 @@ void checkEdian();
  * 将一个地址结构的数据转换为ipv4地址字符串
  */
 void addrRevert();
+
+/**
+ * 创建一个socket回射服务，并监听该socket绑定的端口
+ */
+void createSocketServer();
+
+/**
+ * 创建一个socket回射客户端，并发送数据
+ */
+void createSocketClient();
 
 #endif /* SOCKETFUN_H_ */

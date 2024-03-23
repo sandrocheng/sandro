@@ -7,6 +7,8 @@
 
 #include "socketFun.h"
 
+#define DEFAULT_SERVER_PORT 5188
+
 void checkEdian(){
 	unsigned int x = 0x12345678;
 	unsigned char *p = (unsigned char*)&x;
@@ -29,5 +31,113 @@ void addrRevert(){
 	addrStruct.s_addr = addrNum;
 	printf("%04x(16进制网络字节序) 地址是 %s",(int)addrNum,inet_ntoa(addrStruct));
 }
+
+void createSocketClient(){
+	int socketfd = socket(AF_INET,SOCK_STREAM,0);
+	if(socketfd < 0){
+		printf("[createSocketClient]create socket failed ,socketfd is %d\n",socketfd);
+		return ;
+	}
+	printf("[createSocketClient]create socket successed ,socketfd is %d\n",socketfd);
+
+	struct sockaddr_in addrSvr;
+	addrSvr.sin_family = AF_INET;
+	addrSvr.sin_port = htons(DEFAULT_SERVER_PORT);
+	addrSvr.sin_addr.s_addr = inet_addr("127.0.0.1");
+
+	int connectResult = connect(socketfd,(struct sockaddr*)&addrSvr,sizeof(addrSvr));
+	if(connectResult < 0){
+		close(socketfd);
+		printf("[createSocketClient]connect socket failed ,socketfd is %d svrfd is %d\n",socketfd,connectResult);
+		return;
+	}
+	printf("[createSocketClient]connect socket success ,socketfd is %d ,port is %d ,ip is %s ,connectResult is %d\n",
+				socketfd,ntohs(addrSvr.sin_port),inet_ntoa(addrSvr.sin_addr),connectResult);
+
+	char sendBuf[512];
+	char recvBuf[512];
+	for(int i=0;i<10;i++){
+		memset(&sendBuf,0,sizeof(sendBuf));
+		memset(&recvBuf,0,sizeof(recvBuf));
+
+		sprintf(sendBuf,"message from client , sendNum is %d " ,i);
+		write(socketfd,sendBuf,strlen(sendBuf));
+		read(socketfd,recvBuf,512 * sizeof(char));
+
+		printf("[createSocketClient] receive message from server : %s \n",recvBuf);
+		sleep(1);
+	}
+	memset(&sendBuf,0,sizeof(sendBuf));
+	sprintf(sendBuf,"%s" ,"over");
+	write(socketfd,sendBuf,strlen(sendBuf));
+	close(socketfd);
+}
+
+void createSocketServer(){
+	int socketfd = socket(AF_INET,SOCK_STREAM,0);
+	if(socketfd < 0){
+		printf("[createSocketServer]create socket failed ,socketfd is %d\n",socketfd);
+		return ;
+	}
+	printf("[createSocketServer]create socket successed ,socketfd is %d\n",socketfd);
+
+	struct sockaddr_in addrSvr;
+	memset(&addrSvr,0,sizeof(addrSvr));
+	addrSvr.sin_family = AF_INET;
+	addrSvr.sin_port = htons(DEFAULT_SERVER_PORT);//端口号需要设置为网络字节序
+	addrSvr.sin_addr.s_addr = htonl(INADDR_ANY);//INADDR_ANY表示本机任意地址
+	//addrSvr.sin_addr.s_addr = inet_addr("127.0.0.1");//也可以直接设置127.0.0.1，表示本机地址，如果是网络环境，需要设置当前网络地址
+	//inet_aton("127.0.0.1",&addrSvr.sin_addr);//也可以这样赋值
+
+	//绑定地址，因为参数是sockaddr所以这里强转一下，sockaddr_in是可以强转成sockaddr的
+	int bindResult = bind(socketfd,(struct sockaddr*)&addrSvr,sizeof(addrSvr));
+	if(bindResult < 0){
+		close(socketfd);
+		printf("[createSocketServer]bind socket failed ,socketfd is %d\n",socketfd);
+		perror("[createSocketServer]bind socket failed");
+		return;
+	}
+	printf("[createSocketServer]bind socket success ,socketfd is %d ,port is %d ,ip is %s\n",
+				socketfd,ntohs(addrSvr.sin_port),inet_ntoa(addrSvr.sin_addr));
+
+	int listenResult = listen(socketfd,SOMAXCONN);
+	if(listenResult < 0){
+		close(socketfd);
+		printf("[createSocketServer]listen socket failed ,socketfd is %d\n",socketfd);
+		perror("[createSocketServer]listen socket failed");
+		return;
+	}
+	printf("[createSocketServer]listen socket successed ,socketfd is %d\n",socketfd);
+
+	//因为使用的是ipv4协议，所以用sockaddr_in结构体接受数据，方便使用，在appcet的时候需要强转一下
+	struct sockaddr_in clientAddr;
+	socklen_t clientAddrLen = sizeof(struct sockaddr_in);
+	int acceptfd = accept(socketfd,(struct sockaddr*)&clientAddr,&clientAddrLen);
+	if(acceptfd < 0){
+		close(socketfd);
+		printf("[createSocketServer]accept socket failed:socketfd is %d ,clientAddrLen is %d,acceptfd is %d\n",socketfd,clientAddrLen,acceptfd);
+		perror("[createSocketServer]accept socket failed");
+		return;
+	}
+	printf("[createSocketServer]accept a client ,socketfd is %d , acceptfd is %d\n",socketfd,acceptfd);
+	//accept成功后，可以使用read阻塞读取acceptfd文件描述符中的数据
+	char recvbuf[1024];
+	char *backMessage = "server receive message success";
+	while(1){
+		memset(&recvbuf,0,sizeof(recvbuf));
+		read(acceptfd,recvbuf,sizeof(recvbuf));
+		printf("[createSocketServer]read message : %s\n",recvbuf );
+
+		if(!strcmp("over",recvbuf)){
+			break;
+		}
+		size_t msgSize = strlen(backMessage);
+		write(acceptfd,backMessage,msgSize);
+	}
+	close(acceptfd);
+	close(socketfd);
+	printf("[createSocketServer] close\n");
+}
+
 
 
