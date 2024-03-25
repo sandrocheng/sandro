@@ -8,7 +8,7 @@
 		struct sockaddr_in{
 			//整个sockaddr_in结构的长度，在4.3BSD-Reno版本之前的第一个成员是sin_family
 			uint8_t sin_len;
-			//指定该地址家族，在这里必须设为AF_INET，
+			//指定该地址家族，ipv4协议为AF_INET，
 			//socket不仅可以用于ipv4协议还可以用于linux域协议，ipv6协议等，设置为AF_INET，说明此时使用IPv4协议
 			sa_family_t sin_family;
 			//端口
@@ -73,7 +73,7 @@
 		//将标准ip地址转换为32位整数：比如192.168.0.1转换为一个32位整数
 		in_addr_t inet_addr(const char *cp);
 
-		//将整形地址结构数据转换为 标准ip地址字符串
+		//将网络字节序地址转换为 标准ip地址字符串
 		char *inet_ntoa(struct in_addr in);
 	
 	-代码 ：c-pro/linuxProjects/linuxSocket/socketFun.c --> addrRevert函数
@@ -175,17 +175,40 @@
 		*/
        		int connect(int sockfd, const struct sockaddr *addr,socklen_t addrlen);	
 
+	-当连接建立后，可以通过netstat命令查看当前系统所有的连接和端口
+
 	-代码 ：c-pro/linuxProjects/linuxSocket/socketFun.c --> createSocketServer ,创建一个回射服务器
 		c-pro/linuxProjects/linuxSocket/socketFun.c --> createSocketClient ,创建一个回射客户端
 
 	
+8、REUSEADDR
+	-服务器端尽可能使用REUSEADDR
+	 在绑定之前尽可能调用setsockopt来设置REUSEADDR套接字选项。
+	 使用REUSEADDR选项可以使得不必等待TIME_WAIT状态消失就可以重启服务器。否则重启服务器的时候，当前使用的Ip实际上是TIME_WAIT状态，此时绑定ip会失败。
+	
+	-setsockopt函数,使用man 2 setsockopt查看手册
+		#include <sys/types.h>          /* See NOTES */
+       		#include <sys/socket.h>
 
+		/**
+		* sockfd:套接字描述符
+		* level:选项级别，一般设置为SOL_SOCKET
+		* optname:每个level有不同的选项，REUSEADDR对应的是SO_REUSEADDR
+		* optval:optname的值，SO_REUSEADDR设置为1的时候是开启
+		* optlen:optval的长度
+		*
+		* return: 0,成功；-1，失败
+		*/
+       		int setsockopt(int sockfd, int level, int optname,const void *optval, socklen_t optlen);
 
+	-代码 ：c-pro/linuxProjects/linuxSocket/socketFun.c --> createSocketServer 
 
+9、服务端并发处理多客户端的连接
+	c-pro/linuxProjects/linuxSocket/socketFun.c--> createSocketServer
+	这个列子实际上只能处理一个客户端连接，并不合理，为了达到socket的并发效果，可以在服务端使用子进程的方式并发处理多个客户端的连接。
+	代码：c-pro/linuxProjects/linuxSocket/multiClientServerByFork.c--> createMultiClientServerByFork
 
-
-
-
-
+10、点对点聊天程序
+	代码：c-pro/linuxProjects/linuxSocket/p2pChat.c
 
 		

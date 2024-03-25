@@ -8,6 +8,8 @@
 #ifndef LINUXSOCKET_H_
 #define LINUXSOCKET_H_
 #include "socketFun.h"
+#include "multiClientServerByFork.h"
+#include "p2pChat.h"
 
 static void showAppHelp();
 

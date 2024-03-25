@@ -7,8 +7,6 @@
 
 #include "socketFun.h"
 
-#define DEFAULT_SERVER_PORT 5188
-
 void checkEdian(){
 	unsigned int x = 0x12345678;
 	unsigned char *p = (unsigned char*)&x;
@@ -42,7 +40,7 @@ void createSocketClient(){
 
 	struct sockaddr_in addrSvr;
 	addrSvr.sin_family = AF_INET;
-	addrSvr.sin_port = htons(DEFAULT_SERVER_PORT);
+	addrSvr.sin_port = htons(SOCKETFUN_SERVER_PORT);
 	addrSvr.sin_addr.s_addr = inet_addr("127.0.0.1");
 
 	int connectResult = connect(socketfd,(struct sockaddr*)&addrSvr,sizeof(addrSvr));
@@ -60,7 +58,7 @@ void createSocketClient(){
 		memset(&sendBuf,0,sizeof(sendBuf));
 		memset(&recvBuf,0,sizeof(recvBuf));
 
-		sprintf(sendBuf,"message from client , sendNum is %d " ,i);
+		sprintf(sendBuf,"message from client[%d] , sendNum is %d " ,getpid(),i);
 		write(socketfd,sendBuf,strlen(sendBuf));
 		read(socketfd,recvBuf,512 * sizeof(char));
 
@@ -81,10 +79,17 @@ void createSocketServer(){
 	}
 	printf("[createSocketServer]create socket successed ,socketfd is %d\n",socketfd);
 
+	int on = 1;
+	if(setsockopt(socketfd,SOL_SOCKET,SO_REUSEADDR,&on,sizeof(on))<0){
+		close(socketfd);
+		perror("[createSocketServer]setsockopt failed");
+		return;
+	}
+
 	struct sockaddr_in addrSvr;
 	memset(&addrSvr,0,sizeof(addrSvr));
 	addrSvr.sin_family = AF_INET;
-	addrSvr.sin_port = htons(DEFAULT_SERVER_PORT);//端口号需要设置为网络字节序
+	addrSvr.sin_port = htons(SOCKETFUN_SERVER_PORT);//端口号需要设置为网络字节序
 	addrSvr.sin_addr.s_addr = htonl(INADDR_ANY);//INADDR_ANY表示本机任意地址
 	//addrSvr.sin_addr.s_addr = inet_addr("127.0.0.1");//也可以直接设置127.0.0.1，表示本机地址，如果是网络环境，需要设置当前网络地址
 	//inet_aton("127.0.0.1",&addrSvr.sin_addr);//也可以这样赋值
@@ -119,11 +124,15 @@ void createSocketServer(){
 		perror("[createSocketServer]accept socket failed");
 		return;
 	}
-	printf("[createSocketServer]accept a client ,socketfd is %d , acceptfd is %d\n",socketfd,acceptfd);
+	char *clientIP = inet_ntoa(clientAddr.sin_addr);
+	printf("[createSocketServer]accept a client ,socketfd is %d , acceptfd is %d,clientIp is %s,clientPort is %d\n",
+			socketfd,acceptfd,clientIP,clientAddr.sin_port);
 	//accept成功后，可以使用read阻塞读取acceptfd文件描述符中的数据
 	char recvbuf[1024];
 	char *backMessage = "server receive message success";
 	while(1){
+		//这种写法，服务端只能从队列中拿到一个客户端连接，当客户端连接断开以后，服务器端也就结束了
+		//实际上socket是可以获取多个客户端连接并发操作的
 		memset(&recvbuf,0,sizeof(recvbuf));
 		read(acceptfd,recvbuf,sizeof(recvbuf));
 		printf("[createSocketServer]read message : %s\n",recvbuf );

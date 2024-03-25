@@ -24,8 +24,16 @@
 			d)domain,指定windows域控制服务器来验证用户的账号和密码
 			注意：samba 4不再支持 security = share
 		        
-		在global 节点加入：server min protocol = NT1，使用smb1.0协议，有些设备比如投影仪只能使用1.0版本协议
-	
+		在global 节点加入：
+			server min protocol = NT1，使用smb1.0协议，有些设备比如投影仪只能使用1.0版本协议
+
+			//以下是优化传输速率的
+			socket options = TCP_NODELAY
+   			aio write size = 65535
+   			aio write behind = true
+   			max xmit = 65535
+   			large readwrite = yes
+
 		在文件最后面追加一个自定义节点[mywork],用来共享/home/sandro/mywork 目录下的文件
 			[mywork]
 			# 描述

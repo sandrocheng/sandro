@@ -16,6 +16,9 @@
 #include <sys/types.h>//OSIX Standard: 2.6 Primitive System Data Types
 #include <unistd.h>
 #include "tools.h"
+
+#define SOCKETFUN_SERVER_PORT 5188
+
 /**
  * 查看当前系统的字节序
  * 把系统字节序转换位网络字节序
