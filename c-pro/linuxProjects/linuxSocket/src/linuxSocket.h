@@ -10,6 +10,8 @@
 #include "socketFun.h"
 #include "multiClientServerByFork.h"
 #include "p2pChat.h"
+#include "fixedMessage.h"
+#include "packetMsg.h"
 
 static void showAppHelp();
 

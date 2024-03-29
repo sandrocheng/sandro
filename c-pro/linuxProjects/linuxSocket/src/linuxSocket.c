@@ -34,6 +34,14 @@ int main(int argc,char* argv[]) {
 		startUserA();
 	}else if(!strcmp("p2pChatB",argv[1])){
 		startUserB();
+	}else if(!strcmp("fixedMsgServer",argv[1])){
+		fixedMsgServer();
+	}else if(!strcmp("fixedMsgClient",argv[1])){
+		fixedMsgClient();
+	}else if(!strcmp("packetMsgServer",argv[1])){
+		packetMsgServer();
+	}else if(!strcmp("packetMsgClient",argv[1])){
+		packetMsgClient();
 	}else{
 		printf("请根据help选择需要的参数");
 		showAppHelp();
@@ -50,6 +58,10 @@ void showAppHelp(){
 	printf("createMultiClientServerByFork 创建socket服务器，使用子进程并发处理多个客户端的连接,对应的客户端还是createSocketClient\n");
 	printf("p2pChatA 创建p2p聊天用户A\n");
 	printf("p2pChatB 创建p2p聊天用户B，运行之前要先创建p2pChatA\n");
+	printf("fixedMsgServer 创建socket服务，使用定长包的方式接收和发送数据\n");
+	printf("fixedMsgClient 向fixedMsgServer发送定长数据，并接收服务端的定长回执\n");
+	printf("packetMsgServer 创建socket服务，使用自定义数据包格式接收和发送数据n");
+	printf("packetMsgClient 向packetMsgServer发送自定义数据包格式的数据，并接收服务端的回执\n");
 	printf("=========================================================================================================================================================\n");
 
 }

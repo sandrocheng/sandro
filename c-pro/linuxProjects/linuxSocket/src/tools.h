@@ -9,6 +9,7 @@
 
 #include <time.h>
 #include <string.h>
+#include <stdio.h> //常规c标准库
 
 /**
  * 将当前时间转化为一个中文字符串
