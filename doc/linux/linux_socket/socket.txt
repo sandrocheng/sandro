@@ -315,11 +315,26 @@
 	使用子进程处理连接数据的时候，当子进程退出，而父进程没有使用使用wait或者waitpid完成对子进程的回收，此时会出现僵尸进程。直到主进程退出,这些僵尸进程才会被init进程回收掉
 	可以使用信号来处理，当子进程退出的时候通知主进程回收资源。
 	案例：c-pro/linuxProjects/linuxSocket/multiClientServerByFork.c--> createMultiClientServerByFork
-	
 
+18、TCP的11种状态
+	-TCP状态，如图：18_TCP状态和socket接口对应关系	
 
+	-启动案例中的服务
+		netstat -an | grep tcp | grep [端口号]
+	 观察服务启动后TCP会处与LISTEN状态
+	 当客户端连接后，会看到对应端口的TCP会有两条记录，状态是ESTABLISH状态，有些状态持续时间会比较短，很难观察到。
 
+	-TIME_WAIT状态
+	 当一方close后，经过4次挥手，对方会先变成TIME_WAIT状态，此时内核会等待两倍的MSL时间，才会变成CLOSED状态。
+	 在此期间，如果不使用REUSEADDR来设置socket再次启动会失败。
 
+19、SIGPIPE信号
+	-往一个已经接收到FIN的套接口中写是允许的，接收到FIN仅仅代表对方不再发送数据。
+	-在write数据后，如果对方进程已经不存在，TCP会返回RST段。
+	-在收到RST段后，如果在调用write就会产生SIGPIPE信号，收到这个信号，进程就会被关闭，对于这个信号的处理我们通常忽略即可
+		signal(DIGPIPE,SIG_IGN);
+	-SIGPIPE 信号是用于管道通信的，当往一个没有接收方的管道发送数据的时候就会产生SIGPIPE信号
+	 TCP可以理解为是一个全双工的管道，因此也会触发这个信号。
 
 
 
