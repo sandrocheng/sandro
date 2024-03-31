@@ -63,7 +63,7 @@ void createMultiClientServerByFork(){
 		}
 		char *clientIP = inet_ntoa(clientAddr.sin_addr);
 		printf("[createMultiClientServerByFork]accept a client ,socketfd is %d , acceptfd is %d,clientIp is %s,clientPort is %d\n",
-				socketfd,acceptfd,clientIP,clientAddr.sin_port);
+				socketfd,acceptfd,clientIP,ntohs(clientAddr.sin_port));
 		pid = fork();
 		if(pid < 0){
 			close(socketfd);

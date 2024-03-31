@@ -12,6 +12,7 @@
 #include "p2pChat.h"
 #include "fixedMessage.h"
 #include "packetMsg.h"
+#include "readline.h"
 
 static void showAppHelp();
 

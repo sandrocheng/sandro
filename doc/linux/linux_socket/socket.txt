@@ -229,5 +229,94 @@
 		3、包头加上包体长度
 		4、更复杂的应用层协议比如google的 Protocol Buffers协议
 
-	 
+12、recv函数
+	-功能：和read函数一样，都可以从套接字描述符中把数据读到一个buffer中，但是recv只能用于套接口IO，不能用于文件IO以及其他IO，read函数是可以读取任意IO的。
+	       recv比read多了一个flag参数，通过设置flag参数，可以指定接收的行为。
+		#include <sys/types.h>
+       		#include <sys/socket.h>
+		
+		/**
+		*	
+		* flags: 指定接收的行为
+		*        MSG_OOB，传输层协议使用带外数据（out-of-band，OOB）来发送一些重要的数据，如果通信一方有重要的数据需要通知对方时，协议能够将这些数据快速地发送到对方。
+		*	          为了发送这些数据，协议一般不使用与普通数据相同的通道，而是使用另外的通道。linux系统的套接字机制支持低层协议发送和接受带外数据。
+		*                 但是TCP协议没有真正意义上的带外数据。为了发送重要协议，TCP提供了一种称为紧急模式（urgent mode）的机制。TCP协议在数据段中设置URG位，表示进入紧急模式。
+		*                 接收方可以对紧急模式采取特殊的处理。很容易看出来，这种方式数据不容易被阻塞，并且可以通过在我们的服务器端程序里面捕捉SIGURG信号来及时接受数据。
+		*        MSG_PEEK，可以接收缓冲区的数据，但是并不将数据从缓冲区清除。 
+		*/
+	 	ssize_t recv(int sockfd, void *buf, size_t len, int flags);
+		
+	-案例：c-pro/linuxProjects/linuxSocket/readline.c 使用recv配和MSG_PEEK参数实现readline功能。
+
+13、getsockname函数
+	-功能：获取socket的地址
+		#include <sys/socket.h>
+		/**
+		* sockfd:套接字接口
+		* addr : 返回的数据通过addr返回
+		* 
+	        * return : 0，成功；-1失败
+		*/
+       		int getsockname(int sockfd, struct sockaddr *addr, socklen_t *addrlen);
+
+	-案例：c-pro/linuxProjects/linuxSocket/readline.c createReadlineClient
+
+	-关联 int getpeername(int sockfd, struct sockaddr *addr, socklen_t *addrlen);
+	      在服务端accept后，客户端connect之后，虽然accept和connect也会返回对方ip和端口，但有的时候为了方便accept和connect的addr和addrlen参数会被设置为NULL，	
+	      这个时候可以用getpeername根据sockfd重新获取对方的ip和端口号。
+
+14、gethostname
+	-功能：获取当前主机的名字,这个函数和socket连接没什么直接关系
+		#include <unistd.h>
+		
+		/**
+		* name:名称会返回到这个地址上
+		* len:字符串长度
+		*
+		* return: 0,成功；-1,失败
+		/*		
+		int gethostname(char *name, size_t len);
+
+	-案例：c-pro/linuxProjects/linuxSocket/readline.c createReadlineClient
+
+		
+15、gethostbyname
+	-功能：根据主机名称获取ip地址
+		#include <netdb.h>
+		
+		struct hostent *gethostbyname(const char *name);
+           	
+		struct hostent {
+               		char  *h_name;            /* official name of host */
+               		char **h_aliases;         /* alias list */
+               		int    h_addrtype;        /* host address type */
+               		int    h_length;          /* 这个是地址列表中每个地址占用多少个字节 */
+               		char **h_addr_list;       /* list of addresses ，一般第一个地址就是默认地址*/
+           	}
+
+	-案例：c-pro/linuxProjects/linuxSocket/readline.c createReadlineClient
+
+16、gethostbyaddr
+	-功能：根据主机的ip获取主机信息和gethostbyname差不多
+		有效的地址类型为AF_INET和AF_INET6
+
+		#include <sys/socket.h> 
+		/**
+		* addr:ip地址，需要使用in_addr结构体
+		*      struct in_addr addr; 
+		*      inet_pton(AF_INET,"127.0.0.1",&addr);//需要转换一下
+		* len:addr的长度
+		* type:AF_INET(ipv4)或AF_INET6(ipv6)
+		*/
+		struct hostent *gethostbyaddr(const void *addr,socklen_t len, int type);
+	-案例：c-pro/linuxProjects/linuxSocket/readline.c createReadlineClient
+
+
+
+
+
+
+
+
+
 		

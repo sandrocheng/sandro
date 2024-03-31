@@ -102,7 +102,7 @@ void fixedMsgServer(){
 	}
 	char *clientIP = inet_ntoa(clientAddr.sin_addr);
 	printf("[fixedMsgServer]accept a client ,socketfd is %d , acceptfd is %d,clientIp is %s,clientPort is %d\n",
-			socketfd,acceptfd,clientIP,clientAddr.sin_port);
+			socketfd,acceptfd,clientIP,ntohs(clientAddr.sin_port));
 	//accept成功后，可以使用read阻塞读取acceptfd文件描述符中的数据
 	char recvbuf[1024]={0};
 	char time[60]={0};

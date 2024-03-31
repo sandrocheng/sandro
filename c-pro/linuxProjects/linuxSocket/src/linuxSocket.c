@@ -42,6 +42,10 @@ int main(int argc,char* argv[]) {
 		packetMsgServer();
 	}else if(!strcmp("packetMsgClient",argv[1])){
 		packetMsgClient();
+	}else if(!strcmp("createReadlineServer",argv[1])){
+		createReadlineServer();
+	}else if(!strcmp("createReadlineClient",argv[1])){
+		createReadlineClient();
 	}else{
 		printf("请根据help选择需要的参数");
 		showAppHelp();
@@ -62,6 +66,8 @@ void showAppHelp(){
 	printf("fixedMsgClient 向fixedMsgServer发送定长数据，并接收服务端的定长回执\n");
 	printf("packetMsgServer 创建socket服务，使用自定义数据包格式接收和发送数据n");
 	printf("packetMsgClient 向packetMsgServer发送自定义数据包格式的数据，并接收服务端的回执\n");
+	printf("createReadlineServer 创建socket服务，使用readline的方式读取createReadlineClient发送的数据\n");
+	printf("createReadlineClient 创建socket客户端，使用readline的方式读取createReadlineServer返回的数据\n");
 	printf("=========================================================================================================================================================\n");
 
 }

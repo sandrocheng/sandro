@@ -58,7 +58,7 @@ void startUserA(){
 	}
 	char *clientIP = inet_ntoa(clientAddr.sin_addr);
 	printf("[startUserA]accept a client ,socketfd is %d , acceptfd is %d,clientIp is %s,clientPort is %d\n",
-			socketfd,connfd,clientIP,clientAddr.sin_port);
+			socketfd,connfd,clientIP,ntohs(clientAddr.sin_port));
 
 	pid_t pid = fork();
 	if(pid<0){
