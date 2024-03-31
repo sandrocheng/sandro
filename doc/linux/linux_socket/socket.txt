@@ -212,7 +212,7 @@
 	代码：c-pro/linuxProjects/linuxSocket/p2pChat.c
 
 11、流协议与粘包
-	-tcp是基于字节流的传输协议，这说明tcp传输的数据是没有边界的字节流。
+	-tcp是基于字节流的传输协议，只维护发送出去多少，确认了多少，没有维护消息与消息之间的边界。
 	 相对于tcp，udp是基于消息的传输协议，它传输的是数据报，消息与消息之间是有边界的。
        
 	-有边界，无边界反映在对方接收数据的时候处理是不一样的。
@@ -225,8 +225,8 @@
 
 	-粘包解决方案，本质上时要在应用层维护消息与消息的边界
 		1、最简单的方式是定长包。c-pro/linuxProjects/linuxSocket/fixedMessage.c
-		2、包尾加\r\n，比如ftp就是这么处理的。
-		3、包头加上包体长度
+		2、包尾加\r\n，比如ftp就是这么处理的。案例：c-pro/linuxProjects/linuxSocket/readline.c createReadlineClient
+		3、包头加上包体长度。案例：c-pro/linuxProjects/linuxSocket/packetMsg.c
 		4、更复杂的应用层协议比如google的 Protocol Buffers协议
 
 12、recv函数
@@ -298,7 +298,7 @@
 
 16、gethostbyaddr
 	-功能：根据主机的ip获取主机信息和gethostbyname差不多
-		有效的地址类型为AF_INET和AF_INET6
+	       有效的地址类型为AF_INET和AF_INET6
 
 		#include <sys/socket.h> 
 		/**
@@ -311,7 +311,11 @@
 		struct hostent *gethostbyaddr(const void *addr,socklen_t len, int type);
 	-案例：c-pro/linuxProjects/linuxSocket/readline.c createReadlineClient
 
-
+17、僵尸进程与SIGCHLD信号
+	使用子进程处理连接数据的时候，当子进程退出，而父进程没有使用使用wait或者waitpid完成对子进程的回收，此时会出现僵尸进程。直到主进程退出,这些僵尸进程才会被init进程回收掉
+	可以使用信号来处理，当子进程退出的时候通知主进程回收资源。
+	案例：c-pro/linuxProjects/linuxSocket/multiClientServerByFork.c--> createMultiClientServerByFork
+	
 
 
 
