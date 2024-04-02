@@ -336,6 +336,75 @@
 	-SIGPIPE 信号是用于管道通信的，当往一个没有接收方的管道发送数据的时候就会产生SIGPIPE信号
 	 TCP可以理解为是一个全双工的管道，因此也会触发这个信号。
 
+20、五种I/O模型
+	阻塞IO，如图：20_阻塞IO模型
+	非阻塞IO ，如图：20_非阻塞IO模型
+	IO复用(select和poll),如图：20_IO复用模型
+	信号驱动IO,如图：20_信号驱动IO模型
+	异步IO，如图：20_异步IO模型
 
+21、select
+	-功能：详见：doc/linux/linux多路复用/linux多路复用.txt 
 
+		/* According to POSIX.1-2001, POSIX.1-2008 */
+       		#include <sys/select.h>
+
+       		/* According to earlier standards */
+       		#include <sys/time.h>
+       		#include <sys/types.h>
+       		#include <unistd.h>
 		
+		/**
+		* select会阻塞，直到有数据返回，或者超时
+		*
+		* nfds:3个监听集合的文件描述符最大值+1,比如往读集合中加入 1，15，16这三个描述符，其他的集合都设置为NULL，nfds就等于17
+		* readfds:要监听的可读文件描述符集合，如果检测到数据可读，select就返回，设置NULL，表示不检测
+		* writefds:要监听的可写文件描述符集合，设置NULL，表示不检测
+		* exceptfds:要监听的异常文件描述符集合，设置NULL，表示不检测
+		* timeout:本次调用的超时时间 ，NULL，代表没有超时
+		* 
+		* return:大于0，就绪的文件描述符数; 等与0，超时;小于0，出错
+		*/
+		int select(int nfds, fd_set *readfds, fd_set *writefds,fd_set *exceptfds, struct timeval *timeout);
+
+		/**
+		* 将fd从集合中移除
+		*/
+        	void FD_CLR(int fd, fd_set *set);
+
+		/**
+		* 判断fd是否在集合中
+		/*
+        	int  FD_ISSET(int fd, fd_set *set);
+
+		/**
+		* 将fd添加到集合中
+		*/
+        	void FD_SET(int fd, fd_set *set);
+
+		/*
+		* 清空集合
+		*/
+        	void FD_ZERO(fd_set *set);
+
+	-使用select的优点
+	 在简单的回射模型中，服务端和客户端建立连接后，服务端退出，此时如果客户端在某个IO处阻塞住(比如输入输出IO)，没有执行close，就会来不及完成和服务端的4次挥手
+	 由于无法完成四次挥手，此时服务端的TCP状态还处在FIN_WAIT_2状态，客户端处于CLOSE_WAIT状态，这样双方都不能正常完成TCP的关闭操作。	
+
+	 使用select可以统一管理所有IO操作，当有IO变化的时候解除阻塞，逐个处理，这样能提升响应速度，最大程度减少延时，从而避免close不能及时执行的问题。
+
+	-案例：c-pro/linuxProjects/linuxSocket/socketWithSelect.c
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+

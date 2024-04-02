@@ -77,7 +77,7 @@
 			每次调用需要将FD从用户态拷贝到内核态
 			不知道具体是哪个文件描述符就绪，需要遍历全部文件描述符
 			入参的3个fd_set集合每次调用后都需要重置
-		
+		详见：doc/linux/linux_socket/socket.txt 21、select章节	
 	-poll简介
 		/**
 		* pollfd 要监听的文件描述符集合

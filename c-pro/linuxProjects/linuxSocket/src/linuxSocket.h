@@ -13,6 +13,7 @@
 #include "fixedMessage.h"
 #include "packetMsg.h"
 #include "readline.h"
+#include "socketWithSelect.h"
 
 static void showAppHelp();
 
