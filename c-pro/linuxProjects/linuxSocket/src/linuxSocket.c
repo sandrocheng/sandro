@@ -72,8 +72,8 @@ void showAppHelp(){
 	printf("packetMsgClient 向packetMsgServer发送自定义数据包格式的数据，并接收服务端的回执\n");
 	printf("createReadlineServer 创建socket服务，使用readline的方式读取createReadlineClient发送的数据\n");
 	printf("createReadlineClient 创建socket客户端，使用readline的方式读取createReadlineServer返回的数据\n");
-	printf("createSelectSocketServer 创建服务端，使用select管理IO操作\n");
-	printf("createSelectSocketClient 创建客户端，使用select管理IO操作,向createSelectSocketServer发送数据\n");
+	printf("createSelectSocketServer 创建服务端，使用select管理IO操作，只在主进程处理多个客户端的请求\n");
+	printf("createSelectSocketClient 创建客户端，使用select管理 socket和标准输入的IO操作,向createSelectSocketServer发送数据\n");
 	printf("=========================================================================================================================================================\n");
 
 }
