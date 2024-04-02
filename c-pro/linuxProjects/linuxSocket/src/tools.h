@@ -19,4 +19,9 @@ void toDateTimeCh(
 		long timeS /*秒数,0:当前时间*/
 );
 
+/**
+ * 输出带事件的log 如：[2024 年 四月 2 日 ，周二,20 点 27 分 35 秒] xxxxxxx
+ */
+void timelog(char *buf);
+
 #endif /* TOOLS_H_ */

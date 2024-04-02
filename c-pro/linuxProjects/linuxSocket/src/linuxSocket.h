@@ -14,6 +14,8 @@
 #include "packetMsg.h"
 #include "readline.h"
 #include "socketWithSelect.h"
+#include "caseShutdown.h"
+
 
 static void showAppHelp();
 

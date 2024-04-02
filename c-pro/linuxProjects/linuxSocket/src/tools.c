@@ -6,6 +6,13 @@
 
 #include "tools.h"
 
+void timelog(char *buf){
+	char time[60]={0};
+	toDateTimeCh(time,0);
+	printf("[%s] %s \n" ,time,buf);
+
+}
+
 void toDateTimeCh(char* timeStr,long timeS ){
 	const char *days[] = {"周日","周一","周二","周三","周四","周五","周六"};
 	const char *months[] = {"一月","二月","三月","四月","五月","六月"

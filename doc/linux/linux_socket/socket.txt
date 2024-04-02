@@ -406,7 +406,36 @@
 
 	-案例：c-pro/linuxProjects/linuxSocket/socketWithSelect.c
 
+22、close和shutdown的区别
+	-close终止了数据传送的两个方向。
+	 比如 : A B两端建立socket连接后，A得到了socketA 套接字，B得到了socketB套接字。
+		当A调用close(socketA)的时候，代表A即不能从socketA中获取数据，也不能通过SocketA发送数据。
+		此时B会收到A的FIN段，说明A不会再给B发送数据，但是B还是可以通过socketB向A发送数据的，发送后，B会收到RST段，当B再次使用socketB发送数据的时候就会收到SIGPIPE信号。
+		如果B没有监听或者忽略SIGPIPE信号，系统会杀死B进程。
 
+	-shutdown可以有选择的终止某个方向的数据传送或者终止数据传送的两个方向。
+	 如图：22_close和shutdown的区别
+
+	-shutdown how=1就可以保证对等方接收到一个EOF字符，而不管其他进程是否已经打开了套接字。
+	 而close不能保证，要等到套接字引用计数减为0时才发送，也就是说直到所有的进程都关闭了套接字才能保证关闭连接。
+
+	 比如父进程得到了accetp返回的sockfd,然后fork子进程去处理这个sockfd。
+	 如果父进程不close掉sockfd，只有子进程close，那么由于同一个套接字被两个进程使用，只关闭一个仅仅是将sockfd的引用计数器-1。
+	 这个时候是不会发送FIN段给对等方的。因此这种情况是不能完成TCP的关闭流程的，	 
+
+	-客户端使用shutdown来通知服务端，客户端任务已经完成，服务端发送最后的消息后，由服务端发起close，客户端read到EOF后再退出，这是相对比较完善的结束连接的机制。
+	
+	-shutdown函数
+		#include <sys/socket.h>
+
+       		/**
+		* how :
+		*     SHUT_RD (0),表示终止的是读
+		*     SHUT_WR (1),表示终止的是写，此时对方会得到EOF字符	，对等方read会返回0
+		*     SHUT_RDWR (2),表示即不能读，也不能写了，对方也会得到EOF字符，对等方read会返回0	
+		*/
+		int shutdown(int sockfd, int how);
+	-案例：c-pro/linuxProjects/linuxSocket/caseShutdown.c
 
 
 
