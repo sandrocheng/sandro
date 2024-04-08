@@ -11,9 +11,13 @@
 #include "linuxSocket.h"
 
 int main(int argc,char* argv[]) {
-	printf("argc is %d\n",argc);
+	char *buf[512]={0};
+	sprintf(buf, "argc is %d",argc);
+	timelog(buf);
 	for(int i=0;i<argc;i++){
-		printf("argv[%d] is %s\n",i,argv[i]);
+		memset(buf,0,sizeof(buf));
+		sprintf(buf, "argv[%d] is %s",i,argv[i]);
+		timelog(buf);
 	}
 
 	if(argc <= 1 ){
@@ -58,7 +62,10 @@ int main(int argc,char* argv[]) {
 		}else{
 			shutdownClient(0);
 		}
-
+	}else if(!strcmp("createtimeoutSvr",argv[1])){
+		createtimeoutSvr();
+	}else if(!strcmp("createtimeoutCli",argv[1])){
+		createtimeoutCli();
 	}else{
 		printf("请根据help选择需要的参数");
 		showAppHelp();
@@ -93,6 +100,8 @@ void showAppHelp(){
 	printf("shutdownClient [shutdown] 创建客户端,向shutdownServer发送数据\n");
 	printf("                          默认客户端使用close关闭连接，此时服务端会收到SIGPIPE信号，同时write会返回错误\n");
 	printf("                          使用 shutdown 参数，客户端会使用shutdown来关闭连接，不会收到SIGPIPE信号，write可以继续写入\n");
+	printf("createtimeoutSvr 建立socket服务端，使用select在 accept, read,write 的时候判断超时\n");
+	printf("createtimeoutCli 创建socket客户端 ,连接createtimeoutSvr服务端，使用select在 connect, read,write 的时候判断超时\n");
 	printf("=========================================================================================================================================================\n");
 
 }

@@ -437,9 +437,41 @@
 		int shutdown(int sockfd, int how);
 	-案例：c-pro/linuxProjects/linuxSocket/caseShutdown.c
 
+23、套接字超时设置
+	-alarm:使用信号方是进行超时控制
+	       在read之前设置linux的alarm，当收到系统的定时回调的时候，read函数会被打断，这个时候就可以判定超时，并继续执行了。
+			...
+			signal(SIGALARM,sigHandler);
+			alarm(5);
+			...
+			if(ret ==-1 && errno == EINTR){
+				errno = ETIMEDOUT;//设置错误码为超时
+			}else if(ret >= 0) {
+				alarm(0);//当有数据返回的时候，重置闹钟
+			}
+		这种方式会比较复杂，比如闹钟可能还用其他事情，需要区分闹钟回调时处于什么业务当中。
+	       		
+	-套接字选项 SO_SNDTIMEO,SO_RCVTIMEO
+		int timeout = 5;
+		setsockopt(socketfd, SOL_SOCKET, SO_RCVTIMEO, &timeout,sizeof(timeout));
+		...
+		int ret = read(sockfd,buf,sizeof(buf));
+		if(ret ==-1 && errno == EWOULDBLOCK){
+			//超时
+			errno = ETIMEDOUT;
+		}
+	 这种方案，不是所有TCP的实现都支持，不是特别好。
 
-
- 
+	-select,使用select 的 timeout参数，监听各个操作超时情况。
+		read_timeout函数封装
+		write_timeout函数封装
+		accept_timeout函数封装
+		connetc_timeout函数封装:
+			connect比较复杂，connect实际上是完成TCP连接的三次握手的过程，发起方发送SYN到应答返回的时间是1次往返时间，整个三次握手是1.5次的往返时间
+			一次往返时间简称 RTT(Round-Trip Time),通常三次握手会很快完成，但是在广域网上常常会发生拥塞，connect默认最长会等待75秒的时间。	
+		案例：c-pro/linuxProjects/linuxSocket/timeoutsocket.c
+		
+ 	
 
 
 

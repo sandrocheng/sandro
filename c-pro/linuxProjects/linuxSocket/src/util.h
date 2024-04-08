@@ -19,6 +19,7 @@
 #include <errno.h>
 #include "tools.h"
 #include <netdb.h>
+#include <fcntl.h>//unix标准中通用的头文件，其中包含的相关函数有 open，fcntl，shutdown，unlink，fclose等！
 
 /**
  * 创建socket ,绑定地址端口，监听socket
@@ -39,6 +40,18 @@ int createServerSocket(int port);
 int createServerSocketWithSingleClient(int port,int *connfd);
 
 /**
+ * 创建socket ,绑定地址端口，监听socket
+ * 因为确定只会有一个客户端连接，所以直接accept，并阻塞返回acceptfd
+ *
+ * port : 端口号
+ * connfd : 当收到连接的时候会解除阻塞，并设置连接的套接字描述符
+ * wait_seconds : 0,不设置超时
+ * 				accept等待时间，超时返回-1，并且设置errno=ETIMEDOUT
+ * return : 失败，-1；成功 socketfd,
+ */
+int createServerSocketWithSingleClientTimeout(int port,int *connfd,int wait_seconds);
+
+/**
  * 创建客户端socket,并连接对方ip和端口号
  * port,目标端口号
  * ip:对方ip地址
@@ -46,6 +59,15 @@ int createServerSocketWithSingleClient(int port,int *connfd);
  * ,return : 失败，-1；成功 socketfd
  */
 int createClientSocket(int port,char *ip);
+
+/**
+ * 创建客户端socket,并连接对方ip和端口号,如果超时没有连接上则返回失败
+ * port,目标端口号
+ * ip:对方ip地址
+ * wait_seconds ： 等待connect的时间
+ * ,return : 失败，-1；成功 socketfd
+ */
+int createClientSocketinTime(int port,char *ip,int wait_seconds);
 
 /**
  * 读取定长数据
@@ -72,5 +94,49 @@ ssize_t readline(int sockfd, void *buf, size_t maxline);
  * 输出hostent类型结果
  */
 void printhostent(struct hostent *host);
+
+/*
+ * 检测读操作是否超时，该函数不包括读操作
+ * wait_seconds : 等待超时的秒数，如果为0，表示不检测超时
+ * return : 0,成功，
+ * 			-1，失败 ，超时返回-1 ，并且errno = ETIMEDOUT
+ */
+int read_timeout_check(int fd,int wait_seconds);
+
+/**
+ * 检测写操作是否超时，不包含写操作
+ * wait_seconds : 等待超时的秒数，如果为0，表示不检测超时
+ * return : 0,成功，
+ * 			-1，失败 ，超时返回-1 ，并且errno = ETIMEDOUT
+ */
+int write_timeout_check(int fd,int wait_seconds);
+
+/**
+ * 设置IO为非阻塞模式
+ * return : 0,成功，
+ * 			-1，失败
+ */
+int active_nonblock(int fd);
+
+/**
+ * 设置IO为阻塞模式
+ * return : 0,成功，
+ * 			-1，失败
+ */
+int deactive_nonblock(int fd);
+
+/**
+ * 使用select的写集合 监听socket
+ * return : 0,成功，
+ * 			-1，失败 ，超时返回-1 ，并且errno = ETIMEDOUT
+ */
+int selectfdInWriteSet(int socketfd,int wait_seconds);
+
+/**
+ * 使用select的读集合 监听socket
+ * return : 0,成功，
+ * 			-1，失败 ，超时返回-1 ，并且errno = ETIMEDOUT
+ */
+int selectfdInReadeSet(int socketfd,int wait_seconds);
 
 #endif /* UTIL_H_ */

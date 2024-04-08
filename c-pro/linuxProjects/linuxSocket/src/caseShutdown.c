@@ -19,7 +19,7 @@ void shutdownServer() {
 	if (sockfd < 0) {
 		return;
 	}
-	signal(SIGPIPE,sigHandler);
+//	signal(SIGPIPE,sigHandler);
 	char recvbuf[1024];
 	char sendbuf[1024];
 	int count = 0;
@@ -48,7 +48,7 @@ void shutdownServer() {
 		printf("[%s] send msg[%d] ret is %d\n",time,count,ret);
 		if(!strcmp(CASESHUTDOWN_MSG_OVER,recvbuf)){
 			//客户端使用close来关闭，从log里可以看到在收到客户端关闭字符5秒后，依然可以写成功，但是此时TCP已经得到了RST段，
-			//如果再次write则进程会收到SIGPIPE信号,并返回写错误,如果没有捕获SIGPIPE信号，如果是是用select来监听socket，会报错
+			//如果再次write则进程会收到SIGPIPE信号,并返回写错误。如果没有捕获/忽略SIGPIPE信号，进程会退出(在eclipse里执行server，进程不会退出，但是在shell终端运行，程序会退出)
 			timelog("client is closed,process will get SIGPIPE signal!");
 			ret = write(connfd,"1",1);
 			printf("write ret is %d\n",ret);

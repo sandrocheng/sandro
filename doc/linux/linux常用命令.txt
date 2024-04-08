@@ -391,6 +391,9 @@
 	du /home/linux　，在/home/linux目录及其每个子目录中显示了磁盘块数
 	du -sh -BG [目录路径]，查看目录的真实大小,不写目录名，查看当前目录总大小(单位 G)
 
+1.31 uptime
+	查看系统启动了多长时间
+
 二、进程相关命令
 2.1 ps
 	ps -ef | grep "xxx"
@@ -612,3 +615,6 @@
 	inux系统中电池信息储存在/sys/class/power_supply/BAT0/目录下，电池当前电量百分比储存在capacity文件下
 	cat /sys/class/power_supply/BAT0/capacity
 
+5.2 关机/重启
+	立刻关机 ：sudo shutdown -h now
+	重启：sudo reboot -f

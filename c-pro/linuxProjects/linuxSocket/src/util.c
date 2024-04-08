@@ -7,29 +7,40 @@
 
 #include "util.h"
 
-int createServerSocketWithSingleClient(int port, int *connfd) {
+int createServerSocketWithSingleClientTimeout(int port,int *connfd,int wait_seconds){
 	int sockfd = createServerSocket(port);
 	if (sockfd < 0) {
 		return sockfd;
 	}
 	struct sockaddr_in clientAddr;
 	socklen_t clientAddrLen = sizeof(struct sockaddr_in);
-	int acceptfd = accept(sockfd, (struct sockaddr*) &clientAddr,
-			&clientAddrLen);
+	int acceptfd = 0;
+	if(wait_seconds > 0){
+		int ret = selectfdInReadeSet(sockfd,wait_seconds);
+		if(ret < 0){
+			return -1;
+		}
+	}
+	acceptfd = accept(sockfd, (struct sockaddr*) &clientAddr,
+					&clientAddrLen);
 	if (acceptfd < 0) {
 		close(sockfd);
 		printf(
-				"[createServerSocketWithSingleClient]accept socket failed:socketfd is %d ,clientAddrLen is %d,acceptfd is %d\n",
+				"[createServerSocketWithSingleClientTimeout]accept socket failed:socketfd is %d ,clientAddrLen is %d,acceptfd is %d\n",
 				sockfd, clientAddrLen, acceptfd);
-		perror("[createServerSocketWithSingleClient]accept socket failed");
+		perror("[createServerSocketWithSingleClientTimeout]accept socket failed");
 		return -1;
 	}
 	char *clientIP = inet_ntoa(clientAddr.sin_addr);
 	printf(
-			"[createServerSocketWithSingleClient]accept a client ,socketfd is %d , acceptfd is %d,clientIp is %s,clientPort is %d\n",
+			"[createServerSocketWithSingleClientTimeout]accept a client ,socketfd is %d , acceptfd is %d,clientIp is %s,clientPort is %d\n",
 			sockfd, acceptfd, clientIP, ntohs(clientAddr.sin_port));
 	*connfd = acceptfd;
 	return sockfd;
+}
+
+int createServerSocketWithSingleClient(int port, int *connfd) {
+	return createServerSocketWithSingleClientTimeout(port,connfd,0);
 }
 
 int createServerSocket(int port) {
@@ -85,15 +96,15 @@ int createServerSocket(int port) {
 	return socketfd;
 }
 
-int createClientSocket(int port, char *ip) {
+int createClientSocketinTime(int port,char *ip,int wait_seconds){
 	int socketfd = socket(AF_INET, SOCK_STREAM, 0);
 	if (socketfd < 0) {
-		printf("[createClientSocket]create socket failed ,socketfd is %d\n",
+		printf("[createClientSocketinTime]create socket failed ,socketfd is %d\n",
 				socketfd);
-		perror("[createClientSocket]create socket failed");
+		perror("[createClientSocketinTime]create socket failed");
 		return -1;
 	}
-	printf("[createClientSocket]create socket successed ,socketfd is %d\n",
+	printf("[createClientSocketinTime]create socket successed ,socketfd is %d\n",
 			socketfd);
 
 	struct sockaddr_in addrSvr;
@@ -101,21 +112,62 @@ int createClientSocket(int port, char *ip) {
 	addrSvr.sin_port = htons(port);
 	addrSvr.sin_addr.s_addr = inet_addr(ip);
 
+	if(wait_seconds > 0){
+		//先设置socketfd的IO操作为非阻塞，让connect可以立即返回，才能对socketfd进行select监听
+		active_nonblock(socketfd);
+	}
 	int connectResult = connect(socketfd, (struct sockaddr*) &addrSvr,
 			sizeof(addrSvr));
-	if (connectResult < 0) {
+	if(wait_seconds > 0){
+		//把socketfd的IO操作重新设置回阻塞IO
+		deactive_nonblock(socketfd);
+	}
+	if(connectResult < 0 && errno == EINPROGRESS){
+		//网络状况很好的情况下，非阻塞模式也可能立刻返回成功
+		//也可能失败，但是当前状态是正在处理中(EINPROGRESS),这种情况就可以使用select开始监听
+		//一旦连接建立成功，就可以进行写操作，因此需要监听写集合
+		int ret = selectfdInWriteSet(socketfd,wait_seconds);
+		if(ret == 0){
+			//这里有两种情况
+			//1.连接建立成功
+			//2.套接字产生错误，此时错误信息不会保存只errno变量中，因此要调用getsockopt来获取
+			int err;
+			socklen_t socklen = sizeof(socketfd);
+			int sockoptret = getsockopt(socketfd,SOL_SOCKET,SO_ERROR,&err,&socklen);
+			if(sockoptret == -1){
+				timelog("[createClientSocketinTime] getsockopt error");
+				close(socketfd);
+				return -1;
+			}
+			if(err != 0){
+				timelog("[createClientSocketinTime] socketfd error");
+				close(socketfd);
+				return -1;
+			}
+			timelog("[createClientSocketinTime] select return connectfd success");
+		}else{
+			close(socketfd);
+			perror("[createClientSocketinTime]selectfdInWriteSet error");
+			return -1;
+		}
+	}
+	else if (connectResult < 0) {
 		close(socketfd);
 		printf(
-				"[createClientSocket]connect socket failed ,socketfd is %d svrfd is %d\n",
+				"[createClientSocketinTime]connect socket failed ,socketfd is %d svrfd is %d\n",
 				socketfd, connectResult);
-		perror("[createClientSocket]connect socket failed");
+		perror("[createClientSocketinTime]connect socket failed");
 		return -1;
 	}
 	printf(
-			"[createClientSocket]connect socket success ,socketfd is %d ,port is %d ,ip is %s ,connectResult is %d\n",
+			"[createClientSocketinTime]connect socket success ,socketfd is %d ,port is %d ,ip is %s ,connectResult is %d\n",
 			socketfd, ntohs(addrSvr.sin_port), inet_ntoa(addrSvr.sin_addr),
 			connectResult);
 	return socketfd;
+}
+
+int createClientSocket(int port, char *ip) {
+	return createClientSocketinTime(port,ip,0);
 }
 
 size_t readn(int fd, void *buf, size_t size) {
@@ -234,4 +286,78 @@ void printhostent(struct hostent *host) {
 			printf("[printhostent] all aliases has %s \n", allalies);
 		}
 	}
+}
+
+int read_timeout_check(int fd,int wait_seconds){
+	if(wait_seconds > 0){//如果有超时时间，则使用select监听，并设置select的超时参数
+		return selectfdInReadeSet(fd,wait_seconds);
+	}//如果没有设置超时时间，则不监听，直接返回0,调用者继续read但是会阻塞
+	return 0;
+}
+
+int write_timeout_check(int fd,int wait_seconds){
+	int ret = 0;
+	if(wait_seconds > 0){//如果有超时时间，则使用select监听，并设置select的超时参数
+		return selectfdInWriteSet(fd,wait_seconds);
+	}//如果没有设置超时时间，则不监听，直接返回0,调用者继续write但是会阻塞
+	return ret;
+}
+
+int active_nonblock(int fd){
+	int flags = fcntl(fd,F_GETFL);
+	if(flags < 0){
+		return -1;
+	}
+	flags |= O_NONBLOCK;
+	return fcntl(fd,F_SETFL,flags);
+}
+
+int deactive_nonblock(int fd){
+	int flags = fcntl(fd,F_GETFL);
+	if(flags < 0){
+		return -1;
+	}
+	flags &= ~O_NONBLOCK;
+	return fcntl(fd,F_SETFL,flags);
+}
+
+int selectfdInWriteSet(int socketfd,int wait_seconds){
+	fd_set connect_fdset;
+	struct timeval timeout;
+	FD_ZERO(&connect_fdset);
+	FD_SET(socketfd,&connect_fdset);
+	timeout.tv_sec = wait_seconds;
+	timeout.tv_usec = 0;
+
+	int ret = 0;
+	do{
+		ret = select(socketfd + 1,NULL,&connect_fdset,NULL,&timeout);
+	}while(ret < 0 && errno ==EINTR);
+	if(ret == 0){
+		errno = ETIMEDOUT;
+		return -1;
+	}else if(ret < 0){
+		return -1;
+	}
+	return 0;
+}
+
+int selectfdInReadeSet(int socketfd,int wait_seconds){
+	fd_set read_fdset;
+	struct timeval timeout;
+	FD_ZERO(&read_fdset);
+	FD_SET(socketfd,&read_fdset);
+	timeout.tv_sec = wait_seconds;
+	timeout.tv_usec=0;
+	int ret = 0;
+	do{
+		ret = select(socketfd+1,&read_fdset,NULL,NULL,&timeout);
+	}while(ret<0 && errno == EINTR);//如果是被信号中断，则继续监听，但此时会重新计算超时时间
+	if(ret == 0){//select 超时返回
+		errno = ETIMEDOUT;
+		return -1;
+	}else if(ret < 0){
+		return -1;
+	}
+	return 0;
 }

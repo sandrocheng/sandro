@@ -19,6 +19,12 @@ void toDateTimeCh(
 		long timeS /*秒数,0:当前时间*/
 );
 
+void toDateTime(
+		char* timeStr, /*返回的字符串指针，建议长度为60*/
+		long timeS, /*秒数,0:当前时间*/
+		int type // 0,中文格式;1，简写
+);
+
 /**
  * 输出带事件的log 如：[2024 年 四月 2 日 ，周二,20 点 27 分 35 秒] xxxxxxx
  */
