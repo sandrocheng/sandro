@@ -1,12 +1,12 @@
 /*
- * socketwithpoll.h
+ * socketwithepoll.h
  *
  *  Created on: 2024年4月9日
  *      Author: sandro
  */
 
-#ifndef SOCKETWITHPOLL_H_
-#define SOCKETWITHPOLL_H_
+#ifndef SOCKETWITHEPOLL_H_
+#define SOCKETWITHEPOLL_H_
 
 #include <stdio.h> //常规c标准库
 #include <stdlib.h>//常规c标准库
@@ -19,13 +19,13 @@
 #include <errno.h>
 #include "tools.h"
 #include "util.h"
-#include <poll.h>
+#include <sys/epoll.h>
 #include <sys/wait.h>//unix类库
 #include <sys/resource.h>
 
-#define SOCKETWITHPOLL_H_CLIENTSIZE 2043
+#define SOCKETWITHEPOLL_H_CLIENTSIZE 3
 
-void createPollSocketSvr();
-void createPollSocketCli();
+void createEPollSocketSvr();
+void createEPollSocketCli();
 
-#endif /* SOCKETWITHPOLL_H_ */
+#endif /* SOCKETWITHEPOLL_H_ */

@@ -549,9 +549,73 @@
 	-案例：c-pro/linuxProjects/linuxSocket/socketwithpoll.c		
  	
 
+26、epoll的使用
+	-功能：监听多个文件描述符事件。	
+		
+		#inclue <sys/epoll.h>
+                /**
+                * 创建epoll
+                * size : epoll要监听的文件描述符数量，实际上epoll内部要创建一个hash表，这个size就是hash表的大小
+		*        这个size并不能代表最大的并发限制，仅仅只代表hash表的大小。
+                * return epoll的文件描述符，后面会根据这个文件描述符来操作epoll
+                */
+                int epoll_create(int size)
+		
+		/*
+		* epoll_create1是比较新的函数，早期的epoll_create在创建前必须要指定size来创建内部的hash表，
+		* epoll_create1内部已经不使用hash表了，而是红黑树，这个时候就不需要指定容量了
+		*
+		* flags:EPOLL_CLOEXEC,表示当进程被替换的时候，文件描述符会被关闭
+		*       默认填0， 根epoll_create一样，但是不需要设置size了
+		*
+		* return epoll的文件描述符，后面会根据这个文件描述符来操作epoll
+		*/
+		int epoll_create1(int flags);
 
 
+                /**
+                * 操作epoll
+                * epfd : epoll的文件描述符，epoll_create创建时返回
+                * op : 操作类型：新增(EPOLL_CTL_ADD) 、删除(EPOLL_CTL_DEL)、更新(EPOLL_CTL_MOD)
+                * fd : 本次要操作的文件描述符
+                * epoll_event 需要监听的事件：读事件、写事件等
+                * return : 0,调用成功; -1，调用失败
+                */
+                int epoll_ctl(int epfd,int op,int fd,struct epoll_event *event)
 
+           	typedef union epoll_data {
+               		void        *ptr;
+               		int          fd;
+               		uint32_t     u32;
+               		uint64_t     u64;
+           	} epoll_data_t;
+
+           	struct epoll_event {
+			/*
+			* Epoll events
+			* EPOLLIN,可读事件
+			* EPOLLOUT，可写事件
+			* ...
+			* 要监听多个事件，使用或运算，如：event.events = EPOLLIN | EPOLLET; 监控读操作，并且使用ET模式
+			*/
+               		uint32_t     events;      
+               		epoll_data_t data;        /* User data variable */
+           	};
+
+
+                /**
+                *  获取就绪事件
+                *  epfd : epoll的文件描述符，epoll_create创建时返回
+                *  events : 用于回传就绪的事件
+                *  maxevents : 每次能处理的最大事件数，比如监听100个文件，但是每次最多处理10个，此时maxevents就设置为10
+                               在这种情况下，如果使用的是LT模式，下次会继续返回，直到所有事件都处理完，如果是ET模式，多余的事件由于是在就绪队列中，所以就会一直阻塞住再也无法触发
+                *  timeout : 等待I/O事件发生的超时时间。-1:相当于阻塞;0:相当于非阻塞
+                *  return : 大于0,已经就绪的文件描述符数; 等于0，超时; 小于0，出错
+                */
+                int epoll_wait(int epfd,struct epoll_event *events,int maxevents ,int timeout);
+
+	-案例：c-pro/linuxProjects/linuxSocket/socketwithepoll.c
+	
 
 
 

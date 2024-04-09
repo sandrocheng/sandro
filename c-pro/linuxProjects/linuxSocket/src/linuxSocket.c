@@ -74,6 +74,8 @@ int main(int argc,char* argv[]) {
 		createPollSocketSvr();
 	}else if(!strcmp("createPollSocketCli",argv[1])){
 		createPollSocketCli();
+	}else if(!strcmp("createEPollSocketSvr",argv[1])){
+		createEPollSocketSvr();
 	}else{
 		printf("请根据help选择需要的参数");
 		showAppHelp();
@@ -116,6 +118,8 @@ void showAppHelp(){
 
 	printf("createPollSocketSvr 创建服务端，使用poll管理IO操作，只在主进程处理多个客户端的请求\n");
 	printf("createPollSocketCli 创建客户端，创建多个子进程，每个子进程向createPollSocketSvr发送5条数据\n");
+
+	printf("createEPollSocketSvr 创建服务端，使用epoll管理IO操作，只在主进程处理多个客户端的请求,可以接收createPollSocketCli发送的数据\n");
 	printf("=========================================================================================================================================================\n");
 
 }
