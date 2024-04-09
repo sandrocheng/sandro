@@ -16,8 +16,6 @@
 #include "socketWithSelect.h"
 #include "caseShutdown.h"
 #include "timeoutsocket.h"
-
-
-static void showAppHelp();
+#include "socketwithpoll.h"
 
 #endif /* LINUXSOCKET_H_ */

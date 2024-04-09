@@ -10,6 +10,8 @@
 
 #include "linuxSocket.h"
 
+static void showAppHelp();
+
 int main(int argc,char* argv[]) {
 	char *buf[512]={0};
 	sprintf(buf, "argc is %d",argc);
@@ -66,6 +68,12 @@ int main(int argc,char* argv[]) {
 		createtimeoutSvr();
 	}else if(!strcmp("createtimeoutCli",argv[1])){
 		createtimeoutCli();
+	}else if(!strcmp("resourceTest",argv[1])){
+		resourceTest();
+	}else if(!strcmp("createPollSocketSvr",argv[1])){
+		createPollSocketSvr();
+	}else if(!strcmp("createPollSocketCli",argv[1])){
+		createPollSocketCli();
 	}else{
 		printf("请根据help选择需要的参数");
 		showAppHelp();
@@ -100,8 +108,14 @@ void showAppHelp(){
 	printf("shutdownClient [shutdown] 创建客户端,向shutdownServer发送数据\n");
 	printf("                          默认客户端使用close关闭连接，此时服务端会收到SIGPIPE信号，同时write会返回错误\n");
 	printf("                          使用 shutdown 参数，客户端会使用shutdown来关闭连接，不会收到SIGPIPE信号，write可以继续写入\n");
+
 	printf("createtimeoutSvr 建立socket服务端，使用select在 accept, read,write 的时候判断超时\n");
 	printf("createtimeoutCli 创建socket客户端 ,连接createtimeoutSvr服务端，使用select在 connect, read,write 的时候判断超时\n");
+
+	printf("resourceTest 读取和设置系统资源\n");
+
+	printf("createPollSocketSvr 创建服务端，使用poll管理IO操作，只在主进程处理多个客户端的请求\n");
+	printf("createPollSocketCli 创建客户端，创建多个子进程，每个子进程向createPollSocketSvr发送5条数据\n");
 	printf("=========================================================================================================================================================\n");
 
 }

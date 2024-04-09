@@ -21,8 +21,6 @@
 #include "tools.h"
 #include "util.h"
 
-#define TIMEOUTSOCKET_PORT 8777
-
 void createtimeoutSvr();
 
 void createtimeoutCli();

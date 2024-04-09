@@ -40,8 +40,8 @@ void createSocketClient(){
 
 	struct sockaddr_in addrSvr;
 	addrSvr.sin_family = AF_INET;
-	addrSvr.sin_port = htons(SOCKETFUN_SERVER_PORT);
-	addrSvr.sin_addr.s_addr = inet_addr("127.0.0.1");
+	addrSvr.sin_port = htons(UTIL_H_COMMON_PORT);
+	addrSvr.sin_addr.s_addr = inet_addr(UTIL_H_COMMON_IP);
 
 	int connectResult = connect(socketfd,(struct sockaddr*)&addrSvr,sizeof(addrSvr));
 	if(connectResult < 0){
@@ -89,7 +89,7 @@ void createSocketServer(){
 	struct sockaddr_in addrSvr;
 	memset(&addrSvr,0,sizeof(addrSvr));
 	addrSvr.sin_family = AF_INET;
-	addrSvr.sin_port = htons(SOCKETFUN_SERVER_PORT);//端口号需要设置为网络字节序
+	addrSvr.sin_port = htons(UTIL_H_COMMON_PORT);//端口号需要设置为网络字节序
 	addrSvr.sin_addr.s_addr = htonl(INADDR_ANY);//INADDR_ANY表示本机任意地址
 	//addrSvr.sin_addr.s_addr = inet_addr("127.0.0.1");//也可以直接设置127.0.0.1，表示本机地址，如果是网络环境，需要设置当前网络地址
 	//inet_aton("127.0.0.1",&addrSvr.sin_addr);//也可以这样赋值
@@ -146,6 +146,32 @@ void createSocketServer(){
 	close(acceptfd);
 	close(socketfd);
 	printf("[createSocketServer] close\n");
+}
+
+void resourceTest(){
+	//在eclipse控制台和shell控制台运行的结果不太一样，这和环境有关,
+	//因为eclipse控制台执行的程序是eclipse的子进程，它会继承eclipse设置的值，eclipse应该是在启动的时候已经调用setrlimit修改过了
+	timelog("resourceTest");
+	struct rlimit rl;
+	if(getrlimit(RLIMIT_NOFILE,&rl) < 0){
+		perror("getrlimit error");
+		return;
+	}
+	printf("max : %d ,cur : %d \n",(int)rl.rlim_max,(int)rl.rlim_cur);
+
+	rl.rlim_max = 2048;
+	rl.rlim_cur = 2048;
+	if(setrlimit(RLIMIT_NOFILE,&rl) < 0){
+		perror("setrlimit error");
+		return;
+	}
+
+	memset(&rl,0,sizeof(rl));
+	if (getrlimit(RLIMIT_NOFILE, &rl) < 0) {
+		perror("getrlimit RLIMIT_NOFILE error");
+		return;
+	}
+	printf("after reset ,max : %d ,cur : %d \n",(int)rl.rlim_max,(int)rl.rlim_cur);
 }
 
 

@@ -21,7 +21,6 @@
 #include "util.h"
 #include <signal.h>
 
-#define CASESHUTDOWN_PORT 8999
 #define CASESHUTDOWN_MSG_OVER "over"
 #define CASESHUTDOWN_MSG_SHUTDOWN "shutdown"
 
@@ -31,8 +30,5 @@ void shutdownServer();
  * closeType : 0,使用close关闭连接；其他，使用shutdown关闭连接
  */
 void shutdownClient(int closeType);
-
-
-static void sigHandler(int sigNO);
 
 #endif /* CASESHUTDOWN_H_ */

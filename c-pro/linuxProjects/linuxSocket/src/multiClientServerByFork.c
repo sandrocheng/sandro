@@ -6,8 +6,20 @@
  */
 #include "multiClientServerByFork.h"
 
+/**
+ * 注册SIGCHLD信号
+ *
+ * return : 0,成功; -1,失败
+ */
+static int regSignal();
+
+/**
+ * 信号回调函数
+ */
+static void sighandler(int sigNO);
+
 void createMultiClientServerByFork() {
-	int socketfd = createServerSocket(MULTICLIENTSERVERBYFORK_SERVER_PORT);
+	int socketfd = createServerSocket(UTIL_H_COMMON_PORT);
 	if (socketfd < 0) {
 		return;
 	}

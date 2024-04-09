@@ -16,8 +16,9 @@
 #include <sys/types.h>//OSIX Standard: 2.6 Primitive System Data Types
 #include <unistd.h>
 #include "tools.h"
-
-#define SOCKETFUN_SERVER_PORT 5188
+#include <sys/time.h>
+#include <sys/resource.h>
+#include "util.h"
 
 /**
  * 查看当前系统的字节序
@@ -41,5 +42,10 @@ void createSocketServer();
  * 创建一个socket回射客户端，并发送数据
  */
 void createSocketClient();
+
+/**
+ * 获取系统资源的例子 getrlimit
+ */
+void resourceTest();
 
 #endif /* SOCKETFUN_H_ */

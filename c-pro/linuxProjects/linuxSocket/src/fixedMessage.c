@@ -7,6 +7,23 @@
 
 #include "fixedMessage.h"
 
+/**
+ * 读取定长数据
+ * fd:套接字描述符
+ * buf:接收buf的地址
+ * size:接收的长度
+ * return : 读取到的字节数； -1,读取失败
+ */
+static size_t readFixedData(int fd,void *buf, size_t size);
+
+/**
+ * fd:套接字描述符
+ * buf:发送buf的地址
+ * size:发送的长度
+ * return ：发送数据的长度，-1 失败
+ */
+static int sendFixedData(int fd,void *buf,size_t size);
+
 void fixedMsgClient(){
 	int socketfd = socket(AF_INET,SOCK_STREAM,0);
 	if(socketfd < 0){
@@ -17,8 +34,8 @@ void fixedMsgClient(){
 
 	struct sockaddr_in addrSvr;
 	addrSvr.sin_family = AF_INET;
-	addrSvr.sin_port = htons(FIXEDMESSAGE_SERVER_PORT);
-	addrSvr.sin_addr.s_addr = inet_addr("127.0.0.1");
+	addrSvr.sin_port = htons(UTIL_H_COMMON_PORT);
+	addrSvr.sin_addr.s_addr = inet_addr(UTIL_H_COMMON_IP);
 
 	int connectResult = connect(socketfd,(struct sockaddr*)&addrSvr,sizeof(addrSvr));
 	if(connectResult < 0){
@@ -65,7 +82,7 @@ void fixedMsgServer(){
 	struct sockaddr_in addrSvr;
 	memset(&addrSvr,0,sizeof(addrSvr));
 	addrSvr.sin_family = AF_INET;
-	addrSvr.sin_port = htons(FIXEDMESSAGE_SERVER_PORT);//端口号需要设置为网络字节序
+	addrSvr.sin_port = htons(UTIL_H_COMMON_PORT);//端口号需要设置为网络字节序
 	addrSvr.sin_addr.s_addr = htonl(INADDR_ANY);//INADDR_ANY表示本机任意地址
 	//addrSvr.sin_addr.s_addr = inet_addr("127.0.0.1");//也可以直接设置127.0.0.1，表示本机地址，如果是网络环境，需要设置当前网络地址
 	//inet_aton("127.0.0.1",&addrSvr.sin_addr);//也可以这样赋值

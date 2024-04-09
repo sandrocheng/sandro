@@ -8,7 +8,7 @@
 #include "packetMsg.h"
 
 void packetMsgServer() {
-	int socketfd = createServerSocket(PCKETMSG_SERVER_PORT);
+	int socketfd = createServerSocket(UTIL_H_COMMON_PORT);
 	if (socketfd < 0) {
 		return;
 	}
@@ -75,7 +75,7 @@ void packetMsgServer() {
 }
 
 void packetMsgClient() {
-	int socketfd = createClientSocket(PCKETMSG_SERVER_PORT, "127.0.0.1");
+	int socketfd = createClientSocket(UTIL_H_COMMON_PORT, UTIL_H_COMMON_IP);
 	if (socketfd < 0) {
 		return;
 	}

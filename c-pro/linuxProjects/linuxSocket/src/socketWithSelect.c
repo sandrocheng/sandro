@@ -5,9 +5,32 @@
  *      Author: sandro
  */
 #include "socketWithSelect.h"
+/**
+ * 读取socket中的数据
+ * return -1,流读取失败;0，成功
+ */
+static int readSocket(int socketfd, char *buf, int buflen);
+
+/**
+ * 从标准输入流中获取数据并发送给服务器
+ */
+static int writeSocketFromStdin(int socketfd, char *buf, int buflen);
+
+/**
+ * 服务段处理连接
+ * clients:用于保存所有的accept连接描述符，数组种默认每个元素都是-1(表示空闲)，如果所有描述符都不是-1，当前的socket连接将会被舍弃
+ * clientSize:clients数组的长度，
+ * return : 小于 0 失败；0 成功
+ */
+static int handleAcceptSocket(int socketfd, int clients[], int clientSize);
+
+/**
+ * 向socket中读写数据
+ */
+static int readAndWriteMessage(int socketfd);
 
 void createSelectSocketServer() {
-	int sockfd = createServerSocket(SOCKETWITHSELECT_PORT);
+	int sockfd = createServerSocket(UTIL_H_COMMON_PORT);
 	if (sockfd < 0) {
 		return;
 	}
@@ -127,7 +150,7 @@ static int handleAcceptSocket(int sockfd, int clients[], int clientSize) {
 }
 
 void createSelectSocketClient() {
-	int sockfd = createClientSocket(SOCKETWITHSELECT_PORT, "127.0.0.1");
+	int sockfd = createClientSocket(UTIL_H_COMMON_PORT, UTIL_H_COMMON_IP);
 	if (sockfd < 0) {
 		return;
 	}

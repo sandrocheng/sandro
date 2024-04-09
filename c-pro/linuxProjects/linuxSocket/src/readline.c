@@ -12,7 +12,7 @@ char messages[][512] =
 
 void createReadlineServer() {
 	int connfd = 0;
-	int sockfd = createServerSocketWithSingleClient(READLINE_SERVER_PORT,
+	int sockfd = createServerSocketWithSingleClient(UTIL_H_COMMON_PORT,
 			&connfd);
 	if (sockfd < 0) {
 		return;
@@ -63,7 +63,7 @@ void createReadlineClient() {
 
 	printf("start socket--------------------------\n");
 	sleep(1);
-	int sockfd = createClientSocket(READLINE_SERVER_PORT, "127.0.0.1");
+	int sockfd = createClientSocket(UTIL_H_COMMON_PORT, UTIL_H_COMMON_IP);
 	if (sockfd < 0) {
 		return;
 	}

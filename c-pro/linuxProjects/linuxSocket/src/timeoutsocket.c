@@ -10,7 +10,7 @@
 void createtimeoutSvr() {
 	int connfd;
 	//10秒中只内，没有客户端连接则退出
-	int sockfd = createServerSocketWithSingleClientTimeout(TIMEOUTSOCKET_PORT,&connfd,10);
+	int sockfd = createServerSocketWithSingleClientTimeout(UTIL_H_COMMON_PORT,&connfd,10);
 	if (sockfd < 0) {
 		if(errno == ETIMEDOUT){
 			timelog("[createtimeoutSvr] no client accept in 10 sec,process quit");
@@ -47,7 +47,7 @@ void createtimeoutSvr() {
 }
 
 void createtimeoutCli() {
-	int sockfd = createClientSocketinTime(TIMEOUTSOCKET_PORT, "127.0.0.1",5);
+	int sockfd = createClientSocketinTime(UTIL_H_COMMON_PORT, UTIL_H_COMMON_IP,5);
 	if(sockfd < 0){
 		timelog("createClientSocketinTime error ");
 		return ;

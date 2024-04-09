@@ -24,7 +24,6 @@
 #include <netdb.h>
 
 #define READLINE_MAX_LINE 1024
-#define READLINE_SERVER_PORT 8201
 
 void createReadlineServer();
 

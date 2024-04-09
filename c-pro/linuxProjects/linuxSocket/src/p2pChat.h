@@ -17,8 +17,7 @@
 #include <sys/types.h>//OSIX Standard: 2.6 Primitive System Data Types
 #include <unistd.h>
 #include "tools.h"
-
-#define P2PCHAT_USER_A_PORT 6111
+#include "util.h"
 
 void startUserA();
 

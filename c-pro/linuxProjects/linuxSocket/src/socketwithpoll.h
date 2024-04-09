@@ -1,12 +1,12 @@
 /*
- * packetMsg.h
+ * socketwithpoll.h
  *
- *  Created on: 2024年3月28日
+ *  Created on: 2024年4月9日
  *      Author: sandro
  */
 
-#ifndef PACKETMSG_H_
-#define PACKETMSG_H_
+#ifndef SOCKETWITHPOLL_H_
+#define SOCKETWITHPOLL_H_
 
 #include <stdio.h> //常规c标准库
 #include <stdlib.h>//常规c标准库
@@ -19,14 +19,13 @@
 #include <errno.h>
 #include "tools.h"
 #include "util.h"
+#include <poll.h>
+#include <sys/wait.h>//unix类库
+#include <sys/resource.h>
 
-struct msgPacket{
-	int len;//包体的实际长度
-	char buf[1024];
-};
+#define SOCKETWITHPOLL_H_CLIENTSIZE 2045
 
-void packetMsgServer();
+void createPollSocketSvr();
+void createPollSocketCli();
 
-void packetMsgClient();
-
-#endif /* PACKETMSG_H_ */
+#endif /* SOCKETWITHPOLL_H_ */

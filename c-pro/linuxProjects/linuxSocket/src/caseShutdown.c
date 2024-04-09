@@ -15,11 +15,11 @@ static void sigHandler(int sigNO){
 
 void shutdownServer() {
 	int connfd;
-	int sockfd = createServerSocketWithSingleClient(CASESHUTDOWN_PORT, &connfd);
+	int sockfd = createServerSocketWithSingleClient(UTIL_H_COMMON_PORT, &connfd);
 	if (sockfd < 0) {
 		return;
 	}
-//	signal(SIGPIPE,sigHandler);
+	signal(SIGPIPE,sigHandler);
 	char recvbuf[1024];
 	char sendbuf[1024];
 	int count = 0;
@@ -48,7 +48,9 @@ void shutdownServer() {
 		printf("[%s] send msg[%d] ret is %d\n",time,count,ret);
 		if(!strcmp(CASESHUTDOWN_MSG_OVER,recvbuf)){
 			//客户端使用close来关闭，从log里可以看到在收到客户端关闭字符5秒后，依然可以写成功，但是此时TCP已经得到了RST段，
-			//如果再次write则进程会收到SIGPIPE信号,并返回写错误。如果没有捕获/忽略SIGPIPE信号，进程会退出(在eclipse里执行server，进程不会退出，但是在shell终端运行，程序会退出)
+			//如果再次write则进程会收到SIGPIPE信号,并返回写错误。如果没有捕获/忽略SIGPIPE信号，进程会退出
+			//在eclipse里执行server，进程不会退出，但是在shell终端运行，程序会退出,应该是eclipse已经对这个信号处理过了，
+			//而在eclipse运行程序是eclipse的子进程，因此也继承了eclipse的设置
 			timelog("client is closed,process will get SIGPIPE signal!");
 			ret = write(connfd,"1",1);
 			printf("write ret is %d\n",ret);
@@ -71,7 +73,7 @@ void shutdownServer() {
 }
 
 void shutdownClient(int closeType) {
-	int sockfd = createClientSocket(CASESHUTDOWN_PORT, "127.0.0.1");
+	int sockfd = createClientSocket(UTIL_H_COMMON_PORT, UTIL_H_COMMON_IP);
 	if (sockfd < 0) {
 		return;
 	}

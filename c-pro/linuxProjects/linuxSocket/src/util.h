@@ -21,6 +21,8 @@
 #include <netdb.h>
 #include <fcntl.h>//unix标准中通用的头文件，其中包含的相关函数有 open，fcntl，shutdown，unlink，fclose等！
 
+#define UTIL_H_COMMON_PORT 1557
+#define UTIL_H_COMMON_IP "127.0.0.1"
 /**
  * 创建socket ,绑定地址端口，监听socket
  * port : 端口号

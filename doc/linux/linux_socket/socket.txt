@@ -470,7 +470,83 @@
 			connect比较复杂，connect实际上是完成TCP连接的三次握手的过程，发起方发送SYN到应答返回的时间是1次往返时间，整个三次握手是1.5次的往返时间
 			一次往返时间简称 RTT(Round-Trip Time),通常三次握手会很快完成，但是在广域网上常常会发生拥塞，connect默认最长会等待75秒的时间。	
 		案例：c-pro/linuxProjects/linuxSocket/timeoutsocket.c
+
+24、getrlimit和setrlimit函数
+	-功能:查看/修改系统资源上限
+	      需要注意的是，设置的值不能超过 rlim_max，通常由超级用户设置，并且在程序中不能修改。
+	      在实际应用中，修改这个限制可能需要有 root 权限或者 CAP_SYS_RESOURCE 能力。如果没有这些权限，可能无法正常工作。 		
+	      该函数只能修改当前进程的值。
+		#include <sys/time.h>
+       		#include <sys/resource.h>
 		
+		/**
+		* resource:资源类型，具体可以参考man 2 getrlimit查卡
+		*          RLIMIT_NOFILE,每个进程最多可以打开的文件描述符上限
+		*	   在实际应用中，修改这个限制可能需要有 root 权限或者 CAP_SYS_RESOURCE 能力。如果没有这些权限，上述代码可能无法正常工作。 
+		*
+		*/
+		int getrlimit(int resource, struct rlimit *rlim);
+      		
+		int setrlimit(int resource, const struct rlimit *rlim);
+
+		struct rlimit {
+               		rlim_t rlim_cur;  /* Soft limit ，当前值*/
+               		rlim_t rlim_max;  /* Hard limit ( rlim_cur的上限) */
+           	};
+
+		resource:
+			RLIMIT_AS/RLIMIT_VMEM: 这两个资源表示的是同一个含义，都是只address space限制，可用内存用户地址空间最大长度，会影响到sbrk和mmap函数。
+			RLIMIT_STACK：栈的长度，默认一般是8K
+			RLIMIT_CORE：程序crash后生成的core dump文件的大小，如果为0将不生成对应的core文件。
+			RLIMIT_NOFILE：进程能够打开的最多文件数目，此限制会影响到sysconf的_SC_OPEN_MAX的返回值。
+			RLIMIT_NPROC：每个用户ID能够拥有的最大子进程数目，此限制会影响到sysconf的_SC_CHILD_MAX的返回值。
+			RLIMIT_NICE:对应进程的优先级nice值。
+			RLIMIT_SWAP：进程能够消耗的最大swap空间。
+			RLIMIT_CPU：CPU时间的最大值（秒单位），超过此限制后会发送SIGXCPU信号给进程。
+			RLIMIT_DATA：数据段的最大长度。默认为unlimited
+			RLIMIT_FSIZE：创建文件的最大字节长度。默认为ulimited
+			RLIMIT_MSGQUEUE：为posix消息队列可分配的最大存储字节数
+			RLIMIT_SIGPENDING：可排队的信号最大数量
+			RLIMIT_NPTS：可同时打开的伪终端数目
+			RLIMIT_RSS：最大可驻内存字节长度
+			RLIMIT_SBSIZE：单个用户所有套接字缓冲区的最大长度
+			RLIMIT_MEMLOCK：一个进程使用mlock能够锁定存储空间中的最大字节长度
+	-案例：c-pro/linuxProjects/linuxSocket/socketFun.c -> resourceTest
+
+25、poll函数
+	-功能，和selet类似，但是没有select集合上限的限制
+		#include <poll.h>
+		
+		/*
+		* fds:监听的集合，通常是一个数组 
+		* nfds:要检测IO的个数
+		* timeout:超时事件，单位毫秒
+		*         -1，代表没有超时，永远等待
+		*	  0，会立刻返回，也不会有文件描述符准备好	
+		* return : 大于0，成功
+		*          等于0, 超时
+		*          小于0，出错 ，错误码 errno
+		*/
+       		int poll(struct pollfd *fds, nfds_t nfds, int timeout);
+
+           	struct pollfd {
+               		int   fd;         /* file descriptor */
+               		short events;     /* requested events */
+               		short revents;    /* returned events */
+           	};
+	-event取值
+       		POLLIN , 有数据到来，文件描述符可读
+       		POLLPRI，有紧急数据可读，例如外带数据,和select中的异常集合相对应
+       		POLLOUT，文件可写
+       		POLLERR,错误发生
+       		POLLHUP，关闭
+       		POLLNVAL，非法请求
+		POLLRDHUP，流式套接字半关闭，比如shutdown只关闭了读或写，或者close在TCP的4次挥手中，还没有完成的时候
+       		POLLRDNORM，与POLLIN相同
+       		POLLRDBAND，优先数据可读
+       		POLLWRNORM，与POLLOUT相同
+       		POLLWRBAND，优先数据可写
+	-案例：c-pro/linuxProjects/linuxSocket/socketwithpoll.c		
  	
 
 

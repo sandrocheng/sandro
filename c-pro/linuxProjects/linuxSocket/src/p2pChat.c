@@ -26,7 +26,7 @@ void startUserA(){
 	struct sockaddr_in addrSvr;
 	memset(&addrSvr,0,sizeof(addrSvr));
 	addrSvr.sin_family = AF_INET;
-	addrSvr.sin_port = htons(P2PCHAT_USER_A_PORT);
+	addrSvr.sin_port = htons(UTIL_H_COMMON_PORT);
 	addrSvr.sin_addr.s_addr = htonl(INADDR_ANY);
 	int bindResult = bind(socketfd,(struct sockaddr*)&addrSvr,sizeof(addrSvr));
 	if(bindResult < 0){
@@ -105,8 +105,8 @@ void startUserB(){
 
 	struct sockaddr_in addrSvr;
 	addrSvr.sin_family = AF_INET;
-	addrSvr.sin_port = htons(P2PCHAT_USER_A_PORT);
-	addrSvr.sin_addr.s_addr = inet_addr("127.0.0.1");
+	addrSvr.sin_port = htons(UTIL_H_COMMON_PORT);
+	addrSvr.sin_addr.s_addr = inet_addr(UTIL_H_COMMON_IP);
 
 	int connectResult = connect(socketfd,(struct sockaddr*)&addrSvr,sizeof(addrSvr));
 	if(connectResult < 0){
