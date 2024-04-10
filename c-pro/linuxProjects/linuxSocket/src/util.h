@@ -32,6 +32,14 @@
 int createServerSocket(int port);
 
 /**
+ * 创建并绑定socket
+ * port : 端口号
+ * socketType：socket的类型
+ * return : 失败，-1；成功 socketfd,
+ */
+int createAndBindSocket(int port,int socketType);
+
+/**
  * 创建socket ,绑定地址端口，监听socket
  * 因为确定只会有一个客户端连接，所以直接accept，并阻塞返回acceptfd
  *
@@ -140,5 +148,15 @@ int selectfdInWriteSet(int socketfd,int wait_seconds);
  * 			-1，失败 ，超时返回-1 ，并且errno = ETIMEDOUT
  */
 int selectfdInReadeSet(int socketfd,int wait_seconds);
+
+/**
+ * 不断从一个sockfd 中读取UDP数据
+ */
+void receiveUDPClientData(int sockfd);
+
+/**
+ * 发送UDP数据
+ */
+int sendUDPMsg(int socketfd,int port,char *ip,void *buf,int buflen);
 
 #endif /* UTIL_H_ */

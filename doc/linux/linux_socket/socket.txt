@@ -616,6 +616,67 @@
 
 	-案例：c-pro/linuxProjects/linuxSocket/socketwithepoll.c
 	
+27、UDP
+	-特点:
+		无连接，udp协议内部并没有维护端到端的状态
+		基于消息的数据传输服务
+		不可靠，数据包可能丢失，重复，乱序。缺乏流量控制
+		一般情况下，UDP更加高效
+
+	-注意点：
+		-UDP报文可能会丢失，重复
+		-UDP报文可能会乱序
+		-UDP缺乏流量控制，udp在发送的时候也有发送缓冲区，当缓冲区满了的时候，还是可以继续向缓冲区写入数据的，但是会覆盖掉老的数据。TCP使用了滑动窗口的算法保证了流量控制。
+		-UDP协议数据报文截断,如果接收到数据包大小大于缓冲区的大小的时候，下一次接收并不会把剩下的数据读取回来，这些数据已经被丢弃
+		 比如客户端发送4个字节的数据，服务端使用recvfrom的时候，每次只读取一个字节，当读完第一次后，再次使用recvfrom读取的时候就会阻塞了，直到下一次有新的UDP连接到达。
+		 要想避免截数据的截断问题，发送数据的大小要小于接收端缓冲区的大小。
+		-recvfrom返回0，不代表连接关闭，因为dup是无连接的，实际上发送端使用sendto的时候可以发送一个0字节的数据，这样接收方只会收到一个大概40字节的TCP基础包
+		 这个时候recvfrom就会得到一个0字节的返回。
+		-ICMP异步错误,
+		 接收方无法根据recvfrom返回0得知发送方已经断开连接，这样会一直阻塞在recvfrom的位值
+		 比如在recvfrom之前先调用sendto(对方已经close的情况下)，这个时候再调用recvfrom就会得到ICMP异步错误，但是根据TCPIP协议异步错误是无法返回给未连接的套接口的，因此recvfrom会一直阻塞。
+		-UDP connect，在使用sendto之前，可以先connect，这样再次sendto的时候就不用填写对方的地址了，原因是在connect之后fd对应的对等方地址就已经绑定了
+		-UDP外出接口的确定
+		 假设客户端有两张网卡，一张地址是192.168.1.1另一张是192.168.2.1，
+		 sendto的服务器，如果是192.168.1.xxx,客户端的外出接口就优先选择192.168.1.1
+		 sendto的服务器，如果是192.168.2.xxx,客户端的外出接口就优先选择192.168.2.1
+	-UDP CS 模型，如图：27_UDP的CS模型 
+		
+	-recvfrom
+	 从套接子中读取UDP协议的数据
+       		#include <sys/types.h>
+       		#include <sys/socket.h>
+		
+		/**
+		* buf:用于接收数据的数组
+		* flags:udp默认使用0就可以，其他类型可以参考手册
+		* src_addr,addrlen,指定对方的地址信息，成功返回后这两个值会被填写，不需要的话填 NULL
+		* 
+		* return : 失败返回-1；成功返回接收的数据大小
+		*          
+		*/
+		ssize_t recvfrom(int sockfd, void *buf, size_t len, int flags,
+                        struct sockaddr *src_addr, socklen_t *addrlen);
+
+	-sendto,发送UDP数据，只是把数据拷贝到缓冲区中，并不知道是否已经把数据发送到了对方,如果对方已经close,sendto也不会返回错误
+       		#include <sys/types.h>
+       		#include <sys/socket.h>
+		/**
+		* buf:发送数据的数组
+		* len:发送数据的大小
+		* flags:udp默认使用0就可以，其他类型可以参考手册
+		* src_addr,addrlen,指定对方的地址信息
+		* 
+		* return : 失败返回-1；成功返回发送的数据长度；
+		*          
+		*/
+
+		ssize_t sendto(int sockfd, const void *buf, size_t len, int flags,
+                      const struct sockaddr *dest_addr, socklen_t addrlen);
+
+	-案例：c-pro/linuxProjects/linuxSocket/udpsocket.c
+	
+
 
 
 

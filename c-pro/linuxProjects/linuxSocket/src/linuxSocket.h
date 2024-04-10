@@ -18,5 +18,6 @@
 #include "timeoutsocket.h"
 #include "socketwithpoll.h"
 #include "socketwithepoll.h"
+#include "udpsocket.h"
 
 #endif /* LINUXSOCKET_H_ */

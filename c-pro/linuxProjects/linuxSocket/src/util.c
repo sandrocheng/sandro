@@ -43,20 +43,21 @@ int createServerSocketWithSingleClient(int port, int *connfd) {
 	return createServerSocketWithSingleClientTimeout(port,connfd,0);
 }
 
-int createServerSocket(int port) {
-	int socketfd = socket(AF_INET, SOCK_STREAM, 0);
+
+int createAndBindSocket(int port,int socketType){
+	int socketfd = socket(AF_INET, socketType, 0);
 	if (socketfd < 0) {
-		printf("[createServerSocket]create socket failed ,socketfd is %d\n",
+		printf("[createAndBindSocket]create socket failed ,socketfd is %d\n",
 				socketfd);
 		return -1;
 	}
-	printf("[createServerSocket]create socket successed ,socketfd is %d\n",
+	printf("[createAndBindSocket]create socket successed ,socketfd is %d\n",
 			socketfd);
 
 	int on = 1;
 	if (setsockopt(socketfd, SOL_SOCKET, SO_REUSEADDR, &on, sizeof(on)) < 0) {
 		close(socketfd);
-		perror("[createServerSocket]setsockopt failed");
+		perror("[createAndBindSocket]setsockopt failed");
 		return -1;
 	}
 
@@ -64,7 +65,7 @@ int createServerSocket(int port) {
 	memset(&addrSvr, 0, sizeof(addrSvr));
 	addrSvr.sin_family = AF_INET;
 	addrSvr.sin_port = htons(port); //端口号需要设置为网络字节序
-	addrSvr.sin_addr.s_addr = htonl(INADDR_ANY); //INADDR_ANY表示本机任意地址
+	addrSvr.sin_addr.s_addr = htonl(INADDR_ANY); //INADDR_ANY是通配地址
 	//addrSvr.sin_addr.s_addr = inet_addr("127.0.0.1");//也可以直接设置127.0.0.1，表示本机地址，如果是网络环境，需要设置当前网络地址
 	//inet_aton("127.0.0.1",&addrSvr.sin_addr);//也可以这样赋值
 
@@ -73,14 +74,23 @@ int createServerSocket(int port) {
 			sizeof(addrSvr));
 	if (bindResult < 0) {
 		close(socketfd);
-		printf("[createServerSocket]bind socket failed ,socketfd is %d\n",
+		printf("[createAndBindSocket]bind socket failed ,socketfd is %d\n",
 				socketfd);
-		perror("[createServerSocket]bind socket failed");
+		perror("[createAndBindSocket]bind socket failed");
 		return -1;
 	}
 	printf(
-			"[createServerSocket]bind socket success ,socketfd is %d ,port is %d ,ip is %s\n",
+			"[createAndBindSocket]bind socket success ,socketfd is %d ,port is %d ,ip is %s\n",
 			socketfd, ntohs(addrSvr.sin_port), inet_ntoa(addrSvr.sin_addr));
+
+	return socketfd;
+}
+
+int createServerSocket(int port) {
+	int socketfd = createAndBindSocket(port,SOCK_STREAM);
+	if (socketfd < 0) {
+		return -1;
+	}
 
 	int listenResult = listen(socketfd, SOMAXCONN);
 	if (listenResult < 0) {
@@ -359,5 +369,63 @@ int selectfdInReadeSet(int socketfd,int wait_seconds){
 	}else if(ret < 0){
 		return -1;
 	}
+	return 0;
+}
+
+
+void receiveUDPClientData(int sockfd){
+	char buf[1024];
+	struct sockaddr_in peeraddr;
+	socklen_t peerlen;
+	int ret=0;
+	while(1){
+		memset(buf,0,sizeof(buf));
+		peerlen = sizeof(peeraddr);
+		ret = recvfrom(sockfd,buf,sizeof(buf),0,(struct sockaddr*)&peeraddr,&peerlen);
+		char *clientIP = inet_ntoa(peeraddr.sin_addr);
+		int port = ntohs(peeraddr.sin_port);
+		if(ret == 0){//recvfrom返回0，不代表连接断开
+			memset(buf,0,sizeof(buf));
+			sprintf(buf,"[receiveUDPClientData] client-%d[%s:%d] get 0 size message",sockfd,clientIP,port);
+			timelog(buf);
+			continue;
+		}else if(ret < 0){
+			if(errno == EINTR){
+				continue;
+			}
+			memset(buf,0,sizeof(buf));
+			sprintf(buf,"[receiveUDPClientData] client-%d[%s:%d] recvfrom error",sockfd,clientIP,port);
+			perror(buf);
+			close(sockfd);
+			break;
+		}else{
+			printf("[receiveUDPClientData %s:%d] recvmsg : %s\n",clientIP,port,buf);
+			//发送一个0长度的数据包，做为应答
+			sendUDPMsg(sockfd,port,clientIP,buf,0);
+		}
+	}
+}
+
+int sendUDPMsg(int socketfd,int port,char *ip,void *buf,int buflen){
+	struct sockaddr_in addr;
+	int addrLen = 0;
+	struct sockaddr_in *p_addr = &addr;
+	if(port == 0 || ip == NULL){
+		p_addr = NULL;
+	}else{
+		memset(p_addr,0,sizeof(*p_addr));
+		p_addr->sin_family = AF_INET;
+		p_addr->sin_port = htons(port);
+		p_addr->sin_addr.s_addr = inet_addr(ip);
+		addrLen = sizeof(*p_addr);
+	}
+
+
+    int ret =  sendto(socketfd, buf, buflen ,0,(struct sockaddr *)p_addr, addrLen);
+    if(ret < 0){
+    	perror("[sendUDPMsg] sendto error");
+    	return -1;
+    }
+
 	return 0;
 }
