@@ -15,6 +15,7 @@
 #include <netinet/in.h>//网络库
 #include <sys/socket.h>//socket类库
 #include <sys/types.h>//OSIX Standard: 2.6 Primitive System Data Types
+#include <sys/un.h>//UNIX域 库
 #include <unistd.h>
 #include <errno.h>
 #include "tools.h"
@@ -23,6 +24,7 @@
 
 #define UTIL_H_COMMON_PORT 1557
 #define UTIL_H_COMMON_IP "127.0.0.1"
+#define UTIL_H_COMMON_UNIX_DOMAIN_PATH "/tmp/UTIL_H_COMMON_UNIX_DOMAIN_PATH"
 /**
  * 创建socket ,绑定地址端口，监听socket
  * port : 端口号
@@ -48,6 +50,16 @@ int createAndBindSocket(int port,int socketType);
  * return : 失败，-1；成功 socketfd,
  */
 int createServerSocketWithSingleClient(int port,int *connfd);
+
+/**
+ * 使用UNIX域协议创建socket ,绑定地址端口，监听socket
+ * 因为确定只会有一个客户端连接，所以直接accept，并阻塞返回acceptfd
+ *
+ * connfd : 当收到连接的时候会解除阻塞，并设置连接的套接字描述符
+ * path ： UNIX域协议需要的文件地址路径
+ * return : 失败，-1；成功 socketfd,
+ */
+int createUNIXDOMServerWithSingleClient(int *connfd,char * path);
 
 /**
  * 创建socket ,绑定地址端口，监听socket
@@ -158,5 +170,7 @@ void receiveUDPClientData(int sockfd);
  * 发送UDP数据
  */
 int sendUDPMsg(int socketfd,int port,char *ip,void *buf,int buflen);
+
+
 
 #endif /* UTIL_H_ */

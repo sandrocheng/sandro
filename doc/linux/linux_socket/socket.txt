@@ -676,8 +676,30 @@
 
 	-案例：c-pro/linuxProjects/linuxSocket/udpsocket.c
 	
+28、UNIX域协议
+	-特点：
+		-UNIX域套接字与TCP套接字相比较，再同一台主机的传输速度前者是后者的两倍
+		-UNIX域套接字可以再同一台主机上各进程之间传递描述符
+		-UNIX域套接字与传统套接字的区别是用路径名来表示协议族的描述
 
+	-UNIC域地址结构	
+		#include <sys/un.h>		
 
+		#define UNIX_PATH_MAX 108
+		struct sockaddr_un{
+			sa_family_t sun_family;     /*AF_UNIX 也可以使用 AF_LOCAL*/
+			char        sun_path[UNIX_PATH_MAX];  /*pathname*/	
+		}
 
+	-当服务端bind地址以后，服务端会根据sun_path生成文件。使用ls -al 可以看到这个文件是“s”类型的，也就是套接字，socket类型
+	 当服务端退出再启动后，bind会返回Address already in use错误。为了避免这个问题，可以再服务端启动的时候先把文件删除再去bind。
 
+	-注意点：
+		bind成功将会创建一个文件，权限为0777&~umask
+		sun_path最好用一个绝对路径,比如放到linux的/tmp/目录下，如果使用将对路径的化，这个path会根据当前应用文件的位值变化而变化，客户端连接可能会因为找不到文件而返回错误
+		UNIX域协议支持流式套接口与报式套接口
+		UNIX域流式套接字connect发现监听队列满时，会立刻返回一个ECONNREFUSED。这和TCP不同，TCP如果监听队列满会忽略到来的SYN段，这会对方会重传SYN。		
+
+	-案例：c-pro/linuxProjects/linuxSocket/unixDomainSocket.c
+		
 

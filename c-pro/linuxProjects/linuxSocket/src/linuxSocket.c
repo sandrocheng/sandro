@@ -80,6 +80,10 @@ int main(int argc,char* argv[]) {
 		createUDPSvr();
 	}else if(!strcmp("createUDPCli",argv[1])){
 		createUDPCli();
+	}else if(!strcmp("unixDomainSvr",argv[1])){
+		unixDomainSvr();
+	}else if(!strcmp("unixDomainCli",argv[1])){
+		unixDomainCli();
 	}else{
 		printf("请根据help选择需要的参数");
 		showAppHelp();
@@ -126,7 +130,10 @@ void showAppHelp(){
 	printf("createEPollSocketSvr 创建服务端，使用epoll管理IO操作，只在主进程处理多个客户端的请求,可以接收createPollSocketCli发送的数据\n");
 
 	printf("createUDPSvr 使用UDP协议接口创建socket服务\n");
-	printf("createUDPCli 使用UDP协议接口socket客户端,创建多个子进程向createUDPSvr发送数据\n");
+	printf("createUDPCli 使用UDP协议接口的socket客户端,创建多个子进程向createUDPSvr发送数据\n");
+
+	printf("unixDomainSvr 使用UNIX域协议接口创建socket服务,只能接收一个客户端的数据，客户端close以后，服务端也关闭\n");
+	printf("createUDPCli 使用UNIX域协议的socket客户端,unixDomainSvr发送数据\n");
 	printf("=========================================================================================================================================================\n");
 
 }

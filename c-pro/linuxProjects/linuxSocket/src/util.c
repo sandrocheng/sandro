@@ -429,3 +429,55 @@ int sendUDPMsg(int socketfd,int port,char *ip,void *buf,int buflen){
 
 	return 0;
 }
+
+int createUNIXDOMServerWithSingleClient(int *connfd,char *path){
+	//PF_UNIX+SOCK_STREAM,就决定了是UNIX域流式套接字，因此protocal子段填0就可以了
+	int socketfd = socket(PF_UNIX,SOCK_STREAM, 0);
+	if (socketfd < 0) {
+		perror("[createUNIXDOMServerWithSingleClient]create socket failed");
+		return -1;
+	}
+	//因为UNIX域协议没有IP,所以也就不需要设置地址重复利用
+
+	//为了避免 bind的时候返回 Address already in use错误，使用unlink函数先把path对应的文件删除后再bind。
+	unlink(path);
+
+	struct sockaddr_un servaddr;
+	memset(&servaddr,0,sizeof(servaddr));
+	servaddr.sun_family = AF_UNIX;
+	strcpy(servaddr.sun_path,path);
+	int ret = bind(socketfd,(struct sockaddr*)&servaddr,sizeof(servaddr));
+	if(ret < 0){
+		close(socketfd);
+		perror("[createUNIXDOMServerWithSingleClient]bind socket failed");
+		return -1;
+	}
+	int listenResult = listen(socketfd, SOMAXCONN);
+	if (listenResult < 0) {
+		close(socketfd);
+		printf("[createUNIXDOMServerWithSingleClient]listen socket failed ,socketfd is %d\n",
+				socketfd);
+		perror("[createUNIXDOMServerWithSingleClient]listen socket failed");
+		return -1;
+	}
+	struct sockaddr_un clientAddr;
+	socklen_t clientAddrLen = sizeof(struct sockaddr_in);
+	int acceptfd;
+	while (1) {
+		acceptfd = accept(socketfd, (struct sockaddr*) &clientAddr,
+				&clientAddrLen);
+		if (acceptfd < 0) {
+			close(socketfd);
+			printf(
+					"[createUNIXDOMServerWithSingleClient]accept socket failed:socketfd is %d ,clientAddrLen is %d,acceptfd is %d\n",
+					socketfd, clientAddrLen, acceptfd);
+			perror(
+					"[createUNIXDOMServerWithSingleClient]accept socket failed");
+			return -1;
+		}
+		*connfd = acceptfd;
+		printf("[createUNIXDOMServerWithSingleClient]accept a client ,socketfd is %d , connfd is %d,clientAddr.sun_path is %s\n",
+				socketfd, *connfd, clientAddr.sun_path);
+		return socketfd;
+	}
+}

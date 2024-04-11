@@ -19,6 +19,7 @@
 #include "tools.h"
 #include "util.h"
 #include "errno.h"
+#include <sys/wait.h>//unix类库
 
 void createUDPSvr();
 

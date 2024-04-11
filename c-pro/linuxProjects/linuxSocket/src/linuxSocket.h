@@ -19,5 +19,6 @@
 #include "socketwithpoll.h"
 #include "socketwithepoll.h"
 #include "udpsocket.h"
+#include "unixDomainSocket.h"
 
 #endif /* LINUXSOCKET_H_ */
