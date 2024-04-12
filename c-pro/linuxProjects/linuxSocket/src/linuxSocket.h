@@ -20,5 +20,7 @@
 #include "socketwithepoll.h"
 #include "udpsocket.h"
 #include "unixDomainSocket.h"
+#include "socketpaircomm.h"
+#include "sendsocketfd.h"
 
 #endif /* LINUXSOCKET_H_ */

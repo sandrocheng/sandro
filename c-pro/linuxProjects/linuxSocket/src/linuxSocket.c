@@ -84,6 +84,10 @@ int main(int argc,char* argv[]) {
 		unixDomainSvr();
 	}else if(!strcmp("unixDomainCli",argv[1])){
 		unixDomainCli();
+	}else if(!strcmp("createSocketpair",argv[1])){
+		createSocketpair();
+	}else if(!strcmp("sendsocketfd",argv[1])){
+		sendsocketfd();
 	}else{
 		printf("请根据help选择需要的参数");
 		showAppHelp();
@@ -133,7 +137,11 @@ void showAppHelp(){
 	printf("createUDPCli 使用UDP协议接口的socket客户端,创建多个子进程向createUDPSvr发送数据\n");
 
 	printf("unixDomainSvr 使用UNIX域协议接口创建socket服务,只能接收一个客户端的数据，客户端close以后，服务端也关闭\n");
-	printf("createUDPCli 使用UNIX域协议的socket客户端,unixDomainSvr发送数据\n");
+	printf("unixDomainCli 使用UNIX域协议的socket客户端,unixDomainSvr发送数据\n");
+
+	printf("createSocketpair 使用socketpair建立全双工的socket通信通道，并在父子进程间进行通信\n");
+
+	printf("sendsocketfd 使用sendmsg和recvmsg传递socket套接字\n");
 	printf("=========================================================================================================================================================\n");
 
 }

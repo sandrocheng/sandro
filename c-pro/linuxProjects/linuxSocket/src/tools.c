@@ -36,6 +36,7 @@ void toDateTime(char *timeStr, long timeS, int type) {
 				time_data->tm_hour,
 				time_data->tm_min,
 				time_data->tm_sec);
+
 	} else {
 		sprintf(timeStr, "%d-%d-%d %d:%d:%d",
 				time_data->tm_year + 1900,

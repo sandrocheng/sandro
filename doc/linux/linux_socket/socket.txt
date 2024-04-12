@@ -702,4 +702,83 @@
 
 	-案例：c-pro/linuxProjects/linuxSocket/unixDomainSocket.c
 		
+29、socketpair函数	
+	-功能：创建一个全双工的流管道,有点类似匿名管道，但是匿名管道是半双工的，而且匿名管道只能在父子进程或者兄弟进程间通信
+	       socketpair建立的通信通道是全双工的，同样也只能在父子或者兄弟之间使用。
+
+		#include <sys/types.h>          /* See NOTES */
+       		#include <sys/socket.h>
+		
+		/**
+		* domain:协议家族
+		* type:套接字类型
+		* protocol:协议类型
+		* sv : 返回的套接字对，都是可读可写的
+		*
+		* return : 0,成功；-1，失败
+		*/
+       		int socketpair(int domain, int type, int protocol, int sv[2]);
+
+	-案例：c-pro/linuxProjects/linuxSocket/socketpaircomm.c
+
+30、sendmsg和resvmsg
+	-包引用
+		#include <sys/types.h>
+       		#include <sys/socket.h>
+		#include <sys/uio.h>
+
+
+	-msghdr结构体
+		struct msghdr {
+               		void         *msg_name;       /* 地址，不关心可以填NULL*/
+               		socklen_t     msg_namelen;    /* 地址长度 ，不关心可以填0*/
+               		struct iovec *msg_iov;        /* 要发送的数据缓冲区数组的首地址 */
+               		size_t        msg_iovlen;     /* # msg_iov元素数量 */
+               		void         *msg_control;    /* 如果要发送文件描述字，还需要发送辅助信息也就是控制信息，如果只是发送普通信息，这些控制信息可以填NULL */
+						      /* 可以使用cmsghdr结构体进行封装*/	
+               		size_t        msg_controllen; /* msg_control的长度 */
+               		int           msg_flags;      /* Flags (unused)，填0就行 */
+           	};
+		
+		//可以理解为要发送数据的缓冲区起始位值和大小
+		struct iovec {
+               		void  *iov_base;    /* 内存起始地址 */
+               		size_t iov_len;     /* 数据长度(bytes的个数) */
+           	};
+
+		struct cmsghdr {
+               		size_t cmsg_len;    /* 整块数据的长度
+                 	                     (type is socklen_t in POSIX) */
+               		int    cmsg_level;  /* 协议类型，如果要传递文件描述字填SOL_SOCKET */
+               		int    cmsg_type;   /* 如果要传递文件描述字填SCM_RIGHTS */
+           		/* followed by,要传递的文件描述字数组
+               		unsigned char cmsg_data[]; */
+           };
+
+
+	-sendmsg:
+		/*
+		* sockfd:必须是socket的文件描述符，不能是普通文件的描述符	
+		* flags:默认填0就可以
+		*
+		* return:错误返回-1
+		*        成功返回发送的字节数
+		*/
+		ssize_t sendmsg(int sockfd, const struct msghdr *msg, int flags);
+
+
+	-recvmsg:
+		/*
+		* sockfd:必须是socket的文件描述符，不能是普通文件的描述符	
+		* msg:用于填充数据的缓冲区
+		* flags:默认填0就可以
+		*
+		* return 错误返回-1
+		*        成功返回收到msg_iov中数据的长度，又可能是0
+		*/
+		ssize_t recvmsg(int sockfd, struct msghdr *msg, int flags);
+
+	-注意：可以使用sendmsg,recvmsg可以在UNIX域协议下跨进程传递文件描述符，但是不能传递socket TCP协议的套接字
+
+	-案例：c-pro/linuxProjects/linuxSocket/sendsocketfd.c
 
