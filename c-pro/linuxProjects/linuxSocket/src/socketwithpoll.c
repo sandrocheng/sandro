@@ -39,16 +39,16 @@ void createPollSocketSvr(){
 		return;
 	}
 
-	while(1){
-			nready = poll(clients,SOCKETWITHPOLL_H_CLIENTSIZE,-1);
-			if(nready == -1){
-				if(errno == EINTR){
-					continue;
-				}else{
-					perror("[createPollSocketSvr]poll error");
-					break;
-				}
-			}else if(nready == 0){
+	while (1) {
+		nready = poll(clients, SOCKETWITHPOLL_H_CLIENTSIZE, -1);
+		if (nready == -1) {
+			if (errno == EINTR) {
+				continue;
+			} else {
+				perror("[createPollSocketSvr]poll error");
+				break;
+			}
+		} else if (nready == 0) {
 			continue; //因为没有设置超时，实际上不会走到这里
 		} else {
 			if (clients[0].revents & POLLIN) {
@@ -62,26 +62,30 @@ void createPollSocketSvr(){
 					continue;
 				}
 			}
-			for(int i = 1;i< SOCKETWITHPOLL_H_CLIENTSIZE;i++){
-				if(clients[i].fd == -1){
+			for (int i = 1; i < SOCKETWITHPOLL_H_CLIENTSIZE; i++) {
+				if (clients[i].fd == -1) {
 					continue;
 				}
-				if(clients[i].events & POLLIN){
-					char recvbuf[1024]={0};
-					int ret = read(clients[i].fd,recvbuf,sizeof(recvbuf));
+				if (clients[i].events & POLLIN) {
+					char recvbuf[1024] = { 0 };
+					int ret = read(clients[i].fd, recvbuf, sizeof(recvbuf));
 					if (ret <= 0) {
-						char log[64] = {0};
-						if(ret <0){
-							sprintf(log,"read error ret is %d,client fd is %d\n", ret,clients[i].fd);
+						char log[64] = { 0 };
+						if (ret < 0) {
+							sprintf(log,
+									"read error ret is %d,client fd is %d\n",
+									ret, clients[i].fd);
 							perror(log);
-						}else{
-							printf("read EOF,fd[%d] is closed\n",clients[i].fd);
+						} else {
+							printf("read EOF,fd[%d] is closed\n",
+									clients[i].fd);
 						}
 						close(clients[i].fd);
 						clients[i].fd = -1;
-					}else{
+					} else {
 						char *log[128];
-						sprintf(log,"[createPollSocketSvr] get message : %s", recvbuf);
+						sprintf(log, "[createPollSocketSvr] get message : %s",
+								recvbuf);
 						timelog(log);
 					}
 				}

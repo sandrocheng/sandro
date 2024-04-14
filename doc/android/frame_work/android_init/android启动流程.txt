@@ -83,6 +83,8 @@
 	
 	-init进程启动源码
 		-system/core/init/main.cpp
+		 使用clion打开 /out/development/ide/clion/system/core/init/libinit-x86_64-android
+		 
 		 init进程启动是通过main方法触发的
 		
 		 int main(int argc, char** argv) {

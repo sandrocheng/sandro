@@ -67,6 +67,10 @@
 	ls 翻页
 		ls -alh | less : 如果文件数量大于屏幕可展示的数量可以结合less命令,这样就可以分屏显示了，并可以用PgUp和PgDn来上下翻页
 		ls -alh | more : 这样只能用回车来控制，一次回车向下一行。
+	检索
+		ls -al | grep "ibus",把ls -al返回的文本，逐条进行字符串的匹配，如果含有ibus就展示。
+		或者
+		ls -al *mu* ，查找所有文件名含有"mu"的文件
 
 1.3、cd 命令
 	切换目录（change directory）,命令使用方式： cd + 路径

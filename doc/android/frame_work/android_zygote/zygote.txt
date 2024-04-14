@@ -1,0 +1,204 @@
+1.zygote启动的位值
+	在init进程启动的第三个阶段SecondStageMain中，执行了LoadBootScripts函数加载init.rc
+	解析init.rc成功后，通过do_cass_start service开启rc配置文件中的各种服务
+	zygote的启动参数就在\system\core\rootdir\init.zygote64.rc中
+	zygote是init进程fork出来的，它是init进程的子进程。
+
+	zygote相当于android的所有进程的孵化器，andorid中的所有app,服务等都是zygote fork出来的。
+
+2.clion 导入zygote源码
+	zygote源码在\frameworks\base\cmds\app_process目录下，该目录只有一个c++文件app_main.cpp,其中main函数就是zygote的入口
+	ndk编译成功以后 在 \out\development\ide\clion\frameworks\base\cmds\app_process\app_process-x86_64-android\目录下会看到CMakeLists.txt文件，使用CLion打开
+	打开后会自动进行关联
+	
+3、main函数重要步骤
+	1.AppRuntime runtime(argv[0], computeArgBlockSize(argc, argv));
+	  创建AppRuntime
+	  在zygote启动的是时候，init.rc传递过来的启动参数是:service zygote /system/bin/app_process64 -Xzygote /system/bin --zygote --start-system-server
+  	  
+	  AppRuntime继承于AndroidRuntime，它是整个android运行的接口类
+	  class AppRuntime : public AndroidRuntime	
+	
+        2.解析main函数传递过来的参数，获取runtime需要的参数，并添加到runtime中去
+
+	3.解析main函数，获取zygote需要的参数，第一次启动zygote的时候传递了如下参数
+		--zygote:设置zygote进程的名字
+		--start-system-server:设置startSystemServer为true
+
+ 	4.zygote模式启动
+		因为首次启动参数没有className,所以是已zygote模式启动
+		-maybeCreateDalvikCache();//创建dalvik缓存目录
+		-设置start-system-server
+			if (startSystemServer) {//首次启动的时候main函数传递了 --start-system-server参数
+            			args.add(String8("start-system-server"));
+        		}
+	5.根据启动参数查找ZygoteInit类(java)
+		if (zygote) {//首次启动的时候，main函数传递了--zygote
+        		runtime.start("com.android.internal.os.ZygoteInit", args, zygote);
+    		}	
+		runtime.start函数是AndroidRuntime的接口，
+		AndroidRuntime类实现在 /frameworks/base/core/jni/AndroidRuntime.cpp中
+		CMakelist文件：/out/development/ide/clion/frameworks/base/core/jni/libandroid_runtime-x86_64-android
+
+			/*
+			 * Start the Android runtime.  This involves starting the virtual machine
+			 * and calling the "static void main(String[] args)" method in the class
+			 * named by "className".
+			 *
+			 * Passes the main function two arguments, the class name and the specified
+			 * options string.
+			 */
+			void AndroidRuntime::start(const char* className, const Vector<String8>& options, bool zygote)
+		此时传递的 className = com.android.internal.os.ZygoteInit
+			   zygote = true;
+		因此runtime.start方法做了如下几件事情
+			-加载libart.so的库
+				JniInvocation jni_invocation;
+    				jni_invocation.Init(NULL);
+			-创建java虚拟机
+				startVm(&mJavaVM, &env, zygote, primary_zygote)
+			-调用子类的onVmCreated函数设置虚拟机环境变量
+				onVmCreated(env);
+			 这里最终是调用了zygote的AppRuntime的onVmCreated方法
+				if (mClassName.isEmpty()) {//此时因为是没有className，所以什么都没做直接返回了
+            				return; // Zygote. Nothing to do here.
+        			}
+			-startReg(env),注册JNI的环境
+			 	register_jni_procs(gRegJNI, NELEM(gRegJNI), env)
+				这里看到注册的gRegJNI是一个常量数组，里面有很多Android native实现类的注册接口(非常多，大概150个左右)，比如:
+					register_android_os_Binder
+					register_android_view_Surface
+					register_android_app_Activity
+					。。。。
+			-封装className(此时传递的是“com.android.internal.os.ZygoteInit”)
+			 在这部分中会把类名中的 "." 替换成 "/" ,因此className 变成了 com/android/internal/os/ZygoteInit
+			 替换之后，就可以根据路径findclass了。
+			 findclass返回类实现，通过反射的方式调用main函数
+		至此，开始执行java层 com.android.internal.os.ZygoteInit.main函数了
+
+	6.执行ZygoteInit.main
+	  通过rumtime.start最终会找到 ZygoteInit类，并执行main函数
+	  main函数执行如下几件事情
+		-ZygoteHooks.startZygoteNoThreadCreation();
+		 开启线程限制，这是一个native函数，源码在art\runtime\native\dalvik_system_ZygoteHooks.cc 文件中
+		 该项目的CMakeLists文件在：out/development/ide/clion/art/runtime/libart-x86_64-android/CMakeLists.txt
+		 该函数实际上设置了一个全部变量是true，后面当有线程(java_lang_Thread.cc -> Thread_nativeCreate())创建的时候会判断这个变量如果是true ,并且是zygote进程则不能开启线，并返回错误。
+		 也就时说zygote实际上是单线程的，这里是因为hook了 java_lang_Thread，所以实际上是对zygote的java部分进行了创建线程的限制。
+		
+		-设置zygote进程组为0
+
+		-startSystemServer:init启动zygoge的时候读取init.rc配置参数，包括了“--start-system-server”，根据这个参数后面会启动systemServer
+		 根据socketName(根据main参数)判断当前zygote是否是主zygote，首次启动的时候默认就是主zygote
+		 
+		-判断main参数中是否有懒加载“--enableLazyPreload”,由于首次启动没有懒加载的配置，所以要做一个域加载
+			preload(bootTimingsTraceLog);
+				->preloadClasses();//读取设备中/system/etc/preloaded-classes 文件，这个文件在源码的路径是 ：/frameworks/base/config/preloaded-classes
+						   //都是常用的android api的类
+						   //这里使用的是Class.forName中加载，因为这个时候android的类是可以被系统加载器通过classpath加载的,
+						   //调用forName是为了完成类的初始化，比如父类加载，类的连接，静态变量赋值等操作
+						   //这么做也是为了提升android进程启动和运行的速度
+				->preloadResources();//预加载资源
+						     //com.android.internal.R.array.preloaded_drawables
+						     //com.android.internal.R.array.preloaded_color_state_lists
+						     //com.android.internal.R.array.preloaded_freeform_multi_window_drawables
+				->preloadSharedLibraries();//函数库
+				 ...
+		 主要是预加载class,系统资源，比如:drable color等等
+		 zygote首次启动预加载资源后，通过fork(读时共享，写时复制)启动子进程，这样其他进程再启动的时候很多资源已经再zygote中被加载好了，提高了效率
+		
+		-gcAndFinalize();//回收资源，释放内存
+
+		-Zygote.initNativeState(isPrimaryZygote); //native层状态初始化
+		
+		-ZygoteHooks.stopZygoteNoThreadCreation();//关闭掉线程创建的限制，这里就是把判断变量置为flase
+							  //对应第一步ZygoteHooks.startZygoteNoThreadCreation();
+							  //主要是为了保证初始化期间单线程加载
+
+		-zygoteServer = new ZygoteServer(isPrimaryZygote);//创建zygetoServer服务端
+								  //创建一个LocalServerSocket,这是一个根据文件描述符创建的socket，基于UNIX域协议的socket，不需要ip和端口
+								  //对应的文件是ANDROID_SOCKET_${socketname},因为启动的时候是主zygote，因此socketname使用的是zygote
+		-if (startSystemServer) {
+    			Runnable r = forkSystemServer(abiList, zygoteSocketName, zygoteServer);
+
+    			// {@code r == null} in the parent (zygote) process, and {@code r != null} in the
+    			// child (system_server) process.
+    			if (r != null) {
+        			r.run();
+        			return;
+    			}
+		 }
+		 首次启动的时候init.rc里配置的--start-system-server在这里起到了启动SystemServer的作用
+		 SystemServer进程启动后，直接在这里就reture了。后面的代码是zygote要执行的。
+		
+		 forkSystemServer:
+			-> Zygote.forkSystemServer
+				->nativeForkSystemServer //该函数在/frameworks/base/core/jni/com_android_internal_os_Zygote.cpp 文件中
+							 //cmakelist文件：out/development/ide/clion/frameworks/base/core/jni/libandroid_runtime-x86_64-android/CMakeLists.txt	 
+
+		-caller = zygoteServer.runSelectLoop(abiList);//这里就是监听zygote建立的所有socket连接，不断循环等待
+		 					      //这里使用的是os.poll多路复用机制，监听所有的socket	
+		 这里主要是监听 system_server发送的创建进程的请求，比如Launcher进程启动APP的时候会发送startActivity请求给system_server
+		 system_server再给zygote进程发送创建进程的请求
+		 zygote在zygoteServer.runSelectLoop中监听到请求后，开始fork APP进程
+		 
+		 zygoteServer.runSelectLoop
+			->final Runnable command = connection.processCommand(this, multipleForksOK);//处理客户端请求
+				->pid = Zygote.forkAndSpecialize(...)//如果是fork子进程的请求会调用到这里
+					->Zygote.nativeForkAndSpecialize//最终是调用到了native函数,该函数的实现在com_android_internal_os_Zygote.cpp中
+					->子进程fork成功后，下面代码是在子进程中执行，会执行如下操作
+						zygoteServer.setForkChild();	
+						zygoteServer.closeServerSocket();//关闭serversocket,因为当前进程是子进程，它共享父进程(zygote)的内存区域
+										 //而在子进程中不需要对zygote的serversocket进行操作，所以得关闭，避免zygote的socket被多个子进程持有。
+						IoUtils.closeQuietly(serverPipeFd);
+						serverPipeFd = null;
+						//处理子进程信息
+						return handleChildProc(parsedArgs, childPipeFd,parsedArgs.mStartChildZygote);				
+		 com_android_internal_os_Zygote_nativeForkAndSpecialize:
+			这是native层fork子进程的接口，通过调用zygote::ForkCommon实现子进程的创建
+		 
+		 
+		 handleChildProc：
+			-closeSocket();//关闭当前socket
+			-ZygoteInit.zygoteInit(.... /* classLoader */);
+				->ZygoteInit.nativeZygoteInit();//native类，在AndroidRuntime.cpp中,主要是创建进程信息，开启binder
+					....
+					->gCurRuntime->onZygoteInit();//此时gCurRuntime实际上是AppRuntime,这里通过onZygoteInit回调给AppRuntime
+								      AppRuntime在zygote源码 app_main.cpp中
+						->AppRuntime.onZygoteInit()
+							  //创建进程信息,代码在/frameworks/native/libs/binder/ProcessState.cpp中
+						          //CMakeLists:/out/development/ide/clion/frameworks/native/libs/binder/libbinder-x86_64-android/CMakeLists.txt
+							->sp<ProcessState> proc = ProcessState::self();	
+								ProcessState的初始化分别在构造函数和init函数中
+								构造函数：
+									传递binder文件路径："/dev/binder"
+									根据binder文件路径创建binder驱动:open_driver，让应用可以支持binder IPC同系
+									....
+							->proc->startThreadPool();//开启线程池,这个线程池主要用于binder
+
+					->RuntimeInit.applicationInit()//设置虚拟机参数
+								       //findstaticMain()根据socket传过来的参数进行封装，根据这些参数加载class和main方法。
+								       //实际上就是客户端请求的，要执行的类和方法(入口函数)		
+
+		-caller.run ，当有子进程启动的时候，实际上就从runSelectLoop退出循环了。
+		 也就是说这个caller.run是子进程运行的
+		 caller是 zygoteServer.runSelectLoop 返回的Runnable实例，实例的实现类是：MethodAndArgsCaller，
+		 它的run方法，就是RuntimeInit.applicationInit()加载的从客户端发送过来的要执行的类的main方法。
+
+4、zygote启动时序图
+	如图：4_zygote启动时序图
+
+5、总结
+	-zygote没有采用binder而是使用socket进行通信，从zygote启动流程来看，只有zygote在孵化出子进程的时候才会给子进程配置binder。
+	 如果zygote初始化自己的binder的时候，fork的子进程也会有binder，这里就会有很多问题。
+	 fork后子进程的binder锁和父进程的锁(应该是文件锁)是同一个，这样多线程通信的情况下容易造成死锁，比如说父进程上锁了，此时子进程需要等待父进程返回锁。
+
+	-zygote在启动的时候会限制java线程的创建，启动完成后会解除java线程创建的限制
+
+	
+
+
+
+
+
+
+
