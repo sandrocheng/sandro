@@ -598,6 +598,16 @@
 	此时可以通过访问 /mnt/usb 浏览u盘文件
 	第三步：完成操作后，使用umount解除挂载：sudo umount /mnt/usb
 
+3.4 格式化
+	常用的格式化命令是mkfs，其基本语法为mkfs [-V] [-t fstype] [fs-options] device。		
+    		ext4：mkfs.ext4 /dev/sdb。
+    		ext3：mkfs.ext3 /dev/sdb。
+    		ext2：mkfs.ext2 /dev/sdb。
+    		XFS：mkfs.xfs /dev/sdb。
+    		NTFS：mkfs.ntfs /dev/sdb。
+    		FAT32：mkfs.vfat /dev/sdb。
+
+
 四、网络
 
 4.1 ip : ip 命令来自 iproute2 软件包，在 CentOS 7 中默认已安装（yum install -y iproute）。iproute2 软件包提供了很多命令（rpm -ql iproute |grep bin），如 ss 命令、bridge，

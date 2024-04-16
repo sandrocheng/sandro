@@ -1,0 +1,105 @@
+1.system_server是干什么的
+	system_server主要是启动系统服务的，系统服务分为三类：引导服务BootstrapServices，核心服务CoreServices，其他服务OtherServices。
+	除了这些系统服务外，还有SystemService、ServiceManager、SystemServiceManager类。
+	他还持有系统服务的入口，获取，添加 AMS PMS WMS等服务
+
+2.system_server在zygote中是如何启动的
+	在zygote首次启动的时候就会触发system_server的启动
+
+	ZygoteInit.main
+	  ->forkSystemServer//封装syste_server启动参数，比如uid gid,java主程序入口"com.android.server.SystemServer"等
+	     ->Zygote.forkSystemServer
+		->nativeForkSystemServer //该函数在/frameworks/base/core/jni/com_android_internal_os_Zygote.cpp 文件中
+				         //cmakelist文件：out/development/ide/clion/frameworks/base/core/jni/libandroid_runtime-x86_64-android/CMakeLists.txt
+		  ->zygote::ForkCommon  //这里进行了子进程的fork操作，以及内存初始化
+	     ->zygoteServer.closeServerSocket();//此时已经是sysmte_server进程了，因此要关闭父进程(zygote)的socket
+	     ->return handleSystemServerProcess(parsedArgs);//根据参数初始化com.android.server.SystemServer类，以及反射出main方法
+							    //将这些信息封装成MethodAndArgsCaller类(Runnable的实例)返回给外部
+	    						    //打开binder,创建基础的进程信息
+	  ->r.run//forkSystemServer返回的MethodAndArgsCaller实例， 也就是syste_server java主类(com.android.server.SystemServer)，执行run方法会开始运行主类的入口。
+	  ->return;//由于此时进程已经是system_server子进程，因此退出，不执行后面的zygote的代码了。
+
+3.com.android.server.SystemServer的main函数
+	SystemServer是sysmte_server进程的java入口类，是init进程执行init.rc解析的时候传递给zygote的
+	
+	main()
+	  ->run()
+	    ->>Looper.prepareMainLooper();//创建主进程looper
+	    ->System.loadLibrary("android_servers");//加载android_server函数库
+	    ->createSystemContext();//创建SystemContext
+		->ActivityThread activityThread = ActivityThread.systemMain();//创建ActivityThread实例
+		  ->ActivityThread thread = new ActivityThread();
+		  ->thread.attach(true, 0);//初始化ActivityThread,并执行attach操作
+		    ->android.ddm.DdmHandleAppName.setAppName("system_process",UserHandle.myUserId());//设置appname 是system_process
+		    ->mInstrumentation = new Instrumentation();//创建Instrumentation，用来管理应用的生命周期
+		    ->ContextImpl context = ContextImpl.createAppContext(this, getSystemContext().mPackageInfo);//创建App的Context
+	    ->mSystemServiceManager = new SystemServiceManager(mSystemContext);//创建SystemServiceManager实例
+	    ->LocalServices.addService(SystemServiceManager.class, mSystemServiceManager);//把SystemServiceManager实例放到LocalServices里，统一管理
+	      //通过以下3个start..Services()方法，开启了所有服务，如图：3_system_server开启的服务	
+	    ->startBootstrapServices(t);//开启引导服务，这里创建了AMS， ATM，PMS，Installer，
+					//DeviceIdentifiersPolicyService，设备标识符访问策略服务
+					//PowerManagerService,电源服务
+					//SensorPrivacyService，传感器服务
+					//..
+	    ->startCoreServices(t);//开启核心服务
+				   //BatteryService,电池服务
+				   //UsageStatService,应用使用情况服务
+				   //GpuService，Gpu服务
+				   //...
+	    ->startOtherServices(t);//开启其他服务
+				    //AlarmManagerService
+				    //InputManagerService
+				    //WindowManagerService
+				    //StatusBarManagerService
+				    //NotificationManagerService
+				    //mActivityManagerService.systemReady(),startOtherServices执行到这里的时候，会调用AMS的systemReady函数，通知AMS系统可用
+	   ->looper.loop()//开启looper
+
+4.SystemServer启动service的两种方式
+	-使用SystemSericeManager类的startService()方法，这种是比较常见的
+		//被启动的服务必须是SystemService的子类，启动后返回SystemService的实例
+		public <T extends SystemService> T startService(Class<T> serviceClass)
+		
+		//这个是根据类名启动service
+		public SystemService startService(String className)
+	 比如：Installer installer = mSystemServiceManager.startService(Installer.class);
+	 
+	 startservice根据serviceClass反射出类实例
+	 将实例保存到mServices中，mServices是一个ArrayList<SystemService>()，后面在一些地方会遍历这个list，统一调用接口
+	 调用实例的onStart()方法,启动服务			    
+	
+	
+	-AMS的实例化
+		mActivityManagerService = ActivityManagerService.Lifecycle.startService( SystemServiceManager, atm);
+		AMS的实例化是由ActivityManagerService.Lifecycle完成的
+		继承SystemService实际上是ActivityManagerService.Lifecycle，AMS并没有继承SystemService
+
+5.Watchdog
+	在startBootstrapServices开始的地方，使用了Watchdog类，这是一个单例类
+	它是android内部的一个监控SystemServer中各种service的机制，当监控到有Service出问题的时候会负责杀死system_server,然后通知zygote，zygote收到通知后也会杀死自己
+	zygote销毁后，父进程init会收到信号，然后init开始重启zygote,接着重启system_server
+	
+	Watchdog继承了线程，它的启动后就会执行run函数
+	run()
+	  ->遍历mHandlerCheckers ,这是一个ArrayList<HandlerChecker>,执行每个元素的scheduleCheckLocked()函数
+	    mHandlerCheckers是在构造函数中添加的各种需要监控的Handler,比如Looper.getMainLooper(),UiThread.getHandler,AnimationThread.getHandler,这些都是各种组件的handler
+		->HandlerChecker.scheduleCheckLocked
+	  ->统计超时时长
+	  ->如果没有超时，或者超时的时间是设置的一半，则重新遍历，继续下一个循环
+	  ->否则会继续根据个中其他错误，判断。如果满足则 Process.killProcesses(Process.myPid);System.exit(10);此时system_server进程就会被杀死
+
+	HandlerChecker(Handler handler, String name, long waitMaxMillis)
+		HandlerChecker中会有各种系统服务的handler,每次检查(scheduleCheckLocked)的时候向handler发送一个消息，并记录时间，当发送的消息被执行的时候再记录执行时间
+		二者时间差如果超时就认为该服务出问题了。
+		为了更准确的确定问题，这里调用的是mHandler.postAtFrontOfQueue(this);让监控消息尽快执行
+	
+	Monitor接口
+		每个system_server服务，比如AMS，WMS，BatteryStatsService,InputManagerService等都会实现这个接口的monitor方法，然后注册到Wathcer中去
+		// Called by the heartbeat to ensure locks are not held indefnitely (for deadlock detection).
+		public void monitor() {
+    			synchronized (mGlobalLock) { }
+		}	
+		每个服务的实现就是等待锁是否是释放的，如果上锁了，monitor就会阻塞，Watchdog在轮询的时候就会耗时，如果总耗时超过预设的值，就认为服务出问题了
+
+6.system_service启动时序图
+	如图：6_system_service启动时序图		
