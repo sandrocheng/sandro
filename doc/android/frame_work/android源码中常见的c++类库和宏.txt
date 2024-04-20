@@ -1,0 +1,135 @@
+1.智能指针,RefBase,sp,wp,LightRefBase
+	-源文件：/system/core/libutils/include/utils/StrongPointer.h	
+		 /system/core/libutils/include/utils/RefBase.h
+		 /system/core/libutils/RefBase.cpp
+		 /system/core/libutils/LightRefBase.cpp
+		 /system/core/libutils/include/utils/LightRefBase.h
+	 libutils工程:/out/development/ide/clion/system/core/libutils/libutils-x86_64-android/CMakeLists.txt
+	
+	-RefBase
+		-源码在RefBase.h 和 RefBase.cpp中
+		-RefBase是Android中所有对象的始祖，类似于MFC中的CObject及Java中的Object对象。在Android中，RefBase结合sp和wp，实现了一套通过引用计数的方法来控制对象生命周期的机制。
+		 sp 和 wp都是模板类，模板参数是T 或者是U，构造函数或者重载运算符的函数中形参看到的是T * 、 U *，或者是sp<T> &、wp<T> &，完全没有看出来跟RefBase 有什么关系。
+		 但是，看完Android 中使用sp 和 wp的地方就知道，传进来的模板参数都是继承自RefBase，所谓的指针类型都是基于这个类。
+
+		-android中很多类都是继承自RefBase。注意，有可能后面会有很多类继承自RefBase，为了避免继承二义性，RefBase 的派生类都必须要虚拟继承。
+
+		-从RefBase的定义中可以看到
+			在sp 中看到的指针m_ptr都是通过incStrong 和decStrong 来控制计数，最终调用的就是这里的
+			在wp 中的m_refs的类型是weakref_type类型的指针，在这里也能看到了
+		 所以对于wp中的指针来说，确切的说是RefBase类型的指针，只能调用createWeak，而incWeak和decWeak是weakref_type的对象才能调用。
+
+		-RefBase的关键是mRefs，类型为weakref_impl *，这个是整个智能指针的关键
+
+		-RefBase 有一个默认的构造函数，就是为了初始化mRefs，也就是说，以后RefBase的派生类在构造的时候，都会有个mRefs的指针变量。
+
+		-核心变量mRefs的类型weakref_impl
+	
+		-incWeak中 通过addWeakRef 添加弱引用到链表
+
+	
+	-Android中定义了两种智能指针型，一种是强指针sp（strong pointer），另外一种是弱指针（weak pointer）。其实称之为强引用和弱引用更合适一些。
+	 强指针与一般意义的智能指针概念相同，通过引用计数来记录有多少使用者在使用一个对象，如果所有使用者都放弃了对该对象的引用，则该对象将被自动销毁。
+	 
+	 弱指针也指向一个对象，但是弱指针仅仅记录该对象的地址，不能通过弱指针来访问该对象，也就是说不能通过弱智真来调用对象的成员函数或访问对象的成员变量。
+         要想访问弱指针所指向的对象，需首先通过wp类所提供的promote()方法将弱指针升级为强指针。
+	 弱指针所指向的对象是有可能在其它地方被销毁的，如果对象已经被销毁，wp的promote()方法将返回空指针这样就能避免出现地址访问错的情况。
+
+	-强指针sp
+	 -sp是一个模板类
+		类型T、U是指针变量的类型
+		有7个构造函数、6个=的重载
+		宏COMPARE的6个函数都是运算符的重载
+		m_ptr就是指针变量，后面的所有操作都是通过这个来
+
+	 -sp构造就是为了给指针T或者指针U多一个引用的地方，所以，在构造的时候必须做两件事情：
+    		初始化sp中关键的指针m_ptr，也就是实参的指针
+    		m_ptr也就是实参指针必须要调用incStrong()进行计数加1
+	  构造的时候原来sp的引用为0，无需对m_ptr进行decStrong()。
+
+	 -sp的析构函数，当sp不再使用的时候，指针T *m_ptr需要将计数减1。        
+		m_ptr->decStrong(this);
+
+	 -三个获取指针的方式
+		inline  T&      operator* () const  { return *m_ptr; }
+    		inline  T*      operator-> () const { return m_ptr;  }
+    		inline  T*      get() const         { return m_ptr; }
+	  例如：
+		class Test {
+			public:
+    				Test() {}
+				~Test() {}
+				void test() { cout << "just for test ...\n";}
+		};
+ 
+		main () {
+    			sp<Test> hehe(new Test()); //构造的时候可以直接传入指针
+			hehe->test(); //通过 -> 指向指针m_ptr，直接调用Test的test函数
+			*hehe.test(); //通过 * 找到对应的Test 引用
+			Test *t = hehe.get(); //sp 中get函数就是为了获取指针m_ptr
+			t->test();
+		}
+
+	-弱指针wp，
+		-wp在StrongPointer.h中只是做了一个声明，，定义在RefBase.h中
+		-和sp相比较
+    			都是模板类
+    			都有7个构造函数和6个赋值重载函数
+    			因为多了成员变量m_refs，所以，比较的运算符进行了重载，sp中没有m_refs，所以直接用宏COMPARE_WEAK
+    			都有指针T* m_ptr
+    			wp多了一个promote函数，为了向sp转换
+    			wp并没有sp中重载运算符 * 和运算符 ->		
+
+		-构造函数，几点与sp不同的地方：
+			并不是像 sp那样通过incStrong 和decStrong方式控制计数，而是通过createWeak 、incWeak、decWeak来控制
+			并没有像 sp那样有移动构造函数
+
+		-通过赋值运算符重载看到，一般的指针在使用wp时，需要createWeak，如果已经是wp引用，直接incWeak
+
+	-总结：
+		-incStrong和incWeak方法比较简单，就是增加一下强引用和弱引用计数，需要注意的是，incStrong方法中会调用incWeak方法
+		
+		-decWeak方法有点复杂，要做的事有两件：是否要释放真实对象，是否要释放影子对象：	
+			如果生命周期是弱引用来控制，那么在这里就需要做判断，弱应用的计数是否为0，是否要释放真实对象和影子对象
+			如果生命周期是强引用来控制的，那么这里也要判断一下，如果强引用计数为0的话，需要释放真实对象，弱引用计数是否为0，是否要释放影子对象
+		 从这里我们可以看到：
+    			弱引用计数是关系影子对象的，如果弱引用计数为0，那么影子对象一定要释放，但是真实对象不一定要释放；
+    			强引用计数是关系真实对象的，如果强引用计数为0，那么真实对象一定要释放的，但是影子对象不一定释放；
+		
+		-decStrong方法主要做：就是看看是否要释放真实对象，因为强引用和真实对象关联的
+
+		-RefBase的析构方法：真实对象被销毁的时候，需要做一个工作就是释放影子对象
+			如果强引用计数根本没有被使用过，那么直接释放
+			如果强引用计数使用过，但是采用的是非强生命周期管理方式，也是释放
+
+		-通过 RefBase 的执行过程，结合 wp 的构造来看，最终 wp 中维护的 m_ptr 并没有使用的地方，而整个过程都是在维护弱引用的链表。
+		 所以，wp如果要使用必须要通过promote() 函数，转换成sp，再通过 sp 的重载运算符* 和 运算符 ->来调用指针的成员。
+
+		
+	-LightRefBase
+		-android中除了RefBase，还有个轻量级的引用LightRefBase，前面看到的是很多类继承RefBase，后面通过sp、wp实现了智能指针。
+		 如果只是想通过计数方式使用智能指针，也可以用 LightRefBase。
+		
+		-整个定义来看，就一个核心变量mCount，也有incStrong、decStrong，这是为了后面使用sp准备。
+		 例子：
+			class MyClass : virtual public LightRefBase<MyClass> {
+    			public:
+        			void test();
+    			};
+
+		 在main中使用的时候需要通过sp使用：
+			sp<MyClass> sp(new MyClass());
+			sp->test();	
+		
+		-LightRefBase 总结：
+    			-LightRefBase 同RefBase一样，必须是某个指针的基类
+    			-LightRefBase 轻量级引用，采用的是模板机制，而不是复杂的OOP，不需要虚拟继承
+   			-轻量级引用基类轻在内存，只拥有一个成员变量，用以计数。其引用计数类模板不含有虚函数，如果尾端类（不被其他类继承的类）直接继承引用计数基类，
+			 那尾端类也不需要虚的析构函数，不会出现因部分删除而产生内存泄露，因为模板类代码中有一处使用static_cast向下转型，模板确保其安全
+			-RefBase持有弱引用，持有指针，在进行删除工作时较为复杂
+
+		-LightRefBase  缺陷：
+    			-不支持弱引用
+    			-轻量级引用类，使用模版技术，所以模版技术的缺陷，轻量级引用亦有，很明显一点就是你会需要很多不同轻量级引用类
+    			-编译级别支持引用栈对象，运行时会崩溃，Scott Meyers说过只要编译器允许，就一定有人这么干。
+			 此问题需要使用者解决-----利用protected dector 和  friend class  refbase
