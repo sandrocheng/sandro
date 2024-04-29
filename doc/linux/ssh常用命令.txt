@@ -33,8 +33,11 @@
     	   执行成功后，使用sandro这个用户登陆就不再需要密码了
 
 3、使用rsync命令拷贝文件
+	rsync命令会先使用ssh登陆远程服务器，默认ssh 22端口
+	如果ssh端口不是22 ，则需要指定端口号 -e 'ssh -p 16459'
 	1)本地文件拷贝到远程服务器
 		rsync filename username@ip:filepath
+		rsync  -e 'ssh -p xxxxx'  filename username@ip:filepath
 		如：rsync /home/sandro/tools/jdk-8u291-linux-x64.tar.gz sandro@192.168.0.190:/home/sandro/tools
 	
 	2)本地目录拷贝到远程服务器
@@ -44,6 +47,7 @@
 	3)拷贝远程服务器文件到本地
 		rsync username@ip:filepath . 
 		如：rsync sandro@192.168.0.190:/home/sandro/tools/test/1.txt .
+		    rsync -e 'ssh -p 16459' root@24.233.1.250:/usr/share/easy-rsa/pki/ca.crt .
 		注意 : . 代表当前目录 ,如果想要拷贝到其他目录可以把.换成目标目录名
 	
 	4)拷贝远程文件夹到本地

@@ -1,0 +1,440 @@
+1.虚拟专用网络概述
+	-虚拟专用网络的诞生
+	 早期在没有vpn之前，企业的总部和分支机构之间的互通都是采用运营商提供的internet互联网进行通信
+         但是在internet互联网中通信往往是不安全的，通信的内容可能被窃取、修改，从而造成安全隐患和安全事件(比如中间人攻击
+		分支机构 <------> internet <------> 总部
+	
+	 所以就需要有一种技术技能实现总部和分支机构间的互通，也能保证数据传输的安全性
+         早期很多大型企业会联合运营商构建物理专线网络，在总部和分支机构之间拉条专线，只传输自己的业务
+	 但是这个专线的费用确实不是一般公司能够承受的，而且维护也很困难
+		分支机构 <---------物理专线--------->总部
+
+	 为了降低成本，就诞生了vpn技术，vpn通过在现有的internet网络中构建专用的虚拟网络，实现企业总部和分支机构的通信，解决了互通、安全、成本的问题
+	
+	-虚拟专用网络介绍
+	 vpn,全称Virtual Private Network(虚拟专用网络),是依靠ISP和其他的NSP，在公共网络中建立专用的数据通信网络技术。
+	 可以为企业之间或者个人与企业之间提供安全的数据传输隧道
+	 在VPN中任意两点之间的连接并没有传统专网所需的端到端的物理链路，而是利用公共网络资源动态组成的
+	 可以理解为通过私有的隧道技术在公共数据网络上模拟出来的和专网有同样功能的点到点的专线技术
+	 所谓虚拟是指不需要去拉实际的长途物理线路，而时借用了公共internet网络实现 如图：1_vpn示意图
+
+	 -虚拟专用网络作用
+	  vpn功能可以帮助公司里的远程用户(出差，家里),公司的分支机构，商业合作伙伴及供应商等公司和自己的公司内部网络之间建立可信的安全连接或者是局域网
+	  确保数据的加密安全传输业务访问
+	  对于运维工程师来说，还可以建立不同的机房构成局域网，处理相关的业物流，如图:1_机构vpn示意图
+
+	 -应用虚拟专用网络的优势特点
+		-安全性高
+		 在远端用户、驻外机构、合作伙伴、供应商与公司总部之间建立可靠的连接，保证数据传输的安全性
+		 对于实现电子商务或金融网络与通讯网络的融合特别重要
+
+		-费用低廉
+		 支持出差vpn用户在任何时间、任何地点的移动接入，能够满足不断增长的移动业务需求
+
+		-可扩展性
+		 由于vpn为逻辑上的网络、物理网络中增加或者修改节点，不影响vpn的部署
+
+2、虚拟专用网络分类
+	-根据vpn建设单位不同进行划分
+		-租用运营商专线搭建vpn
+		 运营商的虚拟专线网络大多数是使用MPLS vpn
+		 企业通过购买运营商提供的vpn专线服务实现总部和分支机构的通信需求，vpn网关为运营商所有，如图：2_运营商专线vpn
+		 局限性:环境设定都是运营商定义的，如果接入方想要使用自己的设定，限制会很多，大部分情况只能让运营商帮助调整。		 
+
+		-企业内部自建环境搭建VPN
+		 企业内部自建基于internet环境的vpn网络常见的有，IPsev VPN,GRE VPN,L2TP VPN,SSL VPN
+		 企业自己购买VPN网络设备，搭建自己的VPN网络，实现总部和分支机构的通信，或者是出差员工和总部的通信，如图：2_企业内部自建环境搭建VPN	
+
+	-根据VPN组网方式不同进行划分
+		-远程访问vpn
+		 这种方式使用于出差员工拨号接入vpn的方式，员工可以在只要有internet的地方都可以通过VPN接入访问企业的内网资源
+	 	 最常见的类型有：SSL VPN，L2TP VPN(不太稳定，现在已经不推荐使用了)
+
+		-站点之间VPN(位值相对固定)
+		 这种方式适合用于企业两个局域网互通的情况，例如企业的分支机构访问总部
+		 最常见的类型有:MPLS VPN，IPsec VPN
+
+		-根据VPN工作网络层次进行划分
+		 应用层VPN ：SSL VPN
+		 网络层VPN ：IPsec VPN
+		 链路层VPN ：L2TP2 VPN，PPTP VPN
+
+3、虚拟专用网络技术
+	-网络通讯隧道技术
+	 VPN技术的基本原理其是就是用的隧道技术
+	 类似于火车/地铁的轨道一样，从A站点到B站点都是直通的，不会堵车。对于乘客而言，就是专车
+	 隧道技术起始就是对传输的报文进行封装，利用公网建立专用的数据传输通道，从而完成数据的安全可靠传输，
+	 如图：3_vpn隧道技术示意图
+	 从上图可以看到原始报文在隧道的一端进行封装，封装后的数据在公网上传输，在隧道的另一端进行解封装，从而实现了数据的安全传输
+	 隧道协议通过在隧道的一端给数据加上隧道协议头，即进行封装，使这些被封装的数据能都在某网络中传输，并且在隧道的另一端去掉该数据携带的隧道协议头，即进行解封装。	
+
+	-网络通讯安全技术
+	 在利用vpn进行数据传输通讯时，身份认证，数据加密，数据验证可以有效保证数据传输的安全性
+	 	-身份认证作用
+		 VPN网关对接入VPN的用户进行身份认证，保证接入的用户都是合法用户
+		
+		-数据加密作用
+		 将明文通过加密转为密文，哪怕信息被截获窃取了，也无法识别
+		 说明：保证数据的加密特性，会使用到对称加密技术和非对称加密技术
+
+		-数据验证作用
+		 通过数据验证技术验证报文的完整性和真伪进行检查，防止数据被篡改
+	不同隧道身份认证，数据加密，数据验证区别如图：3_各种类vpn区别
+
+4、专用网络开源产品
+	-开源产品分类介绍
+		-PPTP VPN
+		 点对点隧道协议(PPTP)是由包括微软和3com等公司组成的pptp论坛开发的一种点对点隧道协议
+		 基于拨号使用的PPP协议，使用PAP或CHAP之类的加密算法，或者使用Microsoft的点对点加密算法MPPE。
+		 使用PPTP VPN最大的优势在于，无需windows客户端单独安装客户端软件，默认就支持PPTP VPN拨号连接功能	
+		 适用场景：适合远程的企业用户拨号到企业内部进行办公等的应用
+		 开源软件：pptp vpn
+
+		-IPsec VPN
+		 IPsec隧道模式是封装、路由与解封装的整个过程。隧道将原始数据包隐藏(或封装)在新的数据包内部
+		 隧道与数据保密性结合使用时，在网络上窃听通讯的人将无法获取原始数据包数据(以及原始的源和目标)
+		 适用场景：企业异地两地总分公司或多个IDC机房之间的VPN不间断按需连接
+		 开源软件:openswan
+
+		-SSL VPN
+		 SSL VPN提供了数据隐私性、端点验证、信息完整性等特征
+		 SSL独立于应用，因此任何一个应用程序都可以享受它的安全性而不必理会执行细节
+		 适用场景：企业异地或者移动用户拨号连接总部实现VPN不间断按需连接
+		 开源软件：openvpn,官网：http://openvpn.se/  ，被墙了。。。
+		 说明:属于c/s架构的软件，需要单独安装openvpn客户端与服务端
+
+	-openvpn开源产品的工作原理
+		-需要先关注保证数据安全传输的三要素，数据机密性，数据完整性，身份认证
+		-需要掌握密钥加密技术应用实现
+		-需要掌握证书概念的企业应用，如图：4_vpn证书的作用
+		 证书由CA证书颁发机构发布，权威的证书颁发机构只有几家。
+		 CA颁发机构颁发的证书ca.crt用于证明证书的权威性它内部需要有证书颁发机构的信息，生成ca.crt文件的密钥是ca.key
+	
+		 可以到阿里云后台申请正规证书，一般个人申请DV证书，企业申请OV证书
+		 客户端得到证书后，浏览器会根据证书的颁发机构去验证证书是否合法，基本上浏览器内都集成了大的颁发机构的信息知道去哪里验证证书。
+		 如果浏览器验证证书不合法(证书不是正规颁发机构发布的)，即使访问对的服务器，也会提示失败。
+		  
+	        -openvpn证书认证流程，如图：4_openvpn证书认证流程
+
+5、虚拟专用网络部署
+	-系统默认selinux安全策略优化说明
+	 临时关闭，使用getenforce查看
+			sandro@kvm-sandrocheng:/etc/selinux$ getenforce
+			Disabled
+		如果返回Enforcing，表示SELinux当前处于强制模式；如果返回Permissive，表示SELinux当前处于宽容模式；如果返回Disabled，表示SELinux已被禁用。
+
+		使用setenforce 设置
+			setenforce 0，设置enforcing mode
+			setenforce 1,设置为permissive mode
+	
+	 永久关闭,/etc/selinux/目录下修改配置文件
+		# This file controls the state of SELinux on the system.
+		# SELINUX= can take one of these three values:
+		# enforcing - SELinux security policy is enforced.表示selinux安装策略功能是启用状态
+		# permissive - SELinux prints warnings instead of enforcing.表示selinux安装策略只是显示警告信息，不会进行安全处理
+		# disabled - No SELinux policy is loaded.表示selinux阿暖策略功能彻底禁用
+		SELINUX=permissive
+		# SELINUXTYPE= can take one of these two values:
+		# default - equivalent to the old strict and targeted policies
+		# mls     - Multi-Level Security (for military and educational use)
+		# src     - Custom policy built from source
+		SELINUXTYPE=default
+
+		# SETLOCALDEFS= Check local definition changes
+		SETLOCALDEFS=0
+	 
+	-防火墙
+		查看防火墙是否运行 ：systemctl status firewalld
+		如果防火墙正在运行,需要关闭
+			临时关闭，systemctl stop firewalld		
+			永久关闭, systemctl disable firewalld
+
+6、服务端openven安装
+	-sudo apt-get -y install openvpn libssl-dev openssl  easy-rsa
+	
+	-安装后查看一下openvpn版本信息
+		sandro@kvm-sandrocheng:~$ openvpn --version
+		OpenVPN 2.4.12 x86_64-pc-linux-gnu [SSL (OpenSSL)] [LZO] [LZ4] [EPOLL] [PKCS11] [MH/PKTINFO] [AEAD] built on Aug 21 2023
+		library versions: OpenSSL 1.1.1f  31 Mar 2020, LZO 2.10
+		Originally developed by James Yonan
+		...
+	 我们可以看到openvpn目前的版本为2.4.12。这个版本号，建议记住。
+
+	-查看openvpn安装时产生的文件，如下：
+		sandro@kvm-sandrocheng:~$ dpkg --list openvpn
+		Desired=Unknown/Install/Remove/Purge/Hold
+		| Status=Not/Inst/Conf-files/Unpacked/halF-conf/Half-inst/trig-aWait/Trig-pend
+		|/ Err?=(none)/Reinst-required (Status,Err: uppercase=bad)
+		||/ Name           Version                 Architecture Description
+		+++-==============-=======================-============-=================================
+		ii  openvpn        2.4.12-0ubuntu0.20.04.1 amd64        virtual private network daemon
+	
+
+		sandro@kvm-sandrocheng:~$ dpkg -L openvpn | more
+		....
+		/usr/share/doc/openvpn/examples/sample-keys
+		/usr/share/doc/openvpn/examples/sample-keys/README
+		/usr/share/doc/openvpn/examples/sample-keys/ca.crt
+		/usr/share/doc/openvpn/examples/sample-keys/ca.key
+		/usr/share/doc/openvpn/examples/sample-keys/client-ec.crt.gz
+		/usr/share/doc/openvpn/examples/sample-keys/client-ec.key
+		/usr/share/doc/openvpn/examples/sample-keys/client-pass.key
+		/usr/share/doc/openvpn/examples/sample-keys/client.crt.gz
+		/usr/share/doc/openvpn/examples/sample-keys/client.key
+		/usr/share/doc/openvpn/examples/sample-keys/client.p12.gz
+		/usr/share/doc/openvpn/examples/sample-keys/dh2048.pem
+		/usr/share/doc/openvpn/examples/sample-keys/gen-sample-keys.sh.gz
+		/usr/share/doc/openvpn/examples/sample-keys/openssl.cnf
+		/usr/share/doc/openvpn/examples/sample-keys/server-ec.crt.gz
+		/usr/share/doc/openvpn/examples/sample-keys/server-ec.key
+		/usr/share/doc/openvpn/examples/sample-keys/server.crt.gz
+		/usr/share/doc/openvpn/examples/sample-keys/server.key
+		/usr/share/doc/openvpn/examples/sample-keys/ta.key
+		/usr/share/doc/openvpn/examples/sample-scripts
+		/usr/share/doc/openvpn/examples/sample-scripts/auth-pam.pl
+		/usr/share/doc/openvpn/examples/sample-scripts/bridge-start
+		/usr/share/doc/openvpn/examples/sample-scripts/bridge-stop
+		/usr/share/doc/openvpn/examples/sample-scripts/ucn.pl
+		/usr/share/doc/openvpn/examples/sample-scripts/verify-cn
+		...			
+	从安装文件目录中可以看到在/usr/share/doc/openvpn/examples/sample-keys中已经有例子模板了，可以直接使用这些模板，不需要从头开始制作证书了
+
+7、服务端生成证书文件
+	-配置easy-rsa
+	 为了使用easy-rsa应用，需要先进行一些基本配置，首先，使用make-cadir创建一个用于存放证书的目录
+		make-cadir ~/openvpn-ca
+	 进入目录中可以看到有一个vars文件,vars文件主要用于设置证书的相关组织信息	
+	 修改：
+		set_var EASYRSA_REQ_COUNTRY     "CN"
+		set_var EASYRSA_REQ_PROVINCE    "LIAONING"
+		set_var EASYRSA_REQ_CITY        "DALIAN"
+		set_var EASYRSA_REQ_ORG "Copyleft Sandro Co.Ltd"
+		set_var EASYRSA_REQ_EMAIL       "foxone118@sina.com"
+		set_var EASYRSA_REQ_OU          "vpn team"
+
+	 最后一行添加：
+		export KEY_NAME="vpnsandro"
+
+	 export KEY_NAME="vpnsandro"这个要记住下，我们下面在制作Server端证书时，会使用到。
+	
+	 注意：不同的easy-isa版本，可能使用过程不一样
+	 查看easy-rsa安装目录
+		dpkg -L easy-rsa | more
+		/.
+		/usr
+		/usr/bin
+		/usr/bin/make-cadir
+		/usr/share
+		/usr/share/doc
+		/usr/share/doc/easy-rsa
+		...
+		/usr/share/easy-rsa
+		/usr/share/easy-rsa/easyrsa
+		/usr/share/easy-rsa/openssl-easyrsa.cnf
+		/usr/share/easy-rsa/vars.example
+		/usr/share/easy-rsa/x509-types
+		/usr/share/easy-rsa/x509-types/COMMON
+		/usr/share/easy-rsa/x509-types/ca
+		/usr/share/easy-rsa/x509-types/client
+		/usr/share/easy-rsa/x509-types/code-signing
+		/usr/share/easy-rsa/x509-types/server
+		/usr/share/easy-rsa/x509-types/serverClient
+		/usr/share/man
+		/usr/share/man/man1
+		/usr/share/man/man1/make-cadir.1.gz
+	 可以看到文档在/usr/share/doc/easy-rsa/doc 目录下	
+
+	-创建证书
+	 1.到easyrsa安装目录下运行 sudo ./easyrsa init-pki,创建证书目录
+	
+		sandro@kvm-sandrocheng:/usr/share/easy-rsa$ sudo ./easyrsa init-pki
+		init-pki complete; you may now create a CA or requests.
+		Your newly created PKI dir is: /usr/share/easy-rsa/pki
+
+	 
+	 2.制作根证书和私钥
+	   sandro@kvm-sandrocheng:/usr/share/easy-rsa$sudo ./easyrsa build-ca nopass 
+	   Using SSL: openssl OpenSSL 1.1.1f  31 Mar 2020
+	   Generating RSA private key, 2048 bit long modulus (2 primes)
+	   ......................................................+++++
+	   ...+++++
+	   e is 65537 (0x010001)
+	   Can't load /usr/share/easy-rsa/pki/.rnd into RNG
+	   140316614878528:error:2406F079:random number generator:RAND_load_file:Cannot open file:../crypto/rand/randfile.c:98:Filename=/usr/share/easy-rsa/pki/.rnd
+	   You are about to be asked to enter information that will be incorporated
+	   into your certificate request.
+	   What you are about to enter is what is called a Distinguished Name or a DN.
+	   There are quite a few fields but you can leave some blank
+	   For some fields there will be a default value,
+	   If you enter '.', the field will be left blank.
+	   -----
+	   Common Name (eg: your user, host, or server name) [Easy-RSA CA]:
+	   
+	   CA creation complete and you may now import and sign cert requests.
+	   Your new CA certificate file for publishing is at:
+	   /usr/share/easy-rsa/pki/ca.crt
+
+	   这个时候根据提示在pki目录下(目录只能切换到root用户才能进入)已经就有了根证书ca.crt，对应的ca.key文件在private目录中
+
+	3.制作服务端证书
+	  sudo ./easyrsa build-server-full vpnsandro nopass,vpnsandro是vars文件中后加的KEY_NAME的值
+	 生成的服务端证书在/pki/issued/vpnsandro.crt，私钥在/pki/private/vpnsandro.key
+
+	4.制作客户端证书
+		sandro@kvm-sandrocheng:/usr/share/easy-rsa$ sudo ./easyrsa build-client-full vpnclient nopass
+
+		Using SSL: openssl OpenSSL 1.1.1f  31 Mar 2020
+		Generating a RSA private key
+		.....................+++++
+		....................................+++++
+		writing new private key to '/usr/share/easy-rsa/pki/private/vpnclient.key.jfAOT9iuis'
+		-----
+		Using configuration from /usr/share/easy-rsa/pki/safessl-easyrsa.cnf
+		Check that the request matches the signature
+		Signature ok
+		The Subject's Distinguished Name is as follows
+		commonName            :ASN.1 12:'vpnclient'
+		Certificate is to be certified until Apr 14 10:04:18 2027 GMT (1080 days)
+		
+		Write out database with 1 new entries
+		Data Base Updated
+	 
+	  运行成功后证书文件在 /pki/issued/vpnclient.crt
+	  私钥文件在 /pki/private/vpnclient.key
+
+	  其中 ca.crt private/vpnclient.key issued/vpnclient.crt三个文件是我们要使用的。  
+          这些证书文件是我们自己生成的，并不是被权威机构认可，但是在自建vpn是足够用了。
+
+	5.生成密钥交换文件
+	  在双方进行通信的时候有些密钥需要交换，这个文件用于实现对等交换密钥消息	
+	  	sandro@kvm-sandrocheng:/usr/share/easy-rsa$sudo ./easyrsa gen-dh
+	  	Using SSL: openssl OpenSSL 1.1.1f  31 Mar 2020
+	  	Generating DH parameters, 2048 bit long safe prime, generator 2
+	  	This is going to take a long time
+	  	.....................................................................+................................................................
+	  	DH parameters of size 2048 created at /usr/share/easy-rsa/pki/dh.pem
+	  生成的密钥交换文件 /pki/dh.pem
+
+	  
+	6.总结，经过以上步骤共生成了一下7个文件
+		根证书：/pki/ca.crt
+		根私钥：/pki/private/ca.key
+		服务端证书：/pki/issued/vpnsandro.crt
+		服务端私钥：/pki/private/vpnsandro.key
+		客户端证书：/pki/issued/vpnclient.crt
+		客户端私钥：/pki/private/vpnclient.key
+		密钥交换文件： /pki/dh.pem
+
+8、部署服务端openvpn配置文件和证书文件
+	切换到openvpn目录
+		cd /etc/openvpn	
+	拷贝openvpn server配置文件到openvpn目录下,
+		sandro@kvm-sandrocheng:/etc/openvpn$ sudo cp /usr/share/doc/openvpn/examples/sample-config-files/server.conf.gz ./
+	解压缩server.conf.gz
+		sudo gzip -d server.conf.gz
+		成功后会生成server.conf文件，源文件(server.conf.gz)默认会删除	
+	创建一个目录，用来保存证书和密钥文件
+		sudo mkdir keys
+	拷贝server端的证书和密钥，根证书和密钥交换文件到kyes目录
+		sandro@kvm-sandrocheng:/etc/openvpn/keys$sudo cp /usr/share/easy-rsa/pki/ca.crt ./
+		sandro@kvm-sandrocheng:/etc/openvpn/keys$sudo cp /usr/share/easy-rsa/pki/issued/vpnsandro.crt ./
+		sandro@kvm-sandrocheng:/etc/openvpn/keys$sudo cp /usr/share/easy-rsa/pki/private/vpnsandro.key ./
+		sandro@kvm-sandrocheng:/etc/openvpn/keys$sudo cp /usr/share/easy-rsa/pki/dh.pem ./
+        在openvpn服务端建立ta.key文件，主要用于拒绝服务攻击证书文件，提高安全性
+                 在keys目录下执行：
+                 sandro@kvm-sandrocheng:/etc/openvpn/keys$ sudo openvpn --genkey --secret ta.key
+	
+
+	修改server.conf配置文件
+		sudo vi server.conf
+	
+		ca keys/ca.crt
+		cert keys/vpnsandro.crt
+		key keys/vpnsandro.key  # This file should be kept secret
+		dh keys/dh.pem
+		log         /var/log/openvpn/openvpn.log		
+		tls-auth keys/ta.key 0
+		//加密方式，之前是AES-256-CBC
+		//客户端是2.4之后的需要使用GCM的加密方式，如果客户端是2.4之前的使用AES-256-CBC
+		//当前服务端的版本是2.4.12，客户端最好也要使用2.4.12版本的，因此要改一下加密方式
+		cipher AES-256-GCM
+	
+	在openvpn服务端建立ta.key文件，主要用于拒绝服务攻击证书文件，提高安全性
+		在keys目录下执行：
+		sandro@kvm-sandrocheng:/etc/openvpn/keys$ sudo openvpn --genkey --secret ta.key
+
+9、启动服务端openvpn
+	sandro@kvm-sandrocheng:/etc/openvpn$ sudo openvpn --daemon --config server.conf
+	--daemon表示使用守护进程在后台运行
+	--config server.conf ,表示指定服务端配置文件
+
+	使用网络命令查看openvpn状态，openvpn默认端口是1194 
+		sandro@kvm-sandrocheng:/var/log/openvpn$ sudo netstat -lntup|grep 1194
+		udp        0      0 0.0.0.0:1194            0.0.0.0:*                           101370/openvpn   
+		这里看到openvpn默认使用的是udp协议，如果想使用tcp协议可以在server.conf文件中 把proto udp 改成 proto tcp
+	也可以使用ps命令查看openvpn进程
+	
+	sudo tail -f /var/log/openvpn/openvpn.log,查看日志
+	其他日志文件：status /var/log/openvpn/openvpn-status.log
+	如果没有openvpn的进程信息，就把--daemon去掉，直接查看基本的执行错误
+	修改错误后记得 sudo killall openvpn ，把openvpn彻底杀死后再重启	
+
+10、ubuntu 客户端安装、配置、与启动
+	-安装openvpn
+		sudo apt-get update
+		sudo apt-get install openvpn
+	 安装成功后执行 openvep --version，看一下版本是否和服务端匹配
+
+	-拷贝client.conf到openvpn安装目录
+		sandro@sandro-Lenovo-XiaoXin-V4000:/etc/openvpn$sudo cp /usr/share/doc/openvpn/examples/sample-config-files/client.conf ./
+
+	-编辑client.conf
+		cert vpnclient.crt
+		key vpnclient.key
+		remote my-server-1 1194  ->  remote 24.233.1.250 1194 ,修改服务端外网公网的ip和端口号(openvpn默认端口号1194)
+		cipher AES-256-CBC       ->  cipher AES-256-GCM ,2.4版本后需要改成GCM加密算法
+	
+	-使用ssh命令从服务端拉取client.key, client.crt, ca.crt, ta.key文件
+	 直接拉取到openvpn目录下,因为这些文件默认只能root用户读写，因此直接使用root用户登陆
+		root@sandro-Lenovo-XiaoXin-V4000:/etc/openvpn# rsync -e 'ssh -p 16459' root@24.233.1.250:/usr/share/easy-rsa/pki/ca.crt .
+		root@sandro-Lenovo-XiaoXin-V4000:/etc/openvpn# rsync -e 'ssh -p 16459' root@24.233.1.250:/usr/share/easy-rsa/pki/issued/vpnclient.crt .
+		root@sandro-Lenovo-XiaoXin-V4000:/etc/openvpn# rsync -e 'ssh -p 16459' root@24.233.1.250:/usr/share/easy-rsa/pki/private/vpnclient.key .
+		root@sandro-Lenovo-XiaoXin-V4000:/etc/openvpn# rsync -e 'ssh -p 16459' root@24.233.1.250:/etc/openvpn/keys/ta.key .
+		
+	-修改client.conf文件为 client.ovpn,后面启动服务的时候的固定要求
+	 	root@sandro-Lenovo-XiaoXin-V4000:/etc/openvpn# mv client.conf client.ovpn	
+	
+	-启动 sudo openvpn --config client.ovpn
+
+	-启动后 使用 ip addr查看网卡信息
+		6: tun0: <POINTOPOINT,MULTICAST,NOARP,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UNKNOWN group default qlen 100
+    		link/none 
+    		inet 10.8.0.6 peer 10.8.0.5/32 scope global tun0
+       		   valid_lft forever preferred_lft forever
+    		inet6 fe80::a6ad:61c1:e516:9671/64 scope link stable-privacy 
+       		   valid_lft forever preferred_lft forever
+	-可以看到多出来了一个tun0网卡，ip地址是10.8.0.6，原因是服务端server.conf中配置了 10.8.0.0 255.255.255.0
+		6: tun0: <POINTOPOINT,MULTICAST,NOARP,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UNKNOWN group default qlen 100
+    			link/none 
+    		inet 10.8.0.6 peer 10.8.0.5/32 scope global tun0
+       			valid_lft forever preferred_lft forever
+    		inet6 fe80::a6ad:61c1:e516:9671/64 scope link stable-privacy 
+       			valid_lft forever preferred_lft forever
+	-去服务端看到log
+		primary virtual IP for vpnclient/223.102.85.251:3003: 10.8.0.6
+	 已经连接成功，并且分配了虚拟地址 10.8.0.6
+	 这个时候在服务端 ping ping 10.8.0.6,是能ping通的，如果关闭客户端是无法ping通的
+
+	 服务端使用ifconfig
+		tun0: flags=4305<UP,POINTOPOINT,RUNNING,NOARP,MULTICAST>  mtu 1500
+        	inet 10.8.0.1  netmask 255.255.255.255  destination 10.8.0.2
+        	inet6 fe80::6942:e440:718:4823  prefixlen 64  scopeid 0x20<link>
+        	unspec 00-00-00-00-00-00-00-00-00-00-00-00-00-00-00-00  txqueuelen 100  (UNSPEC)
+        	RX packets 126  bytes 8304 (8.3 KB)
+        	RX errors 0  dropped 0  overruns 0  frame 0
+        	TX packets 113  bytes 9204 (9.2 KB)
+        	TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+	 也看到了tun0隧道，并且ip是10.8.0.1，此时去客户端 ping 10.8.0.1是可以ping通的
+
+	 也可以使用ssh 登陆10.8.0.1的机器 ssh root@10.8.0.1 -p16459
+

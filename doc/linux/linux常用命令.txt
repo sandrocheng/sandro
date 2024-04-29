@@ -52,6 +52,9 @@
 			第三列：文件/目录所属的用户
 			第四列：文件/目录所属的组
 			第五列：文件大小，单位：字节，目录是4k，不包含目录里面所有文件大小
+			        如果是设备信息(块设备或者字符设备)，这里列出来的是设备号，格式是 [主设备号],[次设备号]
+					比如:crw-rw-rw- 1 root root 10,  50 1971-07-07 22:34 binder
+					这里10，50就是设备号,10是主设备号，50是次设备号
 			第六列：文件的最后修改时间，如果没有修改过，就是创建时间。
 			第七列：文件名
 		-r : 逆向排序，没有其他参数的情况下，按文件名逆向排序，组合使用的时候按前一个参数逆向排序	
@@ -354,6 +357,26 @@
 	案例：
 		grep -r -n "hello world" ./  查找在当前目录下（包含所有子目录）包含“hello world”字符串的文件，并显示行号		
 		grep -r -i -n "hello world" ./  查找在当前目录下（包含所有子目录）包含“hello world”字符串的文件，忽略大小写并显示行号		
+
+	与查找，如果是想要筛选多个字符可以多个grep使用
+		比如：ls -al | grep "10," | grep "binder"
+		      crw-rw-rw-  1 root            root             10,  50 1971-07-07 22:34 binder
+		      crw-rw-rw-  1 root            root             10,  49 1971-07-07 22:34 hwbinder
+		      crw-rw-rw-  1 root            root             10,  48 1971-07-07 22:34 vndbinder
+		      		
+		    第一部分是ls -al列出文件信息
+		    第二部分grep筛选出有“10，”的行
+		    第三部分将第二部分所有的行再次逐行筛选出有“binder”的行
+		    因此结果中所有行即有 “10，”也有“binder”
+		
+	或查找，如果筛选的关键字是或的关系可以使用-E
+		比如：ls -al |grep -E 'binder|block'
+		      crw-rw-rw-  1 root            root             10,  50 1971-07-07 22:34 binder
+		      drwxr-xr-x  2 root            root                  40 1971-07-07 22:34 binderfs
+		      drwxr-xr-x  6 root            root                2980 2024-03-01 08:05 block
+		      crw-rw-rw-  1 root            root             10,  49 1971-07-07 22:34 hwbinder
+		      crw-rw-rw-  1 root            root             10,  48 1971-07-07 22:34 vndbinder
+		搜索的结果里即有binder也有block的行
 
 1.27、find 和 grep 联合使用
 	查找当前目录下cxx文件中含有“hello world”的文件，忽略大小写，并显示行号，先使用find命令查找文件，然后用grep命令检索文件内容
