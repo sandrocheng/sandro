@@ -26,6 +26,10 @@
 			-功能稳定性：独立的通信进程保持长连接的稳定性,比如网络通信单独使用一个进程
 			-规避系统内存泄漏：独立的WebView进程阻隔内存泄漏导致的问题
 			-隔离风险：对于不稳定的功能放入独立进程，避免导致主进程崩溃	
+	-源码
+		-驱动源码：binder驱动在android内核源码/drivers/android/项目中
+		-framework native源码，libandroid_runtime库:/out/development/ide/clion/frameworks/base/core/jni/libandroid_runtime-x86_64-android/CMakeLists.txt
+		-framework native源码，libbinder库：/out/development/ide/clion/frameworks/native/libs/binder/libbinder-x86_64-android/CMakeLists.txt
 	
 2、IPC原理
 	-IPC原理，如图：binder学习笔记_2_IPC原理
@@ -66,6 +70,18 @@
 	-binder通信模型，如图：binder学习笔记_3_binder通信模型、binder学习笔记_3_binder通信结构图
 	
 	-binder实体对象，binder引用对象，binder代理对象，IBinder对象之间的关系如图：binder学习笔记_3_binder对象和关系
+	 	-Binder引用对象,BpBinder,
+		 源码：/frameworks/native/libs/binder/BpBinder.cpp
+		       /out/development/ide/clion/frameworks/native/libs/binder/libbinder-x86_64-android/CMakeLists.txt
+	 	 
+		 sp<BpBinder> BpBinder::create(int32_t handle)
+			binder的客户端代理是从BpBinder转换过来的
+			serverProxy = IServer.Stub.asInterface(IBinder);//客户端bindService后，返回的IBinder是 BpBinder::create创建出来的，
+				                                        //客户端调用的时候还需要继续使用 IServer.Stub.asInterface 转化为 服务端bind在客户端的代理类
+
+			BpBinder再返回给java层的时候会再通过ndk转化成了IBinder的子类 android/os/BinderProxy 对象，
+			BinderProxy对象中使用一个long型的变量mNativeData保存的是对应BpBinder的指针
+			后续BinderProxy和服务端binder通信的时候会使用mNativeData指针找到BpBinder从而进行binder通信
 
 	-binder的通信过程
 		-注册过程，如图：binder学习笔记_3_注册过程
@@ -229,11 +245,54 @@
 
 		这两个方法都只能在AIDL中定义的方法中调用，否则会返回当前进程或者用户的ID。他们可以用来检查调用者是否拥有某些权限，或者进行一些安全验证。
 		注意，如果AIDL方法是oneway的 pid会获取不到，
-	
-5、bindService
-	bindService是常用的客户端获取服务端连接(Connection)的方法
-	bindService流程 如图：binder学习笔记_5_bindService流程，binder学习笔记_5_bindService通信过程
 
+	-aidl生成的代理类源码分析
+		~/project/BinderExams项目中的ipc_sdk 是一个依赖库里面只有需要的adil文件
+		编译后，在/build/generated/aidl_source_output_dir/debug 可以看到生成的java类
+		
+		-分析IServer中 oneway void registerIClient(IClient iClient);在客户端的流程
+		 当客户端bindService成功后，回调onServiceConnected(ComponentName name, IBinder service) ,这个时候framework层返回的是android.os.BinderProxy实例
+		 客户端此时还需要在调用
+		 	serverProxy = IServer.Stub.asInterface(service);
+		 才能拿到IServer的客户端代理类实例IServer.Stub.Proxy，IServer.Stub.Proxy有所有IServer.aidl定义的接口以及实现供客户端业务使用
+		
+		-public void registerIClient(com.sandro.ipc.IClient iClient) throws android.os.RemoteException
+		 对应IServer.aidl中的 oneway void registerIClient(IClient iClient);接口，这个接口是客户端向服务端注册一个客户端的Binder，服务端就可以使用这个Binder调用客户端的接口了。
+		
+		  -> android.os.Parcel _data = android.os.Parcel.obtain(); //获取Parcel序列化实例
+		  ->_data.writeInterfaceToken(DESCRIPTOR);//DESCRIPTOR = "com.sandro.ipc.IServer";设置token，接收方根据token实例化服务端的接口
+		  ->_data.writeStrongBinder((((iClient != null)) ? (iClient.asBinder()) : (null))); //写入参数 iClient,IClient是一个IBinder实例
+			->nativeWriteStrongBinder//源码在libandroid_runtime库中的android_os_Parcel.cpp文件中
+				->Parcel* parcel = reinterpret_cast<Parcel*>(nativePtr);//指针强转为Parcel对象
+				->sp<IBinder> spBinder = ibinderForJavaObject(env, object);//使用外部传来的java对象，创建一个IBinder对象
+					->if (env->IsInstanceOf(obj, gBinderOffsets.mClass)) {
+						此时因为传过来的obj是iClient.asBinder() iClient实际上是一个服务端的binder，也就是Binder类实例，因此返回的是一个BBinder
+        					JavaBBinderHolder* jbh = (JavaBBinderHolder*)env->GetLongField(obj, gBinderOffsets.mObject);
+        					return jbh->get(env, obj);
+    					  }
+    					  if (env->IsInstanceOf(obj, gBinderProxyOffsets.mClass)) {
+						如果obj是Binderproxy类实例,则返回BPBinder
+        					return getBPNativeData(env, obj)->mObject;
+    					  }
+					  	
+				->const status_t err = parcel->writeStrongBinder(spBinder);//这里调用的是libbinder库中的 Parcel.cpp
+					->flattenBinder(val);
+					->
+
+		  ->boolean _status = mRemote.transact(Stub.TRANSACTION_registerIClient, _data, null, android.os.IBinder.FLAG_ONEWAY);
+		    这个mRemote实际上就是onServiceConnected返回的android.os.BinderProxy实例，transact就是向服务端传递数据。详见第5节
+		
+5、bindService
+	-bindService是常用的客户端获取服务端连接(Connection)的方法
+	-bindService流程 如图：binder学习笔记_5_bindService流程，binder学习笔记_5_bindService通信过程
+
+	-android.os.BinderProxy，binderService成功后会通过onServiceConnected返回android.os.BinderProxy实例
+	 客户端调用aidl接口的时候就会使用这个实例的transact方法传递数据。
+	 public boolean transact(int code, Parcel data, Parcel reply, int flags) throws RemoteException 
+	  ->public native boolean transactNative(int code, Parcel data, Parcel reply,int flags) throws RemoteException;
+	    这是一个native函数，源码在libandroid_runtime库中的android_util_Binder.cpp文件中
+	    jboolean android_os_BinderProxy_transact(JNIEnv* env, jobject obj,jint code, jobject dataObj, jobject replyObj, jint flags) 
+	    
 
 6、使用Binder进行跨进程通信的案例
 	~/project/BinderExams项目
@@ -343,3 +402,287 @@
 			...
 		}
 	
+8、binder驱动源码
+	binder驱动在android内核源码/drivers/android/项目中
+	
+9、binder驱动，binder.c
+	-device_initcall(binder_init);
+	 做为驱动模块binder.c没有main函数，通过调用驱动框架的device_initcall宏函数指示程序入口。
+	 在头文件 linux/module.h(/include/linux/module.h)中定义了很多_initcall宏，其中就包括了device_initcall
+		#define device_initcall(fn)		module_init(fn)
+	 实际上就是一个内联函数，module_init。module_init 是一个设备的初始化注册，这其实也很符合模块的设计初衷，那本来就是为了适应新的设备而设计的驱动加载框架。
+	 这里通过调用device_initcall，进而继续调用初始化函数，binder_init.
+
+	-binder做为内核中的驱动模块，入口在__init函数中
+	__init和__exit宏是 Linux 内核宏。用于指示初始化、退出函数。当一个驱动程序或内核模块被加载时，其包含的 __init 函数会被调用。
+	类似地，当一个驱动程序或内核模块被卸载时，其包含的 __exit 函数会被调用。因此，__init、__exit 宏用于标识这样的函数。
+	binder.c里实现了__init函数，因为不需要退出，所以也就没有实现__exit函数
+
+	-static int __init binder_init(void)//binder初始化函数
+	  ->device_names = kstrdup(binder_devices_param, GFP_KERNEL);//获取设备名字，android8.0后，衍生出很多binder，比如hwbinder,vndbinder,因此需要通过device_name区分
+                                                                    //binder是应用和框架通信使用的
+								    //hwbinder是框架和供应商通信用的
+                                                                    //vndbinder是供应商和供应商之间通信用的
+	  ->while ((device_name = strsep(&device_tmp, ","))) {
+		ret = init_binder_device(device_name);
+		if (ret)
+			goto err_init_binder_device_failed;
+	    }//轮询设备名字，调用init_binder_device创建设备binder，实际上就是创建 binder,hwbinder,vndbinder
+	
+	-static int __init init_binder_device(const char *name)//初始化各种binder设备
+	  	->struct binder_device *binder_device;//创建binder_device结构体，并初始化
+	    	  binder_device->miscdev.fops = &binder_fops;//&binder_fops指定了各种操作的函数引用
+					const struct file_operations binder_fops = {
+						.owner = THIS_MODULE,
+						.poll = binder_poll,
+						.unlocked_ioctl = binder_ioctl,
+						.compat_ioctl = binder_ioctl,
+						.mmap = binder_mmap,
+						.open = binder_open,
+						.flush = binder_flush,
+						.release = binder_release,
+					};
+	          binder_device->miscdev.minor = MISC_DYNAMIC_MINOR;
+	          binder_device->miscdev.name = name;//给设备命名，比如外部传来的binder文件名
+		  ...
+		  binder_device->context.binder_context_mgr_uid = INVALID_UID;//初始化时设置uid位无效，后边在service_manager设置上下文管理者的时候才设置
+		->ret = misc_register(&binder_device->miscdev);//注册设备，设备注册成功后，外部对binder文件调用的open,mmap,ioctl等操作都会回调到binder.c这里对应的接口
+	        ->hlist_add_head(&binder_device->hlist, &binder_devices);//把binder设备注册到hlist中去
+
+	-binder_open函数
+	 打开binder的函数，binder驱动启动后，就可以使用这个函数开启binder连接
+	 该函数依赖结构体 binder_proc,它是binder在本进程的描述
+		struct binder_proc {
+			struct hlist_node proc_node;
+
+			//struct rb_root是/include/linux/rbtree.h中定义的，是一个红黑树结构体，使用key-value读取和存储数据的
+			struct rb_root threads;//binder的线程信息
+			struct rb_root nodes;//自己的binder的root信息，它保存的是flat_binder_object信息
+			struct rb_root refs_by_desc;//其他进程的binder对象，以handle做为key
+			struct rb_root refs_by_node;//其他进程的binder，以内存地址做为key
+
+			struct list_head waiting_threads;
+			int pid;//进程id
+			struct task_struct *tsk;//当前进程管理的内存
+			struct files_struct *files;
+			struct mutex files_lock;
+			const struct cred *cred;
+			struct hlist_node deferred_work_node;
+			int deferred_work;
+			int outstanding_txns;
+			bool is_dead;
+			bool is_frozen;
+			bool sync_recv;
+			bool async_recv;
+			wait_queue_head_t freeze_wait;
+		
+			struct list_head todo;//todo队列
+			struct binder_stats stats;
+			struct list_head delivered_death;
+			int max_threads;//binder中最大线程数
+			int requested_threads;
+			int requested_threads_started;
+			atomic_t tmp_ref;
+			struct binder_priority default_priority;
+			struct dentry *debugfs_entry;
+			struct binder_alloc alloc;//申请的内粗
+			struct binder_context *context;
+			spinlock_t inner_lock;
+			spinlock_t outer_lock;
+			struct dentry *binderfs_entry;
+		};
+	 
+	  static int binder_open(struct inode *nodp, struct file *filp)
+		->struct binder_proc *proc;//创建binder_proc结构体，代表当前进程信息
+		->proc = kzalloc(sizeof(*proc), GFP_KERNEL);//在内核空间 给proc开辟内存
+		->spin_lock_init(&proc->inner_lock);//初始化同步自旋锁
+		  spin_lock_init(&proc->outer_lock);
+		->get_task_struct(current->group_leader);//把当前task_struct.usage+1
+		->proc->tsk = current->group_leader;//把当前tsk指行为进程，在linux中线程和进程头是用task_struct来描述的
+						    //都是用PCB来控制的
+		->mutex_init(&proc->files_lock);//创建一个文件锁
+		->INIT_LIST_HEAD(&proc->todo);//初始化todo列表
+		->if (binder_supported_policy(current->policy)) {
+			proc->default_priority.sched_policy = current->policy;
+			proc->default_priority.prio = current->normal_prio;
+		} else {
+			proc->default_priority.sched_policy = SCHED_NORMAL;
+			proc->default_priority.prio = NICE_TO_PRIO(0);
+		}//设置优先级
+		->if (is_binderfs_device(nodp)) {
+			binder_dev = nodp->i_private;
+			info = nodp->i_sb->s_fs_info;
+			binder_binderfs_dir_entry_proc = info->proc_log_dir;
+		} else {
+			binder_dev = container_of(filp->private_data,
+					  struct binder_device, miscdev);
+		}//获取binder_dev的首地址
+		->proc->context = &binder_dev->context;//指定当前context
+		->proc->pid = current->group_leader->pid;//设置pid
+		->INIT_LIST_HEAD(&proc->waiting_threads);//初始化等待列表
+		->filp->private_data = proc;//保存proc到flip中去
+		->hlist_add_head(&proc->proc_node, &binder_procs);//把proc->proc_node,添加到binder_procs进程链表中去，添加之后就可以通过内存地址计算，方便的得到proc的地址
+	 总结：binder_open主要是创建binder_proc结构体，设置进程信息，初始化等待列表，todo列表，保存进程数据，并把proc添加到binder_procs中去
+
+	-binder_mmap函数
+		
+	 	该函数是用来做binder内存映射的
+		
+		/*
+		* vm_area_struct:
+		*/
+		static int binder_mmap(struct file *filp, struct vm_area_struct *vma)
+		->struct binder_proc *proc = filp->private_data;//获取当前进程的binder_proc 拿到了当前进程的binder_proc
+		
+		->if ((vma->vm_end - vma->vm_start) > SZ_4M)//这里规定如果申请对内存大小最大为4M
+			vma->vm_end = vma->vm_start + SZ_4M;	
+	
+		->ret = binder_alloc_mmap_handler(&proc->alloc, vma);//建立用户空间和内核空间的地址映射关系,
+								     //建立后用户空间和内核空间都能互相拿到对方的地址
+
+	-binder_mmap函数是如何被调用的
+		在ServiceManager中使用ProcessState创建的binder，ProcessState调用的是bionic/libc/bionic/mmap.cpp中的 mmap函数为binder分配共享内存
+		-mmap调用当前文件的mmap64
+		-mmap64调用__mmap2函数
+		-__mmap2在bionic/libc/arch-arm/syscalls/__mmap2.S,这里可以看到__mmap2 映射到了 __NR_mmap2上
+		 android 11之前有这个文件能找到后续的mmap映射关系，从android11 开始这个映射文件没有了，应该是同过其他方式映射到了__NR_mmap2上
+		 __NR_mmap2是内核定义的宏，下面开始是内核的代码，
+		 具体用哪个内核代码，需要看下android源码中内核版本，比如当前android 12 piexl安装以后能看到对应的内核版本是4.14，
+		 内核分支：android-msm-coral-4.14-android12L，不同内核版本，__NR_mmap2调用到binder_mmap()的路径不太一样，但是最终都是调用到了file->f_op->mmap指向的函数
+		 file->f_op->mmap这个是mmap函数指针，如果是binder初始化的内存地址，这里就是指向binder_mmap
+
+		-__NR_mmap2调用common/arch/arm/kernel/entry-common.S的sys_mmap2
+		-sys_mmap2调用common/mm/mmap.c的sys_mmap_pgoff
+		-YSCALL_DEFINE6(mmap_pgoff, unsigned long, addr, unsigned long, len,unsigned long, prot, unsigned long, flags,unsigned long, fd, unsigned long, pgoff);
+		-sys_mmap_pgoff继续调用common/mm/util.c的vm_mmap_pgoff
+		-vm_mmap_pgoff继续调用common/mm/mmap.c的do_mmap_pgoff
+		-do_mmap_pgoff继续调用当前文件的mmap_region
+		-mmap_region通过下面语句调用到早已注册好的binder_mmap
+			file->f_op->mmap(file, vma);
+		 file->f_op就是是struct file_operations结构体，在binder驱动里，这里定义的的mmap函数指针已经指向了binder_mmap()函数
+
+	-binder_ioctl函数
+	 功能：对当前binder设备进行读写操作
+	 static long binder_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
+	 ->struct binder_proc *proc = filp->private_data;//获取当前的binder_proc
+	 ->thread = binder_get_thread(proc);//从proc的rb_node中找到当前的thread，如果没找到，就分配一个新的thread,并差入到rb_node红黑树中
+					    //在后面解析命令的时候用的就是这个thread去执行
+					    //比如：binder_ioctl_write_read(filp, cmd, arg, thread);
+	 ->void __user *ubuf = (void __user *)arg;//外部传递过来的arg参数，binder把它当作一个内存地址
+						  //用于将用户空间的数据写入到内核空间，比如copy_from_user(&info, ubuf, sizeof(info))
+						  //或者把内核空间的数据写入到用户空间，比如:copy_to_user(ubuf, &info, sizeof(info))
+	 ->switch (cmd) ... //根据cmd，执行各种操作
+	
+	-总结：
+		-binder_init，注册binder驱动，将mmap映射到binder_mmap,open映射到binder_open,flush映射到binder_flush,release映射到binder_release等
+		-binder_open,创建当前binder_proc，并且初始化进程信息，比如pid,wait队列，todo队列，最后把proc添加到binder_procs集合中去
+		-binder_mmap,开辟内核空间,同时开辟物理内存，同时将内核空间和物理内存映射，让他们两个指向同一个内存地址
+		-binder_ioctl，向binder驱动发送命令以及data，完成固定操作		    
+
+10.binder.c中重要的结构体
+	-binder_proc进程链表 binder_procs，使用的是哈希散列表保存所有调用过binde_open()进程的 binder_proc信息,它是一个全局变量，	
+	 头文件：include/linux/list.h
+	 binder_proc结构体的第一个元素是struct hlist_node proc_node，因此这里向binderprocs添加信息的时候就直接添加proc_node指针了，
+	 也就是说binder_procs保存的是binder_proc的首地址
+		hlist_add_head(&proc->proc_node, &binder_procs);
+
+	 binder_procs是一个全局变量，因此对它的读写，往往都需要使用锁
+		mutex_lock(&binder_procs_lock);
+		hlist_for_each_entry(proc, &binder_procs, proc_node)
+			print_binder_proc(m, proc, 1);
+		mutex_unlock(&binder_procs_lock);
+
+	-外部通过open ，release，来添加或者删除binder_procs中的元素
+	-外部通过ioctrl的BINDER_GET_FROZEN_INFO,这是为android的墓碑机制提供进行信息查询的接口，内部会轮询所有进程信息。
+	 返回进程自上次冻结以来收到的异步事务 和 处理自上次冻结以来收到的同步事务
+	-外部通过BINDER_FREEZE，将对应的proc冻结	 
+
+11.binder_ioctl命令解析和执行
+	-BINDER_SET_CONTEXT_MGR_EXT，设置binder设备上下文管理者类
+		-copy_from_user(&fbo, ubuf, sizeof(fbo));//linux函数，用来将用户空间的数据(ubuf)拷贝到内核空间地址(&fbo)中
+	        -binder_ioctl_set_ctx_mgr(filp, &fbo);//设置上下文管理类，flip是struct file结构体，
+						     //用户层调用ioctl函数的时候，经过bionic库后会将文件描述符转换成file结构体的数据传递到binder_ioctl函数中
+		-static int binder_ioctl_set_ctx_mgr(struct file *filp,struct flat_binder_object *fbo)
+			->struct binder_proc *proc = filp->private_data;//获取当前进程的proc描述信息
+			->struct binder_context *context = proc->context;//获取当前进程的context信息
+			->kuid_t curr_euid = current_euid();//获取一个euid，这个euid会设置给context中
+							    //uid: 用户id, euid: 有效用户id，uid为文件的执行者，而euid为文件的所有者，ps命令中看到的用户为文件的所有者。	
+			  //这些信息在binder_open的时候就已经设置到binder文件描述符对应的file结构体中了，系统在回调binder_ioctl的时候是可以根据文件描述符找到这些信息的。
+		        ->if (context->binder_context_mgr_node) {//如果当前的context已经设置了管理者，则返回
+				pr_err("BINDER_SET_CONTEXT_MGR already set\n");
+				ret = -EBUSY;
+				goto out;
+			  } 
+			->ret = security_binder_set_context_mgr(proc->cred);//检验当前进程是否有管理者的权限,这里主要使用的是selinux的权限校验接口
+			->context->binder_context_mgr_uid = curr_euid;//设置上下文管理者的uid
+			->new_node = binder_new_node(proc, fbo);//创建binder_node信息
+			  。。。后面是node信息的初始化
+			->context->binder_context_mgr_node = new_node; //设置上下文管理者的bind_node
+		 
+	-BINDER_WRITE_READ读写数据命令
+	  ->binder_ioctl_write_read(filp,//ioctl被回调时，系统封装的file结构体 
+				    cmd,//ioctl被回调时，系统封装的cmd命令，此时就是BINDER_WRITE_READ 
+				    arg, //ioctl被回调时，调用传递过来的内存首地址，通过这个地址就可以读出需要的数据
+				    thread /*binder_get_thread(proc);获取到binder_thread结构体 */ );   
+		->void __user *ubuf = (void __user *)arg;
+		  struct binder_write_read bwr;//struct binder_write_read是binder.h定义的读写数据的结构体，里面有读/写数据内存的地址和大小，和发送方发送数据的格式是一样的     
+		  copy_from_user(&bwr, ubuf, sizeof(bwr))//把数据从用户空间读取到内核空间，将ioctl中arg地址的数据读取到bwr中，
+							 //注意此时bwr里面的指针指向的还是用户空间的地址，
+							 //比如bwr.write_buffer这个指针的值已经读到内核空间了，但是指针指向的数据还是在用户空间
+		->if (bwr.write_size > 0) //如果有向binder写入的数据，处理写数据内容
+			ret = binder_thread_write(proc, //struct binder_proc *proc，  filp->private_data
+						  thread,//struct binder_thread *thread，binder_get_thread(proc);
+					          bwr.write_buffer,//binder_uintptr_t binder_buffer
+					          bwr.write_size,//size_t size
+					          &bwr.write_consumed /*binder_size_t *consumed
+								       *这是一个偏移量，比如有5个字节的数据前面已经处理了两个字节，
+								       *这个时候再处理就要从第3个字节开始读，偏移量就是2*/);
+				->uint32_t cmd;//命令字，比如：BC_ENTER_LOOPER
+				  
+				//下面的变量都使用了__user宏，这是linux内核Sparse的内存检查工具，表示指针都是在用户空间
+				->void __user *buffer = (void __user *)(uintptr_t)binder_buffer;//强转buffer指针  
+				->void __user *ptr = buffer + *consumed;//根据偏移量计算要读取数据的首地址
+				->void __user *end = buffer + size;//计算要读取数据的尾地址
+				->while (ptr < end && thread->return_error.cmd == BR_OK)//轮询读取数据
+					->if (get_user(cmd, (uint32_t __user *)ptr)) return -EFAULT;//读取一个32位 int数据到cmd中，				
+										                    //get_user是linux读取用户空间数据的接口，一般是用来读取比较简单的变量的
+					->switch (cmd) //开始执行命令
+					->case BC_ENTER_LOOPER://设置当前进程状态是 BINDER_LOOPER_STATE_ENTERED
+						->thread->looper |= BINDER_LOOPER_STATE_ENTERED;
+					->case ....
+		->if (bwr.read_size > 0) //当调用者从binder中有读数据的时候,会从工作队列中获取任务，完成后会把数据拷贝到用户空间
+					 //用户空间有数据的时候，调用者监听到了就会继续后面的业务处理
+			ret = binder_thread_read(proc, thread, bwr.read_buffer,
+					 bwr.read_size,
+					 &bwr.read_consumed,
+					 filp->f_flags & O_NONBLOCK);
+			
+
+12.binder线程状态
+	-binder的线程状态保存在binder_thread结构体的loop变量中
+	 每当有ioctl或者poll请求过来的时候，都会从proc中获取这个binder_thread
+	
+	-在结构体binder_thread结构体里通过成员变量looper来表示Binder线程的状态，取值固定为枚举类型的值：
+		-BINDER_LOOPER_STATE_REGISTERED
+		 当线程是被Binder驱动请求而创建的，注册到Binder驱动后，它就会通过BC_REGISTER_LOOPER协议通知Binder驱动它已经准备完毕，可以处理IPC请求了，
+		 Binder驱动就将其状态成员变量looper设置为BINDER_LOOPER_STATE_REGISTERED
+
+		-BINDER_LOOPER_STATE_ENTERED</h4>
+		 当线程是主动注册到Binder驱动后，它就会通过BC_ENTER_LOOPER协议通知Binder驱动它已经准备完毕，可以处理IPC请求了，
+		 Binder驱动就将其状态成员变量looper设置为BINDER_LOOPER_STATE_ENTERED 
+
+		-BINDER_LOOPER_STATE_WAITING 
+		 当一个Binder线程处于空闲状态时，Binder驱动把其状态置为BINDER_LOOPER_STATE_WAITING 
+
+		-BINDER_LOOPER_STATE_EXITED
+		 当一个Binder线程退出时，会通过BC_EXIT_LOOPER协议通知Binder驱动，Binder驱动就把其状态置为BINDER_LOOPER_STATE_EXITED 
+
+		-BINDER_LOOPER_STATE_INVALID 
+		 当一个Binder线程发生异常时，Binder驱动就把其状态置为BINDER_LOOPER_STATE_INVALID。
+		 比如一个Binder线程已经处于BINDER_LOOPER_STATE_REGISTERED了，它又再次通过BC_ENTER_LOOPER通知Binder驱动，则Binder驱动就会把它状态置为BINDER_LOOPER_STATE_INVALID。
+
+		-BINDER_LOOPER_STATE_NEED_RETURN 
+		 表示该线程需要马上返回到用户空间中，使用情形有： 
+		 	-线程注册成为Binder线程后，还没准备好去处理进程间通信，需要返回用户空间做其他初始化等准备
+		 	-进程调用flush来刷新Binder线程池 
+

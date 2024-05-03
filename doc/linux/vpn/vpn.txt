@@ -358,10 +358,7 @@
 		//客户端是2.4之后的需要使用GCM的加密方式，如果客户端是2.4之前的使用AES-256-CBC
 		//当前服务端的版本是2.4.12，客户端最好也要使用2.4.12版本的，因此要改一下加密方式
 		cipher AES-256-GCM
-	
-	在openvpn服务端建立ta.key文件，主要用于拒绝服务攻击证书文件，提高安全性
-		在keys目录下执行：
-		sandro@kvm-sandrocheng:/etc/openvpn/keys$ sudo openvpn --genkey --secret ta.key
+		verb 3 #指定日志文件的记录详细级别，可选0-9，等级越高日志内容越详细
 
 9、启动服务端openvpn
 	sandro@kvm-sandrocheng:/etc/openvpn$ sudo openvpn --daemon --config server.conf
@@ -371,7 +368,9 @@
 	使用网络命令查看openvpn状态，openvpn默认端口是1194 
 		sandro@kvm-sandrocheng:/var/log/openvpn$ sudo netstat -lntup|grep 1194
 		udp        0      0 0.0.0.0:1194            0.0.0.0:*                           101370/openvpn   
-		这里看到openvpn默认使用的是udp协议，如果想使用tcp协议可以在server.conf文件中 把proto udp 改成 proto tcp
+	这里看到openvpn默认使用的是udp协议，如果想使用tcp协议可以在server.conf文件中 
+		proto udp -> proto tcp
+		explicit-exit-notify 1 -> explicit-exit-notify 0
 	也可以使用ps命令查看openvpn进程
 	
 	sudo tail -f /var/log/openvpn/openvpn.log,查看日志
@@ -383,7 +382,6 @@
 	-安装openvpn
 		sudo apt-get update
 		sudo apt-get install openvpn
-	 安装成功后执行 openvep --version，看一下版本是否和服务端匹配
 
 	-拷贝client.conf到openvpn安装目录
 		sandro@sandro-Lenovo-XiaoXin-V4000:/etc/openvpn$sudo cp /usr/share/doc/openvpn/examples/sample-config-files/client.conf ./
@@ -394,6 +392,9 @@
 		remote my-server-1 1194  ->  remote 24.233.1.250 1194 ,修改服务端外网公网的ip和端口号(openvpn默认端口号1194)
 		cipher AES-256-CBC       ->  cipher AES-256-GCM ,2.4版本后需要改成GCM加密算法
 	
+		如果服务器设置的是tcp则客户端也要设置为tcp
+		proto udp -> proto tcp
+	
 	-使用ssh命令从服务端拉取client.key, client.crt, ca.crt, ta.key文件
 	 直接拉取到openvpn目录下,因为这些文件默认只能root用户读写，因此直接使用root用户登陆
 		root@sandro-Lenovo-XiaoXin-V4000:/etc/openvpn# rsync -e 'ssh -p 16459' root@24.233.1.250:/usr/share/easy-rsa/pki/ca.crt .
@@ -403,7 +404,8 @@
 		
 	-修改client.conf文件为 client.ovpn,后面启动服务的时候的固定要求
 	 	root@sandro-Lenovo-XiaoXin-V4000:/etc/openvpn# mv client.conf client.ovpn	
-	
+
+11、ubuntu启动openvpn客户端
 	-启动 sudo openvpn --config client.ovpn
 
 	-启动后 使用 ip addr查看网卡信息
@@ -438,3 +440,6 @@
 
 	 也可以使用ssh 登陆10.8.0.1的机器 ssh root@10.8.0.1 -p16459
 
+12、常见问题
+	-有时候，服务器多次重启，客户端会连接不上，报TLS Error: TLS handshake failed，错误
+	 解决方法是，换个端口号，服务端的server.conf和客户端的client.ovpn文件里关于端口号的设置重新配置一个新的端口号。

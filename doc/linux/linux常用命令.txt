@@ -653,5 +653,5 @@
 	cat /sys/class/power_supply/BAT0/capacity
 
 5.2 关机/重启
-	立刻关机 ：sudo shutdown -h now
+	立刻关机 ：sudo shutdown -h now  或者  sudo poweroff
 	重启：sudo reboot -f

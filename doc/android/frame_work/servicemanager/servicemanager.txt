@@ -1,0 +1,196 @@
+1.servicemanager进程简介
+	-它是android系统中的独立进程，它是由init进程fork出来的，它比zygote启动的还要早，一旦运行就不会停止，不断loop
+	 除此之外，还知道它默认情况依托于/dev/binder这个设备节点，当然可以通过向servermanager传递参数指定设备节点。
+	 servermanager作为binder机制的核心组件之一，在实现进程间通信中占据着不可获取的地位。
+	
+	-servicemanager是 Android 系统中的核心服务管理器，用于管理系统级的服务。
+	 servicemanager管理的服务包括系统级服务（如ActivityManager、PackageManager、WindowManager等）和由应用程序注册的系统服务。
+	 servicemanager的访问权限较高，一般只有系统级应用或者具有系统权限的应用程序才能够使用servicemanager进行服务的注册和查询。
+
+	-依赖库以及源码CMakelists位值
+	 	-servicemanager通过依赖framework的libbinder库中的类完成对binder驱动的调用
+	         
+		-libinder : out/development/ide/clion/frameworks/native/libs/binder/libbinder-x86_64-android
+ 		 libbinder库对binder文件描述符的open,mmap,octl通过bionic基础库进行映射查询最终调用到了binder_open,binder_mmap,binder_octl方法
+
+		-libutils库，servicemanager对binder驱动的io读写监听使用了libutils中的looper.cpp中封装的epoll多路复用机制
+			   /out/development/ide/clion/system/core/libutils/libutils-x86_64-android/CMakeLists.txt
+		 
+		-bionic库：Bionic库是Android的基础库之一，也是连接Android系统和Linux系统内核的桥梁，Bionic中包含了很多基本的功能模块，这些功能模块基本上都是源于Linux
+			   它和Linux还是有一些不一样的的地方。同时，为了更好的服务Android，Bionic中也增加了一些新的模块。
+		 libc_bionic:out/development/ide/clion/bionic/libc/libc_bionic-x86_64-android/CMakeLists.txt
+		 framework层对文件描述符的open,mmap,octl方法都在open.cpp,mmap.cpp,ioctl.cpp 中进行了重新定向和寻址操作，
+		
+
+		-android kernal binder源码位值：/drivers/android
+
+2.servicemanager在init.rc中的配置
+	在init.rc中能找到servicemanager的启动配置信息
+		# Start essential services.
+		start servicemanager
+		start hwservicemanager
+		start vndservicemanager
+		
+		start命令是启动 servicemanager服务的意思
+
+	在编译文件中搜索 servicemanager
+		find ./ -name "Android.bp" | xargs grep -r -n -i "servicemanager"
+	搜索结果	
+		/frameworks/native/cmds/servicemanager/Android.bp:45:    init_rc: ["servicemanager.rc"],
+	就能找到servicemanager的工程目录，这里CMakeLists.txt文件可以看到会把工程文件编译成一个可执行程序servicemanager
+		add_executable(servicemanager ${SOURCE_FILES})
+
+	所以在init.rc中 通过 start servicemanager执行
+
+	对应的init_rc：/frameworks/native/cmds/servicemanager/servicemanager.rc
+		service servicemanager /system/bin/servicemanager  //指定可执行程序的路径
+		    class core animation //属于核心服务 服务启动的优先级，core->main->late_start,
+					 //core执行级别是最高的，zygote是main,因此servicemanager是比zygote更早执行的服务。
+		    user system
+		    group system readproc
+		    critical
+		    onrestart restart apexd
+		    onrestart restart audioserver
+		    onrestart restart gatekeeperd
+		    onrestart class_restart main
+		    onrestart class_restart hal
+		    onrestart class_restart early_hal
+		    writepid /dev/cpuset/system-background/tasks
+		    shutdown critical
+
+3、源码
+	源码位值：/frameworks/native/cmds/servicemanager/
+	CMakeLists工程文件：/out/development/ide/clion/frameworks/native/cmds/servicemanager/servicemanager-x86_64-android/CMakeLists.txt
+	
+	android 11之前是c写的。入口是service_manager.c的main函数
+	从android 11开始servicemanager项目改成了c++项目
+
+4、main函数源码分析
+	入口位值是main.cpp的main函数
+	->const char* driver = argc == 2 ? argv[1] : "/dev/binder";// ~/dev/binder文件是一个可读写的字符设备文件，android把他当作一个设备进行管理，
+								      	
+	  sp<ProcessState> ps = ProcessState::initWithDriver(driver);//使用ProcessState初始化binder驱动
+								     //CMakeLists文件：out/development/ide/clion/frameworks/native/libs/binder/libbinder-x86_64-android
+								     //源码在ProcessState.cpp中
+								     //在ProcessState构造函数中可以看到根据binder路径获取了驱动文件描述符,设置了最大线程数是15
+								     //binder使用的mmap默认size是BINDER_VM_SIZE = ((1 * 1024 * 1024) - sysconf(_SC_PAGE_SIZE) * 2),约等于1M
+								     //mmap函数实际上对应的是binder驱动中的binder_map函数，详见/doc/android/frame_wrok/binder/binder学习笔记.txt
+	->sp<ServiceManager> manager = sp<ServiceManager>::make(std::make_unique<Access>());
+	  IPCThreadState::self()->setTheContextObject(manager);//这里是构造了一个ServiceManager对象，把这个对象设置到IPCThreadState中
+	      						       //实际上就是把SericeManager设置为binder IPC的上下文管理者
+
+	->ps->becomeContextManager();//这里调用的是ProcessState::becomeContextManager()
+				     //这里是往binder驱动写入BINDER_SET_CONTEXT_MGR_EXT命令，如果BINDER_SET_CONTEXT_MGR_EXT命令写入失败，则写入BINDER_SET_CONTEXT_MGR命令
+	 
+	->sp<Looper> looper = Looper::prepare(false);//looper.cpp CMakeLists.txt:/out/development/ide/clion/system/core/libutils/libutils-x86_64-android/CMakeLists.txt
+						     //获取一个looper	
+    	  BinderCallback::setupTo(looper);
+		->IPCThreadState::self()->setupPolling(&binder_fd);//libbinder项目中的类，用于IPC通信，这里是调用binder_write把BC_ENTER_LOOPER传递给binder驱动
+		->looper->addFd//调用looper的监听接口监听binder_fd是否有消息传回，并设置回调类：BinderCallback，当有消息收到的时候通过BinderCallback.handleEvent回调
+          ClientCallbackCallback::setupTo(looper, manager);//和BinderCallback一样，这里使用timerfd_create，创建了一个时间文件描述符fdTimer，便于epoll监听
+							   //int timeRes = timerfd_settime(fdTimer, 0 /*flags*/, &timespec, nullptr);设置间隔5秒回调
+							   //looper->addFd,监听这个时间文件描述符
+							   //也就是说5秒钟后，ClientCallbackCallback会收到回调，回调收到后调用 ServiceManager::handleClientCallbacks() 
+							   //相当于做了一个5秒超时处理，如果5秒钟没有收到binder回调则通知客户端，超时了。
+	  while(true) {looper->pollAll(-1);} //在这里构造了一个looper，这个looper就是handler在native的层的实现，servicemanager就是从这个looper中不断读取消息进行任务处理。
+					     
+	
+5、main函数源码总结
+	ServiceManager启动后
+		-打开binder驱动，设置mmap大小 为 1M
+		-让自己成为binder上下文的管理者
+		-调用Looper的addFd方法,将bind_fd放入epoll的监听队列中，不断读取binder中返回的数据，收到数据后交由libbinder库的IPCThreadState.handlePolledCommands去处理
+
+6、ServiceManager设置自己为binder内核驱动的上下文管理者流程
+	-因为binder会对设置上下文管理者的进程进行selinux权限校验，因此ServiceManager必须要有配置selinux的te文件：\system\sepolicy\public\servicemanager.te
+	 	allow servicemanager {
+  			domain  //domain权限就拥有了成为manager的权限
+  			-init
+  			-vendor_init
+  			-hwservicemanager
+  			-vndservicemanager
+		}:binder transfer;
+
+	-在main.cpp的main函数中通过以下代码将 ServiceManager设置为binder上下文管理者
+		sp<ServiceManager> manager = sp<ServiceManager>::make(std::make_unique<Access>());
+		IPCThreadState::self()->setTheContextObject(manager);
+		ps->becomeContextManager();
+
+	-bool ProcessState::becomeContextManager();//源码在libbinder库ProcessState.cpp类中
+	     	flat_binder_object obj {
+        		.flags = FLAT_BINDER_FLAG_TXN_SECURITY_CTX,
+    		};
+	 	int result = ioctl(mDriverFD, BINDER_SET_CONTEXT_MGR_EXT, &obj);
+	 	通过使用BINDER_SET_CONTEXT_MGR_EXT向mDriverFD文件描述符发送请求，完成注册
+		这里ioctl根据文件描述符类型最终会映射到 binder驱动的 binder_ioctl执行后续操作，详见/doc/android/frame_work/binder/binder学习笔记.txt,第11部分
+
+7、ServiceManager使用loop监听binder数据
+	ServieManager启动后通过libutils库的loop.cpp类不断监听binder驱动返回的数据
+	-main.cpp->main()
+		...
+		sp<Looper> looper = Looper::prepare(false /*allowNonCallbacks*/);//初始化并启动loop
+		BinderCallback::setupTo(looper);//向loop设置binder回调监听
+		ClientCallbackCallback::setupTo(looper, manager);//这里也是利用loop监听，但是监听的是client的数据，和binder没关系
+		while(true) looper->pollAll(-1);//监听设置好以后，开始轮询，当有事件到达的时候会回调给BinderCallback 或者 ClientCallbackCallback,然后继续监听
+						//这里loop使用了epoll机制监听文件描述符，当没有事件发生的时候就一直阻塞，所以这里并不会占用很多cpu
+
+	-Looper::prepare(intopts)//flase,looper中监听的fd，要有执行回调；ture,则循环器将允许在没有关联回调的情况下注册文件描述符。这假设pollOnce()的调用方已准备好自己处理无回调事件。
+				 //该函数会
+	 ->sp<Looper> looper = Looper::getForThread();//为looper准备线程信息
+	   if (looper == nullptr) {//如果没有线程信息，则new一个新的looper
+        	looper = new Looper(allowNonCallbacks);//在looper构造函数里会使用 epoll_create1函数创建epoll
+        	Looper::setForThread(looper);
+    	   }
+
+	-BinderCallback::setupTo(looper);
+		int binder_fd = -1;
+        	IPCThreadState::self()->setupPolling(&binder_fd);//使用libbinder库中的IPCThreadState类库获取binder_fd
+			->mOut.writeInt32(BC_ENTER_LOOPER);//mOut是一个Parcel类型全局变量，用于保存要发送的数据，这里是写入的是一个BC_ENTER_LOOPER
+			->flushCommands();//将mOut的数据发送给binder驱动层
+			 	->talkWithDriver(false);
+    				  if (mOut.dataSize() > 0) talkWithDriver(false); //这里调用talkWthDriver向binder发送数据，如果失败会再发送一次
+										  //有些情况下BC_RELEASE/BC_DECREFS会再mOut中排队，所以多发送一次，保证队列中的数据都能发送干净
+					->ioctl(mProcess->mDriverFD, BINDER_WRITE_READ, &bwr)//最终talkWithDriver使用ioctl将数据 “BC_ENTER_LOOPER”通过“BINDER_WRITE_READ”请求字
+											     //发送给了binder驱动，binder中对“BC_ENTER_LOOPER”he “BINDER_WRITE_READ”的处理
+											     //详见/doc/android/frame_work/binder/binder学习笔记.txt,第11部分
+        	int ret = looper->addFd(binder_fd,Looper::POLL_CALLBACK,Looper::EVENT_INPUT,cb,nullptr);//通过epoll_ctl向epoll监听队列中增加binder_fd读事件
+	
+	->looper->pollAll(-1)   
+		->do {//因为参数只有-1，因此直接循环调用pollOnce,参数只有-1，outFd,outEents,outData都是NULL
+			//只要pollOnce返回的是POLL_CALLBACK，这里就会一直循环
+			//有POLL_CALLbACK返回说明epoll监听到了某个读事件，对应的读事件会通过CallBack回调去处理，等都处理完了，在进入下一个循环
+			//因为之前已经调用过looper->addFd，因此每次循环都会监听binder_fd
+            		result = pollOnce(timeoutMillis, outFd, outEvents, outData);
+        	  } while (result == POLL_CALLBACK);
+		  return result
+			->int Looper::pollOnce(int timeoutMillis,//-1  
+					       int* outFd, //NULL
+                                               int* outEvents, //NULL
+                                               void** outData) //NULL
+			  ->while (mResponseIndex < mResponses.size()) {
+				//这里先没有直接开始调用epoll_wait去阻塞监听，而是先判断上一次有没有每处理完的response数据，如果有就立刻返回
+			   	return response.request.ident	
+			    }
+			  ->pollInner(int timeoutMillis/*timeoutMillis 此时是-1*/)				
+			     ->int eventCount = epoll_wait(mEpollFd.get(), eventItems, EPOLL_MAX_EVENTS, timeoutMillis);//开始监听，没有数据返回就一直在这里阻塞	
+			     ->int callbackResult = response.request.callback->handleEvent(fd, events, data);//整理出要回调的数据回调接收到的数据
+            		      if (callbackResult == 0) removeFd(fd, response.request.seq);//如果回调接口返回0，就不再监听文件描述符，否则的化会继续监听
+                                                                                          //BinderCallback.handlerEvent回调函数返回的是1，因此binderfd没有从监听队列中删除，
+											  //下一次pollOnce还会继续监听。
+8、ServiceManagerProxy.addService流程
+	ServiceManagerProxy是客户端代理类，用来与service_manager通信的
+	比如system_server中的AMS通过调用 ServiceManager.getIServiceManager()获取的IServceManager接口实现类就是ServiceManagerProxy
+	源码中这部分代码应该是adil生成的frameworks\native\libs\binder\aidl\android\os\IServiceManager.aidl。
+	
+	
+
+
+
+
+
+
+
+
+
+
+

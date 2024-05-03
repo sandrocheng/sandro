@@ -1567,7 +1567,7 @@
 		//这个方法比较重要，可以说是frame_work层的入口
                 //zygote进程也是在这里启动的
 		//全目录搜索，会发现有多个init.rc 优先考虑同级目录 /system/core/rootdir/中的init.rc
-		//init.rc中的命令在readme中有比较详细的介绍，如：
+		//init.rc中的命令在rsystem/core/init/README.md中有比较详细的介绍，如：
 		//	# Now we can start zygote for devices with file based encryption，启动zygote进程 --> init.zygote64.rc ---> app_main.cpp--->main()
 
 		//      trigger zygote-start 

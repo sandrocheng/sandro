@@ -103,3 +103,54 @@
 
 6.system_service启动时序图
 	如图：6_system_service启动时序图		
+
+7.ServiceManager.addSerive
+	-system_server进程的另一个重要的工作是 把system_server启动的服务(比如AMS) 注册到service_manager进程中去。
+	 这个过程是system_server进程的android.os.ServiceManager.addService(...);完成的
+ 	 比如SystemServer.startBootstrapServices中调用的mActivityManagerService.setSystemProcess(); 这里就调用了addService方法
+	 AMS实现了IBinder接口，(IActivityManager.aidl生成的IBinder代理类),addService之后 service_manager就拥有了AMS的IBinder实例，
+	 其他进程通过和service_manager通信(binder通信)就能得到AMS的IBinder实例了，得到实例的进程就可以调用AMS的接口(IActivityManager.aidl中定义的接口)
+	
+	-AMS addService流程
+		ServiceManager.addService(Context.ACTIVITY_SERVICE, //服务的名称，“activity”
+					this, //IBinder接口实现，AMS注册的是IActivityManager.Stub，也就是IActivityManager.aidl生成的IBinder代理类 
+					true, //boolean allowIsolated,说名该进程是可以隔离的沙盒进程
+					DUMP_FLAG_PRIORITY_CRITICAL | DUMP_FLAG_PRIORITY_NORMAL | DUMP_FLAG_PROTO);//设置优先级
+			->getIServiceManager().addService(name, service, allowIsolated, dumpPriority);
+	                  getIServceManager实际上是获取service_manager进程的IBinder接口代理，addService就是这个IBinder(IServiceManager)接口的代理类实例
+
+		ServiceManager.getIServiceManager()
+		-> IBinder binderInternal = BinderInternal.getContextObject();//这是一个native函数，返回系统的全局“上下文对象”。这通常是IServiceManager的实现，可以使用它来查找其他服务。
+									      //从下面的代码可以看到IServiceManager的在syste_server的代理类是一个handle=0的BpBinder转化过来的
+									      //libandroid库：/out/development/ide/clion/frameworks/base/core/jni/libandroid_runtime-x86_64-android/CMakeLists.txt
+									      //android_util.Binder.cpp
+			->android_util_Binder.cpp : android_os_BinderInternal_getContextObject
+			->sp<IBinder> b = ProcessState::self()->getContextObject(NULL);//这里从libinder库中的ProcessState获取的IBinder对象指针
+				->sp<IBinder> context = getStrongProxyForHandle(0);
+				  ->handle_entry* e = lookupHandleLocked(handle);//此时handle是0,这里会创建handle_entry一个结构体并放在mHandleToObject队列里，然后返回
+										 //如果队列中第0位有handle_entry，就直接返回第0位的handle_entry
+				   //如果e.binder不为空就直接返回e.binder
+				   //如果为空，走下面的初始化binder流程
+					->if(handler = 0)//从这里看出 handler是0的binder是service_manager进程的 IBinder(IServiceManager)
+				    		->IPCThreadState::transact(int32_t handle,//0
+                                  			       uint32_t code, //IBinder::PING_TRANSACTION
+							       const Parcel& data,//这里data刚初始化，没设置过值
+                                  			       Parcel* reply, //nullptr,不需要回复
+							       uint32_t flags)//0,默认值
+						  //transact内部最终会向binder驱动发送BC_TRANSACTION指令
+	
+				    	->sp<BpBinder> b = BpBinder::create(handle);//使用创建一个handle是0的BPbinder返回给外部,BPbinder详见/doc/android/frame_work/binder/binder学习笔记.txt 第3部分
+					
+			->jobject obj =  javaObjectForIBinder(env, b);//把IBinder指针封装为java的IBinder对象
+				->jobject object = env->CallStaticObjectMethod(gBinderProxyOffsets.mClass,gBinderProxyOffsets.mGetInstance, (jlong) nativeData, (jlong) val.get());
+				  这里就转化成了android/os/BinderProxy对象
+				  这里看到实际上是调用了一个静态方法gBinderProxyOffsets中有需要反射的类和实例化的接口android/os/BinderProxy	
+			->return obj;
+		-> IBinder allowBlockingBinder = Binder.allowBlocking(binderInternal);
+			//这个方法会判断如果binderInternal是BinderProxy，会设置mWarnOnBlocking=false
+		-> return ServiceManagerNative.asInterface(allowBlockingBinder);
+		  ->return return new ServiceManagerProxy(obj);//ServiceManagerProxy是IServiceManager在客户端(system_server进程)的接口实现类
+		
+		这样system_server就拿到了serice_manager进程的binder代理类，通过调用binder代理类(ServiceManagerProxy)的接口就能跨进程binder通信了。
+		详见doc/android/frame_work/servicemanager/servicemanager.txt 中 第8部分
+					
