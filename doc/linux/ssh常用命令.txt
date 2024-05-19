@@ -38,9 +38,10 @@
 	1)本地文件拷贝到远程服务器
 		rsync filename username@ip:filepath
 		rsync  -e 'ssh -p xxxxx'  filename username@ip:filepath
-		如：
-			linux :rsync /home/sandro/tools/jdk-8u291-linux-x64.tar.gz sandro@192.168.0.190:/home/sandro/tools
-			windows:scp -P 16459 D:\mycode\lava_lesson\lesson-1\Test.class sandro@24.233.1.250:/home/sandro/mywork/lesson/java-1
+		如：linux :rsync /home/sandro/tools/jdk-8u291-linux-x64.tar.gz sandro@192.168.0.190:/home/sandro/tools
+
+	  windows下有scp命令和rsync类似，如	
+         	scp -P 16459 D:\mycode\lava_lesson\lesson-1\Test.class sandro@24.233.1.250:/home/sandro/mywork/lesson/java-1
 	
 	2)本地目录拷贝到远程服务器
 		rsync -r dirpath username@ip:dirPath

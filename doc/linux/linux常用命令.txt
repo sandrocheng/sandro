@@ -719,13 +719,14 @@
 		192.168.0.0     0.0.0.0         255.255.255.0   U     600    0        0 wlp3s0   0     0      0
 		192.168.122.0   0.0.0.0         255.255.255.0   U     0      0        0 virbr0   0     0      0
 
-	 第一条，是默认路由(0.0.0.0)，也就是说大部分网络请求包都从 192.168.0.1 这个网关发送出去
+	 第一条，是默认路由(0.0.0.0)，也就是说大部分网络请求包如果下面的网段都不满足就从 192.168.0.1 这个网关发送出去
+	 
 
 	-输出详解,route命令输出的路由表字段含义如下：
 		
 		Destination 目标网络或目标主机（本机的数据要发送的目的地：子网或主机），与Genmask组成一个网段。
 		
-		Gateway 网关(如果是默认网关，网关的地址必须和自己的主机上的其中一块网卡在同一子网)即网关地址。如果没有就显示星号。
+		Gateway 网关(如果是默认网关，网关的地址必须和自己的主机上的其中一块网卡在同一子网)即网关地址。如果没有就显示星号或0.0.0.0。
 		
 		Genmask 网络掩码，如果目标网络的的子网掩码为255.255.255.255,说明目标是一台主机；如果子网掩码为’0.0.0.0’ 说明该路由是默认路由。
 		
@@ -750,7 +751,89 @@
 		Use 该路由被使用的次数，可以粗略估计通向指定网络地址的网络流量。 路线查询次数。根据-F和-C的使用，这将是路由高速缓存丢失（-F）或命中（-C）。
 		
 		Iface 接口，即eth0,eth1等网络接口名，为此路由发送数据包的接口。	
+
+	-添加一条路由
+		1.添加一个网络：
+			route add -net 10.0.0.0/24 dev wlp3s0
+		  	dev wlp3s0,指定了网卡设备接口，也就是route命令中Iface中的内容
+	 	  	因为没有添加网关，所以网关就是默认的0.0.0.0
+
+			route add -net 10.0.0.0/24 gw 10.0.0.0
+			gw 10.0.0.0 指定了一个网关，虽然没有指定网卡接口，但是系统会自动根据网关判断使用哪张网卡接口
+
+		2.指定具体IP
+			route add -host 10.1.1.1 dev wlp3s0
+			这里没有指定网关，默认值是0.0.0.0，没有指定掩码，默认值是255.255.255.255,因此Flags会是UH，也就是说是一个台主机
+
+	-删除一条路由-
+		根据网段删除，route del -net 10.0.0.0/24
+		根据IP删除，route del -host 10.1.1.1
+
+
+4.5 ifconfig
+	新的linux系统已经不再支持此命令，安装需要执行 sudo apt install net-tools
 	
+	-常见用法：
+		ifconfig -a,查看所有的网络接口，包括down的接口
+		ifconfig virbr0 up/down,启动/关闭 virbr0这个网卡接口
+		
+	-ifconfig还可以设置子网掩码，MAC地址,IP地址，发送队列缓冲区大小(txqueuelen),MTU大小等功能
+
+	-lo,回环网卡（Loopback adaptor），是一种特殊的网络接口，不与任何实际设备连接，而是完全由软件实现,是一个虚拟网络接口。
+	 与回环地址（127.0.0.0/8 或 ::1/128）不同，回环网卡对系统“显示”为一块硬件。任何发送到该网卡上的数据都将立刻被同一网卡接收到。
+	 例子有 Linux 下的 lo 接口和 Windows 下的 Microsoft Loopback Interface 网卡。			
+	 它的作用可以用来测试【专业点，一般叫做测试本机的TCP/IP协议栈是否安装正确……】，另一个就是用来在本机设置代理。	
+	 因为是自己发自己收，因此发送的数据包(Rx packets)和接收的数据包(Tx packets)是相等的，	 
+
+	 虚拟网络接口：并非真实存在，并不真实地从外界接收和发送数据包，而时在系统内部接收和发送数据包，因此虚拟网络接口不需要驱动程序
+	               例如，如果本地假设了web服务，通过127.0.0.1就能访问了，
+	 
+	-wifi网卡内容
+	   wlp3s0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
+        	inet 192.168.0.113  netmask 255.255.255.0  broadcast 192.168.0.255
+        	inet6 fe80::4d17:b2fb:bad8:e36f  prefixlen 64  scopeid 0x20<link>
+        	ether 2c:6e:85:b6:ba:8e  txqueuelen 1000  (以太网)
+        	RX packets 701114  bytes 569451203 (569.4 MB)
+        	RX errors 0  dropped 0  overruns 0  frame 0
+        	TX packets 360603  bytes 81482498 (81.4 MB)
+        	TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+	 wlp3s0：是网卡接口的名字
+	 flags=4163<UP,BROADCAST,RUNNING,MULTICAST> ，当前网卡的状态
+		UP,启用中
+		BROADCAST,开启了广播	
+		RUNNING，使用中
+		MULTICASE,开启了多播
+	 mtu 1500,代表网卡最大传输单元的大小，单位字节
+	 inet 192.168.0.113  netmask 255.255.255.0  broadcast 192.168.0.255，ipv4地址，掩码，广播地址
+	 inet6 fe80::4d17:b2fb:bad8:e36f  prefixlen 64  scopeid 0x20<link>，ipv6地址，前缀长度
+	 ether 2c:6e:85:b6:ba:8e  txqueuelen 1000  (以太网)，mac地址，发送队列的长度支持到1000个包
+	 RX packets 701114  bytes 569451203 (569.4 MB)，正确收到70114个数据包，大小是569.4MB
+	 RX errors 0  dropped 0  overruns 0  frame 0，
+		Rx errors:表示总的收包错误数量，这包括too-long-frames错误，Ring Buffer溢出错误，帧对齐错误，crc校验错误，帧同步错误，Ring Buffer overruns等等
+		Rx dropped:表示数据包进入了Ring Buffer，但是由与内存不够等系统原因，导致在拷贝到内存的过程中被丢弃
+		Rx overruns:表示了Ring Buffer的overruns,Ring Buffer是驱动程序写一个环形缓冲区，网卡收到数据后就向添加到这个缓冲区中，应用程序再去这个Ring Buffer中去取
+			    这是由于Ring Buffer(aka Driver Queue)传输IO大于kernel能够处理的IO导致的，而Ring Buffer则是指在发起IRQ请求(中断请求)之前的那块buffer。很明显，overruns的增大
+			    意味着数据包没有到Ring Buffer就被网卡物理层给丢弃了，而CPU无法及时地处理中断是造成Ring Buffer满了的原因只一。
+			    比如因为interrupts(网络中断)分布不均匀(都压在CPU core0上)，没有做affinity而造成的丢包
+		Rx frame:接收时，由与farme错误而丢弃的数据包数。帧格式错误计数，一般是帧不符合要求，比如长度未进行8字节对齐，帧太短或太长，crc校验错误等，很可能是网线或者网口异常引起。
+	 TX packets 360603  bytes 81482498 (81.4 MB)，发送的包数量和大小
+	 TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0，
+		TX errors 0，发送时，产生错误的包数量
+		dropped 0，发送时，丢弃的数据包数量 
+		overruns 0，发送时，由与过速而丢失的数据包数量，应用程序向发送队列传送数据的速度大于网卡发送的速度导致发送队列满了，就会产生这种错误，可以通过调整发送队列缓冲区大小来缓解  
+		carrier 0，发送时，发生carrier错误而丢失的数据包数,比如双工模式不匹配、物理电缆出现问题等；
+		collisions 0，半双工模式下冲突次数
+	
+	-virbr0网卡
+		virbr0: flags=4099<UP,BROADCAST,MULTICAST>  mtu 1500
+		        inet 192.168.122.1  netmask 255.255.255.0  broadcast 192.168.122.255
+		        ether 52:54:00:32:11:fb  txqueuelen 1000  (以太网)
+		        RX packets 0  bytes 0 (0.0 B)
+		        RX errors 0  dropped 0  overruns 0  frame 0
+		        TX packets 0  bytes 0 (0.0 B)
+		        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+	 virbr0是KVM默认创建的一种虚拟网络接口，表示为Virtual Bridge 0。它由libvirt库提供，主要用于NAT（网络地址转换），其默认IP地址为192.168.122.1。
+	 virbr0的作用是为连接其上的虚拟机网卡提供NAT访问外网的功能，并且默认情况下会为连接其上的其他虚拟网卡提供DHCP服务。简而言之，virbr0是虚拟环境中用于连接外部网络的一个虚拟网络接
 五、电源
 5.1 电量
 	inux系统中电池信息储存在/sys/class/power_supply/BAT0/目录下，电池当前电量百分比储存在capacity文件下

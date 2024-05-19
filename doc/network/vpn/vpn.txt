@@ -440,6 +440,19 @@
 
 	 也可以使用ssh 登陆10.8.0.1的机器 ssh root@10.8.0.1 -p16459
 
-12、常见问题
+12、服务器代理上网(翻墙)
+	-服务器
+	 server.config
+		#自动推送客户端上的网关及DHCP,此项开启了流量转发,有这项才能使用服务器代理上 网
+		push "redirect-gateway def1 bypass-dhcp"
+
+		#OpenVPN的DHCP功能为客户端提供指定的 DNS、WINS 等
+		push "dhcp-option DNS 8.8.8.8"		
+	-客户端
+		
+		
+	
+13、常见问题
 	-有时候，服务器多次重启，客户端会连接不上，报TLS Error: TLS handshake failed，错误
 	 解决方法是，换个端口号，服务端的server.conf和客户端的client.ovpn文件里关于端口号的设置重新配置一个新的端口号。
+

@@ -64,24 +64,27 @@
 
 3、binder机制的关键概念
 	
-	-虚拟内存和物理内存
-	 
+	-虚拟内存和物理内存 
 	
 	-binder通信模型，如图：binder学习笔记_3_binder通信模型、binder学习笔记_3_binder通信结构图
 	
 	-binder实体对象，binder引用对象，binder代理对象，IBinder对象之间的关系如图：binder学习笔记_3_binder对象和关系
 	 	-Binder引用对象,BpBinder,
-		 源码：/frameworks/native/libs/binder/BpBinder.cpp
-		       /out/development/ide/clion/frameworks/native/libs/binder/libbinder-x86_64-android/CMakeLists.txt
-	 	 
-		 sp<BpBinder> BpBinder::create(int32_t handle)
-			binder的客户端代理是从BpBinder转换过来的
-			serverProxy = IServer.Stub.asInterface(IBinder);//客户端bindService后，返回的IBinder是 BpBinder::create创建出来的，
+		 源码：linbinder库 ：/frameworks/native/libs/binder/BpBinder.cpp
+		 	-BpBinder的创建
+		 	 sp<BpBinder> BpBinder::create(int32_t handle)
+			 binder的客户端代理是从BpBinder转换过来的
+			 serverProxy = IServer.Stub.asInterface(IBinder);//客户端bindService后，返回的IBinder是 BpBinder::create创建出来的，
 				                                        //客户端调用的时候还需要继续使用 IServer.Stub.asInterface 转化为 服务端bind在客户端的代理类
 
-			BpBinder再返回给java层的时候会再通过ndk转化成了IBinder的子类 android/os/BinderProxy 对象，
-			BinderProxy对象中使用一个long型的变量mNativeData保存的是对应BpBinder的指针
-			后续BinderProxy和服务端binder通信的时候会使用mNativeData指针找到BpBinder从而进行binder通信
+			 BpBinder再返回给java层的时候会再通过ndk转化成了IBinder的子类 android/os/BinderProxy 对象，
+			 BinderProxy对象中使用一个long型的变量mNativeData保存的是对应BpBinder的指针
+		 	 后续BinderProxy和服务端binder通信的时候会使用mNativeData指针找到BpBinder从而进行binder通信
+		
+			-
+		-服务端实体对象 BBinder,
+		 客户端的BpBinder代理的就是BBinder,源码在libbinder库中 /frameworks/native/libs/binder/Binder.cpp
+		 
 
 	-binder的通信过程
 		-注册过程，如图：binder学习笔记_3_注册过程
@@ -276,8 +279,10 @@
     					  }
 					  	
 				->const status_t err = parcel->writeStrongBinder(spBinder);//这里调用的是libbinder库中的 Parcel.cpp
-					->flattenBinder(val);
-					->
+					->flattenBinder(val);//val此是是spBinder
+							     //这里会区分是local还是remote的，local就是BBinder,remote就是BpBinder
+							     //IClient是服务端的IBinder因此是local的，也就是BBinder
+							     //不同类型的bbinder在写入的时候flags不一样，接收方根据flags来构建对应的实体
 
 		  ->boolean _status = mRemote.transact(Stub.TRANSACTION_registerIClient, _data, null, android.os.IBinder.FLAG_ONEWAY);
 		    这个mRemote实际上就是onServiceConnected返回的android.os.BinderProxy实例，transact就是向服务端传递数据。详见第5节
@@ -292,7 +297,15 @@
 	  ->public native boolean transactNative(int code, Parcel data, Parcel reply,int flags) throws RemoteException;
 	    这是一个native函数，源码在libandroid_runtime库中的android_util_Binder.cpp文件中
 	    jboolean android_os_BinderProxy_transact(JNIEnv* env, jobject obj,jint code, jobject dataObj, jobject replyObj, jint flags) 
-	    
+	    ->Parcel* data = parcelForJavaObject(env, dataObj);//dataObj实际上就是java层传递过来的parcel实例
+							       //这里转换成c++对象指针
+							       //java层Parcel通过obtion函数创建的，创建的时候会在native层也创建一个对应的Parcel实体
+							       //java层的Parcel使用mNativePtr保存了native层Parcel实体的指针
+							       //因此在native层可以根据java Parcel实例找到对应的native层Parcel
+	    ->IBinder* target = getBPNativeData(env, obj)->mObject.get();//mObject是当前java层的BinderProxy对象
+									 //根据mObject得到对应BpBinder在native层的实例target
+	    ->status_t err = target->transact(code, *data, reply, flags);//通过BpBinder向服务端发送数据		
+			                                                 //调用的是BpBinder的transact函数
 
 6、使用Binder进行跨进程通信的案例
 	~/project/BinderExams项目
