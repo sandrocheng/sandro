@@ -1,0 +1,28 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>org.example</groupId>
+  <artifactId>javaApp</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <packaging>jar</packaging>
+
+  <name>javaApp</name>
+  <url>http://maven.apache.org</url>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+  <!--设置当前项目所依赖的所有jar-->
+  <dependencies>
+    <!--设置具体的依赖-->
+    <dependency>
+      <!--依赖所属项目ID-->
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId><!--依赖所属项目ID-->
+      <version>4.12</version><!--依赖版本号-->
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+</project>

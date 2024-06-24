@@ -1,0 +1,247 @@
+1、什么是maven
+	maven是用来解决传统项目管理的jar包依赖的问题，如图：1_传统项目管理状态分析
+	maven的本质是一个项目管理工具，将项目开发和管理过程抽象成一个项目对象模型(POM)
+
+	POM(Projcet Object Model):项目对象模型，如图：1_项目对象模型
+
+2、maven的作用
+	-项目构建：提供标准的、跨平台的自动化项目构建方式
+	-依赖管理：方便快捷的管理项目依赖的资源(jar包)，避免资源间的版本冲突问题
+	-统一开发结构：提供标准的、统一的项目代码结构，比如现在一般java代码放在src中，编译好的类放在classes目录中这些文件存放的地方以及命名都是受到了maven的影响而最终统一起来
+
+3、maven下载和安装
+	-官网：https://maven.apache.org/
+	
+	-windows安装
+		-下载apache-maven-3.9.8-bin.zip解压缩即可
+
+		-bin目录下的mvn就是maven的核心指令
+		 打开mvn.cmd文件会看到 需要读取JAVA_HOME环境变量
+		 还会看到需要一个 MAVEN_HOME,需要配置一下
+
+		-boot目录，这个目录下有一个jar包，它就是maven的类加载器
+
+		-conf目录，这里放的是maven的核心配置文件
+			logging目录中，存放了运行时期的log日志，可以用来判断问题
+			setting.xml是maven的核心配置文件
+
+		-lib目录，这里是maven依赖的第三方jar包
+
+		-配置MAVEN_HOME和JAVA_HOME
+			在环境变量中增加 MAVEN_HOME环境变量 ，比如 D:\software\apache-maven-3.9.8
+			在path环境变量中增加 %MAVEN_HOME%\bin
+		-配置好以后，在cmd窗口中任意地方执行mvn -v，会提示maven的版本号
+
+	-linux安装
+		-下载apache-maven-3.9.8-bin.tar.gz文件
+		
+		-解压缩到 /opt目录中
+		 tar -zxvf apache-maven-3.9.8-bin.tar.gz -C /opt/
+
+		-配置MAVEN_HOME
+		 编辑.bashrc或.bash_profile文件，添加以下内容：
+			export M2_HOME=/opt/apache-maven-3.9.8
+			export PATH=$PATH:$M2_HOME/bin
+		 刷新配置文件
+		 	source ~/.bashrc
+		 配置成功后，mvn -v可以看到 maven的版本号以及java环境
+		
+4、maven的基础概念
+	-仓库仓库用于存储资源，包含各种jar包，
+	 	-中央仓库，由maven管理的仓库，里面有各企业开放的第三方jar包
+		-本地仓库，本地仓库用于保存项目从中央仓库中拉取第三方库，它是中央仓库的一个子集
+		 依赖项目会优先去本地仓库查找依赖的jar包，如果没有则从中央仓库拉取
+		-私服仓库,为了提升拉取效率，很多企业会创建私服，本地仓库优先从私服拉取，如果私服没有，再从中央同步到私服上，再返回给本地仓库
+
+		-私服的作用
+		 保存具有版权的资源，包含购买或自主研发的jar,中央仓库中的jar都是开源的，不能存储具有版权的资源
+		 一定范围内共享资源，仅对内部开放，不对外共享
+
+	-坐标，在中央仓库中保存了大量的第三方jar包，为了提升查询效率，maven使用坐标描述仓库中资源的位值
+		maven中央仓库：https://repo1.maven.org/maven2/
+	 在官网中根据包名可以大概找到某个jar包的位值，但是也由可能找不到，比入找apache，它实际上是在org里的，在第一层是找不到的
+
+	 在maven要想准确找到jar包的位值，需要使用坐标信息，坐标信息包含一下几个部分
+		-groupId:定义当前maven项目隶属的组织名称，通常是域名反写，例如：org.mybatis
+		-artifactId:定义当前maven的项目名称，通常是模块名称，例如：CRM，SMS
+		-version:定义当前项目的版本号
+		-packaging:定义该项目的打包方式，它虽然不属于坐标，但是也是对jar包的一个比较重要的描述
+
+	 坐标的作用：
+		使用唯一标识，唯一性定位资源的位值，通过该标识可以将资源的识别与下载工作交由机器完成
+	
+	 坐标的查询
+		如果只知道大概的包名，在引用前，需要先查询一下这个包具体对应哪个坐标描述文件
+		Maven仓库的官网网址是https://mvnrepository.com/，这是一个公共仓库地址，可以在这里查找和添加缺失的依赖。
+		在这里可以根据jar包的名称查找，点击对应的版本，会提示坐标信息，有maven,gradle,等等写法
+			<dependency>
+			    <groupId>junit</groupId>
+			    <artifactId>junit</artifactId>
+			    <version>4.12</version>
+			    <scope>test</scope>
+			</dependency>
+
+5、本地仓库配置
+	
+	windows默认是在C:\Users\[当前用户名]\.m2中，linux默认是在${user.home}/.m2/目录下
+	通过修改settings文件更换本地仓库位值,([maven的安装目录]\conf\settings.xml)
+		
+	在settings标签下面一般会有一个注释掉的localRepository标签，把这个标签打开，内容就是本地仓库的绝对地址
+	比如：<localRepository>D:\ProgramData\mvnRepo</localRepository>
+
+6、远程仓库配置
+	mvn内部默认拉取的远程仓库是中央仓库，因为在境外，所以速度比较慢
+	可以通过设置镜像仓库，优先使用国内的镜像，这样速度更快
+
+	设置的位值是在settings.xml中的mirrors标签
+		<mirrors><!--镜像集合配置-->
+		  <mirror><!--配置某一个具体的仓库的下载镜像-->
+		    <id>nexus-aliyun</id><!--此镜像的唯一标识，用于区分不同的mirror元素-->
+		    <mirrorOf>central</mirrorOf><!--对哪种仓库镜像，简单说就是替代哪个仓库,central就是中央仓库的ID-->
+		    <name>Nexus aliyun</name><!-- 镜像名称 -->
+		    <url>https://maven.aliyun.com/repository/public</url><!-- 镜像URL -->
+		  </mirror>
+		</mirrors>
+
+7、全局setting与用户setting的区别
+	全局setting定义了当前计算机中maven的公共配置，[maven的安装目录]\conf\settings.xml
+	用户setting定义的是当前用户的配置，用户setting.xml可以放到 本地仓库配置路径中，用户setting的属性会覆盖全局setting的属性
+
+8、手动制作一个maven项目
+	代码详见/project/MavenHelloWorld
+
+	maven工程目录结构如图：8_maven工程目录结构
+	在src中的main 和 test目录中实现 一个类，以及对应的测试类
+
+	在src的同层目录中增加maven配置文件，pom.xml
+		<?xml version="1.0" encoding="UTF-8"?>
+		<!--project 是根元素-->
+		<project 
+			xmlns="http://maven.apache.org/POM/4.0.0" 
+			xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		  	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+		
+		  <!-- maven的pom对象模型的版本号，目前基本都是4.0.0-->	
+		  <modelVersion>4.0.0</modelVersion>
+		 
+		  <!--定义当前项目坐标--> 
+		  <groupId>com.sandro</groupId> <!--组织ID-->
+		  <artifactId>MavenHelloWorld</artifactId><!--项目ID-->
+
+		  <!--版本号，通常有release(发布版)和SNAPSHORT(开发版)-->
+		  <version>1.0.0-SNAPSHOT</version>
+		  <packaging>jar</packaging><!--项目结果 jar:纯jar项目打jar包，war:web项目打war包-->
+		
+		  <!--当前项目依赖的第三方jar集合-->
+		  <dependencies>
+		    <!--junit坐标--> 	
+		    <dependency>
+		  	<groupId>junit</groupId> <!--组织ID-->
+		  	<artifactId>junit</artifactId>
+		  	<version>4.12</version>
+		    </dependency>     
+		  </dependencies>	
+		</project>
+
+9、maven项目构建命令
+	maven构建命令使用 mvn开头，后面添加功能参数，可以一次执行多个命令，使用空格分隔，在pom.xml所在的目录下执行
+		mvn compile , 编译，编译成功后，工程依赖的jar包，maven编译需要使用的插件，会下载到maven本地库中，同时编译的相关文件和编译后的class文件会放到target目录下
+		mvn clean ,   清理，执行后，相关的编译文件都会删除，比如target目录
+		mvn test ,    测试，会编译，并执行test目录下的测试类,测试结果除了在控制台展示以外，还把结果保存到了/target/surefire-reports目录下
+		mvn package , 打包成功后，会在target目录下看到对应的jar包，打的包中不包含依赖的jar包
+		mvn install , 安装到本地，会根据pom.xml的坐标信息，把jar包以及相关文件放到本地仓库中，这样其他项目也可以根据maven的规范引用这个jar包了
+
+10、使用mvn命令创建工程
+	相对于手动制作maven项目，maven实际上提供了比较方便的命令创建各种不同规格的项目
+	
+	mvn archetype:generate                                   #根据模板创建
+	    -DgroupId={project-packaging}                        #groupId
+	    -DartifactId={project-name}                          #artifactId
+	    -DarchetypeArtifactId=maven-archetype-quickstart     #使用java项目模板，maven提供各种模板，比如web的，android的，等等
+	    -DinteractiveMode=false                            
+
+	创建普通java项目：
+		mvn archetype:generate
+		    -DgroupId=com.sandro
+		    -DartifactId=HelloMaven
+		    -DarchetypeArtifactId=maven-archetype-quickstart
+		    -DinteractiveMode=false
+		    -Dversion=1.0.0-snapshot 
+	
+	创建web工程：
+		mvn archetype:generate
+		    -DgroupId=com.sandro
+		    -DartifactId=HelloWebMaven
+		    -DarchetypeArtifactId=maven-archetype-webapp
+		    -DinteractiveMode=false
+		    -Dversion=1.0.0-snapshot 
+
+11、在IDEA中创建web的maven项目
+	-在IDEA中配置maven
+		-配置前需要确认IDEA和maven之间的兼容关系，下载合适的IDEA和maven版本
+		 IDEA内部默认会有一个maven，可以使用这个maven或者下载一个和内置版本号一致的maven
+		 当使用多个IDE 的时候最好统一使用同一个的maven，方便管理
+	
+	-IDEA中创建一个 empty project
+		setting 找到maven 配置本地maven安装路径,每次打开新的project都要设置，否则默认是使用IDEA自带的maven
+		setting.xml 文件要override一下，选择本地maven的setting.xml配置文件
+		
+		在当前project中new 一个 Module,使用 maven Archetype创建，在里面可以选择需要的模板
+		创建后，就会根据模板生成对应的项目目录结构
+		
+		默认有些文件夹是不创建，比如resources，手动创建后需要在IDEA里标记为资源目录，可以右键文件夹->Mark Directory as -> 进行选择
+		也可以右键module->open module settings,在module中选择需要的资源目录		
+
+		在IDEA中可以使用右侧maven插件进行maven 的clean, compile等操作
+		IDEA的maven插件中还可以看到依赖的第三方资源，注意，修改pom.xml的第三方依赖时，这里要刷新一下。
+
+	-创建web module，在project下 new moudule,使用web模板创建一个web模块
+		创建后自动就有了一个jsp的页面，如果想运行，还需要使用tomcat插件执行
+		
+		在maven坐标库中搜索 Apache Tomcat Maven Plugin :: Tomcat 7.x ，选择2.1版本，查看maven坐标
+			<dependency>
+			    <groupId>org.apache.tomcat.maven</groupId>
+			    <artifactId>tomcat7-maven-plugin</artifactId>
+			    <version>2.1</version>
+			</dependency>
+			
+		在pom.xml中使用build标签，构建插件依赖
+			 <build><!--构建-->
+			    <plugins><!--添加插件依赖集合-->
+			      <plugin> <!--具体的某个插件配置-->
+			        <groupId>org.apache.tomcat.maven</groupId>
+			        <artifactId>tomcat7-maven-plugin</artifactId>
+			        <version>2.1</version>
+			      </plugin>
+			    </plugins>
+			  </build>
+		如果是首次设置插件依赖，在build->Sycn中会提示没有这个包，点击sync里面的刷新按钮，会开始下载插件
+		下载成功后，在maven插件可控制台里的找到对应的module，刷新后会看到plugins中多出来一个tomcat7插件
+		双击tomcat7中的 tomcat7:run,启动tomcat服务器，启动后，在启动log里会看到当前项目的服务地址，在浏览器中就可以执行了
+		
+		默认端口号是8080，地址根路径是项目的名字
+		可以在tomcat插件中重新设置根路径和端口号
+			  <build><!--构建-->
+			    <plugins><!--添加插件依赖集合-->
+			      <plugin> <!--具体的某个插件配置-->
+			        <groupId>org.apache.tomcat.maven</groupId>
+			        <artifactId>tomcat7-maven-plugin</artifactId>
+			        <version>2.1</version>
+			        <configuration>
+			          <port>80</port><!--设置端口为80，默认是8080-->
+			          <path>/</path><!--设置根路径 ，默认是 /[artifactId]名-->
+			        </configuration>
+			      </plugin>
+			    </plugins>
+			  </build>		
+		 重启tomcat，如果抛错：Failed to initialize end point associated with ProtocolHandler ["http-bio-80"]
+		 1）端口被占用,可以使用命令如netstat -ano | findstr <端口号>（Windows）或lsof -i:<端口号>（Linux/Mac）来检查端口占用情况。
+		 2) 确保运行Tomcat的用户有足够的权限来绑定到指定端口。在Linux/Mac系统上，通常需要root权限；在Windows上，这不是一个常见问题。
+		    比如使用命令行 ： sudo idea.sh来运行，但是这么运行因为user变了，很多当前user的文件需要在root用户上再有一份才性
+
+		配置web运行，每次到maven插件导航栏中找moudle,再找tomcat,运行tomcat7:run，比较麻烦，可以配置一下"运行"，这样就可以像运行java程序一样运行web项目，相对方便一些
+			1)点击 "运行"的选择框，在弹出的选项中点击Edit Configuration...
+			2)点击"+" add New Configation,在弹出来的项目类型中选择maven
+			3)选择项目，在Run 命令行编辑框内，输入：tomcat7:run
+		配置好以后，每次就可以在"运行"中 发布项目，并启动tomcat了
+			

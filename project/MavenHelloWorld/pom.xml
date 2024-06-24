@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--project 是根元素-->
+<project 
+	xmlns="http://maven.apache.org/POM/4.0.0" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+  <!-- maven的pom对象模型的版本号-->	
+  <modelVersion>4.0.0</modelVersion>
+ 
+  <!--定义当前项目坐标--> 
+  <groupId>com.sandro</groupId> <!--组织ID-->
+  <artifactId>MavenHelloWorld</artifactId><!--项目ID-->
+  <version>1.0.0</version><!--版本号-->
+  <packaging>jar</packaging><!--项目结果 是一个jar包-->
+
+  <!--当前项目依赖的第三方jar集合-->
+  <dependencies>
+    <!--junit坐标--> 	
+    <dependency>
+  	<groupId>junit</groupId> <!--组织ID-->
+  	<artifactId>junit</artifactId>
+  	<version>4.12</version>
+    </dependency>     
+  </dependencies>	
+</project>
