@@ -10,4 +10,8 @@ public class ExCTest {
         ExC ex = new ExC();
         Assert.assertEquals("Exc",ex.getName());
     }
+
+    public void test(){
+        System.out.println("source code plugin...");
+    }
 }

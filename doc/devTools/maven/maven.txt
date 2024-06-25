@@ -325,10 +325,80 @@
 
 	-依赖范围的传递性
 	 依赖范围的资源在进行传递时，作用范围将受到影响，如图13_依赖范围的传递性
-	 
 
-	
+14、生命周期
+	-Maven构建生命周期描述的是一次构建过程经历了多少个事件
+	 比如：
+		从编译到安装到本地库的完整生命周期过程：compile->test compile->test->package->install，主要由这5个事件组成
 
+	-Maven对项目构建的生命周期划分为3个大的阶段
+		-clean:清理工作
+			-pre-clean:执行一些需要在clean之前完成的工作
+			-clean:移除上一次构建生成的文件
+			-post-clean:执行一些需要在clean之后立刻完成的工作
 
+		-default:核心工作，比如：编译，测试，打包等等
+			-validate,校验                          校验项目是否正确，并且所有必要的信息可以完成项目的构建过程
+			-initialize,初始化                      初始化构建状态，比如设置属性
+			-generate-sources,生成源代码            生成包含在编译阶段中的任何代码
+			-process-sources，处理源代码            比如说过滤任意值
+			-generate-resources,生成资源文件        生成将会包含在项目包中的资源文件
+			-process-resources,处理资源文件         复制和处理资源到目标目录，为打包阶段做好准备
+			-compile,编译
+			-process-classes，处理类文件            处理编译生成的文件，比如说对java class文件做字节码改善优化
+			-generate-test-sources，生成测试源代码  生成包含在编译阶段中的任何测试源代码
+			-process-test-sources，处理测试源代码   为测试创建资源文件
+			-test-comile,编译测试源代码             编译测试源代码到测试目标目录
+			-process-test-classes，处理测试类文件   处理测试源代码编译生成的文件
+			-test,测试                              使用合适的单元测试框架运行测试，比如Junit
+			-prepare-package，准备打包		在实际打包之前，执行任何必要的操作，为打包做准备
+			-package,打包                           将编译后的代码打包成可分发格式的文件，比如:jar,war,或者 ear文件
+			-pre-integration-test,集成测试前        在执行集成测试前进行必要的操作，比如搭建需要的环境
+			-integration-test，集成测试             处理和部署项目到可以运行的集成测试环境中
+			-post-integration-test，集成测试后      在执行集成测试完成后进行必要的动作，比如清理集成测试环境
+			-verify,验证                            运行任意的检查来验证项目包有效且达到质量标准。
+			-install,安装                           安装项目包到本地仓库，这样项目包可以用作其他本地项目的依赖
+			-deploy，部署				将最终的项目包复制到远程仓库中与其他开发者和项目共享
 
-	 
+		-site:产生报告，发布站点等。
+			-pre-site      执行一些需要在生成站点文档之前完成的工作
+			-site          生成项目的站点文档
+			-post-site     执行一些需要在生成站点文档之后完成的工作，并且为部署做准备
+			-site-deploy   将生成的站点文档部署到特定的服务器上 
+
+	 在每个大的阶段中，执行某个子阶段的事件，会把之前的所有的事件都执行，比如执行defalut阶段中的test事件，会把从validate到process-test-classe中的所有事件都执行一遍。	
+
+15、插件
+	-插件与生命周期的阶段绑定，在执行到对应生命周期时，执行对应的插件功能
+	 默认maven在各个生命周期上绑定有预设的功能
+	 通过插件可以自定义其他功能
+
+	-插件配置
+	 例如javaApp03种配置了编译插件如下：
+		  <build>
+		    <plugins>
+		      <plugin>
+		        <!--插件的坐标，在maven官网中，有一个Maven Plugins链接，里面有所有的maven插件-->
+		        <!--插件分很多种，比如工程类的(clean,install等)，打包类的(ear,ejb,jar,war等)，生成报告类的(javadoc,surefire-report等)-->
+		        <groupId>org.apache.maven.plugins</groupId>
+		        <artifactId>maven-source-plugin</artifactId>
+		        <version>3.3.1</version>
+		        <executions>
+		          <execution><!--这里标记的是源码的插件是执行在什么时候的-->
+		            <goals>
+		              <goal>jar</goal><!--官网中给出了Goals Overview里 提供了5种类型-->
+		            </goals>
+		            <phase>generate-test-resources</phase><!--构建生命周期的 generate-test-resources事件-->
+		          </execution>
+		        </executions>
+		      </plugin>
+		    </plugins>
+		  </build>
+	 配置好以后，会在Maven控制台中javaApp03->plugins中多出了一个source插件
+	 clean一下项目，运行compile,此是target中，只生成了classes和maven-status这两个文件夹
+	 继续执行test,这时候发现在target中多出了一个javaApp03-1.0-SNAPSHOT-sources.jar,这个jar包就是maven-source-plugin插件生成的，里面只有main目录的代码，没有test目录的代码
+         如果把goal标签中的jar改成test-jar,clean之后再运行test会生成 javaApp03-1.0-SNAPSHOT-test-sources.jar，这里面是test目录下的代码
+	 也可以在goals标签中配置多个goal，比如配置一个jar 和 test-jar,这样在对应生命周期事件执行的时候就会生成两个jar包
+
+	-每种插件功能和运行方式都不太一样使用前需要看好官方文档。
+		  

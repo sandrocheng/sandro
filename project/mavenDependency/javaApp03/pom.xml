@@ -30,4 +30,24 @@
       <optional>false</optional>
     </dependency>
   </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <!--插件的坐标，在maven官网中，有一个Maven Plugins链接，里面有所有的maven插件-->
+        <!--插件分很多种，比如工程类的(clean,install等)，打包类的(ear,ejb,jar,war等)，生成报告类的(javadoc,surefire-report等)-->
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
+        <version>3.3.1</version>
+        <executions>
+          <execution><!--这里标记的是源码的插件是执行在什么时候的-->
+            <goals>
+              <goal>test-jar</goal><!--官网中给出了Goals Overview里 提供了5种类型-->
+            </goals>
+            <phase>generate-test-resources</phase><!--构建生命周期的 generate-test-resources事件-->
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
 </project>
