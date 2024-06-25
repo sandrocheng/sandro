@@ -177,6 +177,7 @@
 		    -Dversion=1.0.0-snapshot 
 
 11、在IDEA中创建web的maven项目
+	代码详见project/IDEAMavenProject
 	-在IDEA中配置maven
 		-配置前需要确认IDEA和maven之间的兼容关系，下载合适的IDEA和maven版本
 		 IDEA内部默认会有一个maven，可以使用这个maven或者下载一个和内置版本号一致的maven
@@ -244,4 +245,90 @@
 			2)点击"+" add New Configation,在弹出来的项目类型中选择maven
 			3)选择项目，在Run 命令行编辑框内，输入：tomcat7:run
 		配置好以后，每次就可以在"运行"中 发布项目，并启动tomcat了
-			
+
+12、依赖管理
+	-项目详见：/project/mavenDependency		
+	-依赖配置
+	 依赖指当前项目运行所需要的jar，一个项目可以设置多个依赖
+	 格式：
+		  <!--设置当前项目所依赖的所有jar-->
+		  <dependencies>
+		    <!--设置具体的依赖-->
+		    <dependency>
+		      <!--依赖所属项目ID-->
+		      <groupId>junit</groupId>
+		      <artifactId>junit</artifactId><!--依赖所属项目ID-->
+		      <version>4.12</version><!--依赖版本号-->
+		      <scope>test</scope>
+		    </dependency>
+		  </dependencies>
+	 项目中有三个模块，每个模块都是一个java程序，使用quickstart建立的maven项目
+	
+	-依赖传递
+	 在项目内，一个模块不仅可以依赖第三方的包，也可以依赖其他项目
+	 比如，javaApp02依赖javaApp03，在javaApp02的pom.xml中配置 javaApp03的依赖			
+		  <dependencies>
+		    <dependency>...</dependency>
+		    <dependency>...</dependency>
+		    <dependency>
+		      <groupId>com.sandroC</groupId>
+		      <artifactId>javaApp03</artifactId>
+		    </dependency>    
+		  </dependencies>	
+	 配置之后，会在IDEA的maven操作台上看到javaApp02依赖的项目中包括了javaApp03。
+	 由于app02和app03依赖的log4j的版本不一样，因此在maven插件控制台上可以看到app02依赖的app03中，包含了一个log4j,并且提示omitted for duplicate,如图：12_maven项目依赖.png
+	 
+	 这里面直接配置的dependency的包称为直接依赖，通过依赖传递，直接依赖里的包，它所依赖的其他包，相对于当前项目称为间接依赖
+
+	 如图：12_maven依赖冲突，直接依赖的资源是1度资源，间接依赖的资源是2度资源，间接依赖后面再依赖的是3度、4度资源依次类推
+	 在这些包中，1度资源优先级最高，其次是2度资源，依次类推，相同的包，优先级高的覆盖优先级低的。
+	 因此javaApp02模块中使用的是1.2.12版本的log4j,而不是javaApp03依赖的log4j:1.2.13
+	 依赖传递冲突问题：
+		路径优先：当依赖传递中出现相同的资源时，层级越深，优先级越低，层级越浅，优先级越高
+		声明优先：当资源在相同层级被依赖时，配置顺序靠前的覆盖配置顺序靠后的	
+		特殊优先：当同级配置了相同资源的不同版本，后配置的覆盖先配置的 	
+	
+	-可选依赖
+	 可选依赖是指对外隐藏当前所依赖的资源——不透明
+	    <dependency>
+	      <groupId>log4j</groupId>
+	      <artifactId>log4j</artifactId>
+	      <version>1.2.13</version>
+	      <optional>true</optional><!--true代表可选依赖，对外隐藏自己用了这个包-->
+	    </dependency>
+	 
+	-排除依赖
+	 排除依赖指主动断开依赖的资源，被排除的资源无需指定版本--不需要
+	 有些情况下，比如接入方已经通过其他方式，比如直接拷贝了源码到项目里了，或者直接通过jar包接入了，此是再用maven接入依赖这个包的第三方包，会导致编译出错
+	 使用exclusions可以保证接入的包只使用外部的第三方包，方便编译。
+		    <dependency>
+		      <groupId>junit</groupId>
+		      <artifactId>junit</artifactId>
+		      <version>4.12</version>
+		      <scope>test</scope>
+		      <exclusions><!--配置需要排除的包的集合-->
+		        <exclusion><!--具体需要排除的包-->
+		          <groupId>org.hamcrest</groupId>
+		          <artifactId>hamcrest-core</artifactId>
+		        </exclusion>
+		      </exclusions>
+		    </dependency>
+
+13、依赖范围
+	-在dependency中可以配置scope标签，scope有5种值：compile,provided,runtime,system,test,这5种值代表不同的依赖范围
+	 依赖的jar默认情况可以在任何地方，通过scope标签设定其作用范围
+	 作用范围：
+		主程序范围有效--main文件夹范围内
+		测试程序范围有效--test文件夹范围内
+		是否参与打包--package指令范围内
+	 如图：13_作用范围与socpe参数的关系。
+
+	-依赖范围的传递性
+	 依赖范围的资源在进行传递时，作用范围将受到影响，如图13_依赖范围的传递性
+	 
+
+	
+
+
+
+	 
