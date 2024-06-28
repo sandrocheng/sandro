@@ -402,3 +402,38 @@
 
 	-每种插件功能和运行方式都不太一样使用前需要看好官方文档。
 		  
+16、分模块开发与设计
+	大的业务系统开发的时候，一般会拆分模块，比如表现层，DAO层，业务层从一个项目中拆分出来多个子业务，每个子业务之间在进行maven依赖，这样更方便多人合作以及业务部署
+	项目详见：projects/MavenMultipleModules
+	-新建一个空的工程empty project，并在setting中设置本地maven路径
+	-创建一个domain层module，用于为dao层，controller层提供POJO对象,使用maven创建module ,使用quickstart模板创建一个纯java的模块
+	 因为是POJO，所以只要一个java目录就可以，如果创建的是一个空moudle，可以右键module->new Directory,然后选择需要的maven source directory。
+	 在项目中新建一个类 ：multiple.modules.domain.User
+	 这个项目只是定义的类都是POJO，用于给service ,dao,controller层提供依赖，所以pom.xml也不需要依赖第三方类库，一些基本的坐标定义就足够了,编译一下测试项目是否正常即可
+	 编译成功后，执行maven的install，把项目编译的类库放到maven本地库中，便于其他依赖使用		 
+
+	-创建dao模块
+	 使用maven创建module ,使用quickstart模板创建一个纯java的模块
+	 配置spring依赖，mybatis，mysql环境，spring整合jdbc，pring整合mybatis，druid连接池，分页插件坐标，junit
+	 配置moudle依赖，dao 需要依赖 domain提供的POJO
+         编译成功后，执行maven的install，把项目编译的类库放到maven本地库中，便于其他依赖使用
+	
+	-创建service模块
+	 使用maven创建module ,使用quickstart模板创建一个纯java的模块
+	 配置moudle依赖，service 需要依赖 dao和domain,因为，dao已经依赖了domain，根据maven依赖传递的原理,service只要依赖了dao，domain自然也会被依赖上。
+	 配置spring依赖：
+		因为dao已经依赖了spring，根据依赖传递，其实只要引入的dao，service是可以不需要引入spring的
+		除非，有多个service，某些service不需要依赖dao,这些serive如果需要spring框架，就得自己依赖spring了
+	 
+	-创建controller模块
+	 controller是表现层，因此需要创建一个web项目
+	 -创建一个controller层module,使用maven创建module ,使用maven-archetype-webapp模板创建一个web项目
+	 -配置service依赖，springmvc依赖 jackson依赖，servlet依赖
+	 -配置tomcat 插件
+
+
+	
+  
+	
+	
+	
