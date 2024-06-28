@@ -130,7 +130,7 @@
 
 		  <!--版本号，通常有release(发布版)和SNAPSHORT(开发版)-->
 		  <version>1.0.0-SNAPSHOT</version>
-		  <packaging>jar</packaging><!--项目结果 jar:纯jar项目打jar包，war:web项目打war包-->
+		  <packaging>jar</packaging><!--项目结果 jar:纯jar项目打jar包，war:web项目打war包，不写packaging,默认打jar包-->
 		
 		  <!--当前项目依赖的第三方jar集合-->
 		  <dependencies>
@@ -431,9 +431,27 @@
 	 -配置service依赖，springmvc依赖 jackson依赖，servlet依赖
 	 -配置tomcat 插件
 
+17、聚合
+	-详见：/project/MavenAggregationModules
+	-分模块开发往往会带来多模块构建维护的问题，如图:17_使用聚合解决模块更新的问题
 
-	
-  
-	
-	
+	-项目中有4个相对独立逐一依赖的模块，controller,service,dao,domain
+	-新建一个maven moudule , aggregation ,这里不需要任何资源文件，只保留一个pom.xml即可
+	-使用 <packaging>pom</packaging>  标签，定义该工程是专门用于构建管理的，这个标签的含义是，这个模块只提供pom文件
+	-使用 <modules> 标签 ，定义需要管理的项目
+	-统一编译
+	 在IDEA的Maven管理插件上，执行aggregation的compile,会看到所有被管理的模块都会被编译
+	 也可以install，所有被管理的模块都会上传到本地maven库中
+
+	-编译顺序
+		[INFO] Reactor Build Order:
+		[INFO] 
+		[INFO] domain                                                             [jar]
+		[INFO] dao                                                                [jar]
+		[INFO] service                                                            [jar]
+		[INFO] controller Maven Webapp                                            [war]
+		[INFO] aggregation                                                        [pom]	
+	 从编译log中可以看到，maven会自动根据依赖关系找到最合理的编译顺序，如果项目中的依赖关系比较复杂，比如不是线性的关系，有了回路。那么maven就会参考modules标签中配置的顺序去编译
+         		 
+ 
 	
