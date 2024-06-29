@@ -1,0 +1,134 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.inherit.modules</groupId>
+  <artifactId>MainModule</artifactId>
+  <version>1.0-SNAPSHOT</version>
+
+
+  <!--定义该工程是专门用于构建管理的-->
+  <packaging>pom</packaging>
+
+  <!--定义该构建管理工程管理哪些模块-->
+  <modules>
+    <!--具体的工程名称,不需要关心顺序-->
+    <module>../controller</module>
+    <module>../service</module>
+    <module>../dao</module>
+    <module>../domain</module>
+
+  </modules>
+
+  <!--声明依赖管理-->
+  <dependencyManagement>
+    <dependencies><!--依赖集合配置，所有modules的依赖都需要在这里配置-->
+      <!--内部工程依赖也放进来，统一管理版本-->
+      <!--设置domain项目的依赖-->
+      <dependency>
+        <groupId>com.inherit.modules</groupId>
+        <artifactId>domain</artifactId>
+        <version>1.0-SNAPSHOT</version>
+      </dependency>
+      <!--设置dao项目的依赖-->
+      <dependency>
+        <groupId>com.inherit.modules</groupId>
+        <artifactId>dao</artifactId>
+        <version>1.0-SNAPSHOT</version>
+      </dependency>
+      <!--service依赖-->
+      <dependency>
+        <groupId>com.inherit.modules</groupId>
+        <artifactId>service</artifactId>
+        <version>1.0-SNAPSHOT</version>
+      </dependency>
+
+      <!--spring环境-->
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-context</artifactId>
+        <version>5.1.9.RELEASE</version>
+      </dependency>
+      <!--mybatis环境-->
+      <dependency>
+        <groupId>org.mybatis</groupId>
+        <artifactId>mybatis</artifactId>
+        <version>3.5.3</version>
+      </dependency>
+      <!--mysql环境-->
+      <dependency>
+        <groupId>mysql</groupId>
+        <artifactId>mysql-connector-java</artifactId>
+        <version>5.1.47</version>
+      </dependency>
+      <!--spring整合jdbc-->
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-jdbc</artifactId>
+        <version>5.1.9.RELEASE</version>
+      </dependency>
+      <!--spring整合mybatis-->
+      <dependency>
+        <groupId>org.mybatis</groupId>
+        <artifactId>mybatis-spring</artifactId>
+        <version>2.0.3</version>
+      </dependency>
+
+      <!--druid连接池-->
+      <dependency>
+        <groupId>com.alibaba</groupId>
+        <artifactId>druid</artifactId>
+        <version>1.1.16</version>
+      </dependency>
+
+      <!--分页插件坐标-->
+      <dependency>
+        <groupId>com.github.pagehelper</groupId>
+        <artifactId>pagehelper</artifactId>
+        <version>5.1.2</version>
+      </dependency>
+
+      <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>3.8.1</version>
+        <scope>test</scope>
+      </dependency>
+
+      <!--springmvc 依赖-->
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-webmvc</artifactId>
+        <version>5.1.9.RELEASE</version>
+      </dependency>
+
+      <!--jackson依赖-->
+      <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-databind</artifactId>
+        <version>2.9.0</version>
+      </dependency>
+
+      <!--servlet-->
+      <dependency>
+        <groupId>javax.servlet</groupId>
+        <artifactId>servlet-api</artifactId>
+        <version>2.5</version>
+        <scope>provided</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  <build>
+    <pluginManagement>
+      <plugins>
+        <!--IDEA tomact插件配置-->
+        <plugin>
+          <groupId>org.apache.tomcat.maven</groupId>
+          <artifactId>tomcat7-maven-plugin</artifactId>
+          <version>2.1</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+
+  </build>
+</project>
