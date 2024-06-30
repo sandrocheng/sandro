@@ -1,0 +1,77 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+  <!--定义该工程的父工程-->
+  <parent>
+    <groupId>mymaven.attribute</groupId>
+    <artifactId>MainModule</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <relativePath>../MainModule/pom.xml</relativePath><!--填写父工程的pom文件路径-->
+  </parent>
+
+  <!--定义父工程以后，子工程的groupId，就可以去掉了，子工程和父工程默是在一个groupID下
+      子工程尽量和父工程的版本号也统一，所以version也去掉
+  <groupId>com.inherit.modules</groupId>
+  <version>1.0-SNAPSHOT</version>
+  -->
+  <artifactId>dao</artifactId>
+  <packaging>jar</packaging>
+  <modelVersion>4.0.0</modelVersion>
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+  </properties>
+
+  <dependencies>
+
+    <!--设置domain项目的依赖-->
+    <dependency>
+      <groupId>mymaven.attribute</groupId>
+      <artifactId>domain</artifactId>
+    </dependency>
+    <!--spring环境-->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context</artifactId>
+    </dependency>
+    <!--mybatis环境-->
+    <dependency>
+      <groupId>org.mybatis</groupId>
+      <artifactId>mybatis</artifactId>
+    </dependency>
+    <!--mysql环境-->
+    <dependency>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
+    </dependency>
+    <!--spring整合jdbc-->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-jdbc</artifactId>
+    </dependency>
+    <!--spring整合mybatis-->
+    <dependency>
+      <groupId>org.mybatis</groupId>
+      <artifactId>mybatis-spring</artifactId>
+    </dependency>
+
+    <!--druid连接池-->
+    <dependency>
+      <groupId>com.alibaba</groupId>
+      <artifactId>druid</artifactId>
+    </dependency>
+
+    <!--分页插件坐标-->
+    <dependency>
+      <groupId>com.github.pagehelper</groupId>
+      <artifactId>pagehelper</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+</project>
