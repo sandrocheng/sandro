@@ -643,3 +643,34 @@
 	 在命令模式下：
 		mvn 指令 -P 环境定义id
          比如： mvn install -P dev_env
+
+24、跳过测试
+	-跳过测试环节的应用场景
+	 整体模块功能未开发
+	 模块中某个功能未开发完毕
+	 单个功能更新调试导致其他功能失败
+	 快速打包
+	 ...
+
+	-详见：/project/MavenIgnoreTest
+	
+	-在IDEA的Maven管理插件中点击test,再后在点击工具栏中的 “toggle 'skip test' model”,值型后，test会被屏蔽
+
+	-对应的命令是 mvn install -D skipTests
+
+	-在MainMoudle的pom中配置跳过测试
+	        <plugin>
+	            <!--不写groupid，默认是maven的groupid-->
+	          <artifactId>maven-surefire-plugin</artifactId>
+	          <version>2.22.1</version>
+	          <configuration>
+	            <skipTests>false</skipTests><!--true代表跳过测试，false表示正常值型测试-->
+	            <includes><!--配置需要测试的模块-->
+	              <include></include>
+	            </includes>
+	            <excludes><!--配置不需要测试的模块-->
+	              <exclude>**/UserDomain*Test.java</exclude><!--使用**通配所有路径，配置含有UserDomain..Test.java的测试类-->
+	            </excludes>
+	          </configuration>
+	        </plugin>	 
+	
