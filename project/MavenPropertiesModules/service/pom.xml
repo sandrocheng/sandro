@@ -1,0 +1,41 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+  <!--定义该工程的父工程-->
+  <parent>
+    <groupId>mymaven.properties</groupId>
+    <artifactId>MainModule</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <relativePath>../MainModule/pom.xml</relativePath><!--填写父工程的pom文件路径-->
+  </parent>
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <!--定义父工程以后，子工程的groupId，就可以去掉了，子工程和父工程默是在一个groupID下
+      子工程尽量和父工程的版本号也统一，所以version也去掉
+  <groupId>com.inherit.modules</groupId>
+  <version>1.0-SNAPSHOT</version>
+  -->
+  <artifactId>service</artifactId>
+  <packaging>jar</packaging>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+  </properties>
+
+  <dependencies>
+    <!--设置dao项目的依赖-->
+    <dependency>
+      <groupId>mymaven.attribute</groupId>
+      <artifactId>dao</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+</project>

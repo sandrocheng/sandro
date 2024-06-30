@@ -1,0 +1,154 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>mymaven.properties</groupId>
+  <artifactId>MainModule</artifactId>
+  <version>1.0-SNAPSHOT</version>
+
+
+  <!--定义该工程是专门用于构建管理的-->
+  <packaging>pom</packaging>
+
+  <!--定义该构建管理工程管理哪些模块-->
+  <modules>
+    <!--具体的工程名称,不需要关心顺序-->
+    <module>../controller</module>
+    <module>../service</module>
+    <module>../dao</module>
+    <module>../domain</module>
+  </modules>
+
+  <!--定义自定义属性-->
+  <properties>
+    <spring.version>5.2.0.RELEASE</spring.version> <!--定一个一个spring.version的熟悉-->
+    <daojdbc.url>jdbc:mysql://localhost:3306/ssm_db</daojdbc.url>
+  </properties>
+
+  <!--声明依赖管理-->
+  <dependencyManagement>
+    <dependencies><!--依赖集合配置，所有modules的依赖都需要在这里配置-->
+      <!--内部工程依赖也放进来，统一管理版本-->
+      <!--设置domain项目的依赖-->
+      <dependency>
+        <groupId>mymaven.attribute</groupId>
+        <artifactId>domain</artifactId>
+        <version>${version}</version><!--子项目统一使MainModule的版本-->
+      </dependency>
+      <!--设置dao项目的依赖-->
+      <dependency>
+        <groupId>mymaven.attribute</groupId>
+        <artifactId>dao</artifactId>
+        <version>${version}</version><!--子项目统一使MainModule的版本-->
+      </dependency>
+      <!--service依赖-->
+      <dependency>
+        <groupId>mymaven.attribute</groupId>
+        <artifactId>service</artifactId>
+        <version>${version}</version><!--子项目统一使MainModule的版本-->
+      </dependency>
+
+      <!--spring环境-->
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-context</artifactId>
+        <version> ${spring.version} </version>
+      </dependency>
+      <!--mybatis环境-->
+      <dependency>
+        <groupId>org.mybatis</groupId>
+        <artifactId>mybatis</artifactId>
+        <version>3.5.3</version>
+      </dependency>
+      <!--mysql环境-->
+      <dependency>
+        <groupId>mysql</groupId>
+        <artifactId>mysql-connector-java</artifactId>
+        <version>5.1.47</version>
+      </dependency>
+      <!--spring整合jdbc-->
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-jdbc</artifactId>
+        <version> ${spring.version} </version>
+      </dependency>
+      <!--spring整合mybatis-->
+      <dependency>
+        <groupId>org.mybatis</groupId>
+        <artifactId>mybatis-spring</artifactId>
+        <version>2.0.3</version>
+      </dependency>
+
+      <!--druid连接池-->
+      <dependency>
+        <groupId>com.alibaba</groupId>
+        <artifactId>druid</artifactId>
+        <version>1.1.16</version>
+      </dependency>
+
+      <!--分页插件坐标-->
+      <dependency>
+        <groupId>com.github.pagehelper</groupId>
+        <artifactId>pagehelper</artifactId>
+        <version>5.1.2</version>
+      </dependency>
+
+      <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>3.8.1</version>
+        <scope>test</scope>
+      </dependency>
+
+      <!--springmvc 依赖-->
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-webmvc</artifactId>
+        <version> ${spring.version} </version>
+      </dependency>
+
+      <!--jackson依赖-->
+      <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-databind</artifactId>
+        <version>2.9.0</version>
+      </dependency>
+
+      <!--servlet-->
+      <dependency>
+        <groupId>javax.servlet</groupId>
+        <artifactId>servlet-api</artifactId>
+        <version>2.5</version>
+        <scope>provided</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  <build>
+    <pluginManagement>
+      <plugins>
+        <!--IDEA tomact插件配置-->
+        <plugin>
+          <groupId>org.apache.tomcat.maven</groupId>
+          <artifactId>tomcat7-maven-plugin</artifactId>
+          <version>2.1</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+
+    <resources><!--需要maven管理的资源文件-->
+      <resource>
+        <!--project.basedir,表示通配所有maven项目，这里就表示说把所有子项目的resources都做为maven的管理目标-->
+        <directory>${project.basedir}/src/main/resources</directory>
+        <filtering>true</filtering><!--开启对配置文件的资源加载过滤，false表示不管理这个目录-->
+      </resource>
+    </resources>
+
+    <testResources><!--需要maven管理的test资源文件-->
+      <testResource>
+        <!--project.basedir,表示通配所有maven项目，这里就表示说把所有子项目test中的resources都做为maven的管理目标-->
+        <directory>${project.basedir}/src/test/resources</directory>
+        <filtering>true</filtering><!--开启对配置文件的资源加载过滤，false表示不管理这个目录-->
+      </testResource>
+    </testResources>
+  </build>
+</project>
