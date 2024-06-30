@@ -1,0 +1,59 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+  <!--定义该工程的父工程-->
+  <parent>
+    <groupId>mymaven.multi.system</groupId>
+    <artifactId>MainModule</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <relativePath>../MainModule/pom.xml</relativePath><!--填写父工程的pom文件路径-->
+  </parent>
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <!--定义父工程以后，子工程的groupId，就可以去掉了，子工程和父工程默是在一个groupID下
+      子工程尽量和父工程的版本号也统一，所以version也去掉
+  <groupId>com.inherit.modules</groupId>
+  <version>1.0-SNAPSHOT</version>
+  -->
+  <artifactId>controller</artifactId>
+  <packaging>war</packaging>
+
+  <dependencies>
+
+    <!--service依赖-->
+    <dependency>
+      <groupId>mymaven.attribute</groupId>
+      <artifactId>service</artifactId>
+    </dependency>
+
+    <!--springmvc 依赖-->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-webmvc</artifactId>
+    </dependency>
+
+    <!--jackson依赖-->
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+    </dependency>
+
+    <!--servlet-->
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>servlet-api</artifactId>
+      <scope>provided</scope>
+    </dependency>
+
+  </dependencies>
+  <build>
+    <plugins>
+      <!--IDEA tomact插件配置-->
+      <plugin>
+        <groupId>org.apache.tomcat.maven</groupId>
+        <artifactId>tomcat7-maven-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </build>
+</project>

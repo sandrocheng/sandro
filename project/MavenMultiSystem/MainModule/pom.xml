@@ -1,7 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>mymaven.properties</groupId>
+  <groupId>mymaven.multi.system</groupId>
   <artifactId>MainModule</artifactId>
   <version>1.0-SNAPSHOT</version>
 
@@ -18,10 +18,33 @@
     <module>../domain</module>
   </modules>
 
+  <!--创建多环境-->
+  <profiles>
+    <!--定义生产环境-->
+    <profile>
+      <id>pro_env</id><!--定义环境对应的唯一名称-->
+      <properties><!--定义环境中专用的属性值-->
+        <daojdbc.url>jdbc:mysql://localhost:3306/release_db</daojdbc.url>
+      </properties>
+    </profile>
+
+    <!--定义开发环境-->
+    <profile>
+      <!--定义环境对应的唯一名称-->
+      <id>dev_env</id>
+      <properties><!--定义环境中专用的属性值-->
+        <daojdbc.url>jdbc:mysql://127.0.0.1:3306/dev_db</daojdbc.url>
+      </properties>
+
+      <activation><!--设置默认启动,保证在生命周期各个阶段都至少有一个对应的值-->
+        <activeByDefault>true</activeByDefault>
+      </activation>
+    </profile>
+  </profiles>
+
   <!--定义自定义属性-->
   <properties>
-    <spring.version>5.2.0.RELEASE</spring.version> <!--定义一个spring.version的属性-->
-    <daojdbc.url>jdbc:mysql://localhost:3306/ssm_db</daojdbc.url>
+    <spring.version>5.2.0.RELEASE</spring.version> <!--定一个一个spring.version的熟悉-->
   </properties>
 
   <!--声明依赖管理-->

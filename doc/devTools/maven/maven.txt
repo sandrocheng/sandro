@@ -604,3 +604,42 @@
 	      </testResource>
 	    </testResources>	 
 	编译后在target的classes文件夹中查看编译后的jdbc.properties文件，此是，jdbc.url的值已经替换成MainModule中pom定义的属性的值了
+
+23、多环境开发配置
+	-开发环境和生产环境往往是不一样，比如在windows系统上开发，但是打包生产是在linux环境上，这样就还需要解决多环境兼容的问题,如图：23_多环境开发配置
+	 详见:/project/MavenMultiSystem
+	
+	-定义多环境
+	 在MainMoudle的pom中使用profiles来定义多环境的属性
+		  <!--创建多环境-->
+		  <profiles>
+		    <!--定义生产环境-->
+		    <profile>
+		      <id>pro_env</id><!--定义环境对应的唯一名称-->
+		      <properties><!--定义环境中专用的属性值-->
+		        <daojdbc.url>jdbc:mysql://localhost:3306/release_db</daojdbc.url>
+		      </properties>
+		    </profile>
+		    
+		    <!--定义开发环境-->
+		    <profile>
+		      <!--定义环境对应的唯一名称-->
+		      <id>dev_env</id>
+		      <properties><!--定义环境中专用的属性值-->
+		        <daojdbc.url>jdbc:mysql://localhost:3306/dev_db</daojdbc.url>
+		      </properties>      
+		      	<activation><!--设置默认启动,保证在生命周期各个阶段都至少有一个对应的值-->
+        		   <activeByDefault>true</activeByDefault>
+      			</activation>	
+		    </profile>    
+		  </profiles>
+
+	-使用多环境的属性值
+	 在IDEA运行中新建一个 maven 配置，
+	 working directory，选择需要的项目比如MainModule
+	 command line,选则一个maven生命周期命令 ，比如install，使用-P选择一个profiles中定义的profile中的id,例如：install -P dev_env
+	 配置成功以后，在dao的taget的classes中可以看到jdbc.properties中jdbc.url就是开发环境配置的值
+	 
+	 在命令模式下：
+		mvn 指令 -P 环境定义id
+         比如： mvn install -P dev_env
