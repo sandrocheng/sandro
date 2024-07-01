@@ -673,4 +673,30 @@
 	            </excludes>
 	          </configuration>
 	        </plugin>	 
+
+25、maven私服的安装与配置(linux系统)	
+	如图：25_maven私服，有了私服以后就可以在小范围内进行资源共享，提升开发效率
+
+	-安装Nexus服务
+	 Nexus是Sonatype公司的一款maven私服产品
+	 下载地址：https://help.sonatype.com/en/download.html，注意下载的系统和java版本要和主机的环境一致
+	 下载后解压缩到opt文件夹下：sudo tar -zxvf nexus-3.69.0-02-java11-unix.tar.gz -C /opt/
+	 解压缩后，会有两个文件夹，一个是nexus-3xxxx,这个是nexus的服务其文件，sonatype-work,这个是工作空间
+	 修改用户组，这两个文件夹目前是root用户的，启动的时候，推荐不要用root用户启动
+		sudo chown -R sandro:sandro nexus-3xxxxx,把nexus-3xxx目录以及其子目录所有的文件都改成sandro用户
+		sudo chown -R sandro:sandro sonatype-work,把sonatype-work目录以及其子目录所有的文件都改成sandro用户
+	
+	-启动服务
+	 在nexus/bin目录下执行
+		./nexus run nexus
+	 服务启动成功后会提示：Started Sonatype Nexus OSS 3.69.0-02
+	 启动的服务默认端口是8081，如果是本机：localhost:8081,如果是其他机器：http://192.168.0.111:8081/，打开访问页面
+
+	-修改启动参数
+	 nexus/etc/nexus-default.properties文件，进行服务设置
+	 里面可以修改port来修改端口
+	 
+         nexus/bin/nexus.vmoptions,也以修改启动参数
+
+
 	
