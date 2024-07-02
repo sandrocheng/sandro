@@ -698,5 +698,38 @@
 	 
          nexus/bin/nexus.vmoptions,也以修改启动参数
 
+	-登陆私服
+	 默认用户是admin用户，密码在sonatype-work/nexus3/admin.password中
+	 登陆后要求修改密码，比如改成1234qwer
+	 然后设置是否可以匿名访问，一般私服都是局域网，相对安全，是可以设置为Enable anonymous access的。
 
+26、maven私服-仓库分类与手动上传组件
+	-如图：26_maven私服的作用.png
+	 把私服设置为过渡服务器，第三方类库从中央服务下载到私服，项目类库可以上传和下载到私服，这样在多人开发的时候更有效率
+
+	-仓库分类，图中仓库分三个种类
+		-宿主仓库hosted:用于保存无法从中央仓库获取的资源，比如自主开发的类库，或者第三方非开源项目(中央仓库拉取不到的)
+		-代理仓库proxy：代理远程仓库，通过nexus访问其他功能仓库，例如中央仓库
+		-仓库组group，将若干个仓库组成一个组群，简化配置。仓库组不能保存资源，属于设计型仓库
+	 宿主仓库可以设计为多个，比如release包放到一个仓库中，SNAPSHOT包放到一个仓库，每次上传的时候根据包的类型放到不同的仓库中
+	 拉取的时候从仓库组中拉取，仓库组会扫描所有仓库直到找到匹配的包为止
+
+	-私服自动创建的库
+	 打开私服管理页面，默认已经创建了几个库,常用的有如下几个
+	 	-maven-central,代理仓库proxy，在设置->Repository->Repositories中选择maven-central,这里可以设置远程仓库的地址，默认是maven中央仓库，可以改成阿里等国内仓库
+		-maven-release,正式版宿主仓库，
+		-maven-snapshot,开发版本宿主仓库
+		-maven-public,仓库组，在在设置->Repository->Repositories中选择maven-pubic,可以看到该仓库组已经包含了上边三个库
+			      也就是说，可以直接从该组拉取所有的包
+
+	-手动上传release包
+	 maven-release正式版本宿主仓库是可以手动上传正式包的
+	 首页->Browser->点击maven-release，打开maven-release库的管理页面，点击upload component,打开上传页面
+	 在上传页面中选择，本地的jar包，并填写 Gropu ID,Atrifact ID和 Version，选中 Generate a POM file with these coordinates
+	 注意：version 不能有SNAPSHOT，可以改成RELEASE,比如：1.0-RELEASE，这里有个小的校验		
+
+
+	
+
+	
 	
