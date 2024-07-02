@@ -1,7 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>mymaven.ignoreTest</groupId>
+  <groupId>mymaven.upload.privacy</groupId>
   <artifactId>MainModule</artifactId>
   <version>1.0-SNAPSHOT</version>
 
@@ -53,19 +53,19 @@
       <!--内部工程依赖也放进来，统一管理版本-->
       <!--设置domain项目的依赖-->
       <dependency>
-        <groupId>mymaven.ignoreTest</groupId>
+        <groupId>mymaven.upload.privacy</groupId>
         <artifactId>domain</artifactId>
         <version>${version}</version><!--子项目统一使MainModule的版本-->
       </dependency>
       <!--设置dao项目的依赖-->
       <dependency>
-        <groupId>mymaven.ignoreTest</groupId>
+        <groupId>mymaven.upload.privacy</groupId>
         <artifactId>dao</artifactId>
         <version>${version}</version><!--子项目统一使MainModule的版本-->
       </dependency>
       <!--service依赖-->
       <dependency>
-        <groupId>mymaven.ignoreTest</groupId>
+        <groupId>mymaven.upload.privacy</groupId>
         <artifactId>service</artifactId>
         <version>${version}</version><!--子项目统一使MainModule的版本-->
       </dependency>
@@ -190,4 +190,16 @@
       </testResource>
     </testResources>
   </build>
+
+  <!--发布的配置管理-->
+  <distributionManagement>
+      <repository><!--私服release仓库配置-->
+        <id>deploy-maven-release</id><!--setting.xml中server标签的id-->
+        <url>http://192.168.0.111:8081/repository/maven-releases/</url>
+      </repository>
+      <snapshotRepository><!--私服snapshot仓库配置-->
+        <id>deploy-maven-snapshots</id><!--setting.xml中server标签的id-->
+        <url>http://192.168.0.111:8081/repository/maven-snapshots/</url>
+      </snapshotRepository>
+  </distributionManagement>
 </project>

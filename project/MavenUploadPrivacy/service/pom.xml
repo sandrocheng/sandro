@@ -3,7 +3,7 @@
 
   <!--定义该工程的父工程-->
   <parent>
-    <groupId>mymaven.ignoreTest</groupId>
+    <groupId>mymaven.upload.privacy</groupId>
     <artifactId>MainModule</artifactId>
     <version>1.0-SNAPSHOT</version>
     <relativePath>../MainModule/pom.xml</relativePath><!--填写父工程的pom文件路径-->
@@ -28,7 +28,7 @@
   <dependencies>
     <!--设置dao项目的依赖-->
     <dependency>
-      <groupId>mymaven.ignoreTest</groupId>
+      <groupId>mymaven.upload.privacy</groupId>
       <artifactId>dao</artifactId>
     </dependency>
 
