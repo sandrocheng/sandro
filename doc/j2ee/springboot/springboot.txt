@@ -70,5 +70,37 @@
 8、spring boot helloworld
 	jdk + maven + springboot
 	IDE:IDEA
-	官网集成了一个网站的例子：spring.io -> project -> springboot,在首页上可以找到最新的GA版本，找到 Quickstart Your Project，点击Spring Initlalizr
-	在这里选择环境，工程名 包名等信息 dependencies 选择一个Spring Web，会自动构建项目
+	-官网生成springbootdemo：spring.io -> project -> springboot,在首页上可以找到最新的GA版本，找到 Quickstart Your Project，点击Spring Initlalizr
+	 在这里选择环境，工程名 包名等信息 dependencies 选择一个Spring Web，点击generate会自动构建项目，并提示下载
+
+	-IDEA生成springboot项目,需要使用集成web开发环境的IDEA，在new project的时候，选择 Spring Initializr，可以方便的生成springboot初始项目
+
+	-默认的主入口是Demo1Application，这个主入口不能删，也不要改
+	 直接运行这个文件就可以启动tomcat服务了：
+		main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+	 访问 http://localhost:8080/
+	      因为没有配置根页面，所以可以看到服务返回的错误提示，这个时候，一个基本的web应用框架已经可以使用了
+	
+	 @SpringBootApplication表示当前的类就是spring的一个组件
+	 
+	-/src/main/resources/application.properties
+	 这个是springboot的核心配置文件
+	 
+	-建包，因为springboot是基于约定的，所以这里必须在Demo1Application同级别建包，在其他地方建包，会出问题
+         常规的包，domain,dao,service,controller
+
+	-在controller下创建HelloController类,定义一个返回字符串的http请求接口hello,只需要配置上spring相关的注解，其他的springboot已经自动配置了，
+	 之后就可以通过/localhost:8080/hello 访问这个接口的页面了
+
+	-打包，使用maven的package命令就可以直接打成jar包，打出来的jar包，可以直接运行，内部包含了tomcat，因此服务就可以启动了
+		java -jar xxx.jar
+	-总结
+	 如上所示，主要有4个部分
+		-项目元数据信息：创建的时候输入的project metadata部分，也就是maven的项目基本元素，包括:groupId,artifaciId,version,name,description等
+		-parent：继承spring-boot-start-parent的依赖管理，控制版本与打包内容等
+		-dependencies:项目具体依赖，这里包含了spring-boot-start-web，用户实现http接口(该依赖包含了spring MVC)
+			      官网对它的描述是:使用spring MVC构建web(包含RESTful)应用程序入门者，使用tomcat做为默认嵌入式容器
+			      spring-boot-starter-test用于编写单元测试的依赖包。
+		-build：构建配置部分。默认使用了spring-boot-maven-plugin,配合spring-boot-starter-parent就可以把spring boot应用打包成jar来直接运行
+		
+				
