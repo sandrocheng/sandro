@@ -108,7 +108,7 @@
 	用户setting定义的是当前用户的配置，用户setting.xml可以放到 本地仓库配置路径中，用户setting的属性会覆盖全局setting的属性
 
 8、手动制作一个maven项目
-	代码详见/project/MavenHelloWorld
+	代码详见/project_mavenExam/MavenHelloWorld
 
 	maven工程目录结构如图：8_maven工程目录结构
 	在src中的main 和 test目录中实现 一个类，以及对应的测试类
@@ -177,7 +177,7 @@
 		    -Dversion=1.0.0-snapshot 
 
 11、在IDEA中创建web的maven项目
-	代码详见project/IDEAMavenProject
+	代码详见project_mavenExam/IDEAMavenProject
 	-在IDEA中配置maven
 		-配置前需要确认IDEA和maven之间的兼容关系，下载合适的IDEA和maven版本
 		 IDEA内部默认会有一个maven，可以使用这个maven或者下载一个和内置版本号一致的maven
@@ -247,7 +247,7 @@
 		配置好以后，每次就可以在"运行"中 发布项目，并启动tomcat了
 
 12、依赖管理
-	-项目详见：/project/mavenDependency		
+	-项目详见：/project_mavenExam/mavenDependency		
 	-依赖配置
 	 依赖指当前项目运行所需要的jar，一个项目可以设置多个依赖
 	 格式：
@@ -404,7 +404,7 @@
 		  
 16、分模块开发与设计
 	大的业务系统开发的时候，一般会拆分模块，比如表现层，DAO层，业务层从一个项目中拆分出来多个子业务，每个子业务之间在进行maven依赖，这样更方便多人合作以及业务部署
-	项目详见：projects/MavenMultipleModules
+	项目详见：projects_mavenExam/MavenMultipleModules
 	-新建一个空的工程empty project，并在setting中设置本地maven路径
 	-创建一个domain层module，用于为dao层，controller层提供POJO对象,使用maven创建module ,使用quickstart模板创建一个纯java的模块
 	 因为是POJO，所以只要一个java目录就可以，如果创建的是一个空moudle，可以右键module->new Directory,然后选择需要的maven source directory。
@@ -432,7 +432,7 @@
 	 -配置tomcat 插件
 
 17、聚合
-	-详见：/project/MavenAggregationModules
+	-详见：/project_mavenExam/MavenAggregationModules
 	-分模块开发往往会带来多模块构建维护的问题，如图:17_使用聚合解决模块更新的问题
 
 	-项目中有4个相对独立逐一依赖的模块，controller,service,dao,domain
@@ -454,7 +454,7 @@
 	 从编译log中可以看到，maven会自动根据依赖关系找到最合理的编译顺序，如果项目中的依赖关系比较复杂，比如不是线性的关系，有了回路。那么maven就会参考modules标签中配置的顺序去编译
          		 
 18、继承
-	-详见：/project/MavenInheritModules
+	-详见：/project_mavenExam/MavenInheritModules
 	 如图：18_继承关系维护
 	 通过继承，子项目可以使用父项目的配置，提升项目的整体性
 	 
@@ -519,7 +519,7 @@
 	 继承是在子模块中配置关系，父模块无法感知哪些子模块继承了自己
 
 20、属性
-	-详见：/home/sandro/mywork/gitwork/sandro/project/MavenAttributeModules
+	-详见：/project_mavenExam/MavenAttributeModules
 	-对于同一个组织第三方的多个类库，有可能在引入的时候版本号会写成不一样的
 	 比如：org.springframework:spring-context:5.1.9.RELEASE , org.springframework:spring-jdbc:5.2.1.RELEASE
 	      这两个包都是spring的，但是由与是分开引用，有可能引用的时候版本不是一个版本，这种也会带来版本不一致的风险
@@ -580,7 +580,7 @@
 22、资源配置
 	如图：22_资源配置多文件维护,maven可以通过继承，属性定义，将多个重要信息集合到父文件中统一管理
 	但是项目中还有很多properties文件的数据是单独管理的，比如：dao中的jdbc.properties，这些properties文件中的数据也可以统一起来，一起管理
-	详见：/project/MavenPropertiesModules
+	详见：/project_mavenExam/MavenPropertiesModules
 
 	-properties文件配置
 	 dao中，有关于数据库jdbc的配置文件：jdbc.properties文件，这个文件中的数据可以提出一个变量，放到MainMoudle中以属性的方式定义
@@ -607,7 +607,7 @@
 
 23、多环境开发配置
 	-开发环境和生产环境往往是不一样，比如在windows系统上开发，但是打包生产是在linux环境上，这样就还需要解决多环境兼容的问题,如图：23_多环境开发配置
-	 详见:/project/MavenMultiSystem
+	 详见:/poject_mavenExam/MavenMultiSystem
 	
 	-定义多环境
 	 在MainMoudle的pom中使用profiles来定义多环境的属性
@@ -652,7 +652,7 @@
 	 快速打包
 	 ...
 
-	-详见：/project/MavenIgnoreTest
+	-详见：/project_mavenExam/MavenIgnoreTest
 	
 	-在IDEA的Maven管理插件中点击test,再后在点击工具栏中的 “toggle 'skip test' model”,值型后，test会被屏蔽
 
@@ -729,7 +729,7 @@
 	 注意：version 不能有SNAPSHOT，可以改成RELEASE,比如：1.0-RELEASE，这里有个小的校验		
 
 27、maven私服-本地仓库访问私服
-	-详见：project/MavenUploadPrivacy
+	-详见：project_mavenExam/MavenUploadPrivacy
 	 如图：27_本地仓库访问私服
 	       本地仓库通过maven的配置，把项目包上传到私服仓库中
 

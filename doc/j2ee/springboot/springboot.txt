@@ -70,4 +70,5 @@
 8、spring boot helloworld
 	jdk + maven + springboot
 	IDE:IDEA
-
+	官网集成了一个网站的例子：spring.io -> project -> springboot,在首页上可以找到最新的GA版本，找到 Quickstart Your Project，点击Spring Initlalizr
+	在这里选择环境，工程名 包名等信息 dependencies 选择一个Spring Web，会自动构建项目
