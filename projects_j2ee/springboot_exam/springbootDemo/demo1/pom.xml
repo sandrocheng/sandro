@@ -31,7 +31,7 @@
 	</properties>
 	<dependencies>
 		<!--做有的springboot依赖都是使用spring-boot-starter开头的 -->
-		<dependency><!--web 依赖 ，集成了tomcat，dispacherServlet，xml-->
+		<dependency><!--springboot提供的 web启动器 ，集成了tomcat，dispacherServlet，xml等类库，方便启动java web服务-->
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>

@@ -73,7 +73,8 @@
 	-官网生成springbootdemo：spring.io -> project -> springboot,在首页上可以找到最新的GA版本，找到 Quickstart Your Project，点击Spring Initlalizr
 	 在这里选择环境，工程名 包名等信息 dependencies 选择一个Spring Web，点击generate会自动构建项目，并提示下载
 
-	-IDEA生成springboot项目,需要使用集成web开发环境的IDEA，在new project的时候，选择 Spring Initializr，可以方便的生成springboot初始项目
+	-IDEA生成springboot项目,需要下载spring boot helper插件(收费插件)，在new project的时候，选择 Spring Initializr，可以方便的生成springboot初始项目
+	 	 
 
 	-默认的主入口是Demo1Application，这个主入口不能删，也不要改
 	 直接运行这个文件就可以启动tomcat服务了：
@@ -83,8 +84,21 @@
 	
 	 @SpringBootApplication表示当前的类就是spring的一个组件
 	 
-	-/src/main/resources/application.properties
-	 这个是springboot的核心配置文件
+	-/src/main/resources/application.properties，这个是springboot的核心配置文件
+	 1）更改端口号
+		server.port=8083
+	 2）自定义banner，服务启动的时候，有一个spring banner的输出如下：
+		  .   ____          _            __ _ _
+		 /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+		( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+		 \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+		  '  |____| .__|_| |_|_| |_\__, | / / / /
+		 =========|_|==============|___/=/_/_/_/
+		
+		 :: Spring Boot ::                (v3.3.1)
+	    这个banner也可以修改，可以在baidu上搜 springboot banner生成器，会有很多生成器，
+	    比如：https://www.bootschool.net/ascii，把生成的内容贴到properties同目录的banner.txt中即可，不需要配置
+	
 	 
 	-建包，因为springboot是基于约定的，所以这里必须在Demo1Application同级别建包，在其他地方建包，会出问题
          常规的包，domain,dao,service,controller
@@ -103,4 +117,61 @@
 			      spring-boot-starter-test用于编写单元测试的依赖包。
 		-build：构建配置部分。默认使用了spring-boot-maven-plugin,配合spring-boot-starter-parent就可以把spring boot应用打包成jar来直接运行
 		
+9、springboot自动装配原理
+	-pom文件内容分析
+	 1)parent标签内容是spring-boot-starter-parent，点击打开这个pom文件发现还有一个根的parent org.springframework.boot
+	   properties标签中可以看到管理了的大量的依赖库的版本以及核心依赖的第三方库，一般在springboot依赖的包这里都有，外部继承以后不需要指定版本
+	   resource标签中指定了资源文件的位值和命名规范	
+
+	 2)启动器
+	   spring-boot-starter-web，它会自动装配web环境相关的依赖
+	   springboot会将所有的功能场景，都封装成一个个的启动器，如果要使用什么功能就只需要找到对应的启动器就可以了，一般都以'spring-boot-stater..'来命名
+	   官网->projec->springboot:learn->找到对应版本的Reference Doc 搜索 starters，在Build System里面能找到所有的启动器
+
+	-主程序
+	 @SpringBootApplication，用来标注这个类是springboot的应用
+	 这是个组合注解主要包括
+	 	-@SpringBootConfiguration:springboot的配置，它内部由@Configuraton 和 @Component来管理的，这是两个spring注解，说明这个类是个配置类，同时也是一个组件
+		-@EnableAutoConfiguration:自动配置
+			->@AutoConfigurationPackage:自动配置包
+				->@Import({AutoConfigurationPackages.Registrar.class}) 自动配置'包配置'
+			->@Import({AutoConfigurationImportSelector.class}) : 自动配置导入选择
+				->getCandidateConfigurations，通过这个函数导入了配置资源文件，这里可以看到被SpringBootApplication标注的类会做为当前资源的classloader
+							      其实目的就是为了把启动类下的所有资源都加载。
+							      这里面在Assert里提到了  META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports
+							      这个文件在对应类的包里的META-INF下，里面可以看到所有配置的需要自动加载的类	 
+		-@ComponentScan
+	 如图：9_自动配置原理分析,springboot所有的自动配置都在启动类中被扫描并加载,同时还得导入对应的**start** 启动器就会自动装配并生效 	
+
+	-总结
+	 1)springboot在启动的时候，从类路径下/META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports获取指定的值
+	 2)将这些自动配置的类导入容器，自动配置就会生效
+	 3)以前在使用spring的时候需要自动配置的组件，现在springboot自动去做了
+	 4)整合javaEE,解决方案和自动配置的东西都在spring-boot-autoconfigure-x.x.x.jar这个包下
+	 5)它会把所有需要导入的组件，以类名的方式返回，使用classloader加载
+	 6)容器中也会存在非常多的命名为xxxAutoConfiguation类，导入这些类，就会自动配置相关的组件
+	 7)有了自动配置类，就免去了很多手动工作
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 				
