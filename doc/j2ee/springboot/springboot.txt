@@ -75,7 +75,8 @@
 
 	-IDEA生成springboot项目,需要下载spring boot helper插件(收费插件)，在new project的时候，选择 Spring Initializr，可以方便的生成springboot初始项目
 	 	 
-
+	-详见：/projects_j2ee/springboot_exam/springbootDemo
+	
 	-默认的主入口是Demo1Application，这个主入口不能删，也不要改
 	 直接运行这个文件就可以启动tomcat服务了：
 		main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
@@ -160,25 +161,110 @@
 	 3)找出所有的应用程序监听器，设置到linterners属性中
 	 4)推断并设置main方法的定义类，找到主运行的类，根据主运行类路径找到其他业务类，所以其他业务类必须在主类包之下
 	 
+11 springboot的全局配置文件
+	-Spring Boot允许您将配置外部化，以便您可以在不同的环境中使用相同的应用程序代码。您可以使用各种外部配置源，包括Java properties文件、YAML文件、环境变量和命令行参数。	
+	-配置的文档在 官网->Spring Boot->Reference->Core Features->Externalized Configuration中
+	 一般来讲官方推荐使用YAML配置文件，不推荐proterties文件来配置
+
+	-详见：/projects_j2ee/springboot_exam/springbootDemo
+	-删除springboot自动生成的 application.properties文件，新建一个application.yaml文件
+
+	-springboot使用一个全局的配置文件，配置文件名称是固定的
+		-application.properties，语法结构： key=value
+		-application.yaml ，语法结构：key:[空格]value
+         配置文件作用：修改springboot自动配置的默认值
+
+	-YAML 是 "YAML Ain't a Markup Language"（YAML 不是一种标记语言）的递归缩写。
+	 在开发的这种语言时，YAML 的意思其实是："Yet Another Markup Language"（仍是一种标记语言）。
+	 YAML 的语法和其他高级语言类似，并且可以简单表达清单、散列表，标量等数据形态。
+	 它使用空白符号缩进和大量依赖外观的特色，特别适合用来表达或编辑数据结构、各种配置文件、倾印调试内容、文件大纲（例如：许多电子邮件标题格式和YAML非常接近）。
+	 YAML 的配置文件后缀为 .yml，如：runoob.yml 。
+	
+	-标记语言
+	 以前的配置文件，大多使用xml来配置，比如一个简单的端口配置
+	 YAML：
+		#修改默认的端口号
+		server:
+		  port: 8083	
+	 xml:
+		<server>
+			<port>8083</port> 
+		</server> 
+	
+12、YAML语法
+	-详见：/projects_j2ee/springboot_exam/springbootDemo
+	-基础语法：k:[空格]v
+	 以此来表示一个键值对(空格不能省略)，以空格的缩进来控制层级关系，只要是左边对齐的一类数据都是同一个层级的。
+	 注意：属性和值的大小写都是十分敏感的，例子
+		#修改默认的端口号
+		server:
+		  port: 8083
+		  path: /hello		
+
+	-值的写法
+	 字面量:普通的值[数字，布尔值，字符串]
+	 	k: v
+	 字面量直接写在后面就可以，字符串默认不用加上双引号或者单引号
+	 "" 双引号，不会转义字符串里面的特殊字符，特殊字符会作为本身想表示的意思
+	 比如：
+		name: "hello \n world" ,输出 ： hello 换行 world
+
+	-对象的写法
+		#对象的写法
+		student:
+		  name: sandro
+		  age: 44
+		 
+		#对象的另一种写法  
+		student: {name: sandro,age : 44}    
+
+	-数组的写法
+		#数组的写法
+		names:
+		  - sandro
+		  - joy
+		  - jess
+		#数组的另一种写法
+		names: [sandro,joy,jess]	
+	
+	-YAML 不直接支持 el 表达式，因为 YAML 是一种非常简洁的数据描述语言，而 el 表达式是一种用于在 Java 应用程序中进行表达式求值的语言。
+	 如果需要在 YAML 配置文件中使用类似 el 表达式的功能，可以使用 Spring 的 ${} 占位符功能，这与 el 表达式的功能类似。
+	 	uuid: ${random.uuid}
 
 
+	-注意：YAML对空格和缩进的要求及其严格，一定要注意
 
+	-YAML是可以方便的注入到java对象中
+	 使用spring源生的注解方式注入数据：
+	 sandro.springboot.demo1.domain包下定义两个类User和UserInfo都是普通的pojo其中有各种类型的属性，使用@Component注解添加到spring的组件中，由spring统一管理
+	 	-使用spring源生的注解方式注入数据：
+	 	 UserInfo使用@Value注解，当声明对象时候可以使用@Autowired 注解初始化数据。
+	 	 在Demo1ApplicationTests测试类中可以声明UserInfo对象(使用@Autowired注解托管给spring管理)，并输出UserInfo对象的值。
+	 	 使用spring注解的方式注入数据，数据分散在代码各处，十分影响可读性。
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+		-使用YAML注入数据,可以在yaml配置文件中统一配置数据，更便于管理
+	         在application.yaml文件中初始化数据
+			defaultuser:
+			  name: sandro
+			  age: 44
+			  male: true
+			  birthday: 2024/07/04
+			  map: {key1: value1,key2: value2}
+			  list:
+			    - code
+			    - music
+			    - girl
+			  userInfo:
+			    desc: 默认信息${random.uuid}
+			    money: 10			
+		 在User类上使用@ConfigurationProperties(prefix = "defaultuser")注解，该注关联了User类和YAML中的属性名，这样就可以在yaml文件中定义数据并注入对象了
+		 测试类Demo1ApplicationTests.testUser中测试效果
+		 
+	-spring-boot-configuration-processor依赖，
+		<dependency><!--yaml文件中属性检查工具，不接入的话，yaml在使用自定义的属性时会爆红-->
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-configuration-processor</artifactId>
+		</dependency>
 
 
 				
