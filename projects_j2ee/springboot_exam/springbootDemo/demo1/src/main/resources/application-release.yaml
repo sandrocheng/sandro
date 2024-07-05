@@ -1,0 +1,24 @@
+#修改默认的端口号
+server:
+  port: 8083
+
+defaultuser:
+  name: sandro
+  age: 44
+  male: true
+  birthday: 2024/07/04
+  map: {key1: value1,key2: value2}
+  list:
+    - code
+    - music
+    - girl
+  userInfo:
+    desc: 默认信息${random.uuid}
+    money: 10
+
+default-manager:
+  manager-name: 管理员
+  manager-id: 88
+
+person:
+  email: release@163.com

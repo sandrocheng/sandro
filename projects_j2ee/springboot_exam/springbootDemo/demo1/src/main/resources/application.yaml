@@ -1,24 +1,27 @@
-#修改默认的端口号
-server:
-  port: 8083
+#springboot的多环境配置，可以选择激活哪个配置文件
+spring:
+  profiles:
+    active: test #不需要写文件的全名，只要写"application-"后面的部分就可以
 
-defaultuser:
-  name: sandro
-  age: 44
-  male: true
-  birthday: 2024/07/04
-  map: {key1: value1,key2: value2}
-  list:
-    - code
-    - music
-    - girl
-  userInfo:
-    desc: 默认信息${random.uuid}
-    money: 10
 
-default-manager:
-  manager-name: 管理员
-  manager-id: 88
-
-person:
-  email: abcd@163.com
+#使用一个yaml配置文件配置多环境
+#yaml可以使用"---"来分隔多个部分，给每个部分命名，第一个部分优先级最高，通过指定spring.profiles.active来激活某个部分的配置信息
+#spring:
+#  profiles:
+#    active: release #激活release环境名对应的部分
+#
+#---
+#person:
+#  email: test@163.com
+#spring:
+#  config:
+#    activate:
+#      on-profile: test #定义test环境名
+#
+#---
+#person:
+#  email: release@163.com
+#spring:
+#  config:
+#    activate:
+#      on-profile: release #定义release环境名

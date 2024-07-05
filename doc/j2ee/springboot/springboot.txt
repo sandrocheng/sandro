@@ -305,3 +305,51 @@
 			  email: abcd
 	 @Email注解是用来校验字符串是否是email格式的 ，此时会抛出异常 Field error in object 'person' on field 'email': rejected value [abcd]; 
 	 改成正常的email格式之后就可以正常赋值了			
+
+14、配置文件的位值
+	-一般来讲配置文件的存放位值是：springbootDemo/demo1/src/main/resources/application.yaml
+	 根据官网的描述配置文件也可以方在其他位值：Spring Boot->Reference->Core Features->Externalized Configuration
+	 1)The classpath root,这个就是resources/目录，默认就是这个目录
+	 2)The classpath /config package, 比如:  /springbootDemo/demo1/src/main/resources/config/application.yaml
+	 3)The current directory : 比如：/springbootDemo/demo1/application.yaml
+	 4)The config/ subdirectory in the current directory,比如: /springbootDemo/demo1/config/application.yaml
+	 5)Immediate child directories of the config/ subdirectory,config目录下的直接子目录,比如：/springbootDemo/demo1/config/xx/application.yaml
+	
+	-这5个位值都有优先级，如果都配置了，列表按优先级排序（较低项目的值将覆盖较早项目的值），比如5)config目录下的直接子目录会覆盖前4个位值的配置文件
+	 默认的位值，实际上是最容易被覆盖的。
+
+15、多环境配置文件
+	-实际开发中可能会有多个配置文件用于不同的环境，比如开发环境，正式环境等
+	 可以使用多个配置文件，配置文件要以application开头
+
+	-比如新建一个yaml文件用于测试环境：/springbootDemo/demo1/src/main/resources/application-test.yaml	 
+	 再建立一个发布环境的配置文件：/springbootDemo/demo1/src/main/resources/application-release.yaml
+	 默认springboot会找application.yaml,因此在默认配置文件指定一下当前用哪个文件即可
+		#springboot的多环境配置，可以选择激活哪个配置文件
+		spring:
+		  profiles:
+		    active: release #不需要写文件的全名，只要写"application-"后面的部分就可以		
+
+	-使用一个yaml配置文件配置多环境
+         yaml可以使用"---"来分隔多个部分，给每个部分命名，第一个部分优先级最高，通过指定spring.profiles.active来激活某个部分的配置信息
+
+		spring:
+		  profiles:
+		    active: release #激活release环境名对应的部分
+		
+		---
+		person:
+		  email: test@163.com
+		spring:
+		  config:
+		    activate:
+		      on-profile: test #定义test环境名
+		
+		---
+		person:
+		  email: release@163.com
+		spring:
+		  config:
+		    activate:
+		      on-profile: release #定义release环境名	
+	
