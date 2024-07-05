@@ -416,4 +416,22 @@
 		-Negative matches，自动配置类没有启用的组件
 				   分析出哪些组件没有生效，就去找对应的包，看哪些starter启动器能包含这个包，通过启动器来自动装载这些包
 		-Exclusions，没有条件被排除的组件
-			
+
+17、springboot web开发			
+	-使用springboot开发的基本步骤
+		1)创建应用，选择模块
+		2)修改基本配置
+		3)业务开发
+	
+	-springboot自动装配：通过xxxAutoConfiguration向容器中自动装配组件
+			     装配的过程中根据@ConditionalOnxxx,判断是否需要装配
+	-通过application.yaml的配置对应xxxProperties进行自定义内容
+
+	-web开发还需要做的事情
+	 静态资源导入：比如html,css,js脚本等
+	 首页定制
+	 模板引擎，比如freemarker Thymeleaf等
+	 装配扩展springMVC
+	 数据的增删改查
+	 拦截器
+	 国际化
