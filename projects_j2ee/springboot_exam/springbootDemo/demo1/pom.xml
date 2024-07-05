@@ -42,9 +42,13 @@
 			<scope>test</scope>
 		</dependency>
 
-		<dependency><!--yaml文件中属性检查工具，不接入的化，yaml在使用自定义的属性时会爆红-->
+		<dependency><!--yaml文件中属性检查工具，不接入的化，yaml在使用自定义的属性时会报红-->
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-configuration-processor</artifactId>
+		</dependency>
+		<dependency><!--springboot提供的 JSR303校验starter-->
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-validation</artifactId>
 		</dependency>
 	</dependencies>
 

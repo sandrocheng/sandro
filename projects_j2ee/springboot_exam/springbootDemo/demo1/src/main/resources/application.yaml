@@ -15,3 +15,10 @@ defaultuser:
   userInfo:
     desc: 默认信息${random.uuid}
     money: 10
+
+default-manager:
+  manager-name: 管理员
+  manager-id: 88
+
+person:
+  email: abcd@163.com

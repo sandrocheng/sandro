@@ -259,12 +259,49 @@
 			    money: 10			
 		 在User类上使用@ConfigurationProperties(prefix = "defaultuser")注解，该注关联了User类和YAML中的属性名，这样就可以在yaml文件中定义数据并注入对象了
 		 测试类Demo1ApplicationTests.testUser中测试效果
-		 
+
+		-松散绑定
+		 sandro.springboot.demo1.domain.Manager类中定义了两个变量，变量名称由两个单词组成第二个单词首字母大写如下：
+			private String managerName;
+			private int managerId;
+
+		 yaml数据绑定的时候可以使用 “-” 连接变量中的两个单词
+			default-manager:
+			  manager-name: 管理员
+			  manager-id: 88
+		 松散绑定让变量名称在java源码和yaml配置文件中都更易读 
+	 
 	-spring-boot-configuration-processor依赖，
 		<dependency><!--yaml文件中属性检查工具，不接入的话，yaml在使用自定义的属性时会爆红-->
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-configuration-processor</artifactId>
 		</dependency>
 
+13、JSR303校验
+	-详见：/projects_j2ee/springboot_exam/springbootDemo
+	-测试方法：Demo1ApplicationTests.testPerson();
+	-springboot中可以用@validated来指定需要校验数据的类或者方法，如果数据异常则会统一抛出异常，方便异常中心统一处理
+	 JSR303校验是一组javax提供的规范，由各种注解组成，比如@Email使用来校验邮箱格式的。@NotEmpty，被注释的字符不能为空
+	 比较常用的是@Pattern，验证字符串是否满足正则表达式
+	-pom依赖:
+		<dependency><!--springboot提供的 JSR303校验starter-->
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-validation</artifactId>
+		</dependency>
+		
+	 比如：sandro.springboot.demo1.domain.Person类，让email字段只支持Email格式
+		@Component
+		@ConfigurationProperties(prefix = "person")
+		@Validated //JSR303数据校验
+		public class Person {
+		
+		    @Email //email格式校验
+		    private String email;		
+		    ...
+	        }
 
-				
+	       为了便于测试，使用yaml配置文件初始化数据，也可以直接new 一个Person对象，给email赋值来测试
+			person:
+			  email: abcd
+	 @Email注解是用来校验字符串是否是email格式的 ，此时会抛出异常 Field error in object 'person' on field 'email': rejected value [abcd]; 
+	 改成正常的email格式之后就可以正常赋值了			
