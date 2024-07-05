@@ -1,4 +1,5 @@
 #springboot的多环境配置，可以选择激活哪个配置文件
+debug: false #设置debug可以看到哪些装配类是生效的
 spring:
   profiles:
     active: test #不需要写文件的全名，只要写"application-"后面的部分就可以

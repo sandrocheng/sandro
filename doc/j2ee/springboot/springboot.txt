@@ -75,7 +75,7 @@
 
 	-IDEA生成springboot项目,需要下载spring boot helper插件(收费插件)，在new project的时候，选择 Spring Initializr，可以方便的生成springboot初始项目
 	 	 
-	-详见：/projects_j2ee/springboot_exam/springbootDemo
+	-详见：/projects_j2ee/springboot_exam/springbootDemo/工程的 demo1模块
 	
 	-默认的主入口是Demo1Application，这个主入口不能删，也不要改
 	 直接运行这个文件就可以启动tomcat服务了：
@@ -119,6 +119,7 @@
 		-build：构建配置部分。默认使用了spring-boot-maven-plugin,配合spring-boot-starter-parent就可以把spring boot应用打包成jar来直接运行
 		
 9、springboot自动装配原理
+	-详见：/projects_j2ee/springboot_exam/springbootDemo/工程的 demo1模块
 	-pom文件内容分析
 	 1)parent标签内容是spring-boot-starter-parent，点击打开这个pom文件发现还有一个根的parent org.springframework.boot
 	   properties标签中可以看到管理了的大量的依赖库的版本以及核心依赖的第三方库，一般在springboot依赖的包这里都有，外部继承以后不需要指定版本
@@ -166,7 +167,7 @@
 	-配置的文档在 官网->Spring Boot->Reference->Core Features->Externalized Configuration中
 	 一般来讲官方推荐使用YAML配置文件，不推荐proterties文件来配置
 
-	-详见：/projects_j2ee/springboot_exam/springbootDemo
+	--详见：/projects_j2ee/springboot_exam/springbootDemo/工程的 demo1模块
 	-删除springboot自动生成的 application.properties文件，新建一个application.yaml文件
 
 	-springboot使用一个全局的配置文件，配置文件名称是固定的
@@ -192,7 +193,7 @@
 		</server> 
 	
 12、YAML语法
-	-详见：/projects_j2ee/springboot_exam/springbootDemo
+	-详见：/projects_j2ee/springboot_exam/springbootDemo/工程的 demo1模块
 	-基础语法：k:[空格]v
 	 以此来表示一个键值对(空格不能省略)，以空格的缩进来控制层级关系，只要是左边对齐的一类数据都是同一个层级的。
 	 注意：属性和值的大小写都是十分敏感的，例子
@@ -278,7 +279,7 @@
 		</dependency>
 
 13、JSR303校验
-	-详见：/projects_j2ee/springboot_exam/springbootDemo
+	-详见：/projects_j2ee/springboot_exam/springbootDemo/工程的 demo1模块
 	-测试方法：Demo1ApplicationTests.testPerson();
 	-springboot中可以用@validated来指定需要校验数据的类或者方法，如果数据异常则会统一抛出异常，方便异常中心统一处理
 	 JSR303校验是一组javax提供的规范，由各种注解组成，比如@Email使用来校验邮箱格式的。@NotEmpty，被注释的字符不能为空
@@ -307,6 +308,7 @@
 	 改成正常的email格式之后就可以正常赋值了			
 
 14、配置文件的位值
+	-详见：/projects_j2ee/springboot_exam/springbootDemo/工程的 demo1模块
 	-一般来讲配置文件的存放位值是：springbootDemo/demo1/src/main/resources/application.yaml
 	 根据官网的描述配置文件也可以方在其他位值：Spring Boot->Reference->Core Features->Externalized Configuration
 	 1)The classpath root,这个就是resources/目录，默认就是这个目录
@@ -319,6 +321,7 @@
 	 默认的位值，实际上是最容易被覆盖的。
 
 15、多环境配置文件
+	-详见：/projects_j2ee/springboot_exam/springbootDemo/工程的 demo1模块
 	-实际开发中可能会有多个配置文件用于不同的环境，比如开发环境，正式环境等
 	 可以使用多个配置文件，配置文件要以application开头
 
@@ -353,3 +356,64 @@
 		    activate:
 		      on-profile: release #定义release环境名	
 	
+16、配置文件生效的基本原理
+	-在第9部分，springboot自动装配原理，中提到过，springboot在启动的时候装配的类在下面这个文件中
+	 /spring-boot-autoconfigure/3.3.1/META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports
+		org.springframework.boot.autoconfigure.admin.SpringApplicationAdminJmxAutoConfiguration
+		org.springframework.boot.autoconfigure.aop.AopAutoConfiguration
+		org.springframework.boot.autoconfigure.amqp.RabbitAutoConfiguration
+		org.springframework.boot.autoconfigure.batch.BatchAutoConfiguration
+		org.springframework.boot.autoconfigure.cache.CacheAutoConfiguration
+		org.springframework.boot.autoconfigure.cassandra.CassandraAutoConfiguration
+		org.springframework.boot.autoconfigure.context.ConfigurationPropertiesAutoConfiguration
+		org.springframework.boot.autoconfigure.context.LifecycleAutoConfiguration
+		org.springframework.boot.autoconfigure.context.MessageSourceAutoConfiguration
+	        ....
+	 这里列出了所有xxxAutoConfiguration都是自动装配的接口类，springboot会根据实际情况逐个执行，把对应的组件装配的容器中并自动配置
+	 这些xxxAutoConfig都预留出了接口可以在application.yaml配置文件使用
+ 	 比如：org.springframework.boot.autoconfigure.web.servlet.HttpEncodingAutoConfiguration
+	 找到这个类的代码可以看到如下部分:
+		@AutoConfiguration //表示这是一个自动配置类
+		@EnableConfigurationProperties({ServerProperties.class})//自动配置的配置属性,
+		@ConditionalOnWebApplication( //这是spring的底层注解，根据不同的条件来判断当前配置或者类是否生效
+		    type = Type.SERVLET
+		)
+		@ConditionalOnClass({CharacterEncodingFilter.class})//是否有CharacterEncodingFilter.class，如果没有不能配置
+		@ConditionalOnProperty(////是否有server.servlet.encoding的值是enabled，如果不是不能配置
+		    prefix = "server.servlet.encoding",
+		    value = {"enabled"},
+		    matchIfMissing = true
+		)
+		public class HttpEncodingAutoConfiguration {
+			...
+		}
+	 @ConditionalOnxxx是spring判断环境的注解，如图：16_spring的ConditionalOnxxx注解
+	 从这里可以看到ServerProperties.class是用来关联属性的，在这个类里可以看到下面的内容
+		@ConfigurationProperties(
+		    prefix = "server",
+		    ignoreUnknownFields = true
+		)
+		public class ServerProperties {
+			...
+		}
+	 这里可以看到prefix是server,因此在application.yaml中输入server. 就会提示这个类可以配置的全部参数了,如图：16_IDEA中yaml提示
+	 这些配置接口可以在官网中查到具体说明： Spring Boot->Appendix->Common Application Properties
+
+	-总结：
+		1)springboot启动会加载大量的自动配置类
+		2)确定一下需要的功能有没有在springboot默认写好的自动配置类中
+		3)再去看这个自动配置类中配置了哪些组件(只要是要用的组件存在其中，就不需要手动配置了)
+		4)给容器中自动配置类添加组件的时候会从properties类中获取某些属性，只需要在配置文件中指定这些属性的值即可
+          		xxxAutoConfiguratrion:自动配置类，给容器添加组件
+	  		xxxxProperties:封装配置文件中相关属性 这些属性 和application.yaml中的属性值都是一一对应的
+	
+	-debug
+	 在application.yaml中设置 
+		debug: true #设置debug可以看到哪些装配类是生效的
+	 执行后会看到 CONDITIONS EVALUATION REPORT,分为三类 
+		-Positive matches,自动配置类启用并且生效的组件，使用不同启动器生效的组件都是不一样的
+				  通过启动的组件可以大概分析当前的框架可以使用哪些组件
+		-Negative matches，自动配置类没有启用的组件
+				   分析出哪些组件没有生效，就去找对应的包，看哪些starter启动器能包含这个包，通过启动器来自动装载这些包
+		-Exclusions，没有条件被排除的组件
+			
