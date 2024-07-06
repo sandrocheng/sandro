@@ -40,6 +40,10 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency><!--springboot推荐的模板引擎thymeleaf启动器，相比freemarker功能更强大，-->
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-thymeleaf</artifactId>
+		</dependency>
 		<dependency><!--yaml文件中属性检查工具，不接入的化，yaml在使用自定义的属性时会报红-->
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-configuration-processor</artifactId>

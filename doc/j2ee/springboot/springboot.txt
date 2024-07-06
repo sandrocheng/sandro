@@ -494,13 +494,58 @@
 	 2)/resources/static,它对应的web路径是根路径，比如:http://localhost:8083/hello2.js
 	 3)/resources/resources,它对应的web路径是根路径，比如:http://localhost:8083/hello3.js
 	 4)classpath:/META-INF/resources/webjars/,这个是springboot自动加载webjar库的路径，对应的路径是/webjar/**,比如：http://localhost:8083/webjars/jquery/3.4.1/dist/jquery.js
-	 5)/** ,当前目录下的所有路径也可以包含进来
+	 5)/** ,/resources/目录下的所有路径也可以包含进来
 
 	 resources/resources里的优先级最高，其次是/resources/static，最后是/resources/public
 	 一般来讲，public放一些库文件，比如js库，static放一些资源文件比如图片等，resources下放的是upload上传的文件
+
+	 官网文档路径 Spring Boot->Reference->Web->Servlet Web Applications : Static Content
+
+
 	 
 	-自定义路径
 	 如果在application.yaml文件中自定义了路径，则不会加载默认路径了
 		#自定义资源文件路径  
 		  mvc:
-		    static-path-pattern: /sandro/**,classpath:/hello/		
+		    static-path-pattern: /sandro/**,classpath:/hello/
+
+18、springboot web开发-首页定制
+	-详见：/projects_j2ee/springboot_exam/springbootDemo 工程的web_demo
+	-官网文档：Spring Boot->Reference->Web->Servlet Web Applications:Welcome Page
+	 Spring Boot同时支持静态和模板化欢迎页面。它首先在配置的静态路径中查找一个index.html文件。如果找不到索引模板，则会查找索引模板。如果找到任何一个，它将自动用作应用程序的欢迎页面。
+	 首页index.html可以放在任意静态路径下，比如放在 /resources/public中，springboot就会自动加载了。
+
+	-源码
+	 在WebMvcAutoConfiguration类中的welcomePageHandlerMapping方法，定义了首页的创建，这个方法被注入到@Bean里了，被springboot管理
+	 	
+        	private <T extends AbstractUrlHandlerMapping> T createWelcomePageHandlerMapping(ApplicationContext applicationContext, 
+											FormattingConversionService mvcConversionService, 
+											ResourceUrlProvider mvcResourceUrlProvider,
+											WelcomePageHandlerMappingFactory<T> factory) {
+            		TemplateAvailabilityProviders templateAvailabilityProviders = new TemplateAvailabilityProviders(applicationContext);
+			//这里可以看到首页的资源文件是可以使用WebMvcProperties映射的属性，在application.yaml文件中自定义
+            		String staticPathPattern = this.mvcProperties.getStaticPathPattern();
+            		T handlerMapping = factory.create(templateAvailabilityProviders, applicationContext, this.getIndexHtmlResource(), staticPathPattern);
+            		handlerMapping.setInterceptors(this.getInterceptors(mvcConversionService, mvcResourceUrlProvider));
+            		handlerMapping.setCorsConfigurations(this.getCorsConfigurations());
+            		return handlerMapping;
+        	}	 
+		
+	 在WebMvcAutoConfiguration类中的getIndexHtmlResource方法中可以看到首页的文件名是index.html
+
+	-使用controller跳转templates目录下的index.html
+	 除了把静态的index.html放到资源文件夹下由springboot自动匹配以外，常规的使用方法是把index.html放到templates目录下，配合模板引擎(比如freemarker,thymeleaf等)动态加载
+	 放在templates目录下的index.html必须使用controller跳转
+	 
+	 新建一个IndexController类，放在sandro.springboot.web.controller包下，对应的index.html放到template下
+
+19、默认图标配置
+         -详见：/projects_j2ee/springboot_exam/springbootDemo 工程的web_demo
+         -官网文档：Spring Boot->Reference->Web->Servlet Web Applications:Custom Favicon
+	  与其他静态资源一样，Spring Boot会在配置的静态内容位置中检查favicon.ico。如果存在这样的文件，它将自动用作应用程序的图标。
+	
+
+
+
+	 
+	 

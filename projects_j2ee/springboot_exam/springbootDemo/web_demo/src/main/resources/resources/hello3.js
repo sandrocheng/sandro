@@ -1,1 +1,0 @@
-/web_demo/src/main/resources/resources/hello3.js

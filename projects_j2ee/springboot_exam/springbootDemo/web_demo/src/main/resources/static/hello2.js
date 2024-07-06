@@ -1,1 +1,0 @@
-/web_demo/src/main/resources/static/hello2.js
