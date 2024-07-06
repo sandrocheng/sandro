@@ -435,3 +435,72 @@
 	 数据的增删改查
 	 拦截器
 	 国际化
+
+18、springboot web开发-静态资源导入
+	-详见：/projects_j2ee/springboot_exam/springbootDemo 工程的web_demo
+	 
+	-resources目录下默认有两个目录
+		static:放资源，css,html,js等
+		templates:放模板，比如freemarker的模板，Themeleaf模板等
+	 除此之外还有其他很多地方可以放置静态资源
+
+	-从源码处查找资源目录
+	 通过maven依赖可以看到，spring-boot-starter-web 启动器会自动装配spring MVC(org.springframework:spring-webmvc),关于项目的资源也都由spring MVC来管理
+	 自动装配配置文件中 spring-boot-autoconfigure-3.3.1.jar/META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports
+	 可以看到org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration这个装配类
+	 在这个类里可以找到  @EnableConfigurationProperties({WebProperties.class}) 
+	 继续在WebProperties类中可以看到 配置属性别名 ：@ConfigurationProperties("spring.web")
+
+	-webjars
+	 springboot支持自动加载webjars的静态库
+	 在WebMvcAutoConfiguration中的addResourceHandlers方法：
+		//这是一个资源目录查找的方法
+	        public void addResourceHandlers(ResourceHandlerRegistry registry) {
+	            if (!this.resourceProperties.isAddMappings()) {//这里判断如果用户使用application.yaml配置了资源路径，那么就不会再使用默认路径了
+	                logger.debug("Default resource handling disabled");
+	            } else {
+			//这里先去加载webjar路径
+	                this.addResourceHandler(registry, this.mvcProperties.getWebjarsPathPattern(), "classpath:/META-INF/resources/webjars/");
+			//这里是通过mvcProperties获取静态资源路径
+	                this.addResourceHandler(registry, this.mvcProperties.getStaticPathPattern(), (registration) -> {
+	                    registration.addResourceLocations(this.resourceProperties.getStaticLocations());
+	                    if (this.servletContext != null) {
+	                        ServletContextResource resource = new ServletContextResource(this.servletContext, "/");
+	                        registration.addResourceLocations(new Resource[]{resource});
+	                    }
+	
+	                });
+	            }
+	        }
+	 webjars是一套通过maven来管理静态资源的技术方案，官网https://www.webjars.org/，在这里可以查找比如jquery,extjs,vue等js库
+	 比如jquery的坐标
+		<dependency>
+		    <groupId>org.webjars.npm</groupId>
+		    <artifactId>jquery</artifactId>
+		    <version>3.7.1</version>
+		</dependency>
+	 配置到pom后，下载，会看到jquery是以jar包的形式引入到项目中的，如图:18_webjars资源目录
+	 可以看到jquery的资源库就在/META-INF/resources/webjars/下，this.mvcProperties.getWebjarsPathPattern() 返回的是"/webjars/**"
+	 因此如果要通过web访问这个js路径就是：/webjars/jquery/3.4.1/dist/jquery.js，比如：http://localhost:8083/webjars/jquery/3.4.1/dist/jquery.js
+
+	-mvcProperties的静态资源路径
+	 除了webjars以外，springboot还会加载mvcProperties.getStaticPathPattern()的静态资源路径，这个路径是/**,
+	 mvcProperties对应的是WebMvcProperties中定义的路径，这里可以看到使用的是WebProperties.Resources resourceProperties中默认的路径
+		private static final String[] CLASSPATH_RESOURCE_LOCATIONS = new String[]{"classpath:/META-INF/resources/", "classpath:/resources/", "classpath:/static/", "classpath:/public/"};
+	 
+	-总结
+	 springboot可以识别以下几个静态资源的目录
+	 1)/resources/public,它对应的web路径是根路径，比如:http://localhost:8083/hello1.js
+	 2)/resources/static,它对应的web路径是根路径，比如:http://localhost:8083/hello2.js
+	 3)/resources/resources,它对应的web路径是根路径，比如:http://localhost:8083/hello3.js
+	 4)classpath:/META-INF/resources/webjars/,这个是springboot自动加载webjar库的路径，对应的路径是/webjar/**,比如：http://localhost:8083/webjars/jquery/3.4.1/dist/jquery.js
+	 5)/** ,当前目录下的所有路径也可以包含进来
+
+	 resources/resources里的优先级最高，其次是/resources/static，最后是/resources/public
+	 一般来讲，public放一些库文件，比如js库，static放一些资源文件比如图片等，resources下放的是upload上传的文件
+	 
+	-自定义路径
+	 如果在application.yaml文件中自定义了路径，则不会加载默认路径了
+		#自定义资源文件路径  
+		  mvc:
+		    static-path-pattern: /sandro/**,classpath:/hello/		
