@@ -153,6 +153,10 @@
 	 5)它会把所有需要导入的组件，以类名的方式返回，使用classloader加载
 	 6)容器中也会存在非常多的命名为xxxAutoConfiguation类，导入这些类，就会自动配置相关的组件
 	 7)有了自动配置类，就免去了很多手动工作
+	 8)每个自动装配的组件springboot都对应了一个starter，官网文档：Spring Boot->Reference->Developing with Spring Boot->Build Systems:Starters
+	   中列举了所有支持的starter
+
+
 
 10、主启动类
 	主启动类运行后，会启动一个服务
@@ -543,9 +547,38 @@
          -详见：/projects_j2ee/springboot_exam/springbootDemo 工程的web_demo
          -官网文档：Spring Boot->Reference->Web->Servlet Web Applications:Custom Favicon
 	  与其他静态资源一样，Spring Boot会在配置的静态内容位置中检查favicon.ico。如果存在这样的文件，它将自动用作应用程序的图标。
+
+20、thymeleaf模板引擎
+	-详见：/projects_j2ee/springboot_exam/springbootDemo 工程的web_demo
+	-springboot打包是jar包，同时使用的是嵌入式的tomcat，因此暂时不支持jsp
+	 因此springboot需要结合模板引擎来制作页面，比较常见的是freemarker，thymeleaf,springboot推荐使用thymeleaf
 	
+	-因为springboot已经集成了thymeleaf的自动装配所以使用thymeleaf只要maven依赖对应的启动器即可，不需要额外配置
+	 	<dependency><!--springboot推荐的模板引擎thymeleaf启动器，相比freemarker功能更强大，-->
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-thymeleaf</artifactId>
+		</dependency>
 
+	-模板引擎的主要功能是将java中的数据注入到页面中，返回给使用者，如图20_模板引擎
 
+	-thymeleaf官网：https://www.thymeleaf.org/
+	 github中 thymeleaf主页：https://github.com/thymeleaf/thymeleaf
+	 springbboot官网：Spring Boot->How-to Guides->Hot Swapping：Thymeleaf Templates  ，这里也只是提供相关的配置类名，让使用者自己读代码去了解如何配置
+	
+	-ThymeleafAutoConfiguration自动装配
+	 在这个类上可以看到@EnableConfigurationProperties({ThymeleafProperties.class})注解
+	 说明ThymeleafProperties是绑定application.yaml中的属性，这个类里声明的属性名是spring.thymeleaf，因此可以使用spring.thymeleaf提供的相关接口修改默认配置了
+		@ConfigurationProperties(prefix = "spring.thymeleaf")
+	 从这里可以看到，默认的模板后缀是.html,模板文件要放到templates目录下，默认编码是UTF-8。
+	
+21、thymeleaf基础语法
+	-详见：/projects_j2ee/springboot_exam/springbootDemo 工程的web_demo
+	 controller:/springbootDemo/web_demo/src/main/java/sandro/springboot/web/controller/IndexController.java
+	 模板：/springbootDemo/web_demo/src/main/resources/templates/index.html
 
+	-thymeleaf可以替换所有的html元素，在html中必须要引入它的约束和命名空间
+	 使用thymeleaf的语法必须要使用“th:“来接管html元素 ，比如 th:元素名
+
+	
 	 
 	 
