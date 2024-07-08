@@ -543,12 +543,12 @@
 	 
 	 新建一个IndexController类，放在sandro.springboot.web.controller包下，对应的index.html放到template下
 
-19、默认图标配置
+19、springboot web开发-默认图标配置
          -详见：/projects_j2ee/springboot_exam/springbootDemo 工程的web_demo
          -官网文档：Spring Boot->Reference->Web->Servlet Web Applications:Custom Favicon
 	  与其他静态资源一样，Spring Boot会在配置的静态内容位置中检查favicon.ico。如果存在这样的文件，它将自动用作应用程序的图标。
 
-20、thymeleaf模板引擎
+20、springboot web开发-thymeleaf模板引擎
 	-详见：/projects_j2ee/springboot_exam/springbootDemo 工程的web_demo
 	-springboot打包是jar包，同时使用的是嵌入式的tomcat，因此暂时不支持jsp
 	 因此springboot需要结合模板引擎来制作页面，比较常见的是freemarker，thymeleaf,springboot推荐使用thymeleaf
@@ -571,7 +571,7 @@
 		@ConfigurationProperties(prefix = "spring.thymeleaf")
 	 从这里可以看到，默认的模板后缀是.html,模板文件要放到templates目录下，默认编码是UTF-8。
 	
-21、thymeleaf基础语法
+21、springboot web开发-thymeleaf基础语法
 	-详见：/projects_j2ee/springboot_exam/springbootDemo 工程的web_demo
 	 controller:/springbootDemo/web_demo/src/main/java/sandro/springboot/web/controller/IndexController.java
 	 模板：/springbootDemo/web_demo/src/main/resources/templates/index.html
@@ -579,6 +579,29 @@
 	-thymeleaf可以替换所有的html元素，在html中必须要引入它的约束和命名空间
 	 使用thymeleaf的语法必须要使用“th:“来接管html元素 ，比如 th:元素名
 
+22、springboot web开发-MVC配置原理
+	-详见：/projects_j2ee/springboot_exam/springbootDemo 工程的web_demo
+	 
+	-mvc的官网文档：Spring Boot->How-to Guides->Spring MVC
+	
+	-Spring Boot有许多启动器，其中包括Spring MVC。请注意，不要直接maven依赖Spring MVC,最好直接依赖Spring MVC 的 starter
+	 
+	-sandro.springboot.web.config.MyMvcConfig,通过扩展spring mvc实现自定义视图解析器MVC配置类
+
+	-在spring mvc自动装配类WebMvcAutoConfiguration中搜索@EnableConfigurationProperties注解，可以找到WebMvcProperties类它对应的application.yaml配置是“spring.mvc”
+	 在WebMvcProperties可以看到spring mvc 提供了spring.mvc.format.date,spring.mvc.format.time和spring.mvc.format.date-time三种事件格式化的配置
+	 每种配置都有默认的格式
+	 在WebConversionService类种，对这三种格式进行了读取，比如默认date的格式是"yyyy-MM-dd" 
+	
+	-Springboot在自动配置很多组件的时候，先看容器中有没有用户自己配置的(如果用户字节配置@bean)，如果有就用用户配置的，如果没有就用自动配置的，
+	 如果有些组件可以存在多个比如上面的视图解析器，就将用户配置的和自动配置的组件默认的组合起来
+
+	-要想扩展使用spring MVC，需要编写一个@Configuration注解类，并且要实现WebMvcConfigurer接口类
+	 MyMvcConfigForViewController，扩展一个controller
+	 注意，不能在自定义WebMvcConfigurer的类上使用@EnableWebMvc，因为它会从容器中获取所有的webmvcconfig而在WebMvcAtuoConfiguration中使用了ConditionalOnMissingBean去判断
+	 是否有WebMvcConfigurationSupport，如果有的话就不生效。
+
+	-在springboot中有很多xxxConfiguration帮助用户仅进行扩展配置，只要有这个类，就需要关注扩展了哪些东西
 	
 	 
 	 

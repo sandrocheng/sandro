@@ -8,8 +8,7 @@ import java.util.Arrays;
 
 //在templates目录下的所有页面，只能通过crontroller跳转
 //同时还需要模板引擎的支持，springboot默认支持thymeleaf,只要依赖了thymeleaf的starter，就可以直接使用了
-@Controller
-
+@Controller//返回的是对应的html名
 public class IndexController {
 
     @GetMapping("/")
