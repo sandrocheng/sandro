@@ -621,7 +621,14 @@
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 		</dependency>	
-	 详见：sandro.website.domain.*
-
-	-dao层,sandro.website.dao	
+	 详见：sandro.website.domain.*	
 	 
+	-html模板 ，thymeleaf改造
+	 html标签中加入 xmlns:th="http://www.thymeleaf.org"
+	 link，img,script等标签里的当前项目的资源的 url 改造成 thymeleaf格式
+		<link href="css/H-ui.css" rel="stylesheet" type="text/css"/> 改造成 <link th:href="@{/css/H-ui.css}" rel="stylesheet" type="text/css"/>
+	 改完以后，如果根地址变化，比如在applicationl.yaml中
+		server:
+  		  servlet:
+                    context-path: /manager
+	 把根目录修改，也不影响页面的使用,所以尽量使用thymeleaf对资源路径进行标准化管理
