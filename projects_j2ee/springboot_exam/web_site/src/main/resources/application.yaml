@@ -1,0 +1,31 @@
+#springboot的多环境配置，可以选择激活哪个配置文件
+debug: false #设置debug可以看到哪些装配类是生效的
+spring:
+  profiles:
+    active: test #不需要写文件的全名，只要写"application-"后面的部分就可以
+
+#自定义资源文件路径
+#  mvc:
+#    static-path-pattern: /sandro/**,classpath:/hello/
+
+#使用一个yaml配置文件配置多环境
+#yaml可以使用"---"来分隔多个部分，给每个部分命名，第一个部分优先级最高，通过指定spring.profiles.active来激活某个部分的配置信息
+#spring:
+#  profiles:
+#    active: release #激活release环境名对应的部分
+#
+#---
+#person:
+#  email: test@163.com
+#spring:
+#  config:
+#    activate:
+#      on-profile: test #定义test环境名
+#
+#---
+#person:
+#  email: release@163.com
+#spring:
+#  config:
+#    activate:
+#      on-profile: release #定义release环境名

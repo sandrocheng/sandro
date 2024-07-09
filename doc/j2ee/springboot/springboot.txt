@@ -113,6 +113,11 @@
 	 如上所示，主要有4个部分
 		-项目元数据信息：创建的时候输入的project metadata部分，也就是maven的项目基本元素，包括:groupId,artifaciId,version,name,description等
 		-parent：继承spring-boot-start-parent的依赖管理，控制版本与打包内容等
+			 集成praent后，springboot会统一管理大部分开发第三方库版本，只要是springboot管理的库，在依赖的时候尽量不要设置version
+			 官网:Spring Boot->Appendix->Dependency Versions->Version Properties
+			 比如log4j2,在官网上可以查到已经由springboot管理了，因此在pom依赖的时候，是不用设置version的
+
+
 		-dependencies:项目具体依赖，这里包含了spring-boot-start-web，用户实现http接口(该依赖包含了spring MVC)
 			      官网对它的描述是:使用spring MVC构建web(包含RESTful)应用程序入门者，使用tomcat做为默认嵌入式容器
 			      spring-boot-starter-test用于编写单元测试的依赖包。
@@ -602,6 +607,21 @@
 	 是否有WebMvcConfigurationSupport，如果有的话就不生效。
 
 	-在springboot中有很多xxxConfiguration帮助用户仅进行扩展配置，只要有这个类，就需要关注扩展了哪些东西
-	
-	 
+
+23、springboot web开发-网站准备
+	-详见:projects_j2ee/springboot_exam/web_site
+	 在github上搜索一些静态html网页，新建项目放到对应的资源文件夹下
+
+	-domain层，sandro.website.domain，使用Lombok
+	 Lombok（Project Lombok）是一个用于 Java 编程语言的开源库，旨在减少 Java 代码中的冗余和样板代码，提高开发人员的生产力。
+	 它通过使用注解来自动生成 Java 类的常见方法和代码，从而使开发人员能够编写更简洁、更具可读性和更易维护的代码。
+	 Lombok 的主要目标是简化 Java 开发，减少样板代码，使代码更加精炼，从而提高开发效率。
+	 Lombok的版本已经由springboot统一管理了，因此，依赖的时候不需要设置version
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+		</dependency>	
+	 详见：sandro.website.domain.*
+
+	-dao层,sandro.website.dao	
 	 
