@@ -5,9 +5,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
-public class IndexController {
-    @GetMapping({"/index.html","/","/index"})
-    public String index(Model model){
-        return "index";
+public class LoginController {
+
+    @GetMapping({"/login.html","/login"})
+    public String login(Model model){
+        return "login";
     }
 }

@@ -1,3 +1,9 @@
 #修改默认的端口号
 server:
   port: 8083
+
+#设置登陆页面的多语言文件路径
+spring:
+  messages:
+    basename: i18n.login
+

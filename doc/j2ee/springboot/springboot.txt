@@ -632,3 +632,49 @@
   		  servlet:
                     context-path: /manager
 	 把根目录修改，也不影响页面的使用,所以尽量使用thymeleaf对资源路径进行标准化管理
+
+24、springboot web开发-国际化
+	-详见:projects_j2ee/springboot_exam/web_site
+	-准备
+	 1)确保IDEA的File Encodings是utf-8
+	 2)在resources目录下建立多语言目录：i18n
+	 3)在i18n下面建立两个多语言配置文件login.properties 和 login_zh_CN.properties,建立后，IDEA会自动把这两个文件聚合成一个虚拟目录Resources Bundle 'login'(实际上没有这个目录)
+	   右键Resources Bundle 'login'->new ->Add Properties Files to Resource Bundle,在弹出的对话框内点击Locales to Add,下面的"+"设置文件名"en_US",在建立一个英文的配置文件
+	   IDEA提供了一个Resource Bundle Editor插件能够方便的配置多语言文件settings >> Plugins >> 搜索Resource Bundle Editor >> 点击install进行插件安装就可以了，不需要重启。
+	   如图：24_Resource_Bundle_Editor	 
+	 4)新建一个LoginController的类，指定路径是login和模板login.html ,login.html资源文件中进行thymeleaf改造	
+
+	-MessageSourceAutoConfiguration,国际化转换自动配置类
+	 在这里可以看到配置属性名是
+	    @Bean
+	    @ConfigurationProperties(
+	        prefix = "spring.messages"
+	    )
+	 对应的属性类是MessageSourceProperties，这里可以看到默认的编码格式是utf-8，basename设置多语言文件路径
+	 在application.yaml中设置多语言文件路径：
+		#设置登陆页面的多语言文件路径
+		spring:
+		  messages:
+		    basename: i18n.login,i18n.index
+	 spring.messages.basename支持逗号分隔的位置列表，可以是包限定符，也可以是从类路径根解析的资源。
+	 默认文件是 messages.properties
+
+	-在页面中使用thymeleaf国际化消息表达式 #{...}来设置语言
+		<input name="" type="submit" class="btn radius btn-success btn-big" th:value="#{btn.login}">
+		<input name="" type="reset" class="btn radius btn-default btn-big" th:value="#{btn.cancel}">
+
+	-springboot多语言切换
+	 -WebMvcAutoConfiguration.localeResolver是多语言解析器，这里可以看到如果用户有配置多语言信息，则使用用户的，没有则使用默认
+	  这个默认的解析器是AcceptHeaderLocaleResolver
+	  AcceptHeaderLocaleResolver实现了LocaleResolver解析器
+	  因此实现一个自己的多语言解析器，并扩展spring mvc，来实现多语言切换的功能
+
+	 -新建config包，在这个包下实现LocaleResolver这个类，MyLocaleResolver ,以及实现WebMvcConfigurer接口的MyMvcConfig类
+	  实现LocaleResolver接口需要实现它的两个方法，可以参考spingboot中 AcceptHeaderLocaleResolver的写法
+	  login.html页面实现如下，使用thymeleaf标签，参数 l 传递中英文 
+    		<a th:href="@{/login.html(l='zh_CN')}">中文</a>
+    		<a th:href="@{/login.html(l='en_US')}">English</a>	
+
+25、springboot web开发-登陆功能实现
+		 
+	 
