@@ -676,10 +676,19 @@
     		<a th:href="@{/login.html(l='en_US')}">English</a>	
 
 25、springboot web开发-登陆功能实现
+	-详见:projects_j2ee/springboot_exam/web_site
 	-页面登陆的form表单改为thymeleaf标签
 		<form th:action="@{user/login}" method="post">
-	-LoginController中实现userLogin方法用于登陆业务
+	-LoginController中实现userLogin方法用于登陆业务,登陆成功后需要设置session，用于后续的页面判断
 	 登陆失败需要在页面设置失败提示
 	 <p th:text="${msg}" th:if="${not #strings.isEmpty(msg)}"></p>
 		 
+26、springboot web开发-登陆拦截器
+	-详见:projects_j2ee/springboot_exam/web_site
+	
+	-登陆拦截器的作用是只有登陆成功的用户才能访问用户页面，否则只能返回到登陆页面
 	 
+	-在config包下实现 LoginHandlerInterceptor，根据session中的登陆信息判断是否已经登陆
+	 在MyMvcConfig中，接入LoginHandlerInterceptor拦截器
+	 
+	-在页面中可以直接使用thymeleaf的sesssion工具类获取登陆的用户名：[[${session.loginUser}]]		 

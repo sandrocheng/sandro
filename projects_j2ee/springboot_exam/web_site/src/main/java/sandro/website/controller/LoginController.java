@@ -1,5 +1,6 @@
 package sandro.website.controller;
 
+import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,8 +21,10 @@ public class LoginController {
     //spring mvc可以直接设置参数对应form中表单数据的name属性
     public String userLogin(@RequestParam("userName") String userName,
                             @RequestParam("password") String password,
-                            Model model){
+                            Model model, HttpSession session){
         if(!userName.isEmpty() && !password.isEmpty()){
+            //登陆成功需要放一个session,后续用来判断是否可以正常访问用户页面
+            session.setAttribute("loginUser",userName);
             return "redirect:/index"; //使用redirect: 表示重定向,重定向后参数不会带到新的页面中
         }else{
             model.addAttribute("msg","error");
