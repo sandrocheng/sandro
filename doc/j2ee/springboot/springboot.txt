@@ -676,5 +676,10 @@
     		<a th:href="@{/login.html(l='en_US')}">English</a>	
 
 25、springboot web开发-登陆功能实现
+	-页面登陆的form表单改为thymeleaf标签
+		<form th:action="@{user/login}" method="post">
+	-LoginController中实现userLogin方法用于登陆业务
+	 登陆失败需要在页面设置失败提示
+	 <p th:text="${msg}" th:if="${not #strings.isEmpty(msg)}"></p>
 		 
 	 

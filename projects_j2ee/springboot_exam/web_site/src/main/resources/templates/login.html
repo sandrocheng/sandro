@@ -28,12 +28,17 @@
 <div class="header"></div>
 <div class="loginWraper">
   <div id="loginform" class="loginBox">
-    <form action="index.html" method="post">
+    <form th:action="@{/user/login}" method="post">
+      <div class="formRow">
+        <!--thymeleaf提供很多工具类，strings就是其中只一
+            th:if根据表达式的结果判断是否显示该标签-->
+        <p th:text="${msg}" th:if="${not #strings.isEmpty(msg)}"></p>
+      </div>
       <div class="formRow user">
-        <input id="1" name="" type="text" placeholder="账户" class="input_text input-big">
+        <input id="1" name="userName" type="text" placeholder="账户" class="input_text input-big">
       </div>
       <div class="formRow password">
-        <input id="2" name="" type="password" placeholder="密码" class="input_text input-big">
+        <input id="2" name="password" type="password" placeholder="密码" class="input_text input-big">
       </div>
       <div class="formRow yzm">
         <input class="input_text input-big" type="text" placeholder="验证码" onblur="if(this.value==''){this.value='验证码:'}" onclick="if(this.value=='验证码:'){this.value='';}" value="验证码:" style="width:150px;">
