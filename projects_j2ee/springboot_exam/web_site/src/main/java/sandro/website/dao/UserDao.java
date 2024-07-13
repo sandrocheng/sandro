@@ -28,7 +28,7 @@ public class UserDao {
         users = new HashMap<Long, User> ();
         users.put(1L,new User(1L,"sandro","123456","123@sss.com",1,
                 new Date(),"136000000","大连",0));
-        users.put(2L,new User(1L,"morgan","123456","3@sss.com",1,
+        users.put(2L,new User(2L,"lily","123456","3@sss.com",0,
                 new Date(),"136100000","大连",0));
     }
 
