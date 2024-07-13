@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<!--通用footer-->
+<footer th:fragment="commonfooter">
+    <p>感谢jQuery、layer、Validform、UEditor、My97DatePicker、Font Awesome、Datatables、jquery.fileupload、Lightbox插件<br>Copyright &copy;2015 H-ui.admin v2.0.1 All Rights Reserved.<br>
+        本后台系统由<a href="http://www.h-ui.net/" target="_blank" title="H-ui前端框架">H-ui前端框架</a>提供前端技术支持</p>
+</footer>
+
+<nav class="Hui-breadcrumb" th:fragment="commontop">
+    <i class="icon-home"></i> 首页 <span class="c-gray en">&gt;</span>
+    用户中心 <span class="c-gray en">&gt;</span>
+    [[${pagename}]]  <!--外部调用commontop需要传递一个pagename参数在这里显示-->
+    <a class="btn btn-success radius r mr-20" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" >
+        <i class="icon-refresh"></i>
+    </a>
+</nav>
+</html>

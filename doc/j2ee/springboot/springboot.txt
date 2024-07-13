@@ -554,6 +554,7 @@
 	  与其他静态资源一样，Spring Boot会在配置的静态内容位置中检查favicon.ico。如果存在这样的文件，它将自动用作应用程序的图标。
 
 20、springboot web开发-thymeleaf模板引擎
+	-官网：https://www.thymeleaf.org，文档：usingthymeleaf.pdf
 	-详见：/projects_j2ee/springboot_exam/springbootDemo 工程的web_demo
 	-springboot打包是jar包，同时使用的是嵌入式的tomcat，因此暂时不支持jsp
 	 因此springboot需要结合模板引擎来制作页面，比较常见的是freemarker，thymeleaf,springboot推荐使用thymeleaf
@@ -691,4 +692,50 @@
 	-在config包下实现 LoginHandlerInterceptor，根据session中的登陆信息判断是否已经登陆
 	 在MyMvcConfig中，接入LoginHandlerInterceptor拦截器
 	 
-	-在页面中可以直接使用thymeleaf的sesssion工具类获取登陆的用户名：[[${session.loginUser}]]		 
+	-在页面中可以直接使用thymeleaf的sesssion工具类获取登陆的用户名：[[${session.loginUser}]]
+
+27、springboot web开发-提取公共页面
+	-详见:projects_j2ee/springboot_exam/web_site
+	-对应页面: 首页 > 用户中心 > 用户管理 ,user-list.html
+	 controller:UserContorller
+	
+	-使用thymeleaf的fragment标签，定义通用页面元素
+	 在首页默认页面"我的桌面"(welcome.html)中，<footer>标签定义了每个页面最下部分的内容，如果想把这部分内容统一定制，其他标签页面都统一使用，可以使用fragment
+	 例如在welcome.html中的footer标签定义为thymeleaf 的 fragment
+		<footer th:fragment="commonfooter">
+		  <p>感谢jQuery、layer、Validform、UEditor、My97DatePicker、Font Awesome、Datatables、jquery.fileupload、Lightbox插件
+		     <br>Copyright &copy;2015 H-ui.admin v2.0.1 All Rights Reserved.
+		     <br>本后台系统由<a href="http://www.h-ui.net/" target="_blank" title="H-ui前端框架">H-ui前端框架</a>提供前端技术支持
+		  </p>
+		</footer>		 
+	 定义好之后，比如想要在user-list.html中引用这个fragment
+		<div th:insert="~{welcome::commonfooter}"></div>		
+	 简单方法可以定义一个div标签，使用insert函数，~代表 是一个fragment，welcome是定义fragment的页面路径，commonfooter是fragment的id
+
+	 更合理的方式是单独定一个html在这个html中定义所用通用标签页面,比如在templates目录下定一个common目录,新建一个commons.html
+	 把通用的页面元素都放到这里，如下：
+		<!DOCTYPE html>
+		<html xmlns:th="http://www.thymeleaf.org">
+		<footer th:fragment="commonfooter">
+		    <p>感谢jQuery、layer、Validform、UEditor、My97DatePicker、Font Awesome、Datatables、jquery.fileupload、Lightbox插件
+			<br>Copyright &copy;2015 H-ui.admin v2.0.1 All Rights Reserved.<br>
+		        本后台系统由<a href="http://www.h-ui.net/" target="_blank" title="H-ui前端框架">H-ui前端框架</a>提供前端技术支持</p>
+		</footer>
+		</html>	
+	 其他页面引用的时候使用
+		<div th:insert="~{/common/commons::commonfooter}"></div>
+	 来引用就可以了
+
+	-使用thymeleaf的fragment标签，定义通用页面元素并传递参数
+	 实际情况中往往更复杂，引用的时候会传递一些参数以保证一些个性化的展示
+	 比如每个子页面中都有一个顶部的导航信息，把这部分拆出来放到commons.html中,把它定义为一个commontop的fragment标签，如下
+		<nav class="Hui-breadcrumb" th:fragment="commontop">
+		    <i class="icon-home"></i> 首页 <span class="c-gray en">&gt;</span>
+		    用户中心 <span class="c-gray en">&gt;</span>
+		    [[${pagename}]]  <!--外部调用commontop需要传递一个pagename参数在这里显示-->
+		    <a class="btn btn-success radius r mr-20" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" >
+		        <i class="icon-refresh"></i>
+		    </a>
+		</nav>
+	 调用的时候需要传递pagename参数，如下：
+		<div th:insert="~{/common/commons::commontop(pagename='用户管理')}"></div>

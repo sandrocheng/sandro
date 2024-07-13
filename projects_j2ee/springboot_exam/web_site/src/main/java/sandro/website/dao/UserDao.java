@@ -5,7 +5,9 @@ import sandro.website.domain.User;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @Repository是属于Spring的注解。
@@ -24,10 +26,13 @@ public class UserDao {
 
     static{
         users = new HashMap<Long, User> ();
-        users.put(1L,new User(1L,"sandro","123456","123@sss.com",1,new Date()));
+        users.put(1L,new User(1L,"sandro","123456","123@sss.com",1,
+                new Date(),"136000000","大连",0));
+        users.put(2L,new User(1L,"morgan","123456","3@sss.com",1,
+                new Date(),"136100000","大连",0));
     }
 
-    private User getUserbyEmailAndPassword(String email,String password){
+    public User getUserbyEmailAndPassword(String email,String password){
         if(email == null || password == null){
             return null;
         }
@@ -38,5 +43,10 @@ public class UserDao {
             }
         }
         return null;
+    }
+
+    public List<User> getAllUsers(){
+        return users.values().stream()
+                .collect(Collectors.toList());
     }
 }

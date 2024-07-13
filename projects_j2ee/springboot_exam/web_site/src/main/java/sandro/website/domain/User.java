@@ -13,6 +13,9 @@ import java.util.Date;
 @AllArgsConstructor //lambok注解，生成全参构造函数。
 @NoArgsConstructor //lambok注解，生成无参构造函数。
 public class User {
+    public static final int STATUS_USING = 0;
+    public static final int STATUS_STOP = -1;
+
     private long id;
     private String userName;
 
@@ -23,4 +26,11 @@ public class User {
     private int gender; //0:女，1：男
 
     private Date birth;
+
+    private String telNo;
+
+    private String address;
+
+    //状态，对应STATUS_**
+    private int status;
 }
