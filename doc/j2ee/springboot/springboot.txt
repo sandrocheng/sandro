@@ -784,3 +784,25 @@
 	    </tbody>	  	
 	 其中[[${#dates.format(u.getBirth(),"yyyy-mm-dd HH:mm:ss")}]]，这里使用了thymeleaf的dates函数，用于格式化日期
 
+29、springboot web开发-添加用户操作
+	-详见:projects_j2ee/springboot_exam/web_site
+	-对应页面: 首页 > 用户中心 > 用户管理 (user-list.html)中的“添加用户” 弹出 “添加用户”弹框(user-add.html)
+	-controller:UserContorller
+
+	-springboot时间格式
+	 页面传递过来的时间格式,如果要使用Date来接收，默认的格式是yyyy/mm/dd
+	 但是一般的页面js控件的格式都是 yyyy-mm-dd，因此需要重新配置时间格式，以方便接收日期数据
+	 源码位值：
+		WebMvcAutoConfiguration
+		  ->@EnableConfigurationProperties({WebMvcProperties.class, WebProperties.class})
+		      @ConfigurationProperties(
+		         prefix = "spring.mvc"
+		      )
+		    ->WebMvcProperties
+		      ->public static class Format
+		这里定义了三种格式配置：date，time，dateTime
+	 因此在application.yaml中通过配置这三个参数就能方便的使用Date类来接收时间字符串了
+		spring:
+		  mvc:
+		    format:
+		      date: yyyy-MM-dd  #设置时间格式	

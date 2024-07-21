@@ -38,7 +38,7 @@ function datadel(){
 }
 
 /*弹出层*/
-function layer_show(w,h,title,url){
+function layer_show(w,h,title,url,callback){
 	if (w == null || w == '') {
 		w=800;
 	};
@@ -51,6 +51,11 @@ function layer_show(w,h,title,url){
 	if (url == null || url == '') {
 		url="404.html";
 	};
+	if(callback == null){
+	    callback = function(){
+            console.log("no callback");
+	    };
+	}
 	$.layer({
     	type: 2,
     	shadeClose: true,
@@ -62,13 +67,14 @@ function layer_show(w,h,title,url){
     	border: [0],
     	offset: ['20px',''],
     	area: [w+'px', h +'px'],
-    	iframe: {src: url}
+    	iframe: {src: url},
+    	end : callback
 	});
 }
 /*----------用户管理------------------*/
 /*用户-添加*/
-function user_add(w,h,title,url){
-	layer_show(w,h,title,url);
+function user_add(w,h,title,url,callback){
+	layer_show(w,h,title,url,callback);
 }
 /*用户-查看*/
 function user_show(id,w,h,title,url){

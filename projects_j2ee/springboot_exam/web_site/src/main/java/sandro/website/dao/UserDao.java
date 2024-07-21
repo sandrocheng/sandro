@@ -23,13 +23,19 @@ import java.util.stream.Collectors;
 public class UserDao {
 
     private static Map<Long, User> users = null;
-
+    private static long id = 3L;
     static{
         users = new HashMap<Long, User> ();
         users.put(1L,new User(1L,"sandro","123456","123@sss.com",1,
-                new Date(),"136000000","大连",0));
+                new Date(),"136000000","大连",0,""));
         users.put(2L,new User(2L,"lily","123456","3@sss.com",0,
-                new Date(),"136100000","大连",0));
+                new Date(),"136100000","大连",0,""));
+    }
+
+    public void addUser(User u){
+        long uid = id++;
+        u.setId(uid);
+        users.put(uid,u);
     }
 
     public User getUserbyEmailAndPassword(String email,String password){

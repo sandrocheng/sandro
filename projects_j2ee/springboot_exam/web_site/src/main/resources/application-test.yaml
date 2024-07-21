@@ -2,8 +2,13 @@
 server:
   port: 8083
 
-#设置登陆页面的多语言文件路径
+
 spring:
   messages:
-    basename: i18n.login
+    basename: i18n.login  #设置登陆页面的多语言文件路径
+  mvc:
+    format:
+      date: yyyy-MM-dd  #设置时间格式
+
+
 

@@ -15,6 +15,8 @@ import java.util.Date;
 public class User {
     public static final int STATUS_USING = 0;
     public static final int STATUS_STOP = -1;
+    //审核中
+    public static final int STATUS_VERIFY = 1;
 
     private long id;
     private String userName;
@@ -33,4 +35,6 @@ public class User {
 
     //状态，对应STATUS_**
     private int status;
+
+    private String desc;
 }
