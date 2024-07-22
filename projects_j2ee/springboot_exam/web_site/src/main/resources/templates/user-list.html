@@ -90,7 +90,7 @@
           <a style="text-decoration:none" class="ml-5" onClick="user_password_edit('10001','370','228','修改密码','user-password-edit.html')" href="javascript:;" title="修改密码">
             <i class="icon-key"></i>
           </a>
-          <a title="删除" href="javascript:;" onclick="user_del(this,'1')" class="ml-5" style="text-decoration:none">
+          <a title="删除" href="javascript:;" th:onclick="'deluser(' + ${u.id} + ')'" class="ml-5" style="text-decoration:none">
             <i class="icon-trash"></i>
           </a>
         </td>
@@ -111,7 +111,7 @@
 <script type="text/javascript">
   var urlAdd = "[[@{/user/goto-user-add}]]";
   var urlEdit= "[[@{/user/goto-user-edit}]]" + "?id=";
-
+  var urlDel = "[[@{/user/del-user}]]";
   function refresh(){
     location.reload();
   }
@@ -124,6 +124,20 @@
     user_edit('4','550','','编辑',urlEdit + id,refresh)
   }
 
+
+  function deluser(id){
+	layer.confirm('确认要删除吗？',function(index){
+      $.post(urlDel+'/'+id,function(data,status){
+        console.log("Data: " + data + " , nStatus: " + status);
+	    layer.msg('已删除!',2);
+	    setTimeout(function(){
+          refresh();
+        }, 2000);
+      }).fail(function(jqxHR,textstatus){
+        layer.msg('删除失败，请稍后再试!',2);
+      });
+	});
+}
 
 </script>
 </body>

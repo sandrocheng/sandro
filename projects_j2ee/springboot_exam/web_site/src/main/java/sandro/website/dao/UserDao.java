@@ -42,6 +42,10 @@ public class UserDao {
         users.put(u.getId(),u);
     }
 
+    public void delUser(long id){
+        users.remove(id);
+    }
+
     public User getUserbyEmailAndPassword(String email,String password){
         if(email == null || password == null){
             return null;
