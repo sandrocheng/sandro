@@ -18,6 +18,15 @@ public class LoginHandlerInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         //登陆成功后，应该有用户的session，如果存在
+
+        // 获取请求的完整URL
+        StringBuffer requestURL = request.getRequestURL();
+        String requestURI = request.getRequestURI();
+        String queryString = request.getQueryString();
+        System.out.println("requestURL : " + requestURL.toString()
+                + " , requestURI : " + requestURI
+                + (queryString == null?" ,no queryString":(" ,queryString: " + queryString)));
+
         Object user = request.getSession().getAttribute("loginUser");
         if(user == null){
             request.setAttribute("msg","请重新登陆");

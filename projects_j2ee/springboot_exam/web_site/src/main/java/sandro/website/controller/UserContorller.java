@@ -45,6 +45,33 @@ public class UserContorller {
         return "/user-add";
     }
 
+    @RequestMapping("/user/goto-user-edit")
+    public String gotouserEditPage(Model model,long id){
+        User user = this.userDao.getUserbyId(id);
+        model.addAttribute("user_status",USER_STATUS);
+        model.addAttribute("userInfo",user);
+        return "/user-edit";
+    }
+
+    @PostMapping("/user/edit-user")
+    @ResponseBody
+    public String editUser(long id,String userName, int gender, String telNo, String email,
+                          int status, Date birth,
+                          String address,String desc){
+        System.out.println("id : " + id
+                + "userName : " + userName
+                + " , gender : " + gender
+                + " , telNo : " + telNo
+                + " , email : " + email
+                + " , status : " + status
+                + " , birth : " + birth
+                + " , address : " + address
+                + " , desc : " + desc);
+        User user = new User(id,userName,null,email,gender,birth,telNo,address,status,desc);
+        userDao.editUser(user);
+        return "ok";
+    }
+
     @PostMapping("/user/add-user")
     @ResponseBody
     public String addUser(String userName, int gender, String telNo, String email,

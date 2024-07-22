@@ -806,3 +806,9 @@
 		  mvc:
 		    format:
 		      date: yyyy-MM-dd  #设置时间格式	
+
+29、springboot web开发-修改信息
+         -详见:projects_j2ee/springboot_exam/web_site
+         -对应页面: 首页 > 用户中心 > 用户管理 (user-list.html)中编辑按钮 弹出 “修改信息”弹框(user-edit.html)
+         -controller:UserContorller
+

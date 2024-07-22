@@ -76,6 +76,12 @@ function layer_show(w,h,title,url,callback){
 function user_add(w,h,title,url,callback){
 	layer_show(w,h,title,url,callback);
 }
+
+/*用户-编辑*/
+function user_edit(id,w,h,title,url,callback){
+	layer_show(w,h,title,url,callback);
+}
+
 /*用户-查看*/
 function user_show(id,w,h,title,url){
 	layer_show(w,h,title,url);
@@ -85,10 +91,6 @@ function user_password_edit(id,w,h,title,url){
 	layer_show(w,h,title,url);
 }
 
-/*用户-编辑*/
-function user_edit(id,w,h,title,url){
-	layer_show(w,h,title,url);
-}
 /*用户-编辑-保存*/
 function user_edit_save(obj,id){
 	var i = parent.layer.getFrameIndex();

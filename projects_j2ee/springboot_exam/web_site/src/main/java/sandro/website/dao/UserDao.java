@@ -27,15 +27,19 @@ public class UserDao {
     static{
         users = new HashMap<Long, User> ();
         users.put(1L,new User(1L,"sandro","123456","123@sss.com",1,
-                new Date(),"136000000","大连",0,""));
+                new Date(),"136000000","大连",User.STATUS_USING,"sandro简介"));
         users.put(2L,new User(2L,"lily","123456","3@sss.com",0,
-                new Date(),"136100000","大连",0,""));
+                new Date(),"136100000","大连",User.STATUS_VERIFY,"lily简介"));
     }
 
     public void addUser(User u){
         long uid = id++;
         u.setId(uid);
         users.put(uid,u);
+    }
+
+    public void editUser(User u){
+        users.put(u.getId(),u);
     }
 
     public User getUserbyEmailAndPassword(String email,String password){
@@ -54,5 +58,9 @@ public class UserDao {
     public List<User> getAllUsers(){
         return users.values().stream()
                 .collect(Collectors.toList());
+    }
+
+    public User getUserbyId(long id){
+        return users.get(id);
     }
 }
