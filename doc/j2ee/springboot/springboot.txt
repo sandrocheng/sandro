@@ -823,3 +823,10 @@
 	-在templates目录下新建一个error文件夹
 	 在这个文件夹下创建404.html，以后404错误都会展示这个页面，比如输入一个错误路径 http://localhost:8083/aaa
 	 类似的500错误页面也是同样的方法
+
+32、springboot web开发-用户退出
+        -详见:projects_j2ee/springboot_exam/web_site	
+
+	-对应页面，index.html中的“退出”按钮
+	-controller:UserContorller
+	

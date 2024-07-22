@@ -1,5 +1,6 @@
 package sandro.website.controller;
 
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -101,5 +102,11 @@ public class UserContorller {
     public String delUser(@PathVariable("id") long id){
         userDao.delUser(id);
         return "ok";
+    }
+
+    @RequestMapping("/user/logout")
+    public String userQuit(HttpSession session){
+        session.invalidate();//当前会话所有数据都会被丢弃
+        return "redirect:/login";
     }
 }
