@@ -1,0 +1,88 @@
+1、mysql安装
+	-ubuntu下安装
+	 安装命令：
+	 	sudo apt-get upgrade
+	 	sudo apt-get update
+	 	sudo apt-get install mysql-server
+
+2、mysql基础命令
+	-确认是否成功开启mysql
+	 	service mysql status
+		
+	-确认是否启动成功，在LISTEN状态下，启动成功
+	 	netstat -tap | grep mysql
+	
+        -开启/重启mysql
+                service mysql start / service mysql restart   
+
+	-设置mysql的root用户密码
+	 	-sudo mysql，使用root用户登陆mysql shell
+		-ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '1234qwer'; 
+                 设置root用户密码为 1234qwer 
+		 成功后 QUIT；退出mysql shell
+	
+	-使用root用户名登陆mysql shell
+	 mysql -u root -p
+
+
+3、mysql 中文乱码 数据库设置授权 
+	修改配置文件：sudo vi etc/mysql/mysql.conf.d/mysqld.cnf
+
+	-查看/修改字符集，避免中文乱码
+	 登陆mysql shell,查看当前字符集是否是utf-8或者utf-8的扩展字符集(比如 utf8mb4) 
+		SHOW VARIABLES LIKE 'character_set_server';
+	 如果不是，使用如下语句修改
+	  	SET character_set_server = '新的字符集'
+	 修改后需要restart mysql
+
+	-bind-address 是 MySQL 配置文件（通常是 my.cnf 或 my.ini 文件）中的一个选项，用来指定 MySQL 服务监听的网络接口地址。
+	 当你需要配置 MySQL 使其只监听本地（localhost）连接时，可以这样设置：bind-address = 127.0.0.1
+	 如果你想让 MySQL 监听所有接口，可以设置为：bind-address = 0.0.0.0  , 或者不设置
+	 请注意，设置为 0.0.0.0 可能会对服务器的安全性产生影响，因为这将允许远程连接到 MySQL 服务器。通常建议只监听本地接口或者特定的安全网络接口。 
+
+4、mysql 创建用户和这个用户可以访问的数据库
+	-登陆到mysql
+	 	mysql -u root -p
+
+	-创建数据库
+		CREATE DATABASE sandro_database CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+	 这将创建一个名为sandro_database的数据库，使用utf8mb4字符集和utf8mb4_unicode_ci校对规则。
+	 	show databases;
+	 确认数据库是否建立成功	
+
+	-选择mysql数据库 (查看所有数据库: show databases; )
+		use mysql;
+
+	-创建用户和密码：
+		CREATE USER 'sandro'@'localhost' IDENTIFIED BY '12#$qwer';
+		CREATE USER 'sandro'@'%' IDENTIFIED BY '12#$qwer';
+
+	 这里的sandro是想要创建的用户名，'localhost'指定用户可以从本地主机连接到MySQL服务器 ,'%'指定用户可以远程链接，password是您想要为新用户设置的密码。
+	 也就是说这里建立了一个sandro的用户，一个是本地使用，一个是远程使用
+	 请确保您有足够的权限来执行这个命令，通常需要具有CREATE USER权限的账户来执行它。
+	
+	-查看用户是否创建成功(show tables; 查看所有表，用户表是user)
+		select Host,User from user;	
+		
+	-在执行这个命令之后，还需要为新用户授权权限
+		GRANT ALL PRIVILEGES ON sandro_database.* TO 'sandro'@'localhost';
+		GRANT ALL PRIVILEGES ON sandro_database.* TO 'sandro'@'%';
+	 这将授予username在database_name数据库上的所有权限。
+	
+	-刷新授权
+		flush privileges;
+
+	-创建以后sandro用户就即可以在本地登陆mysql,也可以远程登陆mysql，本地库只开放sandro_database给sandro用户
+
+5、获取建表语句
+	SHOW CREATE TABLE [tablename];
+
+6、执行sql文件
+	1、进入mysql shell
+	2、source xxx.sql
+
+	注意登陆的用户是否有足够权限执行sql命令，比如建立数据库，删除数据库等操作，当前用户是否有足够的权限
+
+7、查看mysql版本
+	在mysql shell中执行，SELECT VERSION();
+

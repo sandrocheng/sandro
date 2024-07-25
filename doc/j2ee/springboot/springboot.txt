@@ -838,4 +838,58 @@
 		-导航栏
 		-侧边栏
 		-表单
+
+34、springboot JDBC
+	-详见:/projects_j2ee/springboot_exam/spring_jdbc_demo
+
+	-对于数据访问层，无论是SQL(关系型数据库) 还是 NOSQL(非关系型数据库)，Springboot底层都是采用Spring Data的方式进行统一处理。
+	 Spring Data也是spring中与springboot,springcloud等齐名的知名项目
+	 Spring Data官网：https://spring.io/  -> projects ->Spring Data
 	
+	-在springboot中使用数据库相关的启动器，参考文档 Spring Boot->Reference->Developing with Spring Boot->Build Systems中spring-boot-starter-data-xxx相关的启动器
+
+	-springboot的快速建项工具建立一个新的项目
+	 https://start.spring.io/  ，依赖的启动器包括JDBC API，MySQL Driver，spring-boot-starter-web
+
+	-自动配置jdbc
+	 在application中配置 jdbc和数据库的信息
+		spring:
+		  datasource:
+		    username: sandro
+		    password: 12#$qwer
+		    url: jdbc:mysql://192.168.0.113:3306/sandro_database?useUnicode=true&characterEncoding=utf-8
+		    driver-class-name: com.mysql.cj.jdbc.Driver		
+
+	 com.mysql.cj.jdbc.Driver,是mysql 8的驱动
+	 
+	-jdbc测试
+	 在测试类SpringJdbcDemoApplicationTests.contextLoads()中进行测试
+	
+	-springboot的默认数据源
+	 由与springboot已经自动配置好数据源，因此可以使用@Autowired来注入DataSource实例
+	 通过dataSource.getClass()返回的com.zaxxer.hikari.HikariDataSource，可以确认springboot默认的数据源是HikariCP
+	 HikariCP 是一个高性能的 JDBC 连接池组件，号称性能最好的后起之秀，是一个基于BoneCP做了不少的改进和优化的高性能JDBC连接池。和它类似的还有druid
+	 
+	 在选择数据库连接池时。HikariCP和Druid都是优秀的选择，各有其独特的优势和适用场景。
+	 HikariCP的主要优点包括：
+    		性能优越：HikariCP以其高性能著称，能够最大限度地避免锁竞争，提供快速且稳定的连接服务。
+    		轻量级：HikariCP的体积小，仅130kb，启动速度快，非常适合需要快速响应的应用场景。
+    		配置简单：HikariCP的配置相对简单，易于部署和使用。
+
+	 Druid的主要优点包括：
+    		功能全面：Druid提供了丰富的功能，如性能监控、SQL审计、用户名密码加密等，具有良好的扩展性。
+    		监控和扩展性：Druid集合了开源和商业数据库连接池的诸多优秀特性，提供了FilterChain模式的扩展API，便于自定义和监控。
+
+	 选择哪个连接池取决于具体的应用需求。如果应用对性能有极高要求，且希望连接池尽可能轻量级，HikariCP可能是更好的选择。
+	 如果应用需要更全面的功能支持和强大的监控工具，Druid则可能更适合。在实际应用中，可以根据具体的性能测试和功能需求来决定使用哪个连接池。
+	
+	-xxxTemplate:springboot已经配置好的Bean,即拿即用,这些template内部封装好了CURD操作
+	 比如org.springframework.boot.autoconfigure.jdbc.JdbcTemplateConfiguration这个类就是自动配置JdbcTemplate实例的类，
+	 调用者就可以直接使用@Autowired注解来注入JdbcTemplate类的实例，JdbcTemplate提供了sql语句执行的接口实现
+	 redis等也是类似的
+
+	 代码：JDBCController.java  
+	 	 
+
+
+

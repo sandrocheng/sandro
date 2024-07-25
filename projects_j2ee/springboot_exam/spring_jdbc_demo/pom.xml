@@ -8,11 +8,11 @@
 		<version>3.3.2</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>sandro.website</groupId>
-	<artifactId>web_site</artifactId>
+	<groupId>sandro.springboot</groupId>
+	<artifactId>spring_jdbc_demo</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>webSite</name>
-	<description>web demo project for Spring Boot</description>
+	<name>spring_jdbc_demo</name>
+	<description>spring jdbc demo</description>
 	<url/>
 	<licenses>
 		<license/>
@@ -34,27 +34,27 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
+		<!--jdbc-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-jdbc</artifactId>
+		</dependency>
+
+		<!--mysql驱动-->
+		<dependency>
+			<groupId>com.mysql</groupId>
+			<artifactId>mysql-connector-j</artifactId>
+			<scope>runtime</scope>
+		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-		</dependency>
-		<dependency><!--springboot推荐的模板引擎thymeleaf启动器，相比freemarker功能更强大，-->
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-thymeleaf</artifactId>
-		</dependency>
 		<dependency><!--yaml文件中属性检查工具，不接入的化，yaml在使用自定义的属性时会报红-->
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-configuration-processor</artifactId>
-		</dependency>
-		<dependency><!--springboot提供的 JSR303校验starter-->
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-validation</artifactId>
 		</dependency>
 	</dependencies>
 
