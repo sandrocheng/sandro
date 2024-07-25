@@ -890,6 +890,50 @@
 
 	 代码：JDBCController.java  
 	 	 
+35、springboot 整合Druid数据源
+	-springboot jdbc除了默认的HikariCP数据源，也可以方便的配置其他第三方数据源，比如Druid
 
+	-Druid是阿里巴巴开源平台上的一个数据库连接池的实现，结合了C3P0、DBCP、PROXOOL等DB池的优点，同时加入了日志监控
+	 号称java WEB当前速度最快的数据源，相比与传统的C3P0,DBCP,Tomcat jdbc等连接池更优秀
+	 Druid可以很好的监控DB池连接和SQL的执行情况，天生就是针对监控而生的DB连接池
+	 可以说Druid和Hikari都是当前java web上最优秀的数据源
+	
+	-新建springboot工程：/projects_j2ee/springboot_exam/springboot_druid_demo
+	 依赖：Spring Web， JDBC API， MySQL Driver
+	 druid依赖：https://mvnrepository.com/artifact/com.alibaba/druid
 
+	-druid-x.x.xx.jar包下重要的一些类路径
+		filter:过滤器
+		mock:测试相关的类
+		pool:池的实现
+		     DruidDataSource:druid数据源，这里定义了需要配置的属性
+		     DruidDataSourceC3P0Adapter：C3P0适配器 	
+		proxy:代理
+		sql:封装了CRUD的实现
+		    SQLUtils:这里封装了一些sql相关的工具函数，可以使用
+		support:提供了一些基础的支持
+			比如 hibernate,http,ibatis,json,日志(logging),任务调度(quartz),spring
+
+	-application.yaml配置
+		spring:
+		  datasource:
+		    username: sandro
+		    password: 12#$qwer
+		    url: jdbc:mysql://192.168.0.113:3306/sandro_database?useUnicode=true&characterEncoding=utf-8&serverTimeZone=UTC
+		    driver-class-name: com.mysql.cj.jdbc.Driver
+		    type: com.alibaba.druid.pool.DruidDataSource
+	 type，用来指定使用druid数据源，指定之后就不会再使用默认的HikariCP数据源了
+
+	-SpringbootDruidDemoApplicationTests.contextLoads(),测试数据源
+	 可以看到Autowired的DataSource返回的是com.alibaba.druid.pool.DruidDataSource
+	 DataSource中得到的Connection是：com.alibaba.druid.pool.DruidStatementConnection
+
+	-durid配置信息
+	 出了常规的配置，druid还提供了更多的功能通过application来配置
+    		#配置监控统计拦截的filters，stat:监控统计，log4j:日志记录，wall:防御sql注入
+    		#druid日志需要依赖log4j，并配置property ,https://github.com/alibaba/druid/wiki/%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98
+		filters: stat,wall,log4j 
+	-JDBCController:实现CRUD的操作并映射地址，进行测试
+
+	-DruidConfig,实现druid的配置类，托管给spring管理
 

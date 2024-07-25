@@ -1,0 +1,12 @@
+spring:
+  datasource:
+    username: sandro
+    password: 12#$qwer
+    url: jdbc:mysql://192.168.0.113:3306/sandro_database?useUnicode=true&characterEncoding=utf-8&serverTimeZone=UTC
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+
+    #下面是druid的配置信息
+    #配置监控统计拦截的filters，stat:监控统计，log4j:日志记录，wall:防御sql注入
+    #需要依赖以下log4j
+    filters: stat,wall
