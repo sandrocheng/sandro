@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace指定映射的接口类-->
+<mapper namespace="sandro.demo.springboot.mybatis.mapper.UserMapper">
+    <!--List<User> queryUserList(); 接口实现配置-->
+    <select id="queryUserList" resultType="User">
+        select id,user_name as userName,user_type as userType from t_user
+    </select>
+
+    <select id="queryMaxID" resultType="Integer" >
+        select max(id) from t_user
+    </select>
+
+    <insert id="addUser" parameterType="User" >
+        insert into t_user(user_name,user_type) values(#{userName},#{userType})
+    </insert>
+
+    <update id="updateUser">
+        update t_user set user_type=1 where user_type=0
+    </update>
+
+    <delete id="delUser" parameterType="int">
+        delete from t_user where id = #{maxID}
+    </delete>
+</mapper>

@@ -1,0 +1,16 @@
+
+spring:
+  datasource:
+    username: sandro
+    password: 12#$qwer
+    url: jdbc:mysql://192.168.0.113:3306/sandro_database?useUnicode=true&characterEncoding=utf-8&serverTimeZone=UTC
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  application:
+    name: Mybatis_demo
+
+mybatis:
+  #配置pojo的包路径
+  type-aliases-package: sandro.demo.springboot.mybatis.domain
+  #配置mapper.xml的文件路径
+  mapper-locations:
+    - classpath:mybatis/mapper/*.xml

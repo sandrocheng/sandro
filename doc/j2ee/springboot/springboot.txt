@@ -937,3 +937,27 @@
 
 	-DruidConfig,实现druid的配置类，托管给spring管理
 
+36、springboot 整合Mybatis
+	-mybatis有专门整合springboot的整合包：MyBatis Spring Boot Starter
+	 maven仓库地址 https://mvnrepository.com/artifact/org.mybatis.spring.boot/mybatis-spring-boot-starter
+	 文档：https://github.com/mybatis/spring-boot-starter
+	 如果使用springboot的项目生成器建立项目，可以直接选择依赖MyBatis Framework自动依赖这样就不需要纠结版本的问题了。
+	 Mybatis中文官网文档 https://mybatis.net.cn/
+
+	-创建spring boot 项目，设置依赖：Spring Web,MySQL Driver,JDBC API,MyBatis Framework 
+	 /projects_j2ee/springboot_exam/Mybatis_demo
+	
+	-配置application.yaml,数据库相关信息
+	 在测试类MybatisDemoApplicationTests.contextLoads()中测试是否连接正常。
+
+	-pojo类：User.java
+	-Mybatis的 mapper接口类 ：UserMapper，这里定义CRUD等方法
+	-resources目录下新建/mybatis/mapper/目录，新建 UserMapper.xml，用来配置UserMapper接口类的实现(参考Mybits中文官网文档-XML映射器)
+	-在application.yaml中 配置mybatis 的包路径和.xml文件路径
+		mybatis:
+		  #配置pojo的包路径  
+		  type-aliases-package: sandro.demo.springboot.mybatis.domain
+		  #配置mapper.xml的文件路径  
+		  mapper-locations:
+		    - classpath:mybatis/mapper/*.xml 	 
+	-UserController，调用对应方法
