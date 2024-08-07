@@ -961,3 +961,30 @@
 		  mapper-locations:
 		    - classpath:mybatis/mapper/*.xml 	 
 	-UserController，调用对应方法
+
+37、springboot 整合springSecurity
+	-springsecurity是针对spring项目的安全框架，也是springboot底层安全模块默认的技术选型，他可以实现强大的web安全控制
+	 相比于另外一个安全框架Shiro，它提供了丰富的功能，社区资源也比Shiro丰富，一般来说中大型的项目都是使用SpringSecurity来做安全框架。
+	 小型项目Shiro的比较多，因为相比于SpringSecurity，Shiro的使用更加简单
+	 springsecurity主要提供两个功能，以保证web或者java应用的安全
+		-认证(Authentication)，验证当前访问系统的时不是本系统的用户，并且要确认具体是哪个用户
+		-授权(Authorization)，比如功能权限，访问权限，菜单权限，通过简单的配置可以省略大量拦截器，过滤器的代码
+	-官网：https://spring.io/projects/spring-security
+
+	-创建springboot项目：/projects_j2ee/springboot_exam/springsecurity_demo
+	 依赖spring web启动器，Thymeleaf,Spring Security
+
+
+	-默认的登陆操作
+	 创建RouterController，用于页面跳转
+	 启动服务会看到一个log : Using generated security password: 7727fe31-ab7c-4d91-b47b-a47b4c38e98e
+	 因为引入了spring security，默认访问任何路径都需要登陆(spring security内置了一个web的登陆页面),默认的用户是user,这个log就是密码
+
+	-默认的退出登陆
+	 根路径/logout,比如 ：localhost:8080/logout
+	 登出后，无法再访问任何资源
+	
+ 
+	
+
+	
