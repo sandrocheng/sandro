@@ -1020,3 +1020,26 @@
          也可以使用swagger的页面展示内容:http://localhost:8080/swagger-ui/index.html          
 
 	-创建MyApiController，使用springdoc的注解完善文档
+
+39、springboot 使用异步任务
+	-当一些耗时任务执行的时候，为了提升体验，一般使用异步任务执行，springboot本身就提供异步任务接口，便于使用
+	 如果直接开始线程当请求多了以后，线程数太多，系统会不稳定
+
+	-详细见/projects_j2ee/springboot_exam/async_demo
+	 创建一个springboot项目，依赖spring web
+
+	-springboot默认是不支持异步任务的，需要手动开启
+	 开启方式:在主启动类中使用@EnableAsync注解，如：AsyncDemoApplication
+	
+	-创建一个Service,并实现一个耗时操作的方法，在方法上使用@Async注解，如:AsyncService
+   	 @Async注解是Spring框架提供的一个功能，用于实现方法的异步执行。 通过在方法上添加@Async注解，可以指示Spring框架在另一个线程中异步执行该方法，从而避免阻塞主线程，提高系统的响应速度和吞吐量。
+	 
+	 @Async注解的工作原理基于Spring AOP（面向切面编程）机制。
+	 当Spring容器初始化Bean时，会检查Bean中是否使用了@Async注解，并根据切点创建代理。在调用被@Async注解的方法时，实际上是调用了代理对象，由代理对象将方法的执行交给线程池进行异步执行。
+
+	 在使用@Async注解时，需要注意一些常见的失效场景。
+	 例如，主启动类需要添加@EnableAsync注解以开启异步支持；被@Async注解的方法必须是public方法，不能是static或private方法；需要通过@Autowired或@Resource进行注入，不能手动new实例。
+
+	 为了支持@Async注解，通常需要配置线程池。
+	 可以通过创建一个配置类（如ExecutorConfig），并在其中定义ThreadPoolTaskExecutor来配置线程池。例如，可以设置核心线程数、最大线程数、队列大小等参数，以满足不同的业务需求。
+	 
