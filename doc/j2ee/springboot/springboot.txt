@@ -984,7 +984,39 @@
 	 根路径/logout,比如 ：localhost:8080/logout
 	 登出后，无法再访问任何资源
 	
- 
+38、springboot 整合 SpringDoc
+
+	-前后端分离，松耦合，甚至可以部署在不同的服务器上
+	 vue + springboot是常用的前后端分离的方案
+	 后端：后端控制层，controller
+	       服务层
+	       数据访问层
+
+	 前端：前端控制层，视图层
+	 
+	 前后端交互： api接口
+
+	 问题：前后端集成联调的时候，前端人员和后端人员无法做到及时协调，最终会导致问题集中爆发
+	 解决方案：制定schema，实时更新最新的api,降低集成风险
+	           早期使用wrod文档等，但是大团队管理复杂度依然比较高
+		   前端常用postman来测试api接口，后端提供接口，需要实时更新的消息及改动
 	
+	-SpringDoc是一款可以结合SpringBoot使用的API文档生成工具,基于OpenAPI 3
+	 和SpringDoc相同的工具还有 smart-doc，swagger,也是目前比较流行的api框架
+         swagger 2.0版本和spring boot 3.x版本整合暂时是不行的，因为swagger的依赖底层用的是javax依赖包，而spring boot 3.x版本都是jakarta依赖包
+ 
+	-官网:https://springdoc.cn(中文)
+	      https://springdoc.org(英文)	
+	-创建springboot项目：/projects_j2ee/springboot_exam/springdoc_demo，依赖spring web
+	 添加springdoc依赖	 
+		   <dependency>
+      			<groupId>org.springdoc</groupId>
+      			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+      			<version>2.6.0</version>
+   		   </dependency>
 
 	
+	 配置好以后，启动服务，并访问地址,http://localhost:8080/v3/api-docs,此时返回的是一个json格式的数据，不同浏览器展示的效果不太一样
+         也可以使用swagger的页面展示内容:http://localhost:8080/swagger-ui/index.html          
+
+	-创建MyApiController，使用springdoc的注解完善文档
