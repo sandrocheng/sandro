@@ -1042,4 +1042,37 @@
 
 	 为了支持@Async注解，通常需要配置线程池。
 	 可以通过创建一个配置类（如ExecutorConfig），并在其中定义ThreadPoolTaskExecutor来配置线程池。例如，可以设置核心线程数、最大线程数、队列大小等参数，以满足不同的业务需求。
+
+40、springboot 邮件服务	 
+	-创建springboot项目，依赖 spring web和 java mail sender
+	 详见:/projects_j2ee/springboot_exam/email_demo
+
+	-MailSenderAutoConfiguration,springboot中自动配置mail相关的配置类
+	 该类使用了注解 
+		@EnableConfigurationProperties({MailProperties.class})
+		@Import({MailSenderJndiConfiguration.class, MailSenderPropertiesConfiguration.class})
+	 在MailProperties 中可以看到配置项的源码
+		@ConfigurationProperties(
+		    prefix = "spring.mail"
+		)
+	 配置项 使用 spring.mail开头
+	
+	 在MailSenderJndiConfiguration中的mailSender返回一个JavaMailSenderImpl实例，这个方法已经声明为bean了，因此可以直接使用这个实例发送邮件
+         
+	-邮箱准备
+         需要在邮箱中(比如sina邮箱，qq邮箱)中开启 POP3/SMTP服务
+	 记录一下 pop3 SMTP服务地址：POP3服务器：pop.sina.com，SMTP服务器：smtp.sina.com
+	          授权码状态
+
+	-application.yaml中配置邮箱服务信息
+		spring:
+		  mail:
+		    username: foxone1980118@sina.com
+		    password: 90230c7cfe5da7fa  #注意这里不一定是密码，sina中提供了授权码，可以使用授权码
+		    host: stmp.sina.com
+	-发送邮件测试
+	 详见 EmailDemoApplicationTests	
+	
 	 
+	
+	

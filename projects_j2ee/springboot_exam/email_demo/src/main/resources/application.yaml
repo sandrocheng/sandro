@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: email_demo
+  mail:
+    username: foxone1980118@sina.com
+    password:  d7551f28d6a5ef86 #注意这里不一定是密码，sina中提供了授权码，可以使用授权码
+    host: smtp.sina.com
+    port: 25
+    properties:     #新浪，qq等邮箱都会要求设置权限验证，需要设置auth,starttls等子段，新浪邮箱不是很稳定，有时候会失败，等会儿再发就好了
+      "[mail.smtp.connectiontimeout]": 50000
+      "[mail.smtp.timeout]": 30000
+      "[mail.smtp.writetimeout]": 50000
+      "[mail.smtp.auth]": true
+      "[mail.smtp.starttls.enable]": true
+      "[mail.smtp.starttls.required]": true
+
+
+
