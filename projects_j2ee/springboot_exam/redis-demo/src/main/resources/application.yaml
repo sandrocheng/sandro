@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: redis-demo
+  data:
+    redis:
+      host: localhost #也可以是远程的ip,默认本机可以不用配
+      port: 6379 #6379是默认端口，也可以不用配置

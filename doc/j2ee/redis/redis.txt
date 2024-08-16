@@ -1,0 +1,11 @@
+1、redis的安装和启动
+	-ubuntu下安装redis
+  	 1)更新包管理器的索引:sudo apt-get update
+	 2)安装Redis服务器：sudo apt-get install redis-server
+	 3)确认Redis服务是否已经启动：sudo systemctl status redis-server
+	 4)如果需要Redis在系统启动时自动启动，可以使用以下命令：sudo systemctl enable redis-server
+	 
+	 默认情况下，Redis绑定到127.0.0.1（本地主机），端口为6379。可以通过编辑配置文件/etc/redis/redis.conf来修改这些设置。
+	 要测试Redis是否正常工作，可以运行：
+		redis-cli ping
+	 如果Redis正在运行，它应该返回：PONG
