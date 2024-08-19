@@ -26,14 +26,14 @@
 
 
 3、mysql 中文乱码 数据库设置授权 
-	修改配置文件：sudo vi etc/mysql/mysql.conf.d/mysqld.cnf
+	修改配置文件：sudo vi /etc/mysql/mysql.conf.d/mysqld.cnf
 
 	-查看/修改字符集，避免中文乱码
 	 登陆mysql shell,查看当前字符集是否是utf-8或者utf-8的扩展字符集(比如 utf8mb4) 
 		SHOW VARIABLES LIKE 'character_set_server';
 	 如果不是，使用如下语句修改
 	  	SET character_set_server = '新的字符集'
-	 修改后需要restart mysql
+	 修改后需要sudo systemctl restart mysql
 
 	-bind-address 是 MySQL 配置文件（通常是 my.cnf 或 my.ini 文件）中的一个选项，用来指定 MySQL 服务监听的网络接口地址。
 	 当你需要配置 MySQL 使其只监听本地（localhost）连接时，可以这样设置：bind-address = 127.0.0.1
