@@ -64,9 +64,21 @@
 	     在LoginService中模拟从数据库中取道的是加密后的密码，springsecurity会使用注入的加密器对登陆的密码进行加密后再和数据库中的密码对比
 
 6、自定义登陆页面
-	默认情况下springsecurity会提供一个登陆页面，一般开发的时候需要替换这个页面
-	同时还需要让springsecurity对这个访问路径放行，让用户即使没有登陆过也能访问这个页面
-
-	在接口中我们通过AuthenticationManager的authenticate方法来进行用户认证，所以需要在SecurityConfig类中配置，把AuthenticationManager注入容器
+	-项目详见:/projects_j2ee/springsecurity_exam/custom_login
+	 默认情况下springsecurity会提供一个登陆页面，一般开发的时候需要替换这个页面
+	 同时还需要让springsecurity对这个访问路径放行，让用户即使没有登陆过也能访问这个页面
 
 	-SecurityConfig.securityFilterChain方法中配置页面资源文件，/user/login等路径不需要验证
+	 指定登陆页面和登陆行为的url
+
+	-login.html中form的方式必须是post
+
+	-RouterController.login中要处理一下，当用户已经登陆成功的时候重定向到index页面，避免用户重复登陆
+
+	-登陆失败的处理
+	 一般登陆失败需要提示用户，在SecurityConfig.securityFilterChain方法中设置登陆表单的失败回调
+	 不设置也可以因为登陆失败 springsecurity 会在返回的登陆页路径上加上?error,如：/login?error	
+	
+	-退出
+	 详见index.html中logoutform，注意method必须是post,登后，springsecurity会清理session中的数据(SecurityConfig中事件链中配置的)，默认跳转到login页面
+

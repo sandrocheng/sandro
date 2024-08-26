@@ -1,4 +1,4 @@
-package sandro.demo.springboot.springsecurity.domain;
+package sandro.springsecurity.customlogin.domain;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;

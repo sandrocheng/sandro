@@ -1,11 +1,10 @@
-package sandro.demo.springboot.springsecurity.service.impl;
+package sandro.springsecurity.customlogin.service.impl;
 
-import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import sandro.demo.springboot.springsecurity.domain.LoginUser;
+import sandro.springsecurity.customlogin.domain.LoginUser;
 
 /**
  * 实现UserDetailsService接口，用于用户登陆的密码验证

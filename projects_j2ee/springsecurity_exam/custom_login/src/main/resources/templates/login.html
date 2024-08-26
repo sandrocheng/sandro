@@ -30,7 +30,7 @@
             <p>Perfectly designed and precisely prepared admin theme with over 50 pages with extra new web app views.
                 <!--Continually expanded and constantly improved Inspinia Admin Them (IN+)-->
             </p>
-            <p>Login in. To see it in action.</p>
+            <div class="form-group has-error"><label id="loginmsg" class="control-label"></label></div>
             <form class="m-t" role="form" th:action="@{/dologin}" method="post">
                 <div class="form-group">
                     <input type="text" class="form-control" name="username" placeholder="用户名" required="">
@@ -51,7 +51,20 @@
     <!-- Mainly scripts -->
     <script th:src="@{/js/jquery-2.1.1.js}"></script>
     <script th:src="@{/js/bootstrap.min.js}"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            var loginerrmsg = "[[${errormsg}]]";
+            var isEmpty = $.trim(loginerrmsg).length === 0;
+            if(!isEmpty){
+                $("#loginmsg").html(loginerrmsg);
+                $("#loginmsg").show();
+            }else{
+                $("#loginmsg").hide();
+            }
+        });
 
+
+    </script>
 </body>
 
 </html>

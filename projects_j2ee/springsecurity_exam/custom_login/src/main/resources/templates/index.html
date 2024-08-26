@@ -332,9 +332,10 @@
 
 
                 <li>
-                    <a href="login.html">
+                    <a id="logoutLink" href="#">
                         <i class="fa fa-sign-out"></i> Log out
                     </a>
+                    <form id="logoutform" th:action="@{/logout}" method="post"></form>
                 </li>
                 <li>
                     <a class="right-sidebar-toggle">
@@ -1423,6 +1424,14 @@
         ga('create', 'UA-4625583-2', 'webapplayers.com');
         ga('send', 'pageview');
 
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            $("#logoutLink").click(function(){
+                $("#logoutform").submit();
+            });
+        });
     </script>
 </body>
 </html>
