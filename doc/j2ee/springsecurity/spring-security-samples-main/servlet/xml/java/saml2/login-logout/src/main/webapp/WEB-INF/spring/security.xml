@@ -1,0 +1,28 @@
+<b:beans xmlns="http://www.springframework.org/schema/security"
+		 xmlns:b="http://www.springframework.org/schema/beans"
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+						http://www.springframework.org/schema/security https://www.springframework.org/schema/security/spring-security.xsd">
+
+	<http auto-config="true">
+		<intercept-url pattern="/**" access="authenticated"/>
+		<saml2-login />
+		<saml2-logout />
+	</http>
+
+	<user-service>
+		<user name="user" password="{noop}password" authorities="ROLE_USER" />
+	</user-service>
+
+	<relying-party-registrations>
+		<relying-party-registration registration-id="one"
+																metadata-location="https://dev-05937739.okta.com/app/exk46xofd8NZvFCpS5d7/sso/saml/metadata"
+																single-logout-service-location="https://dev-05937739.okta.com/app/dev-05937739_springgsecuritysaml2idp_1/exk46xofd8NZvFCpS5d7/slo/saml"
+																single-logout-service-response-location="{baseUrl}/logout/saml2/slo">
+			<signing-credential certificate-location="classpath:credentials/rp-certificate.crt"
+													private-key-location="classpath:credentials/rp-private.key"/>
+		</relying-party-registration>
+		
+	</relying-party-registrations>
+
+</b:beans>

@@ -1,0 +1,81 @@
+pluginManagement {
+    repositories {
+        mavenCentral()
+        gradlePluginPortal()
+        maven { url 'https://repo.spring.io/milestone' }
+        maven { url "https://repo.spring.io/snapshot" }
+    }
+    resolutionStrategy {
+        eachPlugin {
+            if (requested.id.id == "io.spring.javaformat") {
+                useModule "io.spring.javaformat:spring-javaformat-gradle-plugin:${requested.version}"
+            }
+        }
+    }
+}
+
+plugins {
+    id "com.gradle.enterprise" version "3.16.2"
+    id "io.spring.ge.conventions" version "0.0.15"
+}
+
+include ":reactive:rsocket:hello-security"
+include ":reactive:webflux-fn:hello"
+include ":reactive:webflux-fn:hello-security"
+include ":reactive:webflux:java:authentication:username-password:form"
+include ":reactive:webflux:java:authentication:x509"
+include ":reactive:webflux:java:hello"
+include ":reactive:webflux:java:hello-security"
+include ":reactive:webflux:java:hello-security-explicit"
+include ":reactive:webflux:java:method"
+include ":reactive:webflux:java:oauth2:login"
+include ":reactive:webflux:java:oauth2:resource-server"
+include ":reactive:webflux:java:oauth2:webclient"
+include ":reactive:webflux:java:session-management:maximum-sessions"
+include ":reactive:webflux:kotlin:hello-security"
+include ":servlet:java-configuration:aspectj"
+include ":servlet:java-configuration:authentication:preauth"
+include ":servlet:java-configuration:authentication:remember-me"
+include ":servlet:java-configuration:authentication:username-password:form"
+include ":servlet:java-configuration:authentication:username-password:in-memory"
+include ":servlet:java-configuration:authentication:username-password:jdbc"
+include ":servlet:java-configuration:authentication:username-password:ldap"
+include ":servlet:java-configuration:authentication:x509"
+include ":servlet:java-configuration:data"
+include ":servlet:java-configuration:hello-mvc-security"
+include ":servlet:java-configuration:hello-security"
+include ":servlet:java-configuration:hello-security-explicit"
+include ":servlet:java-configuration:max-sessions"
+include ":servlet:java-configuration:saml2:login"
+include ":servlet:spring-boot:java:authentication:username-password:user-details-service:custom-user"
+include ":servlet:spring-boot:java:authentication:username-password:mfa"
+include ":servlet:spring-boot:java:authentication:username-password:compromised-password-checker"
+include ":servlet:spring-boot:java:data"
+include ":servlet:spring-boot:java:hello"
+include ":servlet:spring-boot:java:hello-security"
+include ":servlet:spring-boot:java:hello-security-explicit"
+include ":servlet:spring-boot:java:jwt:login"
+include ":servlet:spring-boot:java:ldap"
+include ":servlet:spring-boot:java:oauth2:authorization-server"
+include ":servlet:spring-boot:java:oauth2:login"
+include ":servlet:spring-boot:java:oauth2:resource-server:hello-security"
+include ":servlet:spring-boot:java:oauth2:resource-server:jwe"
+include ":servlet:spring-boot:java:oauth2:resource-server:multi-tenancy"
+include ":servlet:spring-boot:java:oauth2:resource-server:opaque"
+include ":servlet:spring-boot:java:oauth2:resource-server:static"
+include ":servlet:spring-boot:java:oauth2:webclient"
+include ":servlet:spring-boot:java:saml2:login"
+include ":servlet:spring-boot:java:saml2:login-single-tenant"
+include ":servlet:spring-boot:java:saml2:refreshable-metadata"
+include ":servlet:spring-boot:java:saml2:custom-urls"
+include ":servlet:spring-boot:java:saml2:saml-extension-federation"
+include ":servlet:spring-boot:java:cas:login"
+include ":servlet:spring-boot:kotlin:hello-security"
+include ":servlet:xml:java:helloworld"
+include ":servlet:xml:java:preauth"
+include ":servlet:xml:java:contacts"
+include ":servlet:xml:java:dms"
+include ":servlet:xml:java:saml2:login-logout"
+include ":servlet:spring-boot:java:session-management:maximum-sessions"
+include ":servlet:spring-boot:java:session-management:maximum-sessions-prevent-login"
+

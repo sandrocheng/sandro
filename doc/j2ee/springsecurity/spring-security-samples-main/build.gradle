@@ -1,0 +1,50 @@
+plugins {
+	id "checkstyle"
+	id "io.spring.javaformat" version "0.0.42"
+	id 'io.spring.nohttp' version '0.0.11'
+}
+
+allprojects {
+	apply plugin: 'checkstyle'
+	apply plugin: 'io.spring.javaformat'
+
+	dependencies {
+		checkstyle "io.spring.javaformat:spring-javaformat-checkstyle:0.0.42"
+	}
+
+	// Ensure every test task has at least a single test
+	tasks.withType(Test).configureEach {
+		afterSuite { desc, result ->
+			if (result.testCount == 0) {
+				throw new IllegalStateException("No tests were found. Ensure that useJUnitPlatform was used.")
+			}
+		}
+	}
+
+	// Spring Framework 6.1 requires -parameters to be able to introspect method parameter names
+	tasks.withType(JavaCompile) {
+		options.compilerArgs.add("-parameters")
+	}
+}
+
+if (hasProperty('buildScan')) {
+	buildScan {
+		termsOfServiceUrl = 'https://gradle.com/terms-of-service'
+		termsOfServiceAgree = 'yes'
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+tasks.register('runAllTests') {
+	var allTasks = rootProject.getAllTasks(true)
+	var allTestsTasks = allTasks.values().collect { t ->
+		t.findAll { it.name == 'test' || it.name == 'integrationTest' }
+	}.flatten()
+	it.dependsOn {
+		allTestsTasks
+	}
+}
+

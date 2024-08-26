@@ -1,0 +1,52 @@
+plugins {
+	id "io.freefair.aspectj.post-compile-weaving" version "8.0.1"
+	id "java"
+}
+
+repositories {
+	mavenCentral()
+	maven { url "https://repo.spring.io/milestone" }
+	maven { url "https://repo.spring.io/snapshot" }
+}
+
+compileJava {
+	sourceCompatibility "17"
+	targetCompatibility "17"
+}
+
+compileTestJava {
+	sourceCompatibility "17"
+	targetCompatibility "17"
+}
+
+dependencies {
+	aspect platform(libs.org.springframework.spring.framework.bom)
+	aspect platform(libs.org.springframework.security.spring.security.bom)
+	aspect ("org.springframework.security:spring-security-aspects") {
+		exclude(group: "io.micrometer", module: "micrometer-observation")
+	}
+
+	implementation platform(libs.org.springframework.spring.framework.bom)
+	implementation platform(libs.org.springframework.security.spring.security.bom)
+	implementation platform("org.junit:junit-bom:5.10.3")
+
+	implementation "org.springframework.security:spring-security-config"
+
+	testImplementation "org.assertj:assertj-core:3.26.3"
+	testImplementation "org.springframework:spring-test"
+	testImplementation "org.springframework.security:spring-security-test"
+	testImplementation "org.junit.jupiter:junit-jupiter-api"
+
+	testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine"
+}
+
+tasks.withType(Test).configureEach {
+	useJUnitPlatform()
+	
+}
+
+
+//aspectj {
+//	version = aspectjVersion
+//}
+

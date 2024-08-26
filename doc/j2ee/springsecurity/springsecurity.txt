@@ -1,0 +1,72 @@
+1、Spring Security简介
+	Spring Security是Spring家族中的一个安全管理框架，相比另外一个安全框架Shiro，它提供了更丰富的功能，社区资源也比Shiro丰富。
+	一般来说中大型的项目都是使用SpringSecurity来做安全框架，小项目Shiro比较多，因为相对于Spring Security Shiro的上手更加的简单
+
+	一般Web应用的的安全需要进行认证和授权
+	认证：验证当前访问系统的时不是本系统的用户，并且要确认具体是哪个用户
+	授权：经过认证后判断当前用户是否有权限进行某个操作
+	
+2、springboot + springsecurity
+	项目详见：/sandro/projects_j2ee/springboot_exam/springsecurity_demo	
+	创建项目后，打开某个页面，springsecurity会自动生成一个登陆页面
+	默认用户名是user,密码在控制台的log中可以找到
+
+3、登陆校验的流程
+	-校验流程如图:3_登陆校验的流程
+	
+	-JWT
+	 Json web token（JWT）是为了网络应用环境间传递声明而执行的一种基于JSON的开发标准（RFC 7519），该token被设计为紧凑且安全的，特别适用于分布式站点的单点登陆（SSO）场景。
+	 JWT的声明一般被用来在身份提供者和服务提供者间传递被认证的用户身份信息，以便于从资源服务器获取资源，也可以增加一些额外的其它业务逻辑所必须的声明信息，该token也可直接被用于认证，也可被加密。
+	
+	 JWT的构成:
+	 JWT是由三部分构成（用.分隔），将这三段信息文本用链接构成了JWT字符串。就像这样 xxxxx.yyyyy.zzzzz
+	 	第一部分：头部（header）
+ 		第二部分：载荷（payload，该token里携带的有效信息。比如用户id、名字、年龄等等）
+ 		第三部分：签名（signature）
+	 
+	-SpringSecurity过滤器链,如图3_SpringSecurity过滤器链
+	 UsernamePasswordAuthenticationFilter:负责处理我们在登录页填写了用户名密码后的登陆请求。
+	 ExceptionTranslationFilter:处理过滤器中抛出的任何AccessDeniedException和AuthenticationException
+	 FilterSecurityInterCeptor:负责权限校验的过滤器
+
+	-通过debug查看springsecurity中默认的过滤器
+	 可以在工程的Application(比如SpringsecurityDemoApplication)的run方法中当springboot的run方法执行完毕后设置一个断点。
+	 debug走到端点后打开Evaluate 输入run对象，回车后会看到run对象的内存数据
+	 如果想要看springsecurity的过滤去，可以输入run.getBean(DefaultSecurityFilterChain.class)
+	 所有的过滤器都在filters集合中
+	 如图：3_通过debug查看springsecurity中默认的过滤器
+
+4、认证流程	 
+	流程图：4_认证流程
+
+	Authentication接口:它的实现类，表示当前访问系统的用户，封装了用户相关信息。
+	AuthenticationManager接口:定义了认证Authentication的方法。
+	UserDetailsService接口:加载用户特定数据的核心接口。里面定义了一个根据用户名查询用户信息的方法。
+	UserDetails接口：提供核心用户信息。通过UserDetailsService根据用户名获取处理的用户信息要封装成UserDetails对象返回。然后将这些信息封装到Authentication对象中。
+
+	默认情况，登陆用户的密码校验是springsecurity管理的，需要自定义用户密码认证的接口类，如图:4_自定义UserDetailsService认证流程
+	
+	token认证：当前端登陆成功后会得到一个jwt，每次请求都需要带上jwt来保证登陆有效，如图:4_jwt认证流程
+	用户的相关信息可以在登陆的时候可以保存在redis中，每次得到token后从redis中获取用户数据以提升效率
+
+5、自定义UserDetailService
+	-通过自定义UserDetailService，来替换掉springsecurity的用户验证功能
+	 详见UserDetailsServiceImpl
+	
+	-密码校验，如果不指定PasswordEncoder，登陆流程会在密码校验的地方抛出异常
+		 You have entered a password with no PasswordEncoder. If that is your intent, it should be prefixed with `{noop}`
+	 这里可以指定不使用PasswordEncoder,方式是返回的密码前加上"{id}",id是密码校验的方式类型，如果不需要可以使用"{noop}"
+	 一般不会使用这种方式校验密码，而是自定义一个密码加密校验类
+	 一般使用springsecurity为我们提供的BCyptPasswordEncoder。
+	 
+	只需要使用BcryptPasswordEncoder对象注入到Spring容器中，SpringSecurity就会使用PasswordEncoder来进行密码校验
+	比如:SecurityConfig中使用@Bean注释把BCryptPasswordEncoder实例注入到spring上下文中
+	     在LoginService中模拟从数据库中取道的是加密后的密码，springsecurity会使用注入的加密器对登陆的密码进行加密后再和数据库中的密码对比
+
+6、自定义登陆页面
+	默认情况下springsecurity会提供一个登陆页面，一般开发的时候需要替换这个页面
+	同时还需要让springsecurity对这个访问路径放行，让用户即使没有登陆过也能访问这个页面
+
+	在接口中我们通过AuthenticationManager的authenticate方法来进行用户认证，所以需要在SecurityConfig类中配置，把AuthenticationManager注入容器
+
+	-SecurityConfig.securityFilterChain方法中配置页面资源文件，/user/login等路径不需要验证

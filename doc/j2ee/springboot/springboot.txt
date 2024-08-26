@@ -1267,5 +1267,12 @@
 		create -e /sandro 123,创建一个名为sandro的节点，值是123
 		get /sandro,获取sandro的节点，并输出里面的值
 
+46、Dubbo-admin安装测试
+	dubbo本身并不是一个服务软件。它是一个jar包，能够帮助java程序连接到zookeeper，并利用zookeeper消费，提供服务
+	但是为了让用户更好的管理监控总多的dubbo服务，官方体提供了一个可视化的监控程序dubbo-admin
 	
+	-官网:https://github.com/apache/dubbo-admin
+	 使用git clone源码，或者直接下载源码:git clone https://github.com/apache/dubbo-admin.git
+	 dubbo-admin-server/src/main/resources/application.properties 配置文件修改，主要确认一下zookeeper的地址和端口号
 	
+	 
