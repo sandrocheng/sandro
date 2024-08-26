@@ -82,3 +82,27 @@
 	-退出
 	 详见index.html中logoutform，注意method必须是post,登后，springsecurity会清理session中的数据(SecurityConfig中事件链中配置的)，默认跳转到login页面
 
+7、授权
+	-项目:/projects_j2ee/springsecurity_exam/auth
+	
+	-角色或权限在springsecurity中都是一样的，只是从业务上做了区分
+	 都是指定的字符串标志
+	 比如：
+		/admin/**
+		/users/**
+		角色admin可以访问/admin/下的所有路径
+		角色user可以访问/users/下所有的路径
+	 在实际中不同角色可以有多种权限，使用权限来控制接口的访问	
+	
+	-比如案例中主页的导航栏 Dashboards中有4个菜单分别是
+                            <li class="active"><a th:href="@{/index.html}">Dashboard v.1</a></li>
+                            <li ><a th:href="@{/admin/dashboard_2.html}">Dashboard v.2(admin)</a></li>
+                            <li ><a th:href="@{/user/dashboard_3.html}">Dashboard v.3(user)</a></li>
+                            <li ><a th:href="@{/dashboard_4_1.html}">Dashboard v.4</a></li>	 
+	 其中Dashboard v.2(admin)对应的接口需要admin权限，Dashboard v.3(user)需要user权限，其他的不需要权限
+		
+	-SecurityConfig.securityFilterChain设置接口需要哪些权限字符串，比如admin	
+	 UserDetailsServiceImpl.loadUserByUsername中构建UserDetails的时候设置当前用户的角色字符串，注意需要加"ROLE_"前缀 比如，ROLE_admin 这个角色对应的是admin权限
+
+	-如果不满足权限springsecurity会返回403错误，这是一个无权限错误，可以定制403错误页面，提示用户没有权限。
+	

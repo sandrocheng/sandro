@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: springsecurity_demo
+  thymeleaf:
+    cache: false
