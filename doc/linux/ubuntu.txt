@@ -1,0 +1,22 @@
+1、创建桌面图标
+	1)使用vi或其他文本编辑器创建.desktop文件
+		sudo vi myapp.desktop
+ 
+	2)在文件中输入以下内容：
+		[Desktop Entry]
+		Version=1.0
+		Type=Application
+		Name=MyApp
+		Comment=My Application Description
+		Exec=/path/to/executable
+		Icon=/path/to/icon.png
+		Terminal=false
+		Categories=Utility;
+	 
+	3)保存文件后退出文本编辑器
+	 
+	4)给图标赋予执行权限
+		chmod +x myapp.desktop	
+	5)发布.desktop文件其实就是将它复制到/usr/share/applications目录下。这个目录是Ubuntu系统用来存放所有应用程序桌面图标的地方。
+	6)打开应用程序搜索框，输入.desktop文件中的Name属性值，如果可以搜索到应用程序，那么就表示桌面图标已经生效了。
+	7)如果需要的话，还可以将这个图标拖放到桌面的快速启动栏中，方便以后快速启动。
