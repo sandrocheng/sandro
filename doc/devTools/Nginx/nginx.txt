@@ -1,0 +1,234 @@
+1、简介
+	-Nginx是一款轻量级的Web 服务器/反向代理服务器及电子邮件（IMAP/POP3）代理服务器，在BSD-like 协议下发行。
+	 其特点是占有内存少，并发能力强，事实上nginx的并发能力在同类型的网页服务器中表现较好。
+	 Nginx专为性能优化而开发，性能是其最重要的考量，实现上非常重视效率，能经受高负载的考验，有报告表明能支持高达50000个并发连接数
+
+	-Nginx做为http服务器，有以下几项基本特性
+	 	处理静态文件，索引文件以及自动索引：打开文件描述符缓冲
+	 	无缓存的反响代理
+	 	FastCGI，简单的负载均衡和容错
+		模块化的结构。包括gzipping,byte ranges,chunked responses,以及SSI-filter等filter.
+	 	支持SSL和TLssNI
+	-Nginx支持热部署，它的启动特别容易，并且几乎可以做到7*24小时不间断运行，即使运行数个月也不需要重新启动，还能够在不间断服务的情况下，对软件版本进行升级。
+
+
+2、正向代理
+	Nginx不仅可以做反向代理，实现负载均衡。还能做正向代理来进行上网等功能
+	正向代理：如果把局域网外的internet想向成一个巨大的资源库，则局域网中的客户端要访问internet，则需要通过代理服务器来访问，这种代理服务器就叫做正向代理
+	如图:2_正向代理示意图,在客户端(浏览器)配置代理服务器，通过代理服务器进行互联网访问
+
+3、反向代理
+	反向代理，其是客户端对代理是无感知的，因为客户端不需要任何配置就可以访问
+	我们只需要将请求发送到反向代理服务器，由反向代理服务器去选择目标服务器获取数据后，再返回给服务端，此时反向代理服务器和目标服务器对外就是一个服务器
+	暴露的是代理服务器地址，隐藏了真实服务器IP地址。
+	如图:3_反向代理服务器示意图
+
+4、负载均衡
+	客户端发送多个请求到服务器，服务器处理请求，有一些可能要与数据库通信，服务器处理完毕后，再将结果返回给客户端
+	这种架构对于早期的系统相对单一，并发请求相对较少的情况下是比较合适的，成本也低。但是随着信息数量的不断增长，访问量和数据量的飞速增长，以及系统业务的复杂度增加
+	这种架构会造成服务器响应客户端的请求日益缓慢，并发量特别大的时候，还容易造成服务器直接崩溃。很明显这是由于服务器性能的瓶颈造成的问题，那么该如何解决这种情况呢
+
+	除了升级硬件配置(成本较高)，更常用(成本更低)的方式是增加服务器的数量也就是使用服务器集群的方式来提升性能。
+	将多个请求分别发送给不同的服务器来提升响应速度，将负载分发到不同的服务器，也就是我们所说的负载均衡。
+	如图:4_负载均衡
+
+5、动静分离
+	为了加快网站的解析速度，可以把动态页面和静态页面由不同服务器来解析，加快解析速度，降低原来单个服务器的压力
+	如图:5_动静分离示意图
+
+6、Nginx安装(linux)
+	-Nginx虽然支持windows，但是安装在linux系统中效果更好
+	 官网地址:nginx.org
+	 
+	-安装
+	 sudo apt update
+	 sudo apt install nginx
+	 确认Nginx安装成功并查看安装的版本：nginx -v
+	 启动Nginx服务：sudo systemctl start nginx
+	 （可选）设置Nginx开机自启：sudo systemctl enable nginx
+	 在浏览器中输入你的服务器IP地址，应该能看到Nginx的默认欢迎页面。
+	
+	
+	 /etc/nginx/sites-enabled/default
+	 这个文件配置了默认的nginx监听的端口:80,如果域名绑定当前这个ip，如果想使用nginx进行分流，这个端口号不要改
+
+7、nginx常用的命令
+	sudo systemctl start nginx,启动nginx
+	nginx -v,查看当前版本号
+	sudo systemctl restart nginx，重启nginx	 
+	sudo nginx -s stop,关闭nginx，因为nginx会启动多个进程，直接使用这个命令关闭比kill -9 更方便
+	sudo systemctl status nginx,查看nginx服务状态
+	sudo nginx -s reload，不重启nginx的情况下重新加载nginx的配置文件
+
+8、nginx配置文件
+	-位值：/etc/nginx/nginx.conf
+         这个文件的http代码块中，有两个子文件的导入
+         	include /etc/nginx/conf.d/*.conf; //刚安装的时候，只是个空目录
+                include /etc/nginx/sites-enabled/*; //这里有一个默认配置文件default
+         		/etc/nginx/sites-enabled/default
+         		这个文件配置了默认的nginx监听的端口:80,如果域名绑定当前这个ip，如果想使用nginx进行分流，这个端口号不要改
+
+	 这些配置文件中的内容 “#”开头的都是注释
+
+	-/etc/nginx/nginx.conf，主配置文件主要由三部分组成
+	 	-全局块，从配置文件开始到events块之间的内容，主要会设置一些影响nginx服务器整体运行的配置指令，
+		 	user www-data;  #用户信息
+			worker_processes auto;#子进程数，auto是默认,这是nginx服务器并发处理服务的关键配置，work_processes越大，可以支持的并发处理量也就越多，但是会硬件，软件等设备的制约
+			pid /run/nginx.pid; #进程PID存放路径
+			include /etc/nginx/modules-enabled/*.conf;#配置文件的引入
+ 		 
+		-events块,events块涉及的指令主要影响nginx服务器于用户的网络连接
+			events {
+			        worker_connections 768;#每个worker_processes的连接数，最大值只能设置到1024
+							这部分对nginx的影响较大，应灵活配置，多尝试才能找到最合理的值
+			        # multi_accept on; 是否允许同时接收多个网络连接
+			}
+
+	 	-http块，这算是Nginx服务配置中最频繁的部分，代理，缓存和日志定义等绝大多数功能和第三方模块的配置都在这里
+		 需要注意的是http块包括http全局块和server块
+		 http全局块的指令包括文件引入，MIME-TYPE定义、日志自定义、连接超时时间、单连接请求数上限等。
+		 
+			http {
+			
+			        ##
+			        # Basic Settings
+			        ##
+			
+			        sendfile on;
+			        tcp_nopush on;
+			        tcp_nodelay on;
+			        keepalive_timeout 65;
+			        types_hash_max_size 2048;
+			        # server_tokens off;
+			
+			        # server_names_hash_bucket_size 64;
+			        # server_name_in_redirect off;
+			
+			        include /etc/nginx/mime.types; #MIME-TYPE定义
+			        default_type application/octet-stream;
+			
+			        ##
+			        # SSL Settings
+			        ##
+			
+			        ssl_protocols TLSv1 TLSv1.1 TLSv1.2 TLSv1.3; # Dropping SSLv3, ref: POODLE
+			        ssl_prefer_server_ciphers on;
+			
+			        ##
+			        # Logging Settings
+			        ##
+			
+			        access_log /var/log/nginx/access.log;
+			        error_log /var/log/nginx/error.log;
+			
+			        ##
+			        # Gzip Settings
+			        ##
+			
+			        gzip on;
+			
+			        # gzip_vary on;
+			        # gzip_proxied any;
+			        # gzip_comp_level 6;
+			        # gzip_buffers 16 8k;
+			        # gzip_http_version 1.1;
+			        # gzip_types text/plain text/css application/json application/javascript text/xml application/xml application/xml+rss text/javascript;
+			
+			        ##
+			        # Virtual Host Configs
+			        ##
+				include /etc/nginx/conf.d/*.conf;
+			        include /etc/nginx/sites-enabled/*; #这个目录下的所有文件都被包含进来，默认里面有一个default文件，其内容是一个server块
+								    #默认的default块就是nginx主页的内容文件配置路径	
+								    #可以将多个server块文件分开，每个server块就是一个文件，放到这个目录下便于管理
+			}		
+	 	
+		-http中的server块
+		 server块和虚拟主机有密切的关系，虚拟主机从用户角度看和一台独立的硬件主机是完全一样的，该技术的产生是为了节省互联网服务器硬件成本。
+		 每个http块中可以包含多个server块，每个server块就相当于一个虚拟主机
+		 每个server块也分为全局server块，以及可以同时包含多个location块
+		
+		 全局server块，如：/etc/nginx/sites-enabled/default 这个server块,这个是nginx主页的配置
+		 最常见的配置本虚拟机主机的监听配置和本虚拟主机的名称或IP配置
+			server {
+			        listen 80 default_server; #当前server的端口
+			        listen [::]:80 default_server;
+			
+			        # SSL configuration
+			        #
+			        # listen 443 ssl default_server;
+			        # listen [::]:443 ssl default_server;
+			        #
+			        # Note: You should disable gzip for SSL traffic.
+			        # See: https://bugs.debian.org/773332
+			        #
+			        # Read up on ssl_ciphers to ensure a secure configuration.
+			        # See: https://bugs.debian.org/765782
+			        #
+			        # Self signed certs generated by the ssl-cert package
+			        # Don't use them in a production server!
+			        #
+			        # include snippets/snakeoil.conf;
+			
+			        root /var/www/html;
+			
+			        # Add index.php to the list if you are using PHP
+			        index index.html index.htm index.nginx-debian.html;
+			
+			        server_name _;#主机的名称
+			
+			        location / {
+			                # First attempt to serve request as file, then
+			                # as directory, then fall back to displaying a 404.
+					# 一个server块中可以有多个location块
+					# 这个块的主要作用是基于nginx服务器收到的请求字符串(例如server_name/uri-string),对虚拟主机名称(也可以是ip别名)之外的字符串(例如/uri-string)进行匹配
+					# 对特定的请求进行处理。地址定向、数据缓存和应答控制等功能，还有许多第三方模块的配置也在这里进行
+			                try_files $uri $uri/ =404;
+			        }
+			
+			        # pass PHP scripts to FastCGI server
+			        #
+			        #location ~ \.php$ {
+			        #       include snippets/fastcgi-php.conf;
+			        #
+			        #       # With php-fpm (or other unix sockets):
+			        #       fastcgi_pass unix:/var/run/php/php7.4-fpm.sock;
+			        #       # With php-cgi (or other tcp sockets):
+			        #       fastcgi_pass 127.0.0.1:9000;
+			        #}
+			
+			        # deny access to .htaccess files, if Apache's document root
+			        # concurs with nginx's one
+			        #
+			        #location ~ /\.ht {
+			        #       deny all;
+			        #}
+			}
+
+9、Nginx反向代理配置
+	-目的：申请域名后绑定的是当前电脑的ip，由于当前80端口已经被nginx占用，该域名的请求会先传递到nginx服务上
+	 配置反向代理后会把请求再次转发到对应的web服务端口上，如果是多个域名绑定到这台机器上，通过nginx的反向代理就以转发给不同的服务了
+
+	-准备工作
+	 如果已经申请域名并绑定了当前机器的ip,可以直接进行
+	 如果没有申请域名可以改一下当前机器的host文件/etc/host，配置一个假的域名和当前ip(127.0.0.1)，模拟真实效果
+	 windows host文件:Windows/System32/drivers/etc/HOST
+
+	-nginx反向代理配置
+	 反向代理主要配置的是http块中的server，在nginx主配置文件的http中配置include /etc/nginx/sites-enabled下所有文件
+	 因此在这个目录下新建一个空文件比如site-liaoshistudent
+		server{
+		        listen  80;#监听nginx当前的80端口
+		
+		        location / {
+		                proxy_pass http://www.sandrotest.info:8080;#把该域名的数据转发到对应的端口上
+				#以下是为了保证http请求头信息在转发时不会缺失
+		                proxy_set_header Host $host;
+		                proxy_set_header X-Real-IP $remote_addr;
+		                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+		                proxy_set_header X-Forwarded-Proto $scheme;
+		        }
+		}
+	 配置好以后，默认的default配置可以删掉了，重启服务就可以实现该内容了
+
+	
