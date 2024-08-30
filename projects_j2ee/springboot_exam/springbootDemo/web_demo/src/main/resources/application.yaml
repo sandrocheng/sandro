@@ -2,7 +2,7 @@
 debug: false #设置debug可以看到哪些装配类是生效的
 spring:
   profiles:
-    active: test #不需要写文件的全名，只要写"application-"后面的部分就可以
+    active: @profile.active@
 
 #自定义资源文件路径
 #  mvc:

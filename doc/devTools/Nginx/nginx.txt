@@ -231,4 +231,32 @@
 		}
 	 配置好以后，默认的default配置可以删掉了，重启服务就可以实现该内容了
 
+10、相同域名下多个子域名的反向代理配置
+	-一般来讲一个大的项目会统一申请一个域名，比如 www.sandrotest.info，多个子项目统一使用这个域名，子项目之间使用一级子域名取分
+	 比如：www.sandrotest.info/stu/   和  www.sandrotest.info/test/
+	 这两个项目分别运行在8080端口和8081端口上
+	
+	 nginx可以根据请求的子域名不同而选择不同的端口上的web服务
+	 
+	-nginx配置
+		server{
+		        listen  80;
+		        server_name sandrotest.info;#当前域名，不要写http://www.sandro.info,否则会出错
+		
+		        location ~/stu/ {#这里是正则表达式，因为是“/”结尾，所以访问的时候必须是http://www.sandrotest.info/stu/... 才能定向到对应的地址
+		                proxy_pass http://localhost:8080;#转发到本地的8080端口
+		                proxy_set_header Host $host;
+		                proxy_set_header X-Real-IP $remote_addr;
+		                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+		                proxy_set_header X-Forwarded-Proto $scheme;
+		        }
+		
+		        location ~/test/ {
+		                proxy_pass http://localhost:8081;
+		                proxy_set_header Host $host;
+		                proxy_set_header X-Real-IP $remote_addr;
+		                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+		                proxy_set_header X-Forwarded-Proto $scheme;
+		        }
+		}
 	

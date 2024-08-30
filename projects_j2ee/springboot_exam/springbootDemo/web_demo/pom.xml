@@ -68,4 +68,28 @@
 		</plugins>
 	</build>
 
+
+	<profiles>
+		<!--测试环境属性-->
+		<profile>
+			<id>test</id>
+			<properties>
+				<profile.active>test</profile.active>
+			</properties>
+			<activation><!--默认使用测试环境-->
+				<activeByDefault>true</activeByDefault>
+			</activation>
+		</profile>
+
+		<!--发布环境属性-->
+		<profile>
+			<id>release</id>
+			<properties>
+				<profile.active>release</profile.active>
+			</properties>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+		</profile>
+	</profiles>
 </project>

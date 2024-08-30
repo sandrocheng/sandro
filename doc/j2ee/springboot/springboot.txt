@@ -342,6 +342,44 @@
 		  profiles:
 		    active: release #不需要写文件的全名，只要写"application-"后面的部分就可以		
 
+	-编译期动态指定spring.profiles.active
+	 通常来讲，更好的方式是在maven编译期间通过maven命令手动指定使用哪个application配置文件更好，
+	 这需要在pom.xml中配置几个命令，不同的命令指向不同的配置文件
+	 
+ 	 1)在pom.xml中配置profile
+		<profiles>
+			<!--测试环境属性-->
+			<profile>
+				<id>test</id>
+				<properties>
+					<profile.active>test</profile.active>
+				</properties>
+				<activation><!--默认使用测试环境-->
+					<activeByDefault>true</activeByDefault>
+				</activation>
+			</profile>
+	
+			<!--发布环境属性-->
+			<profile>
+				<id>release</id>
+				<properties>
+					<profile.active>release</profile.active>
+				</properties>
+				<activation>
+					<activeByDefault>false</activeByDefault>
+				</activation>
+			</profile>
+		</profiles>
+	   注意：配置完成以后，如果要在IDEA中运行，需要到maven插件中刷新以下maven，否则属性不会生效，影响后面的执行
+
+	 2)在application.yaml文件中使用maven的自定义属性值
+		spring:
+		  profiles:
+		    active: @profile.active@
+
+	 3)在idea中可以选择Profiles属性来指定使用哪个配置
+	   使用maven命令行编译指定以下profile的id即可:mvn clean package -Prelease
+
 	-使用一个yaml配置文件配置多环境
          yaml可以使用"---"来分隔多个部分，给每个部分命名，第一个部分优先级最高，通过指定spring.profiles.active来激活某个部分的配置信息
 
