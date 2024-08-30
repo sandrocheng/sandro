@@ -259,4 +259,64 @@
 		                proxy_set_header X-Forwarded-Proto $scheme;
 		        }
 		}
-	
+
+11、负载均衡配置
+	-假设服务器上的8081 和 8082 上运行了两个一样的web服务
+	 通过负载均衡的配置让两个端口能够分别处理不同ip的请求达到负载均衡的效果
+	 如果web采用了session保存用户信息，如果用户每次访问的服务会变化，那么就会出现用户信息缺失的情况，比如在第一个服务上登陆后，再登陆第二个服务，就需要重新鉴权
+	 这明显是不合理的，为了满足这种需求，nginx提供了ip散列的算法配置，让每个ip只能固定访问一个服务，这样即达到了负载均衡的效果，也保证了用户每次登陆不同服务带来的问题
+
+	-nginx配置
+
+		http{
+			...
+			#这里配置一个要负载均衡的服务别名
+			upstream testServer{
+		                ip_hash;#使用hash散列算法对访问ip进行分流，这样可以保证如果服务器使用了session，每个用户只能访问固定ip
+		                server  localhost:8081;#配置要分流的服务地址
+		                server  localhost:8082;
+		        }
+			...		
+			server{
+		        	listen  80;
+		        	server_name sandrotest.info;
+		
+		        	location ~/stu/ {
+		               	proxy_pass http://localhost:8080;
+		                	proxy_set_header Host $host;
+		                	proxy_set_header X-Real-IP $remote_addr;
+		                	proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+		                	proxy_set_header X-Forwarded-Proto $scheme;
+		        	}
+		
+		        	location ~/test/ {
+		               		proxy_pass http://testServer;  #使用要分流服务的别名
+		                	proxy_connect_timeout 10;
+		                	proxy_set_header Host $host;
+		                	proxy_set_header X-Real-IP $remote_addr;
+		                	proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+		                	proxy_set_header X-Forwarded-Proto $scheme;
+		        	}
+			}
+			..
+		}	
+		
+	-分流策略
+		1)默认(轮询)，例子中testServer中的多个server会轮询分配到每个端口中
+		2)权重，使用关键子 weight来分配，weight值越大分配的概率越高
+	          这种方式一般用于服务器性能不均的情况，例如：
+			upstream testServer{
+				...
+				server localhost:8081 weight=2;#该端口会比8082多分配一倍的流量
+				server localhost:8082 weight=1;
+			}
+		3)ip_hash
+			案例中就是ip_hash的配置方式
+		4)fair,按照后端服务器的响应时间来分配请求，响应时间越短的优先分配
+                         upstream testServer{
+                                 ...
+                                 server localhost:8081;
+                                 server localhost:8082;
+				 fair;
+                         }
+
