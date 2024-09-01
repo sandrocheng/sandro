@@ -1,0 +1,95 @@
+<!DOCTYPE html >
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>文件上传</title>
+</head>
+<body>
+    <h2>单文件上传</h2>
+    <form action="/doUpload" method="post" enctype="multipart/form-data">
+        <input type="file" name="file"><br>
+        <input type="submit" value="上传">
+    </form>
+    <hr>
+
+
+    <h2>多文件上传</h2>
+    <form action="/doUploadfiles" method="post" enctype="multipart/form-data">
+        <input type="file" name="files" multiple><br>
+    </form>
+    <hr>
+
+    <h2>多文件ajax上传</h2>
+    <a id="btn_openfiles" href="#" >浏览文件</a><!--隐藏默认按钮，通多点击连接触发-->
+    <input id="btn_browseOpen" hidden type="file" name="files" multiple><br>
+
+    <h3>上传的文件：</h3>
+    <div id="uploadfiles" style="overflow: auto">
+
+    </div>
+
+
+
+    <script th:src="@{/js/jquery-2.1.1.js}"></script>
+    <script>
+        function getRandomString(length) {
+            var result = '';
+            var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            var charactersLength = characters.length;
+            for (var i = 0; i < length; i++) {
+                result += characters.charAt(Math.floor(Math.random() * charactersLength));
+            }
+            return result;
+        }
+
+        $(document).ready(function() {
+            $("#btn_openfiles").click(function(){
+                $("#btn_browseOpen").click();
+            });
+
+            //每次change的时候都把当前的文件都上传
+            $("#btn_browseOpen").on('change',function(){
+                var files = $(this).prop('files');
+                for(var i = 0;i<files.length;i++){
+                    var size = files[i].size;
+                    if(size > 1024 * 1024 * 50){//如果文件大于10MB,提示不能上传
+                        $('#uploadfiles').append('<h4>' + files[i].name + ' 文件大小大于10MB,不能上传</h4>');
+                    }else{
+                        var eleId = getRandomString(16);
+                        var idStr = "id='" + eleId + "'";
+                        $('#uploadfiles').append('<h4 ' + idStr + '>' + files[i].name + ' 上传中</h4>');
+
+                        var formData = new FormData();
+                        formData.append('file', files[i]);
+                        formData.append('id', eleId);
+
+                        $.ajax({
+                            url: '/doAjaxUpload',
+                            type: 'POST',
+                            data: formData,
+                            contentType: false, // 防止jQuery修改contentType
+                            processData: false, // 防止jQuery处理data成字符串
+                            success: function(response) {
+                                var jsonObj = JSON.parse(response);
+                                var mId = '#'+jsonObj.metaID;
+                                $(mId).empty();
+                                if(jsonObj.result == 'success'){
+                                    $(mId).append(jsonObj.fileName + '  上传成功');
+                                }else{
+                                    $(mId).append(jsonObj.fileName + '  上传失敗');
+                                }
+
+                            },
+                            error: function(xhr, status, error) {
+                                $('#'+formData.get('id')).empty();
+                                $('#'+formData.get('id')).append(formData.get('file').name + '上传失败');
+                            }
+                        });
+                    }
+
+                }
+            });
+        });
+    </script>
+</body>
+</html>

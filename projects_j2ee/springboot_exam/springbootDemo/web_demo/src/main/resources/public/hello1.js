@@ -1,1 +1,0 @@
-/web_demo/src/main/resources/public/hello.js

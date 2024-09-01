@@ -1,6 +1,15 @@
-#springboot的多环境配置，可以选择激活哪个配置文件
+
+
+
+
+
 debug: false #设置debug可以看到哪些装配类是生效的
 spring:
+  servlet:
+    multipart:
+      max-file-size: 1MB  #单个文件的最大值
+      max-request-size: 999MB #整个请求的最大值
+  #springboot的多环境配置，可以选择激活哪个配置文件
   profiles:
     active: @profile.active@
 

@@ -868,7 +868,28 @@
 	-对应页面，index.html中的“退出”按钮
 	-controller:UserContorller
 	
-33、常见web前端公共资源
+33、springboot web开发-文件上传
+	-详见:/projects_j2ee/springboot_exam/springbootDemo
+
+	-基本方法
+	 使用html标签开发页面元素-page_upload.html
+	 	文件上传，需要form标签,method=post请求
+	 	form标签encType属性值必须是/multipart/form-data值
+	 	form标签中使用input type=file添加上传文件
+	 controller:UploadController
+
+	-设置文件上传的最大值
+	 在application.yaml中配置		
+		spring:
+		  servlet:
+		    multipart:
+		      max-file-size: 1MB  #单个文件的最大值
+		      max-request-size: 999MB #整个请求的最大值
+	 当文件大小超出设定值以后，会抛出异常，可以统一捕获异常来处理错误。
+
+	 
+
+34、常见web前端公共资源
 	-模板：别人写好的，拿过来修改即可
 	-框架：组件，需要手动组合拼接，比如Bootstrap,Layui,semantci-ui，X-admin
 	       使用组件，需要大概了解如下几个部分：
@@ -877,7 +898,7 @@
 		-侧边栏
 		-表单
 
-34、springboot JDBC
+35、springboot JDBC
 	-详见:/projects_j2ee/springboot_exam/spring_jdbc_demo
 
 	-对于数据访问层，无论是SQL(关系型数据库) 还是 NOSQL(非关系型数据库)，Springboot底层都是采用Spring Data的方式进行统一处理。
@@ -928,7 +949,7 @@
 
 	 代码：JDBCController.java  
 	 	 
-35、springboot 整合Druid数据源
+36、springboot 整合Druid数据源
 	-springboot jdbc除了默认的HikariCP数据源，也可以方便的配置其他第三方数据源，比如Druid
 
 	-Druid是阿里巴巴开源平台上的一个数据库连接池的实现，结合了C3P0、DBCP、PROXOOL等DB池的优点，同时加入了日志监控
@@ -975,7 +996,7 @@
 
 	-DruidConfig,实现druid的配置类，托管给spring管理
 
-36、springboot 整合Mybatis
+37、springboot 整合Mybatis
 	-mybatis有专门整合springboot的整合包：MyBatis Spring Boot Starter
 	 maven仓库地址 https://mvnrepository.com/artifact/org.mybatis.spring.boot/mybatis-spring-boot-starter
 	 文档：https://github.com/mybatis/spring-boot-starter
@@ -1000,7 +1021,7 @@
 		    - classpath:mybatis/mapper/*.xml 	 
 	-UserController，调用对应方法
 
-37、springboot 整合springSecurity
+38、springboot 整合springSecurity
 	-springsecurity是针对spring项目的安全框架，也是springboot底层安全模块默认的技术选型，他可以实现强大的web安全控制
 	 相比于另外一个安全框架Shiro，它提供了丰富的功能，社区资源也比Shiro丰富，一般来说中大型的项目都是使用SpringSecurity来做安全框架。
 	 小型项目Shiro的比较多，因为相比于SpringSecurity，Shiro的使用更加简单
@@ -1022,7 +1043,7 @@
 	 根路径/logout,比如 ：localhost:8080/logout
 	 登出后，无法再访问任何资源
 	
-38、springboot 整合 SpringDoc
+39、springboot 整合 SpringDoc
 
 	-前后端分离，松耦合，甚至可以部署在不同的服务器上
 	 vue + springboot是常用的前后端分离的方案
@@ -1059,7 +1080,7 @@
 
 	-创建MyApiController，使用springdoc的注解完善文档
 
-39、springboot 使用异步任务
+40、springboot 使用异步任务
 	-当一些耗时任务执行的时候，为了提升体验，一般使用异步任务执行，springboot本身就提供异步任务接口，便于使用
 	 如果直接开始线程当请求多了以后，线程数太多，系统会不稳定
 
@@ -1081,7 +1102,7 @@
 	 为了支持@Async注解，通常需要配置线程池。
 	 可以通过创建一个配置类（如ExecutorConfig），并在其中定义ThreadPoolTaskExecutor来配置线程池。例如，可以设置核心线程数、最大线程数、队列大小等参数，以满足不同的业务需求。
 
-40、springboot 邮件服务	 
+41、springboot 邮件服务	 
 	-创建springboot项目，依赖 spring web和 java mail sender
 	 详见:/projects_j2ee/springboot_exam/email_demo
 
@@ -1111,7 +1132,7 @@
 	-发送邮件测试
 	 详见 EmailDemoApplicationTests	
 	
-41、springboot  定时任务	 
+42、springboot  定时任务	 
 	-springboot提供的核心任务接口是:TaskScheduler 和 TaskExecutor
 	 注解:@EnableScheduling,@Scheduled
 	-创建springboot项目，不用依赖其他starter
@@ -1152,7 +1173,7 @@
 	
 	-ScheduleService,定时任务
 
-42、spring boot 整合Redis
+43、spring boot 整合Redis
 	-Redis是一个开源的内存数据结构存储系统，它可以用作数据库、缓存和消息中间件。以下是Redis的一些主要用途：
     		缓存：Redis常被用作缓存系统，能够显著提高应用程序的性能。通过将热点数据存储在内存中，Redis可以快速响应读取请求，减少对数据库的直接访问，从而提高了系统的整体性能。
     		消息队列：Redis支持列表和发布/订阅模式，这使得它可以用作消息队列，处理应用程序中的异步消息传递。
@@ -1216,7 +1237,7 @@
 	 可以使用json来序列化数据，需要自定义一个序列化配置类，从源码看如果外部定一个了一个redisTemplate，内部的redisTemplate就会失效
 	 如：RedisConfig中实现了自定义的RedisTemplate
 
-43、分布式理论
+44、分布式理论
 	-分布式系统是若干独立计算机的集合，这些计算机对于用户来说就像单个相关系统
 
 	 分布式系统是由一组通过网络进行通信，为了完成共同的任务而协调工作的计算机节点组成的系统。
@@ -1254,7 +1275,7 @@
 	 当服务越来越多，容量的评估，小服务资源的浪费等问题逐渐显现，此时需增加一个调度中心基于访问压力实时管理集群容量，提高集群利用率。
 	 此时用于提高机器利用率的资源调度和治理中心(SOA,Service Oriented Architecture)是关键。
 
-44、RPC
+45、RPC
 	Remote Procedure Call,远程过程调用，是一种进程间通信方式，他是一种技术的思想，而不是规范。它允许程序调用另一个地址空间(通常指另一个机器上)的过程或者函数，
 	而不用程序员显示编码这个远程调用的细节。即程序员无链是调用本地的还是远程的函数，本质上编写的调用代码基本相同。
 
@@ -1266,7 +1287,7 @@
 
 	RPC的两个核心模块:通讯，序列化
 
-45、Dubbo以及Zookeeper安装
+46、Dubbo以及Zookeeper安装
 	-什么是Dubbo
 	 Apache Dubbo是一款高性能，轻量级的开源java RPC框架，它提供了3个核心能力
 		面向接口的远程方法调用
@@ -1305,7 +1326,7 @@
 		create -e /sandro 123,创建一个名为sandro的节点，值是123
 		get /sandro,获取sandro的节点，并输出里面的值
 
-46、Dubbo-admin安装测试
+47、Dubbo-admin安装测试
 	dubbo本身并不是一个服务软件。它是一个jar包，能够帮助java程序连接到zookeeper，并利用zookeeper消费，提供服务
 	但是为了让用户更好的管理监控总多的dubbo服务，官方体提供了一个可视化的监控程序dubbo-admin
 	
