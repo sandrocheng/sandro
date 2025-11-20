@@ -631,7 +631,7 @@
 		3.在/mnt/目录下，创建对应的挂载文件夹
 	在/etc/fstab文件中添加以上信息
 		UUID=a842f539-0e62-4ef9-966a-3b5685c41216	/mnt/diskB	ext4	defaults  0  0
-	保存后 ，执行 mount -a,该命令会重新把fstab文件中的磁盘挂载一次。挂载后，使用lsblk --fs查询，会看到磁盘已经挂载到对应的挂载点上了
+	保存后 ，执行 mount -a,该命令会重新把fstab文件中的磁盘挂载一次。挂载后，使用lsblk --fs查询，会看到磁盘已经挂载到对应的挂载点上了,磁盘的文件系统类型也可以写auto
 
 3.5 格式化
 	常用的格式化命令是mkfs，其基本语法为mkfs [-V] [-t fstype] [fs-options] device。		
