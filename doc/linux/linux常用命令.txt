@@ -588,6 +588,8 @@
 	df -h：以容易理解的格式输出文件系统大小，例如124KB、345MB、46GB。
 	df -a：显示所有文件系统的磁盘使用情况，包括0块（block）的文件系统。
 	df --total:最后一行会计算以下总计
+	df -T 是 Linux 中用于查看磁盘空间使用情况的命令，可显示文件系统类型、磁盘容量、已用空间、可用空间及挂载点等信息。
+	
 
 3.2 fdisk命令
 	fdisk的主要功能是用来操作管理磁盘的分区信息，一般是根据实际情况对磁盘进行分区挂载使用。
@@ -620,8 +622,18 @@
 	第二步：使用mount命令挂载u盘：sudo mount /dev/sdb1 /mnt/usb（通过fdisk -l可以找到需要挂载的u盘符号一般是 /dev/sbd1）
 	此时可以通过访问 /mnt/usb 浏览u盘文件
 	第三步：完成操作后，使用umount解除挂载：sudo umount /mnt/usb
+	
+3.4 磁盘的自动挂载
+	mount命令只能临时挂载文件系统，如果想要开机自动挂载则需要修改 /etc/fstab(文件系统表)，每次开机系统会读取该文件自动挂载文件系统
+	修改前，要做如下准备:
+		1.UUID,需要使用 lsblk --fs查询,根据挂载点（可以结合fidsk -lu查找）找到对应磁盘的UUID
+		2.磁盘类型，比如ext4或者nfs等
+		3.在/mnt/目录下，创建对应的挂载文件夹
+	在/etc/fstab文件中添加以上信息
+		UUID=a842f539-0e62-4ef9-966a-3b5685c41216	/mnt/diskB	ext4	defaults  0  0
+	保存后 ，执行 mount -a,该命令会重新把fstab文件中的磁盘挂载一次。挂载后，使用lsblk --fs查询，会看到磁盘已经挂载到对应的挂载点上了
 
-3.4 格式化
+3.5 格式化
 	常用的格式化命令是mkfs，其基本语法为mkfs [-V] [-t fstype] [fs-options] device。		
     		ext4：mkfs.ext4 /dev/sdb。
     		ext3：mkfs.ext3 /dev/sdb。
