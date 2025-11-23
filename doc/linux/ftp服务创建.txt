@@ -1,0 +1,20 @@
+linux 创建ftp服务
+
+1、安装ftp服务器 vsftpd
+	apt update
+	apt install vsftpd
+	
+2、配置文件-vsftpd.conf
+	部分系统（如Ubuntu/Debian）该文件在/etc/目录下
+	有的系统（如：CentOS、RHEL等）在/etc/vsftpd/文件夹下
+
+	默认情况下使用启动后，使用用户名和密码即可登陆
+	1)如果想上传文件需要修改
+		write_enable=YES
+	2)如果想增加某个文件夹可以如下配置		
+		local_root=/mnt/diskA
+
+
+3、常用命令
+	systemctl restart vsftpd 重启vsftpd 
+	vsftpd -v  : 查看版本号
