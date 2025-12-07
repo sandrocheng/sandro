@@ -1,0 +1,307 @@
+1、python简介
+	python语言发明者是一位荷兰程序员，Guido van Rossum,人称“龟叔”，也称为python之父。
+	1989年着手开发。
+	1991年，完成第一个python编辑器面向世界发布
+	
+2、python开发工具
+	IDLE，python自带的开发工具，功能不强
+	Pycharm，推荐使用的主流开发工具 JtBrains开发的python工具
+	Sublime Text，跨平台的，轻量级的代码编辑器
+	Eric，一个开源python代码编辑器和继承开发环境，免费使用
+	也可以使用常规的文本编辑器来开发，比如记事本，editplus,notepad++等
+	
+3、python语言特点
+	相对java c c++,简单易学
+	支持面向对象
+	开源
+	具有可移植性，可以在多平台运行
+	具有解释性，不需要编译成二进制代码，可以直接从源代码执行，Python解释器把源代码转为字节码的中间形式，然后再翻译成机器语言运行。
+	高级语言，无需考虑如何管理程序使用内存一类的底层细节
+	可扩展性，如果需要一段关键代码运行的更快或者希望某些算法不公开，可以把部分程序用c语言编写，然后在python程序中使用他们
+	有丰富的库，python标准库很庞大，功能齐全，可以帮助处理各种工作，并且还支持很多第三方库的调用
+	规范的代码，python采用强制缩进的方式，使得代码具有很好的可读性
+	
+4、python windows 开发环境
+	1）官网：https://www.python.org,网站打开比较慢，最好翻墙
+	2）在官网中选择 downloads->windows
+	   安装包每个版本分为两大类，安装包和zip包，
+	   推荐下载3.11.xx 和 3.13.xx
+	  
+	3)使用安装包安装
+		安装的时候最好右键-》使用管理员身份安装
+		安装路径最好不要有中文和空格
+		第一页：勾选Use Admin... 和 Add python.exe to Path，然后点击 Customize installation
+		第二页，全部勾选
+		第三页，勾选关联py文件，创建图标，把python增加到环境变量中，注意安装目录最好不要装在c盘
+		安装成功后，在cmd中 输入python，可以看到当前python版本号，并进入python默认的开发环境中去，输入exit()推出开发环境。
+	
+	4）环境变量，如果使用zip包下载，需要手动配置环境变量
+		python根路径
+		python根路径\Scripts\
+		
+		如果安装了多个python版本，也可以通过这种方式，切换默认的python版本
+
+5、helloworld
+	1)在cmd命令行控制台开发，
+		在python控制台中输入 print("hello world")
+		回车即可执行
+
+	2)在记事本中创建python代码文件，并命名为xx.py	
+		输入 print("hello world")
+		保存后，到对应的目录下执行:python xx.py ,即可运行
+		
+	3）使用IDLE开发python
+		形式和控制台非常类似，可以写语句后回车执行	
+
+6、python自带文档
+	安装时如果选择了安装文档，会有python x.xx module doc 可执行程序，运行，即可看到英文文档
+	ypthon中文文档：https://docs.python.org/zh-cn/3/
+	
+7、python开发注意细节
+	1）python源文件通常以.py为扩展名，但这不是必须的
+	2）python程序语句默认情况是按顺序执行的
+	3）python语言是区分大小写的
+	4）Python程序由一条条语句构成，每条语句后不需要“;”结束，但如过加上";"也不会报错，推荐不加";"
+	
+8、安装PyCharm
+	官网：https://www.jetbrains.com/pycharm/
+	pycharm有两个版本，一个是免费的社区版本，一个是收费的专业版本，目前是合二为一，直接免费，可以使用一个月的专业版，超期自动变成社区版本
+	创建项目，python_projects\HelloPC
+	创建时，在Custom enviroment选项卡中选择 select existing,这里可以选择当前已经安装的python版本，避免pc重新下载其他版本的python
+	
+	在Settings->Editor->File and Code Templates中可以创建文件生成的脚本文件自动添加一些信息，比如
+		# @Version : 1.0
+		# @Author : sandro
+		# @Time :${DATE} ${TIME}
+	
+	常用快捷键
+	1)删除当前行 ，shift + delete
+	2)复制当前行，ctrl+d
+	3)添加和取消注释 ctrl + /
+	4）快速格式化代码：ctrl + alt + L
+	5)查看类的层级关系 ctrl + H
+	
+9、转义字符
+	案例 \python_projects\PythonExam\01_basic_oper\change_char.py 
+	python常用转义符
+	\t ,一个制表位，实现对其功能
+	\n ，换行符
+	\\ ,一个\
+	\" ,一个"	
+	\' ,一个‘
+	\r ,一个回车
+	
+10、注释
+	案例 \python_projects\PythonExam\01_basic_oper\comment.py 
+	
+	# coding:utf-8
+	# 文件的编码格式写法，固定写法:后面是编码格式，默认就是utf-8,也可以改成gbk等其他编码格式，必须放到文件的头部
+
+	# 单行注释	
+	print("你好") # 注释可以放到语句的后面
+	
+	'''
+	多行注释
+	print("hello") 
+	print("hello") 
+	'''
+
+	"""	
+	多行注释
+	print("hello") 
+	print("hello") 
+	"""
+	
+11、python代码规范
+	使用多行注释来注释多行说明
+	如果注释函数或者其中某个步骤，使用单行注释
+	
+	正确的缩进和空白
+		使用一次tab操作实现缩进，默认整体向右边移动，可以使用shift+tab整体向左移动
+		= 号两边习惯性各加一个比较规整
+		变量之间用逗号间隔比较清晰
+		
+12、python的变量
+	变量三要素 ： 类型 + 名称 + 值
+	
+	案例：\python_projects\PythonExam\02_var_oper\01_var_exam.py 	
+	python 不需要指定变量类型，直接指定变量名称，其类型是值的类型
+	可以通过type(变量)来查看该变量的类型
+	
+13、python的格式化输出
+	案例：\python_projects\PythonExam\02_var_oper\02_format_output.py
+	
+	假设输出一下变量
+		age = 18
+		score = 7.5
+		gender='男'
+		name="jack"
+		
+	1）使用%占位符输出			
+			"""
+			这种输出方式比较自由，可以随意指定输出的格式，但是需要注意类型和占位符需要匹配
+			%s,输出字符串
+			%d,输出整数  ，%03d 表示至少输出3位整数，不足添0
+			%f,输出浮点数 ，%.2f，输出时只保留两位小数，不足会添0
+			%% ，输出百分号
+			"""
+			print("个人信息：%s %03d %s %.2f ，占比 30%%" % (name,age,gender,score))
+			-------------------------------------------------------------------
+			输出：个人信息：jack 018 男 7.50 ，占比 30%
+		
+		
+	2）使用format()函数输出
+		这种输出方式，不需要关心变量类型，所有变量都当成字符串拼接后输出
+		format()函数还有更复杂的使用方式，这里只是基本的使用方式
+		print("个人信息：{} {} {} {}".format(name,age,gender,score))
+		-------------------------------------------------------------
+		输出：个人信息：jack 18 男 7.5
+	
+	3）f-strings方式输出(推荐)
+		注意：使用f-string输出，需要在字符串前增加一个 f
+		f-string也有跟复杂的使用方式用于各种场景，这里只是基本方式
+		print(f"使用f-strings 输出个人信息：{name} {age} {gender} {score}")
+		
+		info = f"使用f-strings变量 输出个人信息：{name} {age} {gender} {score}"
+		print(info)
+
+14、python中 “+”的使用
+	案例：\python_projects\PythonExam\02_var_oper\03_add_oper.py
+	
+	特点：
+		1）当左右两边都是数值类型时，做加法运算
+		2）当左右两边都是字符串时，做拼接运算
+	注意：
+	    python里，不允许一个字符串 + 一个数组
+	
+	代码案例：
+		name = "jack"
+		score = 90
+		
+		print(score + 100)  # 190
+		print(name + " hi")  # jack hi
+		print("100" + "100")  # 100100
+		print(34.5 + 100)  # 134.5
+		
+		# TypeError: can only concatenate str (not "int") to str
+		print(name + score)  # 会报错 python里，不允许一个字符串 + 一个数组
+		
+15、数据类型概述
+	案例：\python_projects\PythonExam\02_var_oper\04_type_func.py
+	基本数据类型：
+		整形 int,整数
+		浮点数 float，小数
+		布尔值 bool ，True,False
+		字符串 string,python中字符串可以用"" 也可以用 '' 括起来。
+	
+	基本介绍：
+		1）Python中的变量在使用前都必须赋值，变量赋值以后才会被创建
+		2）变量的类型是变量所指的内存数据的类型，变量本身没有类型
+		
+	数据类型的查看
+		使用type(object)函数查看数据类型
+		object，可以是一个具体的值（字面量），也可以是变量
+		
+		age = 18
+		score = 7.5
+		gender = '男'
+		name = "jack"
+		isPass = True
+		
+		print(f"age的类型是：{type(age)}")  # <class 'int'>
+		print(f"score的类型是：{type(score)}")  # <class 'float'>
+		print(f"gender的类型是： {type(gender)}")  # <class 'str'>
+		print(f"name的类型是： {type(name)}")  # <class 'str'>
+		print(f"isPass的类型是：{type(isPass)}")  # <class 'bool'>
+		print(f"False的类型是： {type(False)}")  # <class 'bool'>
+		
+15、python中的整数
+	案例：\python_projects\PythonExam\02_var_oper\05_int_detail.py
+	
+	1）python的整数可以表示很大的数，可以表示由4300个数字组成的数
+	2）进制写法
+		十进制就是正常的数字写法
+		十六进制，加前缀0x,由0~9 和 A~F组成
+		八进制，加前缀0o,由0~7组成
+		二进制，加前缀0b，由0~1组成
+		
+		print(f"十六进制 0x16 的值是：{0x16}")
+		print(f"十进制 16 的值是：{16}")
+		print(f"八进制 0o16 的值是：{0o16}")
+		print(f"二进制 0b1000 的值是：{0b1000}")
+		
+	3）Python中的整数占用的字节数
+		字节(byte)，计算机中的基本存储单位
+		位(bit)，计算机中的最小存储单位
+		1 byte = 8 bit
+		
+		python的整形是变长的，字节数随着整数的增大而增大，每次增量是4个字节
+		在python中可以通过sys.getsizeof(object)返回对象的大小（字节）
+		数字默认是28个字节
+		n1 = 1
+		n2 = 2 ** 15
+		n3 = 2 ** 128
+		print(f"n1的值 {n1} , 值的大小是{sys.getsizeof(n1)}个字节")
+		print(f"n1的值 {n2} , 值的大小是{sys.getsizeof(n2)}个字节")
+		print(f"n1的值 {n3} , 值的大小是{sys.getsizeof(n3)}个字节")		
+		
+16、python中的浮点类型
+	案例：\python_projects\PythonExam\02_var_oper\06_float_detail
+	
+	float的使用细节：
+		1）十进制数形式，如：5.12，.512
+		2）科学计数法形式：如 5.12e2 5.12E-2
+			科学计数法 e不区分大小写，e后面的数组可以是正整数和负整数
+			正整数 “+”可以省略
+			比如：5.12e2 = 5.12 * 10的2次方
+			通常占用24个字节
+			
+		3）浮点数有大小限制，边界值为
+			max=1.7976931348623157e+308
+			min=2.2250738585072014e-308
+			
+			print(f"浮点数最大值 {sys.float_info.max}")
+			print(f"浮点数最大值 {sys.float_info.min}")
+		
+		4) 浮点类型计算后，存在精度的损失，可以使用Decimal类进行精确计算
+			b = 8.1 / 3
+			print(f"b={b}")  # b=2.6999999999999997
+
+			c = Decimal("8.1") / Decimal("3")
+			print(f"c={c},类型是{type(c)},占用{sys.getsizeof(c)}个字节") # 2.7
+			
+17、python中的布尔类型
+	案例：\python_projects\PythonExam\02_var_oper\07_bool_detail.py
+	1）布尔类型也叫bool类型，取值True 和 False ,占用28个字节
+		isTrue = False
+		print(f"c={isTrue},类型是{type(isTrue)},占用{sys.getsizeof(isTrue)}个字节")
+		
+		a = 100
+		b = 200
+		result = a > b
+		print(f"c={result}")
+		print(f"1>0 : {1>0}")
+		
+	2)使用细节
+		布尔类型只有True和False两个值
+		布尔类型可以和其他数据类型进行比较，比如数字，字符串等。在比较时，Python会将True视为1 False视为0
+			c  = False
+			d = True
+			print(f"c+10={c+10}") #当bool值和数字运算时，False被当成0
+			print(f"d+10={d+10}") #当bool值和数字运算时，True被当成1
+			
+			if c == 0: # 当bool值和数字运算时，False被当成0
+				print("c==0")
+				
+		在python中 ，非0被视为True，0值被视为False
+			if 0:
+				print("haha") # 0被视为False,因此该语句不能输出
+
+			if 1.1:
+				print("heihei")  # 非0被视为True,因此该语句能输出
+				
+			if "":
+				print("呵呵")  # 空串被视为False,因此该语句不能输出
+
+			if "呵呵":
+				print("hehe")  # 非空字符串True,因此该语句能输出
