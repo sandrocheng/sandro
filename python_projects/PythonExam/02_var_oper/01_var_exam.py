@@ -11,10 +11,13 @@ python 不需要指定变量类型，直接指定变量名称，其类型是值�
 print方法可以使用多个参数，print方法会把这写参数整合为一个输出字符串，字符串默认在两个变量之间增加一个空格
 """
 a = 1
-print("a = ", a, ",a的类型是", type(a))
+print("a = ", a, ",a的类型是", type(a),id(a))
+
+a = a + 1 #哪怕只是重新的赋值运算，实际上该变量的地址已经换了
+print("a = ", a, ",a的类型是", type(a),id(a))
 
 a = 1.11
-print("a*2 = ", a * 2, ",a的类型是", type(a))
+print("a*2 = ", a * 2, ",a的类型是", type(a),id(a))
 
 a = "hello"
-print("a = ", a, ",a的类型是", type(a))
+print("a = ", a, ",a的类型是", type(a),id(a))
