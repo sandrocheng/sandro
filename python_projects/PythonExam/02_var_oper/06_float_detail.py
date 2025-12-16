@@ -28,7 +28,7 @@ print(f"浮点数最大值 {sys.float_info.min}")
 
 # 浮点类型计算后，存在精度的损失，可以使用Decimal类进行精确计算
 b = 8.1 / 3
-print(f"b={b}")  # b=2.6999999999999997
+print(f"b={b}, 保留两位小数 b={round(b,2)} , 小数部分四舍五入 {round(b)}")  # b=2.6999999999999997
 
 c = Decimal("8.1") / Decimal("3")
 print(f"c={c},类型是{type(c)},占用{sys.getsizeof(c)}个字节") # 2.7
