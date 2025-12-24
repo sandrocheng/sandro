@@ -1456,7 +1456,8 @@
 		在多重继承中，如果有同名的成员，遵守从左到右的继承优先级（即：写在左边的父类优先级高，右边的低）
 		
 	调用父类的构造器
-		在子类构造器中可以调用父类的构造器，完成子类初始化的工作
+		在子类构造器中可以调用父类的构造器，完成子类初始化的工作，
+		如果子类没有定义自己的构造器，初始化子类对象时，会自动使用父类的构造器
 		语法：super().__init__(参数列表)
 		
 	父类成员的调用
@@ -1524,3 +1525,151 @@
 			基本语法：Union[类型1，类型2，...]
 			比如 a:Union[int, float,str] = 'abc' 表示a变量可以是int,float,str三种类型都可以
 	
+75、多态
+	案例：/python_projects/PythonExam/10_高级面向对象/04_多态.py
+	
+	多态，是不同的对象调用相同的方法，表现出不同的状态，称为多态
+	python中，多态通常作用在继承关系上
+	比如：一个父类，具有多个子类，不同子类调用相同的方法，执行的时候产生不同的状态，就是多态
+	
+	在python面向对象中，子类对象可以传递给父类类型的参数
+		def person_work(person: Person):
+			person.work()
+		
+		teacher = Teacher('李老师')
+		student = Student('小明')
+		person_work(teacher)
+		person_work(student)
+		
+	多态的好处：
+		1）增加了灵活性，不论对象如何变化，使用者都是同一形式取调用
+		2）增加了扩展性，通过继承父类得到的子类，使用者无需更改自己的代码
+	
+	python的多态特点
+		1）python中的函数的参数是没有类型的，所以多态在python上体现的并不是很严谨（比如java这种强类型语言）
+		2）python不要求严格的继承体系，关注的不是对象的类型本身，而是对象是否有要调用的方法/属性
+		
+	isinstance(),用于判断对象是否是某个类或者子类的对象
+	基本语法：isinstance(object,classinfo),classinfo可以是类名，基本类型或者由他们组成的元组
+		
+		num = 9.9
+		print(f"num 是否是str/int/list对象：{isinstance(num,float)}")
+		
+		#也可以判断是否是多个类型的某一种
+		print(f"num 是否是str/int/list对象：{isinstance(num,(str,int,list))}")
+		
+76、魔术方法
+	案例：/python_projects/PythonExam/10_高级面向对象/05_魔术方法.py
+	
+	1）在pythons中所有以双下划线__包起来的方法，统称为Magic Method（魔术方法）。
+	   它是一种特殊的方法，普通方法需要调用，而魔术方法不需要调用就可以自动执行。
+	
+	2)魔术方法在类或者对象的某些事件发生时会自动执行，让类具有神奇的“魔力”。如果希望自己的程序定制特殊功能的类，那么就需要对这些方法重写。
+	
+	3）python中常用的运算符，for循环，以及类操作等都是运行在魔术方法之上的。
+	
+	4）常见的魔术方法:
+		__init__,初始化类对象的时，自动调用
+		__str__(self)，定义为对象转字符串行为，类似java的toString()方法
+			           输出一个对象时，默认输出的是类型名+对象内存地址(父类object的__str__(self)方法)
+					   子类往往重写__str__,用于返回对象的信息
+					   重写后，print(对象)，或str(对象)时，都会自动调用该对象的__str__
+		__eq__(self,other)，定义等号行为：x==y，默认情况下对象的等操作，判断的是对象的地址
+		__lt__(self,other)，定义小括号行为，x<y 
+		__le__(self,other)，定义小于等于号行为
+		__ne__(self,other)，定义不等号行为
+		__gt__(self,other)，定义大于号行为
+		__ge__(self,other)，定义大于等于号的行为
+
+77、class对象和静态方法
+	案例:/python_projects/PythonExam/10_高级面向对象/06_类对象和静态方法.py
+	class对象：
+		类本身也是一个对象，即class对象
+			class Person:
+				name = "defaultName"
+				age = 20
+			
+				def run(self):
+					print("start run")
+			#即使没有对象，也可以直接使用类名读取类对象的属性(默认值)
+			#可以通过这种方式定义静态属性
+			print(f"Person.age : {Person.age},Person.name : {Person.name}")
+			
+			#通过类名调用非静态方法，传递的参数是类对象本身，因此类方法中使用的属性值都是默认值
+			#通过Person实例调用run方法时，是不用传递自己的，通过Person类调用该方法时，就只能传递类对象本身了
+			Person.run(Person)		
+	
+	静态方法：
+		@staticmethod，将方法转换为静态方法
+		静态方法不需要隐式的传递self参数
+		调用时，和java类似，直接使用类名调用即可,也可以通过实例调用(不推荐)
+		
+		class Person:
+		
+			#定义该方法为静态方法
+			@staticmethod
+			def staticRun():
+				print("static run")		
+			
+		#静态方法的调用
+		Person.staticRun()
+
+78、抽象类:
+	案例:/python_projects/PythonExam/10_高级面向对象/07_抽象类.py
+	
+	默认情况下,python不提供抽象类，Python附带一个模块，该模块为定义抽象基类提供了基础，该模块称为:abc
+	当我们需要抽象基类的时候，继承ABC（abc模块的AB类），使用@abstractmenthod声明抽象方法，那么这个类就是抽象类
+	抽象类的价值更多作用是在于设计，是后者设计好以后，让子类继承并实现抽象类的抽象方法
+	注意抽象类是不能实例化的，强行实例化会报错：
+		TypeError: Can't instantiate abstract class Person without an implementation for abstract method 'start_work'
+	
+		from abc import ABC, abstractmethod
+		
+		class Person(ABC):
+			__name = None
+		
+			def __init__(self, name):
+				self.__name = name
+		
+			def get_name(self):
+				return self.__name
+		
+			#定义抽象方法，注意方法体需要pass来占个位，保证解释器能正常执行
+			@abstractmethod
+			def start_work(self):
+				pass
+		
+		class Student(Person):
+			#在IDE中，如果没有实现抽象方法，会有提示，在类上 more_action中，选择实现抽象方法即可
+			def start_work(self):
+				print(f"Student {self.get_name()} start studying")
+		
+			def __init__(self, name):
+				super().__init__(name)
+		
+		class Teacher(Person):
+			def start_work(self):
+				print(f"Teacher {self.get_name()} start classing")
+		
+			def __init__(self, name):
+				super().__init__(name)
+		
+		student = Student("tom")
+		teacher = Teacher("luch")
+		student.start_work()
+		teacher.start_work()	
+		
+	抽象类的使用注意事项：
+		1）抽象类不能实例化
+		2）抽象类中至少要有一个抽象方法
+		3）抽象类中可以有普通方法，静态方法。
+		4）如果一个类继承了一个抽象类，它必须实现抽象类中的所有抽象方法，否则它依然是一个抽象类
+
+79、模板设计模式
+	案例:/python_projects/PythonExam/10_高级面向对象/08_模板设计模式.py
+	
+	抽象类体现的就是一种模板模式的设计，抽象类作为多个子类的通用模板，子类在抽象类的基础上进行扩展，改造，但子类总体上会保留抽象类的行为方式
+	
+	模板设计模式能解决的问题
+		1）当功能内部一部分实现是确定的，另一部分的实现是不确定的。这时可以把不确定的暴露出去，让子类去实现
+		2）编写一个抽象父类，父类提供了多个子类的通用方法，并把一个或多个方法留给子类实现，就是一种模板模式
