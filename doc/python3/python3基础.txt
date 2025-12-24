@@ -1673,3 +1673,159 @@
 	模板设计模式能解决的问题
 		1）当功能内部一部分实现是确定的，另一部分的实现是不确定的。这时可以把不确定的暴露出去，让子类去实现
 		2）编写一个抽象父类，父类提供了多个子类的通用方法，并把一个或多个方法留给子类实现，就是一种模板模式
+		
+80、错误和异常
+	案例:/python_projects/PythonExam/11_错误和异常/01_异常捕获.py
+	
+	python有两种不同错误：语法错误和异常
+	
+	SyntaxError,语法错误又称句法错误/解析错误，是学习python时最常见的错误,语法错误通常在IDE中会有明确的红线提示
+	
+	exception，程序使用了正确的语法，执行时仍可能触发错误，执行时检测得到的错误称为异常
+	
+	异常或者语法错误出现的时候，程序会退出，后面的执行语句无法继续执行
+	
+	二者区别：
+		语法错误在执行前，编译器就能检测到，而异常时执行期间检测到的
+		语法错误SyntaxError实际上时异常exception的子类
+	
+	异常处理机制：捕获异常
+		对异常进行捕获，可以保证程序继续执行
+		语句：
+			try:
+				语句...
+			except Excetpion as e:
+				捕获异常后的语句...
+				
+		例如：
+			num_1 = 10
+			num_2 = 0
+			try:
+				x = num_1 / num_2
+			except Exception as e:
+				print(e)
+			print("结束")
+
+81、内置异常
+	案例：/python_projects/PythonExam/11_错误和异常/02_内置异常.py
+	
+	异常体系有层级关系，层级如下
+		BaseException
+			-BaseExceptionGroup
+			-GeneratorExit
+			-KyeboardInterrupt
+			-SystemExit
+			-Exception
+				-ArithmeticeError
+					-FloatingPointError
+					-OverflowError
+					-ZeroDivisionError
+				-AssertionError
+				-AttributeError
+				-BufferError
+				-EOFError
+				-ExceptionGroup[BaseExcepitonGroup]
+				-importError
+					-ModuleNotFoundError
+				-LookupError
+					-IndexError
+					-KetError
+				-MemoryError
+				-NameError
+				-OSError
+					-BlockingIOError
+					-ChildProcessError
+					-ConnectionError
+						-BrokenPipeError
+						-ConnectionAbortedError
+						-ConnectionRefusedError
+						-ConnectionResetError
+					-FileExistsError
+					-FileNotFoundError
+					InterruptedError
+					-IsADirectoryError
+					-NotAdirectoryError
+					-PermissionError
+					-ProcessLookupError
+					-TimeoutError
+				-ReferenceError
+				-RuntimeError
+					-NotImplementedError
+					-RecursionError
+				-StopAsyncIteration
+				-StopIteration
+				-SyntaxError
+					-IndentationError
+						-TabError
+				-SystemError
+				-TypeError
+				-ValueError
+					-UnicodeError
+					-UnicodeEncodeError
+					-UnicodeTranslateError
+				-Warning
+					-BytesWarning
+					-DeprecationWarning
+					-EncodingWarning
+					-FutrueWarning
+					-ImportWarning
+					-PendingDeprecationWarning
+					-ResourceWarning
+					-RuntimeWarning
+					-SyntaxWarning
+					-UnicodeWarning
+					-UserWarning
+					
+		
+82、异常处理
+	案例:/python_projects/PythonExam/11_错误和异常/03_异常处理.py
+	
+	异常处理就是当异常发生时，对异常处理的方式
+	语法：	
+		try:
+			可能出现异常的代码
+		except [异常1 as 别名]:
+			异常1发生时，对异常处理的代码
+		except [异常2 as 别名]:
+			异常2发生时，对异常处理的代码	
+		...
+		[else:]
+			没有发生异常，执行的代码
+		[finally:]
+			不管有没有异常，都要执行的代码，比如关闭资源
+	
+	注意事项和使用细节
+		1）如果异常发生了，那么异常后面的代码都不会执行，直接进入到except字句
+		2）如果异常没有发生，则顺序执行try的代码块，不会进入到except字句
+		3）如果希望没有发生异常的时候，要执行某段代码，则使用else字句
+		4）如果希望不管有没有异常发生都要执行的代码，可以放到finally中执行
+		5）可以有多个except字句，捕获不同的异常进行不同的业务处理，如果发生异常只会匹配一个except，建议把具体的异常放在前面，基类异常放在后面
+		   这样当具体异常没有捕获到的时候，再由基类捕获
+		6) 一个except也可以捕获多个异常,当某一个异常被匹配的时候就会被捕获
+			例如：
+				try:
+					...
+				except (ValueError,ZeroDivisionError) as e:
+					...
+83、主动抛出异常
+	案例:/python_projects/PythonExam/11_错误和异常/04_主动抛出异常.py
+	
+	raise语句支持强制触发异常，异常的类型可以根据需要指定
+		def handle_data(_list):
+			if not isinstance(_list, list):
+				raise TypeError(f'需要一个list 参数是：{type(_list)}')
+		
+			print("list处理完毕")
+		
+		try:
+			handle_data([1, 2, 3])
+			handle_data(1)
+		except Exception as e:
+			print(f"有异常：{type(e)},异常信息：{e}")
+		   
+84、异常的传递
+	案例:/python_projects/PythonExam/11_错误和异常/05_异常的传递.py
+	
+	基本介绍：
+		如果一个异常发生了，但是没有捕获这个异常，那么这个异常就会传递给调用者处理
+		如果所有调用者都没有处理，最终会由系统处理
