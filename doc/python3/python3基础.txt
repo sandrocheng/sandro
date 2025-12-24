@@ -1829,3 +1829,155 @@
 	基本介绍：
 		如果一个异常发生了，但是没有捕获这个异常，那么这个异常就会传递给调用者处理
 		如果所有调用者都没有处理，最终会由系统处理
+
+85、自定义异常
+	案例:/python_projects/PythonExam/11_错误和异常/06_自定义异常.py
+	
+	1）程序可以通过创建新的异常类命名自己的异常，不论是直接还是间接的方式，异常都应该从Exception派生
+	2）异常类通常应该保持简单，它往往只提供一些属性，允许相应的异常处理程序提取有关错误的信息
+	3）大多数异常命名都以"Error"结尾，类似标注异常的命名，但是需要注意不要使用内置异常名
+	
+86、文件
+	输入与输出：
+		输入：数据从数据源(文件)到程序(内存)
+		输出：数据从程序（内存）到数据源（文件）
+		
+	I/O类型
+		python用于处理各种I/O类型，主要的I/O类型分别为：文本I/O，二进制I/O，也分别对应处理文件对象类别：文本文件，二进制文件
+		在处理不同类型的文件时，需要用对应的方式打开处理
+		
+	文件编码：
+		文件编码也称为字符编码，它规定了字符如何将内容翻译成二进制，以及如何将二进制翻译成可识别的内容
+		计算机中常见的编码
+			-UTF-8,使用的最多，是现代事实上的标准
+			-GBK
+			-BIG5
+			-GB2312
+		不同的编码，将内容翻译成二进制也是不同的，加入文件是utf-8编码保存的，以big5编码方式打开，就会出现乱码
+
+87、常用的文件操作
+	案例：/python_projects/PythonExam/12_文件/01_常用的文件操作.py
+	
+	1)open(file,mode='r',buffering=1,encoding=None,errors=None,newline=None,closefd=True,opener=None)
+	  open函数打开并返回一个file对象，如果该文件不能打开，则引发OSError
+	  file是文件的路径字符串（绝对路径/或者相对当前工作目录的路径）
+	  mode是文件打开的模式
+		r,读取（默认）
+		w,写入，并先截断文件,也就是清空文件内容
+		x,排他性创建，如果文件已经存在则失败
+		a,打开文件用于写入，如果文件存在则在末尾追加
+		b，二进制模式
+		t,文本模式
+		+，打开用于更新（读取与写入）
+		可以多个模式组合，比如 r+,表示打开文件并进行读写
+		mode参数是可选的，默认值是r
+		在模式后面加上一个b，表示用二进制的方式打开，二进制模式的数据是以bytes对象的形式读写的，在二进制模式下打开文件时不能指定encoding
+	  encoding,通常情况下文件是以text mode打开的，也就是说从文件中读写字符串，这些字符串以特定的encoding编码的
+			 如果么有指定encoding，默认的是与平台有关通常是utf-8,可以强制指定encoding="utf-8"来避免跨平台导致的乱码问题。
+	  buffering是可选参数，用于设置缓冲策略
+	
+	  open方法，最常用的两个位置参数，和一个关键字参数open(filename,mode,encoding=None)
+	  
+	  如果要创建一个文件只需要以mode="w"形式打开即可，如果文件不存在，系统会自动创建该文件
+	
+	2)f.read(size),可用于读取文件内容，他会读取一些数据，并返回字符串(文本模式)，或字节串对象(二进制模式下)。
+	  size是可选参数，省略size,或者size为负数时，读取并返回整个文件的内容
+	  
+	3)f.readline(),从文件中单行读取；字符串末尾保留换行符(\n)
+	4)如需以列表形式读取文件中的所有行，可以用list(f),或f.readlines()
+	5)	for line in f:
+			print(line,end='')
+			
+        从文件中读取多行时，可以循环遍历整个文件对象，这种操作能高效利用内存，快速 
+	6）f.write(string),把一个字符串写入文件，并返回写入的字符数
+	7）f.flush(),刷新流的写入缓冲区
+	8）f.close(),刷新并关闭流，和java一样
+	9）with open() as f:
+		子句....
+		
+       在处理文件对象时，最好使用with关键字。优点是子句体结束后，文件会自动关闭
+	   
+	10）删除文件：os.remove(path,*,dif_fd=None)
+		#判断文件是否存在
+	    if os.path.exists("../Files/temp.txt"):
+			os.remove("../Files/temp.txt")
+		else:
+			print("文件不存在")
+
+88、目录的操作
+	案例：/python_projects/PythonExam/12_文件/02_目录操作.py
+	
+	1）os.path.isdir(path):判断路径是否是一个目录
+	2）os.makedirs(path),创建目录，可以是多级目录
+	3）os.path.abspath(path)，根据相对路径获取绝对路径
+	4）os.removedirs(path)，删除目录
+	5) os.listdir(path)，返回当前目录下的所有文件/目录名称组成的列表
+	
+89、获取文件相关信息：
+	案例：/python_projects/PythonExam/12_文件/03_获取文件相关信息.py
+	
+	1）os.stat(path,*,dif_fd=None,follow_symlinks=True)
+	   获取文件或者文件描述符状态。在所给路径上执行等效于stat()系统调用的操作，
+	   path可以是字符串类型，或（直接传入，或通过PathLike接口间接传入的）bytes类型，或打开的文件描述符。
+	   返回一个stat_result对象
+	2）os.stat_result的属性
+		st_size,文件大小(单位字节)，文件可以是常规文件或者符号链接。
+		        符号链接的大小是它包含的路径长度，不包括末尾的空字节
+		st_atime,最近的访问时间，以秒为单位
+		st_mtime,最近的修改时间，以秒为单位
+		st_ctime:在unix上表示最近的元数据更改时间，在windows上表示创建时间，以秒为单位
+
+90、文件操作的注意事项和细节
+	1）f.flush(),刷新流的写入缓冲区到文件
+	   f.write(),和java一样，只是把数据保存到了缓冲区，并没有实际写入文件，flush之后才真正的保存了数据
+	2）f.close(),和java一样，刷新并关闭流，它内置了f.flush的功能
+	3）with open() as f: 在处理文件对象时，with子句结束后，文件会自动关闭
+	4）关于目录分隔符:
+		在windows下 / 和 //都可以，比如：d:/a/b/c 或者 c://a//b//c
+		linux和unix下，分割符都是/ 比如：root/home/a.text 
+		所以最好统一使用 / 来做分隔符
+		
+91、文件拷贝
+	案例：/python_projects/PythonExam/12_文件/04_文件拷贝.py
+	
+	源文件最好是以二进制文件的方式打开
+		srcPath = "../Files/read.txt"
+		dstPath = "../Files/read_bak.txt"
+		
+		#以二进制读模式打开源文件
+		with open(srcPath, "rb") as f:
+			data = f.read()
+			# 以二进制写模式打目标文件
+			with open(dstPath, "wb") as f:
+				f.write(data)
+				
+	这种方式一次性把所有数据读取出来，保存到文件，有可能造成内存压力，最好是分批读取保存
+	
+		#以二进制读模式打开源文件，分多次读取并拷贝
+		with open(srcPath, "rb") as f_src:
+			with open(dstPath, "wb") as f_dst:
+				for data in f_src:
+					f_dst.write(data)
+		print("分批拷贝完成")
+	
+92、	使用递归方法遍历目录
+	案例:/python_projects/PythonExam/12_文件/05_递归方法完成目录的遍历.py
+	
+		def printFiles(path_list:list, dir:str)->None:
+			for filePath in path_list:
+				if os.path.isdir(dir +'/'+ filePath):
+					sublist = os.listdir(dir +'/'+ filePath)
+					printFiles(sublist,dir +'/'+ filePath)
+				else:
+					print(f"{dir}/{filePath}")
+		
+		path = "../"
+		absPath = os.path.abspath(path)
+		print(absPath)
+		p_list = os.listdir(absPath)
+		print(p_list)
+		print("开始遍历-------------")
+		printFiles(p_list,absPath)	
+	
+	
+	
