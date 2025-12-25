@@ -1979,5 +1979,224 @@
 		print("开始遍历-------------")
 		printFiles(p_list,absPath)	
 	
+93、多进程并发操作
+	案例:/python_projects/PythonExam/13_多任务并发操作/01_多进程并发操作.py
 	
+	Python中通过多进程可以利用CPU的多核优势，计算密集型操作使用于多进程
+	
+	程序启动后，默认执行的进程叫做主进程
+	主进程启动后可以再启动其他的进程执行并发任务，这些进程是主进程的子进程
+	
+	进程的创建
+		1）导入进程包
+			import multiprocessing
+		
+		2)创建进程对象
+			sub_process = multiprocessing.Process(target=任务名)
+			target:执行的目标任务名，这里指的是函数名
+			name:进程名，一般不用设置
+				比如：sub_process.name="xxx"
+				在进程中可以通过multiprocessing.current_process().name 获取当前进程的名字
+			group:进程组，目前只能使用None
+			
+		3)启动进程执行任务
+			sub_process.start()
+	
+	获取进程中当前的线程：threading.enumerate()，返回的是线程列表
+	cpu个数：multiprocessing.cpu_count()，当需要创建多进程执行任务的时候，可以判断以下cpu个数，推荐不要超过cpu个数 - 1个进程
+	
+	注意：
+		多进程下，必须要判断__name__是否是主程序，子程序是__mp_main__，否则系统会报错
+		linux系统是通过fork来创建进程的，而windows是通过spawn来创建子进程的，mac系统两种都支持，unix部分系统是通过forkserver来创建子进程
+		python3.8默认使用spawn来创建子进程
+		由于系统创建子进程的机制不同，代码的实现上也不太一样，总之通过判断 __name__可以最大化兼容各种系统
+		
+
+94、执行带有参数的进程
+	案例:/python_projects/PythonExam/13_多任务并发操作/02_启动带有参数的进程.py
+	
+	默认情况下启动进程只能指定函数名，如果有参数要传递，需要通过multiprocessing.Process以下两种参数进行传参
+		args,以元组的方式给执行任务传参，顺序和数量要和被调函数形参的顺序和数量一致
+			例如：sub_process = multiprocessing.Process(target=任务名,args=(obj1,obj2....))
+		kwargs，以字典方式给执行任务传参，参数的key要和被调函数的参数名一致
+			例如：sub_process = multiprocessing.Process(target=任务名,kwargs={k1：v1,k2:v2....})
+			
+	注意：对于线程锁，文件描述符等特殊对象fork模式创建子进程是可以传递这些参数的
+	     而对于spawn和forkserver来说，是无法传递这种对象数据的，需要在子进程自己重新创建
+		 进程锁都可以传递
+
+95、进程编号
+	案例:/python_projects/PythonExam/13_多任务并发操作/03_进程编号.py
+	
+	当程序进程的数量越来越多的时候，如果没办法区分主进程和子进程，那么就无法有效的进行管理
+	
+	获取进程编号的两种方式
+		1）获取当前进程的编号
+			os.getpid()
+		2）获取当前进程父进程的编号	
+			os.getppid()
+96、守护进程
+	案例：/python_projects/PythonExam/13_多任务并发操作/04_守护进程.py
+	
+	默认情况下主进程会等待所有子进程执行结束以后再结束
+	
+	如果希望主进程结束，子进程也自动销毁，可以把子进程设置为守护进程，这样当主进程的代码执行完以后，子进程即使正在运行，也会被销毁
+	守护进程是一个子进程，通过设置子进程的daemon = True,来启动
+
+97、进程的join方法
+	案例：/python_projects/PythonExam/13_多任务并发操作/05_进程的join方法.py
+	子进程启动后，可以执行join方法，主进程会在join的地方停住，直到子进程完成以后再继续
+	
+	注意：
+	如果是批量创建进程，可以先把进程对象放到一个列表里，等进程全部都start成功以后，在统一join
+	这样既可以保证多个进程并发执行，也能保证所有进程都完成后，主进程才继续执行后面的任务
+
+98、自定义进程类
+	案例：/python_projects/PythonExam/13_多任务并发操作/06_自定义进程类.py
+	
+	创建子进程的时候也可以实现一个进程类的子类，将要做的事情放到run方法中去，类似java 线程类
+	import multiprocessing
+	
+	class MySubProcess(multiprocessing.Process):
+		def run(self):
+			#通过_args获取参数
+			print(f"进程开始执行:{self._args}")
+	
+	if __name__ == '__main__':
+		myProcess = MySubProcess(args=('xxx',))
+		myProcess.start()
+
+99、进程之间的数据共享
+	进程之间默认是相互独立的，当需要在进程之间共享数据的时候，python提供了4种方式
+	
+	1）shared memory
+	   案例：python_projects/PythonExam/13_多任务并发操作/07_进程的数据共享_sharedMemory.py
+	   
+	   shared memroy是通过c层的数据类型进行共享，因此需要用到Value或者Array类
+	   Value对象初始化需要用到一些c层类型的映射关系
+		有符号类型
+			'c':ctypes.c_char #不能放中文
+			'b':ctypes.c_byte
+			'h':ctypes.c_short
+			'i':ctypes_c_int
+			'l':ctypes.c_long
+			'f':ctypes.c_float
+			'd':ctypes.c_double
+			'u':ctypes.c_wchar #中文 + 基本字符
+		无符号类型
+			'B':ctypes.c_ubyte
+			'H':ctypes.c_ushort
+			'I':ctypes_c_uint
+			'L':ctypes.c_ulong
+		
+		比如：num = Value('i',666),#共享一个int类型的数据,并赋值
+			 value_1=Value('c')#共享一个char类型的数据，不赋值
+			 
+	   Array类
+	    需要先指定元素类型，列表中的所有元素，必须是指定类型的
+		在一旦定义好之后，元素的个数不能变化
+		如：arr = multiprocessing.Array('i', [1,2,3,4])，这里元素的类型是int类型，因此所有元素必须是int类型的
+		   arr初始化之后，元素中的数据就只能修改不能增删
+		   
+		   通过arr[:]来输出所有元素的内容
+		   print(f"arr = {arr[:]}")
+	2）基于server process来共享数据
+		案例：/python_projects/PythonExam/13_多任务并发操作/08_进程的数据共享_Serverprocess.py
+		
+		通过Manager来共享server 进程的数据，它比shared memory增加了列表和字典而且不限制元素内容和个数，使用起来相对方便
+	
+	3）基于进程通信来共享数据
+		案例:/python_projects/PythonExam/13_多任务并发操作/09_进程的数据共享_数据通信.py
+		
+		multiprocessing提供了两种进程间通信方式
+		队列，queue：队列是单项传递数据的，一方发送数据，另一方获取数据
+			#队列的创建
+			queue = multiprocessing.Queue()
+			
+			#向队列添加元素
+			queue.put(obj)
+			
+			#获取队列数据
+				#默认 block=True,当队列没有数据的时候，会阻塞
+				#block=False,不会阻塞，但是如果没有数据会抛出异常
+				queue.get(block=False)
+			
+			#判断队列是否为空：queue.empty()
+		
+		管道，pipe:管道可以双向的发送数据，pipe通常用于两个进程之间的数据通信，如果涉及到多个进程通常使用manager
+			#管道创建后会返回两个管道，分别用于主进程的数据收发，和子进程的数据收发
+			p_pipe,c_pipe = multiprocessing.Pipe()
+			
+			发送数据：p_pipe.send(obj)
+			接受数据：info = p_pipe.recv()#阻塞方法
+		
+100、进程锁
+	案例:/python_projects/PythonExam/13_多任务并发操作/10_进程锁.py
+	
+	多个进程强占式去做某些操作的时候，为防止并发问题，可以通过进程锁来避免
+	注意：进程锁可以在进程启动的时候通过参数传递
+	
+	锁的初始化：lock = multiprocessing.RLock()
+	上锁：lock.acquire()
+	释放锁：lock.release()
+	
+101、进程池
+	
+	无限制的创建进程完成任务，有可能造成内存压力，效率也不一定会有提升，比较好的方式是使用进程池
+	
+	进程池中的进程是循环利用，如果进程不够，进程池会自动创建进程，如果进程满了，任务会等待，直到有进程空闲
+	
+	进程池创建执行独立任务
+		案例：/python_projects/PythonExam/13_多任务并发操作/11_进程池独立任务.py
+		with ProcessPoolExecutor(2) as pool:
+			for i in range(5):
+				pool.submit(fun,i)#第一个参数是函数名，后面按照顺序填入函数的实参
+			#等待进程池中所有进程都执行完毕，再继续执行
+			pool.shutdown(True)
+		
+	进程池回调
+		案例：/python_projects/PythonExam/13_多任务并发操作/12_进程池任务回调.py
+		如果进程池的任务需要把数据回调给主进程，需要设置一个回调接口
+			p = pool.submit(task,i)
+			p.add_done_collback(callback函数名)
+		
+		#注意，因为要回调给主进程，doTask应该有return,没有return，返回的是None
+		def doTask(_id):
+			print(f"{os.getpid()}进程开始执行{_id}号任务")
+			time.sleep(random.random() + 0.1)
+			return random.randint(1,100)
+		
+		#任务结束时的回调方法，_result中封装了返回值
+		def taskDone(_result):
+			print(f"任务完成，结果是：{_result.result()} {multiprocessing.current_process().name}")
+		
+		if __name__ == '__main__':
+			pool = ProcessPoolExecutor(max_workers=4)
+			for i in range(10):
+				p = pool.submit(doTask, i)
+				p.add_done_callback(taskDone)#注意：回调函数是在主进程中调用的
+			pool.shutdown(True)
+		
+	进程池中使用进程锁
+		案例：/python_projects/PythonExam/13_多任务并发操作/13_在进程池中使用锁.py
+		
+		在进程池中要使用进程锁，需要基于Manager中的Lock和RLock来实现
+		
+		def fun(d,_lock):
+			for i in range(10000):
+				with _lock:
+					d['num'] += 1
+			print(f"{os.getpid()} 任务完成")
+		
+		if __name__ == '__main__':
+			pool = ProcessPoolExecutor(max_workers=4)
+			lock = multiprocessing.Manager().RLock()
+			with multiprocessing.Manager() as manager:
+				d = manager.dict()
+				d['num'] = 0
+				for i in range(10):
+					pool.submit(fun, d,lock)
+				pool.shutdown(True)
+				print(f"所有任务完成，结果是{d['num']}")		
+		
 	
