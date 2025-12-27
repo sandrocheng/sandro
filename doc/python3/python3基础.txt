@@ -1665,14 +1665,20 @@
 		3）抽象类中可以有普通方法，静态方法。
 		4）如果一个类继承了一个抽象类，它必须实现抽象类中的所有抽象方法，否则它依然是一个抽象类
 
-79、模板设计模式
-	案例:/python_projects/PythonExam/10_高级面向对象/08_模板设计模式.py
+79、常用的模式
+	模板设计模式
+		案例:/python_projects/PythonExam/10_高级面向对象/08_模板设计模式.py
 	
-	抽象类体现的就是一种模板模式的设计，抽象类作为多个子类的通用模板，子类在抽象类的基础上进行扩展，改造，但子类总体上会保留抽象类的行为方式
+		抽象类体现的就是一种模板模式的设计，抽象类作为多个子类的通用模板，子类在抽象类的基础上进行扩展，改造，但子类总体上会保留抽象类的行为方式
 	
-	模板设计模式能解决的问题
-		1）当功能内部一部分实现是确定的，另一部分的实现是不确定的。这时可以把不确定的暴露出去，让子类去实现
-		2）编写一个抽象父类，父类提供了多个子类的通用方法，并把一个或多个方法留给子类实现，就是一种模板模式
+		模板设计模式能解决的问题
+			1）当功能内部一部分实现是确定的，另一部分的实现是不确定的。这时可以把不确定的暴露出去，让子类去实现
+			2）编写一个抽象父类，父类提供了多个子类的通用方法，并把一个或多个方法留给子类实现，就是一种模板模式
+	
+	单例设计模式
+		案例:/python_projects/PythonExam/10_高级面向对象/09_单例模式.py
+		python使用 __new__创建对象，因此需要对这个函数进行重写，让对象只创建一次
+		__init__方法实际上每次构造的时候都会被执行
 		
 80、错误和异常
 	案例:/python_projects/PythonExam/11_错误和异常/01_异常捕获.py
@@ -2198,5 +2204,168 @@
 					pool.submit(fun, d,lock)
 				pool.shutdown(True)
 				print(f"所有任务完成，结果是{d['num']}")		
-		
+
+102、GIL锁
+	GIL锁，全局解释器锁(Global Interpreter Lock),是CPython解释器中特有的一种锁机制，让一个进程同一个时刻只能有一个线程被CPU调用
+	也就是说python中线程是不能并行执行的，只能并发执行，因此python中多线程是不能支持多核CPU的。
 	
+	如果程序想利用计算机的多核优势，让CPU同时处理一些任务，适合用多进程开发(开销会比较大)
+	如果不想用多核优势，可以考虑使用多线程开发，python中线程是不支持多核CPU的
+	
+	常见的程序开发中，计算操作需要使用CPU多核优势，IO操作不需要利用多核优势
+		计算密集型，用多进程，例如：大量的数据计算
+		IO密集型，用多线程，比如读写文件/数据库，网络数据传输等
+	
+103、多线程开发
+	案例:/python_projects/PythonExam/13_多任务并发操作/14_python多线程开发.py
+	
+	进程是分配资源的最小单位，一旦创建一个进程就会分配一定的资源。
+	线程是程序执行的最小单位，实际上进程只负责分配资源，而利用这些资源执行程序的是线程。
+	也就是说进程是线程的容器，一个进程最少有一个线程来负责执行程序，同时线程不拥有系统资源，只需要一点在运行中必须的资源。
+	但是线程可以和其他同属于一个进程的线程共享进程的全部资源。
+	
+	线程的创建
+		1)导入threading模块
+		2）通过线程类创建线程对象
+			t = threading.Thread(target=任务名)
+		3)线程启动
+			t.start()，#当前线程已经准备完毕，等待CPU调度
+		线程参数：
+			target，执行的目标任务名，这里指的是函数名
+			name，线程名，一般不用设置
+			gruop，线程组，目前只能使用None
+			
+	t.join(),当前线等待子线程结束后再继续执行
+		如果批量创建线程可以都start以后再一起join，这样即能保证多个线程可以同时运行，也可以保证所有线程都执行完毕后再继续执行
+
+			
+104、启动线程传递参数
+	案例：/python_projects/PythonExam/13_多任务并发操作/15_python线程传递参数.py
+	
+	创建线程时可以通过如下两个参数传递数据
+		1）args,以元组的方式给执行任务传参，顺序和数量要和被调函数形参的顺序和数量一致
+		2）kwargs，以字典方式给执行任务传参，参数的key要和被调函数的参数名一致
+		
+	通过自定义线程类，来创建线程,并传递参数
+		自定义线程类必须要继承threading.Thread，并且实现run方法
+			class Mythread(threading.Thread):
+				def run(self):
+					#通过_args参数元组获取数据
+					for i in range(self._args[0]):
+						time.sleep(0.5)
+						print(f"fun3 : {i}")
+					....
+				t = Mythread(args=(3,))
+		
+105、主线程和子线程的结束顺序
+	案例:/python_projects/PythonExam/13_多任务并发操作/16_主线程和子线程的结束顺序.py
+	
+	和进程一样，主线程会等待所有的子线程执行结束后再结束
+	比如前几个案例中：全部子线程都执行完毕之后 当前进程才会退出。
+	
+	如果希望主线程结束后，所有的子线程都自动结束可以把子线程设置为守护线程
+		1）子线程初始化时，设置守护线程参数：t=threading.Thread(target=work,daemon=True)
+		2) 子线程start之前，通过setDameon(True)，来设置，该方法将会被废弃，不推荐使用
+	
+	线程的执行有cpu调度来执行的，无法确认哪个线程会被执行，只能通过当前运行线程知道哪个线程正在执行
+		current_thread = thread.current_thread()
+		print(current_thread)
+
+106、线程的锁
+	案例：/python_projects/PythonExam/13_多任务并发操作/17_线程的锁.py
+	
+	获取锁：lock = threading.RLock()
+	上锁：lock.acquire()
+	释放锁：lock.release()
+	
+	lock也支持with上下文的方式，不用手动上锁和释放锁
+        with lock:
+            temp = number + 1
+            time.sleep(random.random())
+            number = temp
+            print(f"fun2 {i} : {number}")
+			
+	在python中 以下操作是线程安全的,可以关注一下官网的文档
+		list.append
+		list.pop
+		list.extend(list2)
+		l.sort()
+		dict.keys()
+		...
+		
+	pythons中提供了两种锁
+		
+		同步锁
+			threading.Lock()
+			它不支持锁的嵌套，它的效率会高
+			如果Lock连续两次acquire(),会造成死锁
+		
+		递归锁
+			threading.RLock()
+			它支持锁的嵌套，因此会效率低
+			但是可以嵌套执行，而不会死锁
+
+107、线程池
+	案例:/python_projects/PythonExam/13_多任务并发操作/18_线程池.py
+	
+	线程不是开的越多越好，开的多了可能导致系统性能更低了
+	推荐使用线程池，保证对线程创建的管理
+	
+	线程池的创建
+		1）导入线程池：from concurrent.futures import ThreadPoolExecutor
+		2) 创建线程池：pool = ThreadPoolExecutor(max_workers=10)
+		3) 执行任务 pool.submit(task,函数的参数1,函数的参数2....)
+	
+	默认情况下 主进程会等待线程池中的所有任务都执行完毕，才会退出
+	如果希望线程池所有的线程都执行完毕再继续执行后续代码，可以使用shutdown(True)，让线程池阻塞住
+
+108、线程池的回调函数
+	案例：/python_projects/PythonExam/13_多任务并发操作/19_线程池的回调.py
+	
+	如果线程池执行的函数有返回值，而主线程希望得到每个函数的结果，可以使用线程池回调获取参数
+
+		def task(task_id,_work_time):
+			print(f"{threading.current_thread().name} 开始执行{task_id}")
+			time.sleep(_work_time)
+			return random.randint(1,100)#线程任务的返回值，没有return，返回的是None
+		
+		#方法中要定义个参数，该参数封装了返回值
+		def done(result):
+			#result.result()就是函数的返回值
+			print(f"result:{result.result()}")
+		
+		pool = ThreadPoolExecutor(max_workers=3)
+		for i in range(10):
+			future = pool.submit(task,i,random.random())
+			future.add_done_callback(done)#设置回调函数方法名
+		
+109、进程和线程对比
+	1）线程时依附在进程里面的，没有进程就没有线程
+	2）一个进程默认提供一条线程，一个进程内可以创建多个线程
+	3）创建进程的资源开销要比创建线程的资源要大
+	4）进程时操作系统资源分配的基本单位，线程时cpu调度的基本单位
+	5）线程不能独立运行，必须依附于进程
+	6）进程的优点是可以真正的使用CPU的多核特性，但是开销比较大
+	7）线程的优点是，资源开销比较小，但是不能使用多核(注意：因为GIL锁机制，所以python中的线程是不支持多核CPU的)
+
+110、协程
+	案例:/python_projects/PythonExam/13_多任务并发操作/20_协程.py
+	
+	协程(Coroutine),是程序员通过代码搞出来的一个东西
+	也可以称为微线程，是一种用户态内的上下文切换技术，简而言之，协程就是通过一个线程实现代码块相互执行(来回跳着执行)
+	
+	python中有多种方式可以实现协程，例如：greenlet
+		pip install greenlet
+	
+	协程主要在IO操作时，高效利用等待时间，当需要等待IO操作的时候可以执行其他函数的某些内容，从而提升单线程的效率
+	比如下载100张图片，如果并发使用线程池，可能同时要开10个线程并发操作
+	也可以使用单线程，第一个函数开始发送网络请求遇到阻塞，就立即执行第二个函数调用，这样一个线程就可以同时发送100张图片的请求，那张先回来，就继续执行
+	
+	通常比较好的方式是让协程发送io请求(比如网络请求)，等数据回来以后，当需要大量运算的时候，可以使用进程继续执行后面的任务
+	
+	python 3.4之后推出了asyncio模块 + python3.5推出的async语法，内部基于协程并且遇到IO请求自动化切换，提升效率
+	
+	协程可以更加提升线程的利用率，更加节省资源
+	通常系统有频繁的io请求，希望能更极致的发挥系统资源，可以考虑协程
+	
+	目前很多python中的框架都支持协程，比如：FastAPI,Tornado,Sanic,Django 3,aiohttp等
