@@ -1,0 +1,186 @@
+1、爬虫的合法性研究
+	法律上中不被禁止
+	善意爬虫，恶意爬虫
+	
+	爬虫带来的风险可以体现在如下两个方面
+		1）爬虫了干扰了被访问网站的正常运营
+		2）爬虫了抓取了收到法律保护的特定类型的数据或者信息
+		
+	如何避免法律风险
+		1）时常优化自己的程序，避免干扰被访问网站的正常运行
+		2）涉及到用户隐私，商业机密等敏感内容，需要及时停止爬取或传播
+		
+2、爬虫在使用场景中的分类
+	通用爬虫：
+		搜索引擎抓取重要的组成部分，比如百度，google等。他们抓取的时一整张页面数据
+		
+	聚焦爬虫：
+		建立在通用爬虫的基础之上，抓取的时页面中特定的局部内容
+		
+	增量式爬虫
+		检测网站中数据更新的情况，只会抓取网站中最新更新出来的数据
+		
+3、爬虫的矛与盾
+	有人说，互联网中50%的流量都是爬虫带来的
+	比如电商网站即想爬取同行的商品信息，又不希望自己的商品信息被爬取
+	
+	反爬机制：
+		门户网站，可以制定相应的策略或者技术手段，防止爬虫程序进行网站数据的爬取
+		
+	反反爬策略
+		爬虫程序也可以通过制定相关的策略或技术手段，破解门户网站中具备的反爬机制，从而可以获取门户网站中相关的数据
+		
+4、robots.txt协议
+	是一个君子协议。
+		规定了网站中哪些数据可以被爬虫爬取，哪些数据不能被爬虫爬取
+	位置，通常在网站名+/robots.txt看到，
+		比如：https://www.taobao.com/robots.txt
+			User-agent: *
+			Allow: /list/*
+			Allow: /list/*?*
+			Disallow: /*?*
+		
+			这里规定所有人可以看list页面下的内容，
+			
+		https://www.qq.com/robots.txt
+			User-agent: *
+			Disallow: 
+			Sitemap: https://news.qq.com/sitemap/index.xml
+		qq官网不但允许全部爬虫，还提供了网站的地图，方便爬虫进行抓取
+
+5、爬虫中http协议常用请求头信息
+	通常在chrome->右上三个点->More Tools->Developer Tools中打开web调试界面
+	网络功能栏左侧中可以看到所有的http请求，随便点击一个，右侧会展示此次请求的详细信息
+	在标头处，会展示三个大的分区，常规，响应标头，请求标头
+	
+	常用的请求头中有如下几种数据
+	1）User-Agent：请求载体的身份标识，一般指的的当前浏览器身份信息
+		Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+		
+	2）Connection：请求完毕后，是断开连接还是保持连接，对应的值是：close/keep-alive
+	
+5、爬虫中http协议常用响应头信息
+	1）Content-Type:服务器响应会客户端的数据类型
+	   Content-Type字段的一般格式如下：
+       Content-Type: type/subtype
+	   其中，type是主类型（如text, image, application, audio, video等），而subtype是子类型（例如，对于文本，可以是plain, html, xml等）。
+	   
+	   示例：
+	   Content-Type: text/plain ， 这表示返回的内容是纯文本。
+	   Content-Type: text/html; charset=utf-8 ， 这表示返回的内容是HTML文档，并且使用了UTF-8字符集。
+	   Content-Type: application/json; charset=utf-8 ， 这表示返回的内容是JSON格式的数据，同样使用UTF-8字符集。
+	   Content-Type: image/jpeg ， 这表示返回的内容是JPEG格式的图片。
+	   
+	   字符集参数
+	   在很多情况下，Content-Type头部还包括一个charset参数，用来指定内容的字符编码。
+	   例如，在HTML或JSON中，通常需要指定字符编码为UTF-8，以确保内容的正确显示。例如：
+			Content-Type: text/html; charset=utf-8
+			Content-Type: application/json; charset=utf-8
+
+6、https协议
+	表示安全的http协议，在交互数据时，数据是被加密的
+	
+	https采用的加密方式是 证书密钥加密
+		对称加密的缺点：密钥容易被窃取，窃取后数据既可被解密
+		非对称加密的缺点：
+			1）效率比较低，影响通信速度
+			2）公钥依然有被劫持的风险，比如中间者劫持到服务器的公钥后，转发给客户端一个假公钥，
+			   客户端用加的公钥加密数据，再把发送的数据发给中间者时，中间者依然能够使用假公钥对应的私钥解密
+			   
+	而证书密钥加密就可以规避以上的风险
+	数字证书认证机构是服务端与客户端都可以信赖的第三方机构，证书的具体传播过程如下：
+		1）服务器的开发者携带公开密钥，向数字证书认证机构提出公开密钥的申请，
+		   数字证书认证机构在认清申请者的身份，审核通过以后，会对开发者申请的公钥做数字签名，然后分配这个已签名的公钥，并将公钥放在证书里面绑定在一起
+		   
+		2）服务器将数字证书发送给客户端，因为客户端也认可证书机构，客户端可以通过数字证书中的数字签名来验证公钥的真伪，来确保传过来的公钥是真实的
+
+7、python的requests模块		   
+	在requests模块出现前，爬虫用的比较多的是urllib模块，但是urllib使用繁琐，很快被requests模块所代替
+	
+	requests是python中原生的一款基于网络请求的模块，功能非常强大，使用便捷，爬虫效率极高
+	主要作用：模拟浏览器发请求
+	
+	使用步骤总结：
+		指定url
+		发起请求
+		获取响应数据
+		持久化存储
+
+	requests模块安装：pip install -i https://pypi.tuna.tsinghua.edu.cn/simple/ requests
+	
+8、requests爬取搜狗首页数据
+	案例：python_projects/python_scraper_exam/01_requests模块/01_爬取搜狗首页数据.py
+	    url = "https://www.sogou.com/"
+		response = requests.get(url=url)
+		#response.text返回的是字符串形式的响应数据
+		print(f"{response.text}")
+
+9、UA伪装,使用requests爬取搜狗指定词条的搜索结果页面
+	案例：/python_projects/python_scraper_exam/01_requests模块/02_ua伪装.py
+	
+	爬取搜狗搜索结果页面
+	如果直接爬取搜狗的页面 比如：https://www.sogou.com/web?query=%E4%B9%8C%E5%85%8B%E5%85%B0
+	搜狗会有反爬机制来确认是否是真人在请求
+	
+	为了避免该问题，需要使用 UA伪装的技巧,即在请求前手动写入一个 User-Agent，头信息
+	UA伪装：门户网站的服务器会检测对应请求的载体身份标识，
+		   如果检测奥请求的载体身份表示为某一款浏览器，意味着当前请求是正常的网络请求
+		   如果检测到载体不是浏览器，则认为请求不是标准的请求，服务器会拒接返回页面内容
+	UA信息可以通过抓包工具读取到，比如chrome的开发者模式
+
+10、request的post请求
+	案例：/python_projects/python_scraper_exam/01_requests模块/03_request的post请求.py
+	
+	使用post模拟 翻译网站 ajax请求
+	在https://fanyi.pdf365.cn/的输入框输入需要翻译的文案，发现右侧翻译页面是实时刷新的，推测是ajax通信
+	
+	使用开发者模式->网络 ，注意点击上“XHR”筛选条件，该条件主要是筛选出来ajax的请求
+	在筛选出来的请求中发现wordTranslateResult请求发送了需要翻译的文案，并在响应中返回了翻译的结果
+	
+	因此百需要模拟 translate 请求
+	使用post载荷的数据结构，修改对应的数据
+	请求后发现该网站对post请求数据进行了校验，因此无法返回正确的结果，只是返回了一个错误信息，要想得到正确的结果还要继续破解页面的验证手段
+	
+11、爬取豆瓣电影分类排行榜
+	案例：/python_projects/python_scraper_exam/01_requests模块/04_爬取豆瓣分类排行榜.py
+	
+	在豆瓣主页https://movie.douban.com/ 依次点击排行榜，喜剧来到豆瓣喜剧排行榜
+		url= https://movie.douban.com/typerank?type_name=%E5%96%9C%E5%89%A7&type=24&interval_id=100:90&action=
+	
+	再该页面中通过滚轮反动，发现每次滑倒底部都会有新的数据加载，因此可以判断是ajax动态请求返回数据
+	在开发者模式-网络，通过XHR筛选，可以看到每当有新的数据展示时，都有一个ajax请求
+		https://movie.douban.com/j/chart/top_list?type=24&interval_id=100%3A90&action=&start=0&limit=20
+	该请求是get请求，因此可以把url的参数封装到一个字典中去
+	该请求头中 content-type 是 application/json; charset=utf-8
+	也就是说返回的是json数据
+	
+		json数据保存文件
+		import json
+		
+		json_data = response.json()
+		fp = open(path_dir+"/"+_file_name+".json","w",encoding="utf-8")
+		#使用json.dum把json数据保存到文件中去
+		#默认行为与问题：‌ 当ensure_ascii=True（默认值）时，
+		# json.dump()会将所有非ASCII字符转义为Unicode编码（如中文“你好”会被转换为\u4f60\u597d），
+		# 这可能导致输出结果可读性差，尤其在涉及国际化内容时。‌
+		#参数作用：‌ 设置ensure_ascii=False可避免非ASCII字符的转义，
+		# 使其以原始字符形式输出（如直接显示“你好”），从而提升可读性和用户体验。‌
+		json.dump(json_data,fp,ensure_ascii=False)#ensure_ascii要指定false，否则中文乱码
+		fp.close()
+
+12、爬取国家药品监督管理局中基于中华人民共和国化妆品生产许可证相关的数据
+	案例：python_projects/python_scraper_exam/01_requests模块/05_爬取化妆品生产许可证数据.py
+		https://www.nmpa.gov.cn/datasearch/search-result.html
+	
+	访问以后发现 没有html数据，说明数据是来自于ajax,在网络中找到响应数据的url
+	https://www.nmpa.gov.cn/datasearch/data/nmpadata/search?7QBHXKaZ=0aQiwUalqEt2csWqGzXwEKaNQksG97ZCr9orI8ogSYBUZMocHvC9JGtcdQvJVY_yEbmQ1o.a_LAlUJWmG0hmWXrCZMYTcOFF19SosykUBJ2XRveqDwkeL1yfWZvyE.TGNtBZQlnKMUxCNGA147u.HhxuL3l6qQSPMBb0fMNWCHv.e6EjLPPHJvhTDZEMVukTTb7dGSfVe570Y60r0qbVEY7wXPrJnfVjijrd3qGFS9_Jo3eKRh.3lUVr9epmlyDpOGjCt.siDes3q
+	
+	该请求做了参数的加密保护，需要再去逆向js的加密过程才能组织成正确的请求
+	
+	
+		
+		
+	
+
+
+	
