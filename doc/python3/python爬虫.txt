@@ -176,6 +176,55 @@
 	https://www.nmpa.gov.cn/datasearch/data/nmpadata/search?7QBHXKaZ=0aQiwUalqEt2csWqGzXwEKaNQksG97ZCr9orI8ogSYBUZMocHvC9JGtcdQvJVY_yEbmQ1o.a_LAlUJWmG0hmWXrCZMYTcOFF19SosykUBJ2XRveqDwkeL1yfWZvyE.TGNtBZQlnKMUxCNGA147u.HhxuL3l6qQSPMBb0fMNWCHv.e6EjLPPHJvhTDZEMVukTTb7dGSfVe570Y60r0qbVEY7wXPrJnfVjijrd3qGFS9_Jo3eKRh.3lUVr9epmlyDpOGjCt.siDes3q
 	
 	该请求做了参数的加密保护，需要再去逆向js的加密过程才能组织成正确的请求
+
+13、数据解析
+	常用的数据解析技术包括：
+		1）正则表达式
+		2）bs4
+		3)xpath,通用性最强
+	
+	解析的原理：
+		解析的局部的文本内容都会在标签之间或者标签对应的属性中进行存储
+		解析的步骤:
+		1)进行指定标签的定位
+		2）标签或者标签对应的属性中存储的数据值进行提取(解析)
+
+14、正则表达式	
+	案例 ：\python_projects/python_scraper_exam/02_数据解析/01_正则表达式.py
+	单字符：
+		. , 除换行以外的所有字符
+		[] ,[aoe] [a-w] 匹配集合中任意一个字符
+		\d ,数字 0~9
+		\D ,非数字
+		\w ,数字、字母、下划线、中文
+		\W ,非\w的其他字符
+		\s ,所有的空白字符包括 空格、制附表、换页符等等，等价于 [ \f\n\r\t\v]
+		\S ,非空白
+	数量修饰：
+		* ,任意多次 >0
+		+ ,至少1次 >=0
+		? ,可有可无 0次或者1次
+		{m} ,固定m次 比如：hello{3,}
+		{m,} ,至少m次
+		{m,n} ,m~n次
+	边界
+		$ ,以某某结尾
+		^ ,以某某开头
+		
+	分组
+		(ab)
+	贪婪模式, .*
+	非贪婪/惰性模式 .*?
+	
+	python中的正则表达式使用
+		import re 
+		
+		re.I ,忽略大小写
+		re.M ,多行匹配
+		re.S ,单行匹配
+	
+		re.sub(正则表达式,替换内容，字符串)
+	
 	
 	
 		

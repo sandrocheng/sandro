@@ -49,3 +49,20 @@ print(f"12）码值是31243的字符是 ：{chr(31243)}")
 print(f"13）abc 改为首字母大写 ：{text.capitalize()}")
 print(f"13）abc.isalpha() ：{'abc'.isalpha() }")
 print(f"13）abc-.isalpha() ：{'abc-'.isalpha() }")
+
+print(f"14）文本的换行分割")
+text = """abc
+def
+ghi
+sdfaf
+a123
+你好
+"""
+lines = text.splitlines()
+for line in lines:
+    print(line)
+
+text = '-abc----abc----abc'
+print(f"15）abc首次出现的位置：{text.find('abc')}")
+
+print(f"16) 截取text中 1 ~ 4位置的子字符串：{text[1:4]}")
