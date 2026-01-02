@@ -114,6 +114,19 @@
 		response = requests.get(url=url)
 		#response.text返回的是字符串形式的响应数据
 		print(f"{response.text}")
+	
+	中文乱码问题：
+		1）通过指定response.encoding，来获取正确编码的页面数据
+			page_html = requests.get('https://www.qqtn.com/tx/fengjtx_1.html',headers=headers)
+			#注意requests拉取的html编码可能不是utf-8的，因此需要指定一下当前页面的字符集
+			#通常字符集信息在页面的meta元素中，比如：<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+			page_html.encoding = 'gb2312'
+			print(page_html.text)
+			
+		2）上面方法如果不行，可以通过字符串的编码修改来避免乱码
+			page_html = requests.get('https://www.qqtn.com/tx/fengjtx_1.html', headers=headers)
+			text = page_html.text.encode('iso-8859-1').decode('gb2312')
+			这里gb2312也可以改成gbk，来测试
 
 9、UA伪装,使用requests爬取搜狗指定词条的搜索结果页面
 	案例：/python_projects/python_scraper_exam/01_requests模块/02_ua伪装.py
@@ -320,15 +333,90 @@
 				6）从标签中获取属性
 					元素['属性名称']
 					比如：print(soup.find('a')['href'])
-					
-					
+17、xpath解析
+	案例：/python_projects/python_scraper_exam/02_数据解析/04_xpath解析.py
+	xpath最常用且最便捷高效的一种页面解析方式，通用性也最强
 	
-	
-	
-	
+	xpath解析步骤
+		1）实例化一个etree的对象，并加载页面源码数据
+		2）调用etree对象中的xpath，结合xpath表达式定位标签
 		
+	xpath 安装
+		pip install lxml
+	
+	etree导入：from lxml import etree
+		
+	etree实例化
+		1)将本地的html文档中的源码数据加载到etree对象中
+			etree.HTMLParser,表示使用html解析器解析文本，它可以自动获取页面字符集并解析
+			etreeObj = etree.parse("../downloads/02_数据解析/03_bs4解析/test.html",
+                           parser=etree.HTMLParser())
+			
+		2）也可以从html字符串中加载
+			page_html = requests.get('https://www.qqtn.com/tx/fengjtx_1.html',headers=headers)
+			etreeObj = etree.HTML(page_html.text)
+	
+	etree的xpath表达式
+		etree主要使用xpath('xpath表达式')来获取元素数据
+		
+		xpath是通过层级来定位元素的，
+			1）层级需要使用"/"符号来分割，从根节点开始定位
+			   比如要想获取页面title信息,表达式应为："/html/head/title"
+		
+				r = etreeObj.xpath("/html/head/title")
+				返回的r是一个Element对象的列表
+			
+			2）//表示多个层级
+				比如：r = etreeObj.xpath("//div")
+				这里是检索任意层级的div元素
+				r = etreeObj.xpath("/body//div")
+				这里是检索body下任意深度层级的div
+				
+			3）属性定位
+				//div[@class='xxx'],在标签后增加方括号，内容以@开始指定属性以及属性内容
+				比如：
+				    r = etreeObj.xpath("//ul[@class='g-gxlist-imgbox']//img")
+				获取class是ul下的所有li下的img标签
+			
+			4)索引定位
+				xpath返回的是全部的标签可以通过索引定位到具体的某个元素
+				比如：
+				    r = etreeObj.xpath("//ul[@class='g-gxlist-imgbox']/li[1]//img")
+				获取class是ul下的第一个li下的img标签，注意索引从1开始不是0
+				
+			5)获取标签文本
+				/text(),表示获取当前标签中的文本内容
+				注意：/text()只能获取当前标签的内容，如果内容是套在当前标签的子标签中，是获取不到的
+					r = etreeObj.xpath("//ul[@class='g-gxlist-imgbox']//strong/text()")
+				//text()，表示获取当前标签，以及当前标签的下的所有标签的文本内容
+				
+			6)获取标签属性
+				/tag/@属性名，获取标签的属性值
+				例如
+					r = etreeObj.xpath("//ul[@class='g-gxlist-imgbox']//img/@src")
+			
+			7）xpath方法返回的是当前标签的etree对象，因此可以继续使用该对象的xpath继续检索
+				注意继续检索的时候，第一层应该是./代表当前标签的根位置
+				li_list = etreeObj.xpath("//ul[@class='g-gxlist-imgbox']/li")
+				for li in li_list:
+					#./代表当前li标签位置
+					title = li.xpath(".//strong/text()")
+					src = li.xpath(".//img/@src")
+					print(title[0],src[0])
+			
+			8）多个匹配路径合并
+				如果想一次性合并多个路径可以使用 "|"来连接
+				li_list = etreeObj.xpath("//ul[@class='g-gxlist-imgbox']/li | "
+								"//ul[@class='m-tj-toptx']/li |"
+								"//div[@class='g-img-tank g-main-bg m-margin15 tx2020']//li")
+				for li in li_list:
+					#./代表当前li标签位置
+					title = li.xpath(".//img/@alt")
+					src = li.xpath(".//img/@src")
+					print(title[0],src[0])				
+	
+			
 		
 	
-
-
+	
 	
