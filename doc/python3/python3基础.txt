@@ -1308,7 +1308,7 @@
 			3）pip除了安装还有其他很多方法，比如,uninstall，list,show等
 				比如：pip list,查看所有安装的包
 				     pip show 包名，查看安装包的详细信息
-					 pip uninstall 包名，卸载以来库
+					 pip uninstall 包名，卸载依赖库
 			4）下载的包默认放在/pythons安装目录/Lib/目录下
 		
 		pip常用源地址
@@ -1327,7 +1327,24 @@
 				
 			pycharm安装源
 				setting->python->interpre settings可以看到目前已经装好的python库
-				点击 “+” 可以选择需要安装的库/包名，在option中可以指定pip源，比如 -i https://pypi.tuna.tsinghua.edu.cn/simple/
+				点击 “+” 可以选择需要安装的库/包名，在option中可以指定pip源，比如 -i https://pypi.tuna.tsinghua.edu.cn/simple
+		
+		pip配置文件
+			如果希望修改pip默认源，可以修改pip配置文件中的地址
+			1)windows:
+				-打开文件资源管理器在地址栏中输入：%appdata%回车
+				-目录会打开到当前用户的应用AppData\Roaming文件夹中,比如：C:\Users\程亮\AppData\Roaming
+				-在这里面新建一个文件夹，并命名为pip
+				-在该文件夹下，创建一个pip.ini文件，写入如下内容
+					[global]
+					timeout = 6000
+					index-url = https://pypi.tuna.tsinghua.edu.cn/simple/
+					trusted-host = pypi.tuna.tsinghua.edu.cn
+			2）linux
+				cd ~
+				mkdir ~/.pip
+				vi ~/.pip/pip.conf
+				编辑全局内容，和windows一样
 
 67、类和实例
 	案例:/python_projects/PythonExam/09_面向对象/01_类的创建.py
@@ -2542,6 +2559,8 @@
 		比如上面的案例正则表达式写成：^(.*)(，)，这样每次提取，由于有两个括号，所以结果会有俩个
 			提取的结果就是：[('苹果', '，'), ('橙子', '，'), ('香蕉', '，'), ('乌鸦', '，'), ('猴子', '，')]
 		也就是列表中每个元素变成了一个元组，该元组的长度是2，也就是括号的组数
+		
+	13）忽略大小写，re.I 
 	
 
 113、使用正则表达式切割字符串

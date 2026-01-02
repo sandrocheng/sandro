@@ -42,5 +42,19 @@ def saveHtmlFile(_text:str,_sub_dir:str,_file_name:str,_file_type:str) ->None :
     with open(path_dir+"/"+_file_name+"."+_file_type,"w",encoding="utf-8") as f:
         f.write(_text)
 
+def saveBytesFile(_bits:bytes,_sub_dir:str,_file_name:str,_file_type:str) ->None :
+    """
+    :param _bits: 需要保存的二进制数据
+    :param _sub_dir: 子文件夹名称
+    :param _file_name: 文件名称
+    :param _file_type: 保存的文件类型
+    :return:
+    """
+    path_dir = '../downloads/' + _sub_dir
+    if not make_dir(path_dir):
+        return
+    with open(path_dir+"/"+_file_name+"."+_file_type,"wb") as f:
+        f.write(_bits)
+
 if __name__ == "__main__":
-    saveHtmlFile("aaa","01_reuqests模块","test","text")
+    saveHtmlFile("aaa","01_requests模块","test","text")

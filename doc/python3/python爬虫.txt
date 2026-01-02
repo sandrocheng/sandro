@@ -106,7 +106,7 @@
 		获取响应数据
 		持久化存储
 
-	requests模块安装：pip install -i https://pypi.tuna.tsinghua.edu.cn/simple/ requests
+	requests模块安装：pip install requests
 	
 8、requests爬取搜狗首页数据
 	案例：python_projects/python_scraper_exam/01_requests模块/01_爬取搜狗首页数据.py
@@ -169,7 +169,7 @@
 		fp.close()
 
 12、爬取国家药品监督管理局中基于中华人民共和国化妆品生产许可证相关的数据
-	案例：python_projects/python_scraper_exam/01_requests模块/05_爬取化妆品生产许可证数据.py
+	案例：/python_projects/python_scraper_exam/01_requests模块/05_爬取化妆品生产许可证数据.py
 		https://www.nmpa.gov.cn/datasearch/search-result.html
 	
 	访问以后发现 没有html数据，说明数据是来自于ajax,在网络中找到响应数据的url
@@ -189,41 +189,140 @@
 		1)进行指定标签的定位
 		2）标签或者标签对应的属性中存储的数据值进行提取(解析)
 
-14、正则表达式	
-	案例 ：\python_projects/python_scraper_exam/02_数据解析/01_正则表达式.py
-	单字符：
-		. , 除换行以外的所有字符
-		[] ,[aoe] [a-w] 匹配集合中任意一个字符
-		\d ,数字 0~9
-		\D ,非数字
-		\w ,数字、字母、下划线、中文
-		\W ,非\w的其他字符
-		\s ,所有的空白字符包括 空格、制附表、换页符等等，等价于 [ \f\n\r\t\v]
-		\S ,非空白
-	数量修饰：
-		* ,任意多次 >0
-		+ ,至少1次 >=0
-		? ,可有可无 0次或者1次
-		{m} ,固定m次 比如：hello{3,}
-		{m,} ,至少m次
-		{m,n} ,m~n次
-	边界
-		$ ,以某某结尾
-		^ ,以某某开头
-		
-	分组
-		(ab)
-	贪婪模式, .*
-	非贪婪/惰性模式 .*?
+14、request 二进制数据
+	案例 ：/python_projects/python_scraper_exam/02_数据解析/01_图片信息拉取和保存.py
 	
-	python中的正则表达式使用
-		import re 
-		
-		re.I ,忽略大小写
-		re.M ,多行匹配
-		re.S ,单行匹配
+	提取图片应该是二进制数据
+		image_data=requests.get(url=url).content
+	保存文件的使用应该是以wb的方式保存
+		with open(path,"wb") as f:
+			f.write(_bits)
 	
-		re.sub(正则表达式,替换内容，字符串)
+15、使用正则表达式从页面信息中提取图片地址
+	案例：/python_projects/python_scraper_exam/02_数据解析/02_正则表达式解析图片地址并下载.py
+
+	使用正则表达式从https://www.qqtn.com/tx/fengjtx_1.html页面中下载图片文件
+	该页面返回的html文件中使用<img>标签展示图片，可以从img标签中把图片的连接获取出来
+	
+	分析该img标签的特征，可以发现图片标签是在a标签内部的,而a标签是在一个li标签中的
+	<li>
+		<a href="/article/article_339832_1.html" target="_blank" 
+		   title="精致唯美系列的宝藏风景头像 时间会融化掉所有的尖锐">
+			<img src="https://pic.qqans.com/up/2023-11/20231116841532481.jpg" 
+			     alt="精致唯美系列的宝藏风景头像 时间会融化掉所有的尖锐">
+			<strong>精致唯美系列的宝藏风景头像 时间会融化掉所有的尖锐</strong>
+			<b>14511</b>
+			<em>2023-11-16</em>
+		</a>
+	</li>
+	
+	因此正则表达式可以设计为：r'<li><a href=.*<img src="(.*)" alt='
+
+16、bs4解析
+	案例：/python_projects/python_scraper_exam/02_数据解析/03_bs4解析.py
+	-环境安装：
+		pip install bs4
+		pip install lxml
+	
+	Python的bs4模块是用于网页抓取和数据解析的强大工具。
+	
+	lxml：Python lxml模块是一个用于高效解析和操作XML和HTML文档的库，它基于高性能的C语言库libxml2和libxslt，因此在处理文档时速度非常快。
+	      bs4在使用的时候需要使用这个库‌
+	
+	bs4数据解析步骤
+		1）实例化BeautifulSoup对象，并且将页面原码数据加载到该对象中
+		2）通过调用BeautifulSoup对象中相关的属性或者方法进行标签定位和数据提取
+		
+	BeautifuSoup的使用
+		-form bs4 import BeautifulSoup
+		-对象的实例化
+			-将本地html文档中的数据加载到该对象中
+				def createBSByFile(_path,_encoding):
+					"""
+					通过文件对象创建BeautifulSoup对象，'lxml'是解析html的工具
+					注意html中的字符集要和文件的encoding一致
+					比如该文件的<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+					已经定义了字符集是gb2321,因此文件也应该以gb2312字符集打开
+					:param path: 文件路径
+					:param encoding: html中的字符集
+					:return:
+					"""
+					fp = open(_path, 'r',encoding=_encoding)
+					_soup = BeautifulSoup(fp,'lxml')
+					return _soup				
+					
+			-将互联网上获取的页面源码加载到该对象中
+				def createBSByUrl(_url):
+					headers={
+						'User-Agent':CommonVar.USER_AGENT,
+					}
+					response = requests.get(_url,headers=headers)
+					#用于‌从响应内容中自动推测实际编码方式‌，它通过内部集成的chardet库分析响应的原始字节数据（content）来实现，
+					# 与HTTP响应头的声明无关。‌
+					# 主要用于解决中文乱码等问题，当 response.text 出现乱码时，
+					# 可将 apparent_encoding 的值赋给 encoding 来覆盖解码方式，
+					# 例如 response.encoding = response.apparent_encoding。
+					# 但需注意 apparent_encoding 的推测可能因文本内容短小或编码相似而出现误差，
+					# 且分析内容会带来额外性能开销，因此在已知编码或处理大量数据时，直接设置 response.encoding 可能更高效。‌
+					response.encoding = response.apparent_encoding
+					_soup = BeautifulSoup(response.text, 'lxml')
+					return _soup
+			
+			-标准输出
+				soup.prettify() 是 Beautiful Soup 库中的一个方法，用于将解析后的 HTML 或 XML 文档格式化输出，使其结构更清晰、易于阅读。该方法会自动添加换行符和缩进，使标签按标准层次结构排列。‌
+				
+			-bs4提供的用于数据解析的方法和属性：
+				1）soup.tagName:返回html中第一次出现的tagName ,和sou.find(tagName)一样
+					比如：print(soup.a)#返回的是第一次出现的a标签
+						 print(soup.find('a'))
+				2) soup.find方法
+					-soup.find(tagName) == soup.tagName
+						find的第一中用法和soup.tagName一样，返回第一个匹配的标签内容
+						
+					-soup.find(tagName,attrs={'xxx':'xxx'})
+						find的第二种用法是根据属性定位一个标签，比如通过class的值定位第一个匹配的ul标签
+							print(soup.find('ul', attrs={'class':'g-gxlist-imgbox'}))
+							#根据id获取内容，标签，
+							print(soup.find(attrs={'id':'tsp_change'}))
+					
+				3）soup.find_all和find的用法一样，但是返回的是全部匹配的标签内容，返回的是一个list
+				
+				4)select,使用css的选择器定位内容
+					该方法返回的是全部匹配的数据list
+					CSS选择器用于选择HTML文档中的元素并应用样式，常见类型包括以下四种基础类别：
+						‌标签选择器‌：通过HTML标签名直接选择元素，例如 p 会将所有 <p> 标签内的文字颜色设置为红色。‌
+						‌类选择器‌：通过元素的 class 属性选择，以英文句点（.）开头，例如 .highlight
+						‌ID选择器‌：通过元素的唯一 id 属性选择，以井号（#）开头，例如 #header 仅应用于 id="header" 的元素
+						‌后代选择器‌：选择特定元素内部的所有后代元素（包括直接子元素和更深层级的后代）	
+							使用>分隔，例如 ul > li> a > img,表示一个，结构相对固定
+							使用空格分隔，例如 ul img ，表示可以跨级，ul下的所有img标签都取出来
+					
+					print("8)使用标签选择器获取a标签内容-------------")
+					print(soup.select('a'))
+					print("9)使用id选择器获取a标签内容-------------")
+					print(soup.select('#keyword'))
+					print("10)使用类选择器获取标签内容-------------")
+					print(soup.select('.g-gxlist-imgbox'))
+					#选择类是g-gxlist-imgbox的ul标签下的 ->li->a->img标签数据 
+					print(soup.select('ul.g-gxlist-imgbox > li> a > img'))
+				
+				5)从标签中获取内容，通过find,find_all,select返回的对象
+					.text ， 
+						 返回所有文本内容包括所有子元素的内容
+						比如：
+							img_list = soup.select('.g-gxlist-imgbox')
+							print(img_list[0].text)
+							
+					.string,返回的是当前标签的文本内容，不包括子标签的文本内容
+					    string_list = soup.select('.g-gxlist-imgbox a strong')
+						print(img_list[0].string)
+				
+				6）从标签中获取属性
+					元素['属性名称']
+					比如：print(soup.find('a')['href'])
+					
+					
+	
 	
 	
 	
