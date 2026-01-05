@@ -414,8 +414,60 @@
 					title = li.xpath(".//img/@alt")
 					src = li.xpath(".//img/@src")
 					print(title[0],src[0])				
+
+18、验证码识别
+	通常使用第三方的验证码识别api来识别
+	比如 https://github.com/DayBreak-u/chineseocr_lite
+		移动云 https://ecloud.10086.cn/ 文字识别OCR
+
+19、模拟登录
+	案例：/python_projects/python_scraper_exam/03_模拟登录/01_模拟登录古诗文网.py
 	
-			
+	模拟登录古文岛 https://www.guwendao.net/user/login.aspx
+	用户名 foxone1980118@sina.com
+	
+	通过抓包工具查看登录的请求数据，注意要勾选一下"保留数据"选项或者 "Preserve log",否则页面刷新后，历史的请求就被冲掉了
+	根据抓包工具抓取的网络请求可以发现
+		登录url :https://www.guwendao.net/user/login.aspx
+		请求方式:post
+		请求数据:
+				__VIEWSTATE:wgAsLqwK4KFqau/3u2f4e9LMhb3YiZ3PrYENx3I37OS9B4HJS3xfHEFpuTWTZAbErGafn/n2opqG6u5AGa0jc1Qc7yNA9r1CIx9lrIBfdLp5p991jZbfULGFqgXdgmlDhrjabfQzOdhcgZFsZQS/oIOdT9M=
+				__VIEWSTATEGENERATOR:C93BE1AE
+				from:
+				email:foxone1980118@sina.com
+				pwd:xxx
+				code:e444
+				denglu:登录
+		登录按钮：<input type="submit" id="denglu" name="denglu" ... value="登录">
+		该按钮所在的form：
+			<form name="aspnetForm" method="post" action="./login.aspx" id="aspnetForm" onsubmit="return testFrom()">
+				....
+			</form>
+		
+		多次登录发现__VIEWSTATE的值每次都是再变化的，因此需要获取到该值
+		<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="d7Nj80/mo3LUUTa+n2rNl0wD8XR8om6UQH6qWvFC5lSy7u6mKYxlY6j58kvv0jVjGO5FWEy5ARTbJqmB0eo61JBmUkPMwp/u6xVQ+hQIt0bnUeIE/3qZIiCxDePluhqDGOXpaLWZ3DHNwvFHe9UVIieNLsQ=">
+	
+	封装需要的form数据并拉取后，发现返回的页面是提示验证码登录失败，原因是没有带上cookie数据导致。
+
+20、模拟登录cookie操作
+	案例：/python_projects/python_scraper_exam/03_模拟登录/02_模拟cookie登录古诗文网.py	
+	
+	由于http/https是无状态请求，因此通常用户登录信息会保存到cookie中，登录之后每次都要带上cookie数据
+	cookie：本质的作用是用来让服务器记录客户端状态的数据
+	
+	因此在模拟登录的时候要通过session会话对象获取和设置cookie
+	session对象的作用：
+		1、可以进行请求的发送
+		2、如果请求过程中产生了cookie，则该cookie会被自动保存/携带在该session中
+	
+	session对象的创建
+		session = requests.Session()
+	之后的请求都使用session进行抓取，可以保证cookie会被携带
+	session的请求参数和使用方式和request一样
+	
+	
+	
+	
 		
 	
 	

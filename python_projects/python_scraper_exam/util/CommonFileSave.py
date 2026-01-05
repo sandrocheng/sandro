@@ -55,6 +55,7 @@ def saveBytesFile(_bits:bytes,_sub_dir:str,_file_name:str,_file_type:str) ->None
         return
     with open(path_dir+"/"+_file_name+"."+_file_type,"wb") as f:
         f.write(_bits)
+        f.flush()
 
 if __name__ == "__main__":
     saveHtmlFile("aaa","01_requests模块","test","text")
