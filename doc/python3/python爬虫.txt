@@ -464,7 +464,33 @@
 		session = requests.Session()
 	之后的请求都使用session进行抓取，可以保证cookie会被携带
 	session的请求参数和使用方式和request一样
+
+21、代理
+	代理可以隐藏爬虫的ip，避免由于抓取频率过高导致封禁ip的反爬机制
+	常用的代理：
+		1）https://www.ipidea.net/ 可以访问国外ip
+		2）https://www.hailiangip.com/personal/use-detail 国内
+		3）https://www.89ip.cn/clk/batch.html 国内
 	
+	代理类型：
+		http:只能应用到http协议对应的url中
+		https:只能应用到https协议对应的url中
+	
+	代理服务器的url,可以是http或者https,也可能是socket5协议的
+	socket5协议的优势
+		安全性高：Socks5 代理协议支持加密传输，可以通过用户名和密码等验证方式来确保数据的安全性，防止信息泄露和中间人攻击等网络安全威胁。
+		灵活性强：Socks5 代理协议不仅支持 TCP 连接，还支持 UDP 连接，可以满足各种网络通信的需求。
+		操作简单：Socks5 代理协议的配置和使用相对简单，只需要在客户端和代理服务器上进行简单的设置，即可实现代理访问。
+		速度快：由于 Socks5 代理协议不需要解析应用层协议，能够直接传递网络请求，因此速度较快。
+	
+	request设置代理拉取的方式
+		requests.get(url=url, headers=headers,proxies={"https":"114.232.110.73:8089"})
+		proxies是是个字典类型的参数，可以设置http,或者https，也可以同时设置，requests会根据请求协议选择对应的代理
+	
+	代理ip的匿名度
+		-透明，目标服务器知道该次请求使用了代理，也知道请求对应的真实ip
+		-匿名，目标服务器知道使用了代理，但是不知道请求对应的真实ip
+		-高匿，目标服务器不知道使用了代理，更不知道请求对应的真实ip
 	
 	
 	
