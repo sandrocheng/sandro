@@ -1,0 +1,35 @@
+{
+    "manifest_version":3,
+    "name":"auto_scroll_down_demo",
+    "version":"1.0",
+    "description":"自动向下滚动demo",
+    "background": {
+        "service_worker": "background.js"
+    },
+    "icons": {
+        "32": "icons/32.png",
+        "72": "icons/72.png",
+        "128": "icons/128.png",
+        "512": "icons/512.png"
+    },
+    "permissions": ["activeTab","storage","webRequest"],
+    "host_permissions": [
+        "*://x.com/*"
+    ],
+    "content_scripts": [
+        {
+            "matches": ["*://x.com/*"],
+            "js": ["content.js"]
+        }
+    ],
+    "action":{
+        "default_title": "auto scorll down demo",
+        "default_icon":{
+            "32": "icons/32.png",
+            "72": "icons/72.png",
+            "128": "icons/128.png",
+            "512": "icons/512.png"
+        },
+        "default_popup":"/popup/popup.html"
+    }
+}

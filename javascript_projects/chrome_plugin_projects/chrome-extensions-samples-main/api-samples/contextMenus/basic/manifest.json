@@ -1,0 +1,10 @@
+{
+  "name": "Context Menus Sample",
+  "description": "Uses the chrome.contextMenus API to customize the context menu.",
+  "version": "0.7",
+  "permissions": ["contextMenus"],
+  "background": {
+    "service_worker": "sample.js"
+  },
+  "manifest_version": 3
+}

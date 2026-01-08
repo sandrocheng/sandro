@@ -1,0 +1,116 @@
+1、官网
+	官方文档：https://developer.chrome.com/docs/extensions/develop/migrate?hl=zh-cn
+	案例：\chrome_plugin_projects\chrome-extensions-samples-main
+	官网github案例：https://github.com/GoogleChrome/chrome-extensions-samples
+	
+2、chrome插件的文件结构
+	通常一个chrome插件包含以下几个部分
+	1）icons目录，放置logo图标的目录
+	2）popup目录，内有popup的html文件，点击插件时的弹框页面以及资源文件
+	3）manifest.json文件,这是必须要有的文件，是插件的配置文件，包含插件的名称、版本号、图标、权限等信息
+	4）background.js，后台js文件，非必须
+	
+3、helloworld
+	案例:\javascript_projects\chrome_plugin_projects\01_hello_world_project
+	使用vscode创建项目以及插件目录和文件
+	
+	创建manifest.json文件
+	{
+		"manifest_version":3, 					##版本号，最新版的chrome要求强制V3版本，必须要有
+		"name":"sandro_hello_world",			##插件名称，必须要有
+		"version":"1.0",						##插件版本，必须要有
+		"description":"hello world 插件",		##插件描述
+		"background": {							##后台js
+			"service_worker": "background.js"
+		},
+		"icons": {								##图标，注意尺寸要匹配，否则对应不上
+			"32": "icons/32.png",
+			"72": "icons/72.png",
+			"128": "icons/128.png",
+			"512": "icons/512.png"
+		},
+		"permissions": ["activeTab","storage"],	##显示声明插件的权限
+		"action":{								##插件栏
+			"default_title": "Title-Hello",		##鼠标悬浮到插件图标时的titile
+			"default_icon":{					##插件栏的图标
+				"32": "icons/32.png",
+				"72": "icons/72.png",
+				"128": "icons/128.png",
+				"512": "icons/512.png"
+			},
+			"default_popup":"/popup/popup.html"	##点击插件时的弹出框html
+		}
+	}
+
+3、插件安装
+	1）进入到chrome插件管理页面
+		更多工具->扩展工具 
+		或者直接在地址栏中输入：chrome://extensions/ 进入插件管理页面
+	2）打开开发者模式
+	3）点击“加载未打包的扩展程序” 选择工程目录
+	4) 如果代码有更改，直接到管理页面点击刷新按钮即可刷新功能
+	
+4、内容脚本
+	内容脚本是在网页上下文中运行的文件。通过标准文档对象模型 (DOM)，它们能够读取浏览器访问的网页的详细信息、对其进行更改，并将信息传递给其父扩展程序。
+	
+	内容脚本可以静态声明、动态声明或以编程方式注入。
+	1）静态声明
+		对于应在已知的一组网页上自动运行的脚本， manifest.json 中使用静态内容脚本声明。
+		静态声明的脚本在清单中通过 "content_scripts" 键进行注册。
+		它们可以包含 JavaScript 文件、CSS 文件或同时包含这两种文件。所有自动运行的内容脚本都必须指定匹配模式。
+		{
+			"name": "My extension",
+			...
+			"content_scripts": [
+			{
+				"matches": ["https://*.nytimes.com/*"],
+				"css": ["my-styles.css"],
+				"js": ["content-script.js"]
+			}
+			],
+			...
+		}		
+		matches，字符串数组，必需。指定此内容脚本将注入到哪些网页中。
+				 如需详细了解这些字符串的语法，请参阅匹配模式；如需了解如何排除网址，请参阅匹配模式和 Glob。
+		css，字符串数组，可选。要注入到匹配页面中的 CSS 文件列表。这些资源会按其在此数组中出现的顺序注入，在为网页构建或显示任何 DOM 之前注入。
+		js，字符串数组，可选。
+			要注入到匹配网页中的JavaScript文件列表。
+			文件会按照它们在此数组中显示的顺序注入。此列表中的每个字符串都必须包含扩展程序根目录中资源的相对路径。系统会自动去除开头的斜杠 (`/`)。
+		run_at，RunAt 可选。指定脚本应何时注入到网页中。默认值为 document_idle。
+		match_about_blank，布尔值	，可选。
+						  脚本是否应注入到父框架或打开程序框架与 matches 中声明的某个模式匹配的 about:blank 框架中。
+						  默认值为 false。
+		match_origin_as_fallback，布尔值	可选。
+								  脚本是否应注入到由匹配来源创建的框架中，但这些框架的网址或来源可能无法直接与模式匹配。
+								  这些帧包括采用不同方案的帧，例如 about:、data:、blob: 和 filesystem:。另请参阅在相关帧中注入。
+		world  ExecutionWorld，可选。脚本要在其中执行的 JavaScript 世界。默认值为 ISOLATED。另请参阅在隔离的世界中工作。	
+	
+5、控制台输出
+	案例:\javascript_projects\chrome_plugin_projects\02_console
+	‌console.log 是 JavaScript 中用于在浏览器或 Node.js 控制台输出调试信息的核心方法‌，支持输出变量、对象、字符串等多种数据类型，并可通过格式占位符实现样式化输出。‌
+	
+	1)基础输出‌：直接传入参数即可打印内容，例如 console.log("Hello") 输出字符串，console.log(42) 输出数字。‌‌
+	
+	2)格式占位符‌：通过占位符控制输出格式，需与后续参数一一对应：
+		%s：字符串（如 console.log("%s", "text")）。‌‌‌‌
+		%d 或 %i：整数（自动截断小数部分）。‌‌
+		%f：浮点数（保留小数）。‌‌
+		%c：CSS 样式（如 console.log("%cStyled Text", "color: red; font-size: 16px")）。‌‌
+		%o 和 %O：对象输出（%O 以树状结构显示完整属性）。‌‌
+		
+	3)‌多参数处理‌：若参数为对象或数组，log 方法会直接输出其结构，避免 alert 的 [object Object] 问题。‌‌
+
+	4)console 提供多种日志级别方法，适用于不同场景：
+		console.info()：与 log 类似，但部分浏览器标记为“信息”图标。‌‌
+		console.warn() 和 console.error()：分别输出警告和错误信息，并附带堆栈跟踪，便于问题定位。‌‌
+		console.debug()：输出调试信息，默认在控制台“Verbose”级别显示。‌‌
+		
+	5)结构化输出
+		console.table(data)，以表格形式展示数组或对象，支持字段排序
+		
+	6）性能分析
+		console.time("计时器") 和 console.timeEnd("计时器")：测量代码块执行时间。‌‌
+		console.count("标签")：统计代码执行次数。‌‌
+	7)分组日志
+		console.group("标签") 和 console.groupEnd()：，便于分类查看（如 console.group("用户数据") 后接多条 log）。‌‌
+

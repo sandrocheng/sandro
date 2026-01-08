@@ -1,0 +1,110 @@
+/* Copyright 2018 The Chromium Authors. All rights reserved.
+ Use of this source code is governed by a BSD-style license that can be
+ found in the LICENSE file.*/
+
+h1 {
+  font-family: "Courier New", Courier, monospaces;
+}
+
+#display_top {
+  margin: auto;
+  margin-bottom: 40px;
+  width: 600px;
+}
+
+#todo_div {
+  margin-top: 0px;
+  height: 100px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  animation-name: color-extravaganza;
+  animation-duration: 6s;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+.center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@keyframes color-extravaganza {
+  0%   {background-color: #4285F4;}
+  10%  {background-color: #4285F4;}
+  25%  {background-color: #EA4335;}
+  50%  {background-color: #FBBC04;}
+  100% {background-color: #34A853;}
+}
+
+.colorFun {
+  position: relative;
+  height: 70px;
+  width: 100px;
+  padding: 10px;
+  display: inline-block;
+  margin-top: 40px;
+}
+
+.colorFun .tooltip {
+  width: 100px;
+  text-align: center;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 0%;
+  left: 50%;
+  transform: translateX(-50%);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.imageContainer {
+  background-color: #cdcdcd;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  justify-self: center;
+}
+
+.imageContainer img {
+  width: 14px;
+  height: 14px;
+}
+
+footer {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+}
+
+input#todo_value {
+  width: 300px;
+  height: 40px;
+  font-size: 18px;
+  padding: 12px 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  margin-right: 4px;
+}
+
+input#todo_value ~ input[type="submit"] {
+  background-color: #4285F4;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+input#todo_value ~ input[type="submit"]:hover {
+  background-color: #45a049;
+}
