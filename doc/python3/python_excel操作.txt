@@ -1,0 +1,90 @@
+1、pandas简介
+	‌pandas 是 Python 生态中基于 NumPy 构建的核心数据分析库。
+	提供高效的数据操作工具（如 DataFrame 和 Series 数据结构），专为处理表格、时间序列等结构化数据设计。‌
+	
+	安装：pip install pandas
+		 pip install openpyxl
+	
+	pandas 的核心优势在于简化数据处理全流程：
+‌	1）数据结构‌：
+‌		Series‌：一维带标签数组，支持混合数据类型（如数值、字符串）。‌‌
+‌		DataFrame‌：二维表格结构，可视为 Series 的容器，支持行列索引。‌‌
+
+	2）核心操作‌：
+		数据清洗‌：处理缺失值（fillna()）、去重（drop_duplicates()）和异常值过滤。‌‌
+		数据转换‌：重塑（pivot()）、分组聚合（groupby().mean()）和列操作（df['新列'] = df['原列'] * 2）。‌‌
+		分析工具‌：统计计算（describe()）、时间序列处理（resample()）和可视化集成（df.plot()）。‌‌
+
+2、excel文件和csv文件的读取
+	案例：python_projects/pythonExcel/01_pandas基础/01_读取excel文件.py
+	
+	使用read_excel和read_csv读取
+		df = pandas.read_excel(f'../files/test.xlsx')
+		print(df)
+		
+		df = pandas.read_csv(f'../files/main_page_@wangzhian8848_2026_1_10_23_29_55.csv')
+		print(df)
+		
+	创建方法通常返回的是 DataFrame 对象或者TextFileReader对象
+	
+	在print(df)的时候，如果数据量比较大，通常只会返回部分数据，
+	可以通过
+		pd.set_option('display.max_rows', None)
+		pd.set_option('display.max_columns', None)
+	撤销限制，输出所有的数据
+	
+	df.info()，返回当前excel或者cvs的一个信息摘要
+	
+	df.shape，返回一个元组，(行数，列数)
+	df.dtypes，返回各列的类型
+	df.describe(),输出统计结果
+	df.index，返回行的最大值和最小值，以及步长信息
+	df.columns,返回列的名称，通常就是第一行的内容
+	df.values,返回内容值，如果内容比较多，只会展示头部和尾部的几条数据
+	
+
+3、excel数据查找
+	案例：python_projects/pythonExcel/01_pandas基础/02_excel数据查找.py
+	
+	1）按列查找
+		df['帖子主页']，按列名查找
+		df[['列名1','列名2']]，按多个列名组成的数据查找，注意多个类名需要放在一个维列表里
+		
+	2）按行查找
+		df.head()，返回数据的前几行，默认5行
+		df.head(n=10)，返回前10行的数据
+		
+		df.sample(n=4)，随机获取n行
+		
+		df[0:5],指定从第一行开始，连续取5行
+	3）loc查找，返回Series对象
+		df.loc[起始行索引:结束行索引 , 起始列名称:结束列名称]，定位获取数据
+		比如：df.loc[0:0,:]，只取第0行的所有列数据
+		     df.loc[0,:]，只取第0行的所有列数据
+			 df.loc[0:2,'帖子主页']，只获取0~2行，'帖子主页'这一列的数据
+			 df.loc[:,'帖子主页']，'帖子主页'这一列的所有数据
+			 df.loc[2,['帖子主页','当前帖子内容']]，获取一行，指定不连续列
+
+4）iloc，根据索引定位查找
+	案例：python_projects/pythonExcel/01_pandas基础/03_iloc根据索引定位查找.py
+	
+	iloc函数为 Selection by Position，即按位置选择数据，即第n行，第n列数据，只接受整形参数
+	语法：df.iloc(起始行索引:结束行索引 , 起始列索引:结束列索引),包左不包右，省略顶到头
+	
+	比如：
+		df.iloc(0:3,1:6),返回第0，1，2行，第1，2，3，4，5列的数据
+		df.iloc[0:3,0] ，返回第0，1，2行，第0列的数据
+		df.iloc[:,0]，第0列的所有行数据
+		df.iloc[1,2:6]，取一行，指定连序列的数据
+		df.iloc[1,[0,2,3,4,5,1]]，取一行，指定不连序列的数据
+		df.iloc[1,:]，取一行，全部列
+
+5）布尔值索引
+	案例：python_projects/pythonExcel/01_pandas基础/04_布尔值索引.py
+	
+	可以通过判断指令，约束某项条件然后选择出当前所有数据
+	df['转发次数'] > 10，返回 转发次数>10的数据，注意返回的是一个boolean列表，同时需要判断每个值是否可以和10比较，比如字符串就无法和10比较，会报错
+	
+	df[df['转发次数'] >= 50]，转发次数>=50的全部数据，通过嵌套，对df的数据进行筛选,返回的是复合条件的全部数据
+	
+	
