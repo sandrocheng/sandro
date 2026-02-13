@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Complatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>06数据类型的转换</title>
+</head>
+
+<body>
+  <script>
+    //- * /等都会把数据转成数字类型
+    console.log(`1）2 / "2" = ${2 / "2"}`);
+    console.log(`2）2 - "2" = ${2 - "2"}`);
+    console.log(`3）2 * "2" = ${2 * "2"}`);
+
+    //号两边如果有一个是字符串，都会把另外一个转成字符串
+    console.log(`4）2 +"2" = ${2 + "2"}`);
+
+    //+号可以把字符串转为数字类型
+    str = '100'
+    num = +str
+    console.log(`5）num is ${typeof num}`);
+
+    //经过显示转换后，就可以正常的运行加法运算了
+    str = Number(str)
+    console.log(`6）str + str = ${str + str}`);
+
+    str = "p111.11"
+    console.log(`7）parseInt(str) = ${parseInt(str)}`);
+    console.log(`8）parseFloat(str) = ${parseFloat(str)}`);
+
+  </script>
+</body>
+
+</html>

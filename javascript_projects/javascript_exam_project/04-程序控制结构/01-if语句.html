@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Complatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>01-if语句</title>
+
+</head>
+
+<body>
+  <script>
+    let num = 10
+    if (num >= 9) {
+      console.log(`num = ${num},它大于9`);
+    }
+
+    if (num % 2 == 1) {
+      console.log(`num = ${num},它是奇数`);
+    } else {
+      console.log(`num = ${num},它是偶数`);
+    }
+
+    let num2 = '123'
+    if (num2 % 2 === 0) {
+      console.log(`num2 = ${num2},它是偶数`);
+    } else if (num2 % 2 === 1) {
+      console.log(`num2 = ${num2},它是奇数`);
+    } else {
+      console.log(`num2 = ${num2},它不是数字`);
+    }
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Complatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>02-对象中方法的使用</title>
+
+</head>
+
+<body>
+  <script>
+
+    let user = {
+      uname: 'lily',
+      age: 18,
+      gender: '女',
+      getInfo: function (address) {
+        return "女，18，lily" + "，" + address
+      }
+    }
+
+    console.log("1)", user.getInfo('大连'));
+
+  </script>
+</body>
+
+</html>

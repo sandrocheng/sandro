@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Complatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>02-数组元素的操作</title>
+
+</head>
+
+<body>
+  <script>
+    let arr = []
+    arr[0] = 300
+    arr[2] = 100
+    console.log(`1) arr:${arr}`);
+
+    for (let i = 0; i < arr.length; i++) {
+      console.log(`arr[${i}] = ${arr[i]}`)
+    }
+
+    let len = arr.push(600, 500, 400)
+    console.log(`2) len = ${len} , arr:${arr}`);
+
+    len = arr.unshift(-100, -200)
+    console.log(`3) len = ${len} , arr:${arr}`);
+
+    let delMeta = arr.pop();
+    console.log(`4) delMeta = ${delMeta}, arr:${arr}`);
+
+    delMeta = arr.shift();
+    console.log(`5) delMeta = ${delMeta}, arr:${arr}`);
+
+    arr.splice(2, 1)
+    console.log(`6) arr:${arr}`);
+
+    arr.sort()
+    console.log(`7) arr.sort():${arr}`);
+
+    arr.sort(function (a, b) {
+      return b - a
+    })
+    console.log(`8) arr.sort(降序):${arr}`);
+  </script>
+</body>
+
+</html>

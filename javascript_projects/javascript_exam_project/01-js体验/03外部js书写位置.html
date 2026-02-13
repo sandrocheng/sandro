@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Complatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>03外部js书写位置</title>
+
+</head>
+
+<body>
+  <!--通过src指定js文件的路径-->
+  <script src="test.js"></script>
+  <script src="./js/test2.js">
+    <!--使用src引入js文件后，该标签内部的js代码会被忽略--->
+  </script>
+</body>
+
+</html>

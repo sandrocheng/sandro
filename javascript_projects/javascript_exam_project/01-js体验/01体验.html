@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Complatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>01体验</title>
+
+  <style>
+    .pink {
+      background-color: pink;
+    }
+  </style>
+</head>
+
+<!---js体验代码，四个按钮通过点击更换样式-->
+
+<body>
+  <button class="pink">按钮1</button>
+  <button>按钮2</button>
+  <button>按钮3</button>
+  <button>按钮4</button>
+  <script>
+    let bts = document.querySelectorAll('button')
+    for (let i = 0; i < bts.length; i++) {
+      bts[i].addEventListener('click', function () {
+        document.querySelector('.pink').className = ''
+        this.className = 'pink'
+
+      })
+    }
+  </script>
+</body>
+
+</html>

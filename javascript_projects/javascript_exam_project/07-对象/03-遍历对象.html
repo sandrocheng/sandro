@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Complatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>03-遍历对象</title>
+
+</head>
+
+<body>
+  <script>
+
+    let user = {
+      uname: 'lily',
+      age: 18,
+      gender: '女',
+      getInfo: function () {
+        return "女，18，lily" + "，" + address
+      }
+    }
+
+    console.log("1)遍历对象的所有属性——————————");
+
+    for (let k in user) {
+      console.log(`${k} = ${user[k]}`)
+    }
+
+    console.log("2)使用for in 语法遍历数组——————————")
+    arr = ['大连', '沈阳', '抚顺', '本溪']
+    for (let index in arr) {
+      console.log(`${index} = ${arr[index]} , index type is ${typeof index}`)
+    }
+
+  </script>
+</body>
+
+</html>

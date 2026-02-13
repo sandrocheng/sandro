@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Complatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>04数据类型</title>
+
+</head>
+
+<body>
+
+  <script>
+    let num_1 = 100
+    console.log("1) num_1:", num_1)
+
+    /*
+     变量在初始化后，还可以继续赋值为其他类型的值 
+    */
+    num_1 = "tony"
+    console.log("2) num_1:", num_1)
+
+    console.log("3) 5/0 = ", 5 / 0)//Infinity,除0，返回的是无穷值，不是错误
+    console.log("4) lily - 1 = ", "lily" - 1)//返回NaN,代表运算错误
+    console.log("5) NaN - 1 = ", NaN - 1)//Nan是粘性的，NaN和任何类型运算都返回NaN
+
+    let str = `lily` //js中单引号，双引号，反引号(``)都可以定义字符串
+    console.log("6) str = ", str)
+
+    str = '我是"张三"'
+    console.log("7) str = ", str)
+
+    str = '我是\'张三\''
+    console.log("8) str = ", str)
+    let isMan = false
+    console.log("9) isMan = ", isMan)
+    isMan = true
+    console.log("10) isMan = ", isMan)
+
+    let test
+    console.log("11) test = ", test)
+    test = null
+    console.log("12) test = ", test)
+
+    console.log("13) undefined + 1 = ", (undefined + 1))
+    console.log("14) null + 1 = ", (null + 1))
+    console.log("15) null + lily = ", (null + 'lily'))
+    console.log("16) undefined + lily = ", (undefined + 'lily'))
+
+    num_1 = 100
+    let x
+    console.log(`17) num_1=${num_1},类型是 : ${typeof num_1}`)
+    console.log(`18) str=${str},类型是 : ${typeof str}`)
+    console.log(`19) isMan=${isMan},类型是 : ${typeof isMan}`)
+    console.log(`20) x=${x},类型是 : ${typeof x}`)
+    console.log(`21) test=${test},类型是 : ${typeof test}`)//注意 null实际上是一个对象，因此类型是object
+  </script>
+</body>
+
+</html>

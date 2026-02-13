@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Complatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>02-函数的参数</title>
+
+</head>
+
+<body>
+  <script>
+
+    function sum1(a, b) {
+      let sum = a + b
+      console.log(`1) ${a} + ${b} = ${a + b}`);
+
+    }
+
+    sum1(10, 20)
+
+
+    function sum2(a = 0, b = 0) {
+      let sum = a + b
+      console.log(`2) ${a} + ${b} = ${a + b}`);
+
+    }
+
+    sum2(20)
+  </script>
+</body>
+
+</html>

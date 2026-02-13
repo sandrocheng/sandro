@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Complatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>01变量的声明和使用</title>
+
+</head>
+
+<body>
+
+  <script>
+    let age
+    age = 19
+    console.log("1)age = ", age)
+
+    let name = "张三"
+    console.log("2)name", name)
+
+    age = 20
+    console.log("3)age = ", age)
+
+    let num = 1, gender = '男'
+    console.log("4) num=", num, " , gender = " + gender)
+
+    age = prompt("请输入年龄")
+    console.log("5)输入的年龄是：", age)
+
+    //变量交换
+    let a = 1, b = 2
+    console.log("6) 交换前 a=", a, " , b = " + b)
+    let temp = a
+    a = b
+    b = temp
+    console.log("7) 交换后 a=", a, " , b = " + b)
+  </script>
+</body>
+
+</html>

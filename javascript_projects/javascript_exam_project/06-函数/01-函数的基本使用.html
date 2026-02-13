@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Complatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>01-函数的基本使用</title>
+
+</head>
+
+<body>
+  <script>
+
+    sayHi()
+    function sayHi() {
+      //如果函数内部，变量没有使用let声明，直接赋值，也当全局变量来看，但是强烈不推荐这么写
+      str = 'hello'
+      console.log("hello funciton")
+    }
+    console.log(str);
+
+  </script>
+</body>
+
+</html>

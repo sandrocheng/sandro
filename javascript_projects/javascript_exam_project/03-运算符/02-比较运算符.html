@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Complatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>02-比较运算符</title>
+
+</head>
+
+<body>
+  <script>
+    let num1 = 123
+    let num2 = "123"
+    console.log(`num1 = ${num1},num type is ${typeof num1} `)
+    console.log(`num2 = ${num2}, num2 type is ${typeof num2}`)
+    console.log(`1) num1 == num2 ,结果：${num1 == num2}`);
+    console.log(`2) num1 === num2 ,结果：${num1 === num2}`);
+
+    //undefined和null的值是相等的,但是类型不一样
+    console.log(`3) undefined == null ,结果：${undefined == null}`);
+    console.log(`4) undefined === null ,结果：${undefined === null}`);
+
+    // NaN 和 NaN的值不相等，类型也不相等
+    console.log(`5) NaN == NaN ,结果：${NaN == NaN}`);
+    console.log(`6) NaN === NaN ,结果：${NaN === NaN}`);
+
+    let temp = NaN
+    console.log(`temp = ${temp}`);
+    console.log(`7) temp == temp ,结果：${temp == temp}`);
+    console.log(`8) temp === temp ,结果：${temp === temp}`);
+
+    let a = 0.1, b = 0.2
+    //尽量不要比较小数，因为小数有精度的问题，可能结果是错误的，如果一定要比较，最好先转换成整数，在比较
+    console.log(`a = ${a},b = ${b}`)
+    console.log(`9) a + b = ${a + b}`)
+    console.log(`10) a + b === 0.3,结果 ${(a + b) === 0.3}`)
+  </script>
+</body>
+
+</html>

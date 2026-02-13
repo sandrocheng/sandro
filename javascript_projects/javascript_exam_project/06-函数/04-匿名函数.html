@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Complatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>04-匿名函数</title>
+
+</head>
+
+<body>
+  <script>
+
+    (function (x) {
+      console.log("1)立即执行函数方式1 : " + x);
+    })(1);
+
+    (function (x, y) {
+      console.log(`2)立即执行函数方式2 :${x + y}`)
+    }(1, 2));
+
+    //函数表达式
+    let fn1 = function (x, y) {
+      console.log(`3) 函数表达式 ,结果：${x + y}`);
+
+    }
+    fn1(1, 2)// 通过变量名 + ()的方式调用
+
+  </script>
+</body>
+
+</html>
