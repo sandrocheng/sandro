@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Complatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>05-定时器的间歇函数</title>
+
+</head>
+
+<body>
+  <script>
+    let count = 0
+
+    function funInter() {
+      console.log(count++);
+      if (count > 5) {
+        console.log("停止定时器");
+        clearInterval(timerId)
+      }
+    }
+    let timerId = setInterval(funInter, 1000)
+  </script>
+</body>
+
+</html>

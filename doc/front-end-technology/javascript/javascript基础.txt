@@ -94,6 +94,8 @@
 				console.count("标签")：统计代码执行次数。‌‌
 			3.7)分组日志
 				console.group("标签") 和 console.groupEnd()：，便于分类查看（如 console.group("用户数据") 后接多条 log）。‌‌
+			3.8)打印对象
+				console.dir(对象)，通常用于打印DOM对象内容
 		
 	
 	输入:
@@ -152,11 +154,16 @@
 		1）起名要有意义
 		2）推荐小驼峰命名法
 	
+	const，用于声明常量，如果变量初始化后不需要再次改变，优先使用const声明，const声明的变量的值不能再次修改，强行修改运行时会报错
+	建议：优先使用const来声明变量，当遇到变量需要重新赋值的时候再改为let声明
+	注意，如果变量是引用类型，比如数组，对象等，使用const声明后可以改动对象内部的值，但是不能重新给该对象赋新的对象值也就是更换引用对象的地址
+	通常数组和对象优先使用const来声明，尤其再多人合作的时候多个文件有可能有重名的对象被声明了，使用const可以比较方便的检查到错误信息
+	
 	let和var的区别
 	旧版本的js语法，使用关键字var来声明变量，而不是let
 	var目前已经很少使用，
 	let解决了var很多不合理的地方，比如var可以重复定义变量名，可以先使用，后声明，变量提升，全局变量，没有块级作用等等
-	总之，var已经不适合新版本js的编码，尽量不要使用
+	总之，var已经不适合新版本js的编码，尽量不要使用。
 	
 9、js中的数组
 	案例：\javascript_projects\javascript_exam_project\02-变量\02js中数组的使用.html
@@ -733,3 +740,133 @@
 	   复杂数据类型的对象变量里保存的是地址，该地址指向的是堆空间中的实际数据。
 	  
 	js本身并没有明确的堆，栈区分，但是可以借助这个思想理解js是如何保存值类型和引用数据类型的数据。
+
+44、定时器的间歇函数
+	案例: \javascript_projects\javascript_exam_project\06-函数\05-定时器的间歇函数.html
+	
+	定时器间歇函数是用来定期循环触发一段任务代码的函数
+	定时器函数可以开启和关闭定时器
+	1）开启定时器
+		setInterval(函数，间隔时间)
+		函数：是定期要执行的函数
+		间隔时间：单位毫秒
+		间隔函数一旦开启除非手动关闭，否则永不停歇
+		
+		注意：函数可以使用匿名函数，如果要使用具名函数，该参数只能是函数名，不要加()
+		比如：
+		    let count = 0
+			function funInter() {
+				console.log(count++);
+			}
+			setInterval(funInter, 1000)//这里只能使用函数的函数名，代表要回调的函数引用，如果加括号，则会立即执行
+	
+	2）关闭定时器
+		定时器有一个返回值，代表定时器的id值
+		可以利用这个id关闭定时器
+		比如：	
+			let timerId = setInterval(funInter, 1000)
+			
+			clearInterval(timerId)
+
+45、定时器的延迟函数
+	案例：\javascript_projects\javascript_exam_project\06-函数\07-定时器的延迟函数.html
+	
+	延迟函数是js中内置的让代码延时执行的函数
+	语法：let timer = setTimeout(回调函数,等待的毫秒数)
+		 返回的timer用于清除时使用
+		 
+	延迟函数的清除	：
+		clearTimeout(timer)
+	
+	注意：每次调用都会产生一个新的延时器
+	
+	
+46、环境对象
+	案例：\javascript_projects\javascript_exam_project\07-对象\05-环境对象.html
+	
+	环境对象指的是函数内部特殊的变量this，它代表当前函数运行时所处的环境
+	弄清楚this的指向，可以让代码更加简洁
+	每个函数里面都有this这个环境对象
+	
+	案例1：
+		function fun() {
+			console.dir(this)
+		}
+		fun()
+		此时输出的this是 windown对象，之际上fun()的全调用写法应该是 window.fn(),因此this就是window这个环境对象	
+		也就是说在普通函数中，this指向的都是window这个环境对象
+	案例2：
+		const btn = document.querySelector('button')
+		btn.addEventListener('click', function (e) {
+			console.log(`点击函数的环境对象this是：`);
+			console.dir(this)
+			this.style.color = 'red'//此时this指向的是btn这个DOM对象，因此可以直接调用该DOM中的属性。
+		})	
+		此时this指向的环境对象是btn，因为点击事件触发的时候该函数实际上是被btn调用的
+	
+	总结：函数的调用不同，所指向的对象也不同
+		 通常粗略的规制是谁调用了该函数，这个函数中的this就指向谁
+		 直接调用函数，其实相当于window.函数，此时this指代window
+		 具名函数有可能在各种环境中调用，因此具名函数中使用this要注意区分调用者是谁
+		 匿名函数通常会指定一个对象，因此匿名函数中this相对固定
+
+47、回调函数
+	案例：\javascript_projects\javascript_exam_project\06-函数\06-回调函数.html
+	回调函数是一个概念，如果将函数A作为参数传递给函数B时，我们称函数A为回调函数
+	
+	在js中大量的事件操作都是使用回调函数这种方式进行任务操作的
+	通常使用匿名函数作为回调函数比较常见
+	
+48、日期对象的使用
+	案例：\javascript_projects\javascript_exam_project\07-对象\06-日期对象.html
+	
+	实例化，使用new创建对象的方式就叫实例化
+	
+	日期对象的实例化
+		1）创建当前时间的实例化对象
+			const date = new Date()
+		2）创建指定时间的实例化对象
+			const date = new Date('2008-8-8 08:30:05')
+			注意：如果日期格式不正常，返回的对象中的数值类型都是NaN
+	
+	日期对象的方法：
+		日期对象返回的数据不能直接使用，所以需要转换为实际开发中常用的格式
+		1）getFullYear(),获取四位年份
+		2）getMonth(),获取月份，值为 0~11
+		3）getDate(),获取月份中的日期数据，不同月份取值也不同
+		4）getDay(),获取星期，取值为0~6,0代表周日，1代表周一...一次类推
+		5）getHours(),获取小时，取值为0~23
+		6）getMinutes(),获取分钟，取值为0~59
+		7）getSeconds(),获取秒，取值为0~59
+		8）toLocaleString(),获取用户所在地区的本地化设置的当前时间字符串 比如2025/07/07 03:03:03，
+		9）toLocaleDateString(),获取用户所在地区的本地化设置的当前日期字符串 
+		10）toLocaleTimeString(),获取用户所在地区的本地化设置的当前时间字符串，不包含日期
+		11）getTime()，返回时间戳，即从1970年1月1号0点0分0秒到当前的毫秒数
+			也可以简写 +new Date(),获取时间戳
+			Date.now(),也可以获取时间戳，这种写法无需实例化，但是只能获取当前的时间戳
+
+49、使用map()方法和join()数组方法实现字符串拼接
+	案例：\javascript_projects\javascript_exam_project\06-函数\08-使用map和join数组方法进行字符串拼接.html
+	
+	js中在进行页面标签数据的创建时往往需要大量的字符串拼接工作
+	传统的使用+号连接，或者魔法字符串，要么效率低，要么使用繁琐
+	实际上，更高效优雅的处理方式是使用数组的map和join方法来实现
+	
+	map(),map()方法，可以遍历数组处理数据，并且返回新的数组
+	语法：
+		const newArr = arr.map(function(ele,index){
+			//ele，是数组元素
+			//index，是数组下标
+			return 每个元素的新值 
+		})
+	map也称为映射,指两个元素的集之间元素相互“对应”的关系
+	map重点在于有返回值，类似的有forEach语法，但是fouEach没有返回值
+	使用场景，当获取到数据是放在数组里的时候，要根据数据生成页面元素标签，可以直接map这个数组生成新的字符串数组，每个新元素都是页面标签字符串
+	
+	join方法，可以将数组里的所有元素转换为一个字符串
+		const arr = ['red', 'blue', 'green']
+		const strAll = arr.join('')
+	参数：数组元素是通过参数里面指定得分隔符进行分隔的
+		 设置空字符串，则所有元素之间没有任何字符
+		 不设置分隔符，默认用","分隔
+	

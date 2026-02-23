@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Complatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>04-修改元素sytle样式属性</title>
+  <style>
+    .box1 {
+      width: 50px;
+      height: 50px;
+      background-color: aqua;
+    }
+  </style>
+
+</head>
+
+<body>
+  <div class="box1"></div>
+  <script>
+    const divBox1 = document.querySelector("div.box1")
+    const random = Math.floor(Math.random() * 2)
+    console.dir(divBox1)
+    if (random == 0) {
+      //注意：width和height 这里css的值是带单位的字符串，因此也要在js中设置为带单位的字符串
+      divBox1.style.width = "70px"
+      divBox1.style.height = "70px"
+      //注意css中background-color这种带横线的属性对应到js属性通常名字都是小驼峰命名的
+      divBox1.style.backgroundColor = 'red'
+      divBox1.style.border = '2px solid aqua'
+    } else {
+      divBox1.style.width = "50px"
+      divBox1.style.height = "50px"
+      divBox1.style.backgroundColor = "aqua"
+      divBox1.style.border = '2px solid red'
+    }
+
+  </script>
+</body>
+
+</html>

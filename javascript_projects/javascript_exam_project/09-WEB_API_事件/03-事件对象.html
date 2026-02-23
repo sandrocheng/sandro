@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Complatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>03-事件对象</title>
+
+
+</head>
+
+<body>
+  <button>点击</button>
+  <input type="text" placeholder="监听按键值">
+  <script>
+    const button = document.querySelector('button')
+    button.addEventListener('click', function (e) {
+      console.dir(e);
+
+    })
+
+    const input = document.querySelector('input')
+    input.addEventListener('keyup', function (e) {
+      console.dir(e);
+      console.log(`key is ${e.key}`)
+    })
+  </script>
+</body>
+
+</html>

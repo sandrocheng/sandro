@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Complatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>07-操作html表单的值</title>
+  <style>
+
+  </style>
+
+</head>
+
+<body>
+  <input id="data" type="text" value='默认数据'>
+  <input type="checkbox" id="isMan" checked>男</input> <br>
+  <button>点击</button>
+  <script>
+    const input = document.querySelector('input')
+    console.log(`1) 输入框默认值：${input.value}`)
+
+    input.value = "新数据"
+    input.type = "password"
+    console.log(`2) 输入框修改后的值：${input.value}`)
+
+    const checkbox = document.querySelector('#isMan')
+    console.log(`3) checkbox的初始选中状态：${checkbox.checked}`)
+    checkbox.checked = false
+    console.log(`4) checkbox 状态修改后：${checkbox.checked}`)
+
+    const btn = document.querySelector('button')
+    console.log(`5) button disabled 的默认值 ：${btn.disabled}`)
+    btn.disabled = true
+
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Complatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>02-操作元素内容</title>
+
+</head>
+
+<body>
+  <div class="box1">
+    <p>hello world</p>
+  </div>
+  <div class="box2">
+    <p>hello world</p>
+  </div>
+  <script>
+    const box1 = document.querySelector('div.box1')
+    console.log(`1）div.box1中的文本 : ${box1.innerText}`)
+    box1.innerText = "hello javascript"
+    console.log(`2）修改后div.box1中的文本 : ${box1.innerText}`)
+
+
+    const box2 = document.querySelector('div.box2')
+    console.log(`3）div.box2中的html文本 : ${box2.innerHTML}`)
+    box2.innerHTML = `<strong> hello javascript </strong>`
+    console.log(`4）修改后div.box2中的html文本 : ${box2.innerHTML}`)
+
+  </script>
+</body>
+
+</html>

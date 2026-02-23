@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Complatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>06-日期对象</title>
+
+
+</head>
+
+<body>
+
+  <script>
+    const date = new Date()
+    console.log("1) date:", date);
+
+    const featureDate = new Date('2025-12-6 09:30:05')
+    console.log("2) featureDate:", featureDate);
+    console.log(`3) featureDate.getFullYear():${featureDate.getFullYear()}`)
+    console.log(`4) featureDate.getMonth():${featureDate.getMonth()}`)
+    console.log(`5) featureDate.getDate():${featureDate.getDate()}`)
+    console.log(`6) featureDate.getHours():${featureDate.getHours()}`)
+    console.log(`7) featureDate.getMinutes():${featureDate.getMinutes()}`)
+    console.log(`8) featureDate.getSecond():${featureDate.getSeconds()}`)
+    console.log(`9) featureDate.getDay():${featureDate.getDay()}`)
+    console.log(`10) featureDate.toLocaleString():${featureDate.toLocaleString()}`)
+    console.log(`11) featureDate.toLocaleDateString():${featureDate.toLocaleDateString()}`)
+    console.log(`12) featureDate.toLocaleTimeString():${featureDate.toLocaleTimeString()}`)
+    console.log(`13) featureDate.getTime():${date.getTime()}`)
+
+  </script>
+</body>
+
+</html>

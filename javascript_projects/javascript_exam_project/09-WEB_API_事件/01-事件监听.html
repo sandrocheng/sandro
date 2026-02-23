@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Complatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>01-事件监听</title>
+
+  <style>
+    .box {
+      width: 100px;
+      height: 100px;
+      background-color: aqua;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+  <button>按钮</button>
+  <div class="box">
+    点击关闭当前div
+  </div>
+  <script>
+    const btn = document.querySelector('button')
+    btn.addEventListener('click', function () {
+      console.log("按钮点击事件触发");
+    })
+
+    const div = document.querySelector('.box')
+    function divfun() {
+      console.log("div点击事件触发");
+      div.style.display = 'none'
+    }
+    div.addEventListener('click', divfun)
+  </script>
+</body>
+
+</html>

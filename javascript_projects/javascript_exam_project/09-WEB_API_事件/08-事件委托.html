@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Complatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>08-事件委托</title>
+
+
+</head>
+
+<body>
+  <ul>
+    <li>第1个元素</li>
+    <li>第2个元素</li>
+    <li>第3个元素</li>
+    <li>第4个元素</li>
+    <li>第5个元素</li>
+    <p>点击这个元素不需要变色</p>
+  </ul>
+  <script>
+    //点击每个li元素，当前li元素的文字变为红色
+    //利用事件委托的技巧实现
+
+    const ul = document.querySelector('ul')
+    ul.addEventListener('click', function (e) {
+      console.log(`当前被点击的标签是:${e.target.tagName}`)
+      console.dir(e.target);
+      if (e.target.tagName === "LI") {
+        e.target.style.color = 'red'
+      }
+    })
+
+  </script>
+</body>
+
+</html>

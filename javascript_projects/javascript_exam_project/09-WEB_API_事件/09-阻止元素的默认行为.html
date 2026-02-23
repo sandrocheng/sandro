@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Complatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>09-阻止元素的默认行为</title>
+
+
+</head>
+
+<body>
+  <form action="http://www.baidu.com">
+    <button type="submit">提交</button>
+  </form>
+  <a href="https://www.sina.com">链接跳转被阻止</a>
+  <script>
+    const form = document.querySelector("form")
+    form.addEventListener('click', function (e) {
+      e.preventDefault()//阻止表单的默认提交行为
+    })
+
+    const a = document.querySelector("a")
+    a.addEventListener('click', function (e) {
+      e.preventDefault()//阻止a标签的默认跳转行为
+    })
+
+  </script>
+</body>
+
+</html>

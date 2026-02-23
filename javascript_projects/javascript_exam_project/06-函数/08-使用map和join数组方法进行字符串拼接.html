@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Complatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>08-使用map和join数组方法进行字符串拼接</title>
+
+</head>
+
+<body>
+  <script>
+    const arr = ['red', 'blue', 'green']
+    console.log('1)map遍历数组----------');
+
+    const newArr = arr.map(function (ele, index) {
+      console.log(`ele:${ele},index:${index}`)
+      return ele + "颜色"
+    })
+    console.log('新数组：', newArr);
+    console.log('2)join方法拼接数组字符串----------')
+    console.log(`新数组字符串：${newArr.join('|')}`);
+
+
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Complatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>04-localStorage的使用</title>
+
+  <style>
+
+  </style>
+  <script>
+    (function () {
+      function loadFinish() {
+        localStorage.setItem('user', 'sandro')
+        localStorage.setItem('age', 45)
+        localStorage.setItem('isMan', true)
+        localStorage.setItem('job', null)
+        console.log(`1) user : ${localStorage.getItem('user')}`)
+        let age = localStorage.getItem('age')
+        console.log(`2) age : ${age} ,type : ${typeof age}`)
+        let isMan = localStorage.getItem('isMan')
+        console.log(`3) isMan : ${isMan} ,type : ${typeof isMan}`)
+        let job = localStorage.getItem('job')
+        console.log(`4) job : ${job} ,type : ${typeof job}`)
+
+        //保存复杂数据
+        const obj = {
+          userName: 'jess',
+          age: 20,
+          isMan: true
+        }
+
+        const objStr = JSON.stringify(obj)
+        localStorage.setItem('obj', objStr)
+
+        const storage_obj = localStorage.getItem('obj')
+        console.log(`5) storage_obj : ${storage_obj}`)
+        const new_obj = JSON.parse(storage_obj)
+        console.log(`6) new_obj `, new_obj)
+      }
+      document.addEventListener('DOMContentLoaded', loadFinish)
+    })()
+  </script>
+</head>
+
+<body>
+
+</body>
+
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Complatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>06-通过classList修改样式</title>
+  <style>
+    .box1 {
+      width: 150px;
+      height: 150px;
+      background-color: rgb(162, 0, 255);
+    }
+
+    .box2 {
+      width: 100px;
+      height: 100px;
+      background-color: red;
+    }
+
+    .nav {
+      color: rgb(0, 255, 140);
+    }
+
+    .test {
+      border-radius: 15%;
+    }
+  </style>
+
+</head>
+
+<body>
+  <div class="nav box1">通过classList修改样式</div>
+
+  <script>
+    const divTag = document.querySelector("div")
+    divTag.classList.remove('box1')
+    divTag.classList.add('box2')
+
+
+    setInterval(function () {
+      divTag.classList.toggle('test')
+    }, 3000);
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Complatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>07-定时器的延迟函数</title>
+
+</head>
+
+<body>
+  <script>
+    setTimeout(function () {
+      console.log("timeout1");
+      clearTimeout(timer)//清除timer这个延迟函数的执行效果
+    }, 2000);
+
+    let timer = setTimeout(function () {
+      console.log("timeout2");
+
+    }, 3000);
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Complatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>01-节点查找</title>
+
+  <style>
+
+  </style>
+  <script>
+    (function () {
+      /**
+       * 父节点查找演示案例 
+       */
+      function showParentNode() {
+        const son = document.querySelector('.son')
+        console.log("1.1)son节点：", son);
+        console.log("1.2)son节点的父节点：", son.parentNode);
+        console.log("1.3)son节点的爷爷点：", son.parentNode.parentNode);
+      }
+
+      /*
+      * 子节点查找演示案例 
+      */
+      function showChildrenNodes() {
+        const ul = document.querySelector("ul")
+        console.log("2.1) ul的所有子节点", ul.childNodes);
+        console.log("2.2) ul的所有子标签节点", ul.children);
+      }
+
+      /*
+      * 兄弟节点查找演示案例 
+      */
+      function showBrotherNodes() {
+        const li = document.querySelector(".tar")
+        console.log("3.1) li :", li)
+        console.log("3.2) li前一个兄弟节点 :", li.previousElementSibling);
+        console.log("3.3) li后一个兄弟节点 :", li.nextElementSibling);
+      }
+
+      function loadFinish() {
+        showParentNode()
+        showChildrenNodes()
+        showBrotherNodes()
+      }
+      document.addEventListener('DOMContentLoaded', loadFinish)
+    })()
+  </script>
+</head>
+
+<body>
+  <div class="dad">
+    <div class="son">子元素</div>
+  </div>
+  <ul>
+    <li>一</li>
+    <li class="tar">二</li>
+    <li>三</li>
+  </ul>
+</body>
+
+</html>

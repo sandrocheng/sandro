@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Complatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>05-事件冒泡过程案例</title>
+
+  <style>
+    .father {
+      width: 100px;
+      height: 100px;
+      background-color: #09ebbe;
+    }
+
+    .son {
+      width: 50px;
+      height: 50px;
+      background-color: #ebc509;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="father">
+    <div class="son"></div>
+  </div>
+  <script>
+    const fa = document.querySelector(".father")
+    const son = document.querySelector(".son")
+
+    document.addEventListener('click', function () {
+      console.dir(this)
+    })
+
+    fa.addEventListener('click', function () {
+      console.dir(this)
+    })
+
+    son.addEventListener('click', function () {
+      console.dir(this)
+    })
+
+
+  </script>
+</body>
+
+</html>

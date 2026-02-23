@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Complatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>12-获取元素滚动位置html</title>
+
+  <style>
+    body {
+      padding-top: 100px;
+      height: 3000px;
+      padding-top: 100px;
+    }
+
+    div {
+      margin: 100px;
+      /*overflow 是当内容超出范围的时候的处理方式
+       *这里使用scroll,表示使用滚动条来处理
+       */
+      overflow: scroll;
+      width: 200px;
+      height: 200px;
+      border: 1px solid #000
+    }
+  </style>
+
+  <script>
+    (function () {
+      function loadFinish() {
+        const div = document.querySelector('div')
+        div.addEventListener('scroll', function (e) {
+          console.log(`当前div内容的顶端向上移动了${this.scrollTop}像素`);
+        })
+      }
+      document.addEventListener('DOMContentLoaded', loadFinish)
+    })()
+
+  </script>
+</head>
+
+<body>
+  <div>
+    这里有很多文字
+    这里有很多文字
+    这里有很多文字
+    这里有很多文字
+    这里有很多文字
+    这里有很多文字
+    这里有很多文字
+    这里有很多文字
+    这里有很多文字
+    这里有很多文字
+    这里有很多文字
+    这里有很多文字
+    这里有很多文字
+    这里有很多文字
+    这里有很多文字
+    这里有很多文字
+    这里有很多文字
+    这里有很多文字
+    这里有很多文字
+    这里有很多文字
+    这里有很多文字
+    这里有很多文字
+    这里有很多文字
+    这里有很多文字
+    这里有很多文字
+    这里有很多文字
+    这里有很多文字
+  </div>
+</body>
+
+</html>

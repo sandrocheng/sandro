@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Complatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>01-location对象</title>
+
+  <style>
+
+  </style>
+  <script>
+    (function () {
+      function loadFinish() {
+        console.dir(location);
+        console.log(`1) href :${location.href}`)
+
+        const btn = document.querySelector('button')
+        btn.addEventListener('click', function () {
+          location.reload(true)
+        })
+      }
+      document.addEventListener('DOMContentLoaded', loadFinish)
+    })()
+  </script>
+</head>
+
+<body>
+  <button>强制刷新</button>
+</body>
+
+</html>

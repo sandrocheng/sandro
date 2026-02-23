@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Complatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>06-回调函数</title>
+
+</head>
+
+<body>
+  <script>
+    function callback(result) {
+      console.log(result);
+    }
+    function sum(x, y, callbackFun) {
+      callbackFun(x + y)
+    }
+    sum(1, 2, callback)
+  </script>
+</body>
+
+</html>

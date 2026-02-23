@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Complatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>01-获取DOM元素</title>
+
+  <style>
+    .box {
+      width: 40px;
+      height: 40px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="box">boxDIV_1</div>
+  <div class="box">boxDIV_2</div>
+  <p id="nav">导航栏</p>
+  <ul>
+    <li>测试1</li>
+    <li>测试2</li>
+    <li>测试3</li>
+  </ul>
+
+  <ul>
+    <li>测试4</li>
+    <li>测试5</li>
+  </ul>
+  <script>
+    const boxDiv_1 = document.querySelector('div')
+    console.log("1）通过div标签查找第一个元素 ,其类型是: ", typeof boxDiv_1)
+    console.dir(boxDiv_1);
+
+    const boxDiv_2 = document.querySelector('.box')
+    console.log("2）通过class选择第一个标签元素")
+    console.dir(boxDiv_2);
+
+    console.log("3）通过id查找第一个元素")
+    const p_ele = document.querySelector('#nav')
+    p_ele.style.color = 'red'
+    console.dir(p_ele);
+
+    const li_ele = document.querySelector('ul li:first-child')
+    console.log("4）查找ul的第一个li元素")
+    console.dir(li_ele);
+
+    const li_all = document.querySelectorAll('ul li')
+    console.log("4）查找ul中所有的li元素 ,并修改元素的颜色")
+    console.dir(li_all);
+    for (let i = 0; i < li_all.length; i++) {
+      if (i % 2 == 0) {
+        li_all[i].style.color = 'blue'
+      } else {
+        li_all[i].style.color = 'green'
+      }
+    }
+
+
+  </script>
+</body>
+
+</html>

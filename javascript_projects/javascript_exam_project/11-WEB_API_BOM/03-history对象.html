@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Complatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>03-history对象</title>
+
+  <style>
+
+  </style>
+  <script>
+    (function () {
+      function loadFinish() {
+        console.dir(history);
+
+        const btn = document.querySelector('button')
+        btn.addEventListener('click', function () {
+          history.go(-1)
+        })
+      }
+      document.addEventListener('DOMContentLoaded', loadFinish)
+    })()
+  </script>
+</head>
+
+<body>
+  <button>后退</button>
+</body>
+
+</html>

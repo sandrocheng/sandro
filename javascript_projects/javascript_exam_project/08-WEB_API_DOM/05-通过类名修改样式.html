@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Complatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>05-通过类名修改样式</title>
+  <style>
+    .box1 {
+      width: 50px;
+      height: 50px;
+      background-color: rgb(162, 0, 255);
+    }
+
+    .box2 {
+      width: 100px;
+      height: 100px;
+      background-color: red;
+    }
+
+    .nav {
+      color: rgb(0, 255, 140);
+    }
+  </style>
+
+</head>
+
+<body>
+  <div>通过类名修改样式</div>
+
+  <script>
+    const divTag = document.querySelector("div")
+    console.dir(divTag)
+    const random = Math.floor(Math.random() * 2) + 1
+    divTag.className = `box${random} nav`
+
+  </script>
+</body>
+
+</html>

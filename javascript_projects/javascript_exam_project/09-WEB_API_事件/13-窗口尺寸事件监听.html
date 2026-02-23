@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Complatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>13-窗口尺寸事件监听</title>
+
+  <style>
+
+  </style>
+
+  <script>
+    (function () {
+      function loadFinish() {
+        window.addEventListener('resize', function (e) {
+
+          let w = document.documentElement.clientWidth
+          let h = document.documentElement.clientHeight
+          console.log(`当前窗口尺寸发生了变化,宽：${w},高：${h},`);
+        })
+      }
+      document.addEventListener('DOMContentLoaded', loadFinish)
+    })()
+
+  </script>
+</head>
+
+<body>
+</body>
+
+</html>

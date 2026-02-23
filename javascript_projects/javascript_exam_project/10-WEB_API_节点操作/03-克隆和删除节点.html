@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Complatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>03-克隆和删除节点</title>
+
+  <style>
+
+  </style>
+  <script>
+    (function () {
+      /*
+      * 克隆节点演示
+      */
+      function testCloneNodes() {
+        const ul = document.querySelector('ul')
+        for (let i = 0; i < 3; i++) {
+          const newLI = ul.children[i].cloneNode(true)
+          ul.appendChild(newLI)
+        }
+      }
+
+      /*
+      * 删除节点演示
+      */
+      function testDelNode() {
+        const ul = document.querySelector('ul')
+        ul.removeChild(ul.children[0])
+        ul.removeChild(ul.children[ul.children.length - 1])
+      }
+
+      function loadFinish() {
+        testCloneNodes()
+        testDelNode()
+      }
+      document.addEventListener('DOMContentLoaded', loadFinish)
+    })()
+  </script>
+</head>
+
+<body>
+  <ul>
+    <li>一</li>
+    <li>二</li>
+    <li>三</li>
+  </ul>
+</body>
+
+</html>

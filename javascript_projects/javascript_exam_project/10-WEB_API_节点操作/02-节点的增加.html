@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Complatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>02-节点的增加</title>
+
+  <style>
+
+  </style>
+  <script>
+    (function () {
+      function loadFinish() {
+        const div1 = document.createElement("div")
+        div1.innerHTML = "创建1号div"
+        console.log("1)新创建的节点：", div1);
+        document.body.appendChild(div1)
+
+        const div2 = document.createElement("div")
+        div2.innerHTML = "创建2号div"
+        document.body.insertBefore(div2, div1)
+      }
+      document.addEventListener('DOMContentLoaded', loadFinish)
+    })()
+  </script>
+</head>
+
+<body>
+
+</body>
+
+</html>

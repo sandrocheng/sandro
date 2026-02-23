@@ -1,0 +1,665 @@
+1、WEB_API
+	作用：就是使用js去操作html和浏览器
+	分类：
+		1）DOM,文档对象模型，比如对页面元素的增删改查等API接口
+		2）BOM,浏览器对象模型，比如alert,prompt就是操作浏览器的API接口
+
+2、DOM
+	Document Object Model,文档对象模型
+	是用来呈现以及于任意HTML或XML文档交互的API，DOM是浏览器提供的一套专门用来操作网页内容的功能
+	DOM的作用：开发网页内容特效和实现用户交互
+	
+3、DOM树
+	将HTML文档以树状结构直观的表现出来，我们称之为文档树或DOM数
+	描述网页内容关系的名词
+	作用：文档树直观的体现了标签于标签之间的关系
+	比如：
+		document
+			--->HTML
+				--->head
+					--->meta
+						--->...
+					--->title
+						--->...
+					--->...
+				--->body
+					--->文本
+					--->div
+						--->id
+						--->class
+						--->文本
+					--->a
+						--->href
+						--->链接名
+					--->...
+	DOM中，最顶层的节点是document，然后是HTML页面以及其内容
+
+4、DOM对象
+	浏览器根据html标签生成的js对象
+		1）所有的标签属性都可以在这个对象上找到
+		2）修改这个对象的属性会自动映射到标签身上
+	
+	DOM的核心思想
+		把网页内容当作对象来处理
+	
+	document对象
+		1）是DOM里提供的对象，也是当前页面最大的对象
+		2）所以它提供的属性和方法都是用来访问和操作网页内容的
+			比如：document.write()
+		3)网页所有内容都在document里面
+
+5、获取DOM对象
+	案例：\javascript_projects\javascript_exam_project\08-WEB_API_DOM\01-获取DOM元素.html
+	通过CSS选择器来获取DOM元素
+		1）document.querySelector('css选择器')
+			参数采用css选择器语法，包含一个或多个有效的CSS选择器字符串
+			返回值：css选择器匹配的第一个元素，一个HTMLElement对象，如果没有匹配到返回null
+		
+		2）document.querySelectorAll('css选择器')
+			参数采用css选择器语法，包含一个或多个有效的CSS选择器字符串
+			返回值：css选择器匹配的全部元素，是一个NodeList集合，集合中的元素是HTMLElement对象，如果没有匹配到返回null
+			NodeList集合是一个伪数组
+				1.有长度有索引号的数组
+				2.但是没有pop,push等数组方法
+			想要得到里面的每一个对象，需要遍历(for循环)的方式获取
+	
+	早期js还可以使用一下几种方式获取元素，现在已经很少被使用了
+		document.getElementById(id)
+		document.getElementsByTagName(tag)
+		document.getElementsByClassName(class)
+
+6、操作元素内容
+	案例：\javascript_projects\javascript_exam_project\08-WEB_API_DOM\02-操作元素内容.html
+	
+	DOM对象都是根据标签生成的，所有操作标签，本质上就是操作DOM对象
+	如果要修改标签元素的里面的内容，可以使用如下几种方式
+	1）对象.innerText属性
+		将文本内容添加/更新到任意标签位置
+		显示纯文本，不解析标签
+	2）对象.innerHTML属性
+		将文本内容添加/更新到任意标签位置
+		会解析标签，多标签，建议使用模板字符
+
+7、修改元素常见属性
+	案例：\javascript_projects\javascript_exam_project\08-WEB_API_DOM\03-修改元素常见属性.html
+	
+	可以通过js设置/修改标签元素属性，比如通过src更换图片
+	最常见的属性比如：href,title,src等
+	
+	语法：对象.属性 = 值
+
+8、修改元素样式属性
+	1）通过style属性操作CSS
+		案例：\javascript_projects\javascript_exam_project\08-WEB_API_DOM\04-修改元素sytle样式属性.html
+		语法：对象.style.样式属性 = 值
+		注意：
+			像width和height这中css的值是带单位的字符串，在js中对应的属性值也要设置为带单位的字符串
+			像background-color这种带横线的属性对应到js属性通常名字都是小驼峰命名
+			
+	2）通过类名(className)操作CSS
+		案例：\javascript_projects\javascript_exam_project\08-WEB_API_DOM\05-通过类名修改样式.html
+		如果修改的样式属性比较多，直接通过style属性修改会比较麻烦，我们可以通过借助于css类名的形式替换样式
+		语法：元素.className = 'active' //active是一个css类名
+		注意：由于class是关键字，因此该属性的名字使用className来代替
+		     className是用新值换旧值。
+			 className也可以赋值多个css类名，多个css类名中间用空格分隔，比如 元素.className = 'active cssclass1 cssclass2 ...'
+			 
+	3）通过classList操作可控制CSS
+		案例：\javascript_projects\javascript_exam_project\08-WEB_API_DOM\06-通过classList修改样式.html
+		通过classList可以更加方便的追加和删除css类名
+		元素.classList.add('类名'):追加一个css类名
+		元素.classList.remove('类名'):移除一个css类名
+		元素.classList.toggle('类名'):切换一个css类名，当前标签样式中如果有某个css样式，就删除；如果没有该css样式，就加上。
+
+9、操作html表单的值
+	案例：\javascript_projects\javascript_exam_project\08-WEB_API_DOM\07-操作html表单的值.html
+	
+	DOM对象.属性名 = 新值
+	比如：表单.value = '用户名'
+	     表单.type = 'password'
+	
+	注意：表单对象.innertHTML得不到表单的内容，只能通过表单对象.value获取内容
+	
+	操作表单的属性
+		表单属性中添加就有效果，移除就没有效果的属性，一律使用布尔值标识，如果为ture,代表添加了该属性，false代表移除移除了该属性
+		比如：disabled,checked,selected等
+
+10、操作H5的自定义属性		 
+	案例：\javascript_projects\javascript_exam_project\08-WEB_API_DOM\08-操作H5的自定义属性.html
+	
+	很多情况下元素自带的属性比如 class,id,name等，这些属性也叫标准属性，但是实际开发中标砖属性往往不够使用。
+	在H5中推出来了专门的data-自定义属性
+	在标签上一律以‘data-’开头，在DOM对象上一律以dataset对象方式获取
+	比如：	
+		<div class='box' data-id="100">盒子</div>
+		<javascript>
+			const box = document.querySelector('.box')
+			console.log(box.dataset.id)
+		</javascript>
+		这里通过box.dataset.id 去访问对象的自定义属性 data-id的值
+	
+	注意:在标签上的自定义属性，如果使用了大写字母，在js中要用小写来访问
+	比如：
+		<div class='box' data-ID="100">盒子</div>
+		<javascript>
+			const box = document.querySelector('.box')
+			console.log(box.dataset.id)
+		</javascript>
+	因此推荐不要在自定属性上使用大写字母，避免歧义，多个字母可以使用“_”来链接
+	
+11、事件监听
+	案例：\javascript_projects\javascript_exam_project\09-WEB_API_事件\01-事件监听.html
+	
+	事件是在编程时系统内发生的动作或者发生的事情，比如用户在页面上单击了一个按钮，网络返回了数据等
+	事件监听：
+		就是让程序检测是否有事件产生，一旦事件触发，就立即调用一个函数做出响应，也称为绑定事件或者注册事件
+		比如鼠标经过显示下拉菜单，点击可以轮播图等等
+		
+	语法：
+		元素对象.addEventListener('事件类型'，要执行的函数)
+	事件监听的三要素
+		1）事件源：哪个DOM元素被事件触发了，要获取DOM元素
+		2）事件类型：用什么方式触发，比如鼠标单击‘click’,鼠标经过‘mouseover’等
+		3）事件调用的函数：要做什么事，该函数只有当事件触发的时候才会被调用
+	
+	比如：
+		<button>按钮</button>
+		<div class="box">点击关闭当前div</div>
+		<script>
+			const btn = document.querySelector('button')
+			btn.addEventListener('click', function () {
+				console.log("1) click事件触发");
+			})
+			
+		    const div = document.querySelector('.box')
+			function divfun() {
+				console.log("div点击事件触发");
+				div.style.display = 'none'
+			}
+			div.addEventListener('click', divfun)	//注意这里不能加括号，这里是函数引用，如果加括号，该函数会立即执行了		
+		</script>
+	
+	事件监听的版本
+		1）DOM L0:事件源.on事件=function(){}
+		2）DOM L2:事件源.addEventListener('事件名',事件处理函数)
+		3）DOM L3:DOM L3级事件模块的DOM L2的基础上重新定义了这些事件，也添加了一些新事件类型
+		区别：on方式会被覆盖，addEventListener方式可以绑定多次，拥有事件更多特性，推荐使用L2的方式
+
+12、事件类型
+	案例：\javascript_projects\javascript_exam_project\09-WEB_API_事件\02-事件类型.html
+	
+	鼠标事件，由鼠标触发的事件
+		1）click ，鼠标点击
+		2）mouseenter，鼠标经过
+		3）mouseleave，鼠标离开
+	焦点事件，表单获得光标，比如输入框被点击的时候光标开始闪烁
+		1）focus,获得焦点
+		2）blur,失去焦点
+	键盘事件，由键盘触发的事件
+		1）keydown,键盘按下触发
+		2）keyup,键盘抬起触发
+	文本事件，表单输入触发
+		1）input,用户输入事件
+		
+	事件触发：
+		事件的触发通常是由系统触发的，js也提供了手动触发的方式
+		比如:click事件，当注册了事件函数以后，使用 元素.click() 的方式也可以让被注册的函数执行
+			focus事件，同上
+
+13、事件对象
+	案例：\javascript_projects\javascript_exam_project\09-WEB_API_事件\03-事件对象.html
+	
+	事件对象：
+		1）事件对象中含有事件触发时的相关信息
+		2）例如：鼠标点击事件中，事件对象就保存了鼠标点击在哪个位置的信息
+	
+	使用场景：
+		1）可以判断用户按下了哪个按键，比如按下回车键可以发布新闻
+		2）可以判断鼠标点击了哪个元素，从而做出相应的操作
+	
+	语法：
+		1）获取事件对象：在事件绑定的回调函数的第一个参数就是事件对象
+		2）一般命名为event,ev,e
+		例如：元素.addEventListener('click',function(e){})
+	
+	事件对象的常用属性
+		1）type:获取当前的事件类型
+		2）clientx/clienty :获取光标相对于浏览器可见窗口左上角的位置
+		3）offsetX/offsetY :获取光标相对于当前DOM元素左上角的位置
+		4）key:用户按下的键盘按键的值，早期是keyCode,目前已经不提倡使用了
+		
+		
+14、事件流
+	
+	事件流指的是事件完整执行过程中的流动路径
+	
+	假设页面里有个div元素，当触发事件时，它会经历两个阶段
+	1）捕获阶段
+		从Document对象到具体的元素的过程，比如某个div
+		Document -> Element html -> Element body -> Element div
+	2）冒泡阶段
+		从具体的元素（比如某个div）到Document的过程
+		Element div -> Element body -> Element html -> Document
+	简单来说捕获阶段是从父DOM到子DOM的过程，冒泡阶段是从子DOM到父DOM的过程
+	实际工作都是使用事件冒泡为主
+	
+	事件捕获：
+		案例：\javascript_projects\javascript_exam_project\09-WEB_API_事件\04-事件捕获过程案例.html
+		从DOM的根元素开始去执行对应的事件（从外到里）
+		事件的捕获方式：
+			元素.addEventListener('事件类型'，事件处理函数，是否使用捕获机制)
+			是否使用捕获机制:true,代表是捕获阶段触发（很少使用），不填，默认为false代表是冒泡阶段触发
+		比如：
+		<style>
+			.father {
+			width: 100px;
+			height: 100px;
+			background-color: #09ebbe;
+			}
+		
+			.son {
+			width: 50px;
+			height: 50px;
+			background-color: #ebc509;
+			}
+		</style>		
+		
+		<div class="father">
+			<div class="son"></div>
+		</div>
+		<script>
+			const fa = document.querySelector(".father")
+			const son = document.querySelector(".son")
+		
+			document.addEventListener('click', function () {
+			console.dir(this)
+			},true)
+		
+			fa.addEventListener('click', function () {
+			console.dir(this)
+			},true)
+		
+			son.addEventListener('click', function () {
+			console.dir(this)
+			},true)
+		</script>
+		该页面有一个father div，在father div内部还有一个son div,
+		分别给document,father div 和 son div都注册了click事件
+		如果不捕获，点击son div的时候先触发son div的事件，再触发father div的事件，最后触发document的点击事件
+		如果捕获，则先触发document的点击事件，再触发 father div的点击事件最后触发son div的点击事件
+		注意 ：DOM L0的事件监听（元素.onxxx()）,只有冒泡阶段，不支持捕获阶段
+		
+	事件冒泡：
+		案例：\javascript_projects\javascript_exam_project\09-WEB_API_事件\05-事件冒泡过程案例.html
+		当一个元素的事件被触发时，同样的事件将会在该元素的祖先元素中依次被触发（从里到外，父亲->爷爷->...->根），这一个过程被称为事件冒泡
+		addEventListener的第三个参数不填写或者填写为false，则按照冒泡的方式执行事件流
+		简单来讲，当一个元素触发事件后，会依次向上调用所有父亲元素的同名事件
+		默认情况下冒泡一定会发生，没有效果是因为祖先元素没有注册同名事件，所以没有效果
+		
+	冒泡的阻止
+		案例：\javascript_projects\javascript_exam_project\09-WEB_API_事件\06-事件冒泡的阻止.html
+		
+		因为默认冒泡模式的存在，所以容易导致子元素的事件会触发到父元素的同名事件
+		如果想把事件限制在当前元素内，就需要阻止事件的冒泡
+		要想阻止事件冒泡，需要拿到事件对象
+		语法：事件对象.stopPropagation(),该函数即能阻止事件的冒泡，也能阻止事件的捕获
+		比如：
+		    son.addEventListener('click', function (e) {
+				console.dir(this)
+				e.stopPropagation()
+			})
+			该方法调用后，其祖先元素即使注册了click事件，也不会被执行了
+	
+	事件的解绑：
+		案例：\javascript_projects\javascript_exam_project\09-WEB_API_事件\07-事件的解绑.html
+		传统的方式（L0）是使用元素的onxxx()事件来注册的，要想解绑只要赋值为null即可
+		比如：
+			btn.onclick=function(){
+				alert("hello")
+			}
+			btn.onclick = null
+			
+		目前推荐使用L2的方式：
+			元素.removeEventListener('事件名',函数名[,获取捕获或者冒泡阶段])
+			因为需要指定回调函数，因此匿名函数是无法被解绑的
+		比如：
+		    function btnClick(e) {
+				alert("点击后解绑事件")
+				btn.removeEventListener('click', btnClick)
+			}
+			btn.addEventListener('click', btnClick)
+
+15、鼠标经过事件
+	鼠标经过事件有两大类
+	1）mouseover和mouseout，这两个事件会有冒泡效果
+	2）mouseenter和mouseleave，这两个没有冒泡效果，因此推荐使用
+	
+	比如一个父div里有多个子div，使用mouseover和mouseout注册事件，当鼠标滑动到子div上的时候，冒泡机制会触发父div的离开事件
+	此时父亲鼠标经过事件会被多次调用，会影响效率
+	因此使用mouseenter和mouseleave去监听事件，比较好，他们阻止了事件的冒泡传递，不会多次让父元素的事件被调用
+
+16、事件委托
+	案例：\javascript_projects\javascript_exam_project\09-WEB_API_事件\08-事件委托.html
+	
+	事件委托是利用事件流的特征解决一些开发需求的知识技巧
+	比如：
+		<ul>
+			<li>...</li>
+			<li>...</li>
+			<li>...</li>
+			<li>...</li>
+			<li>...</li>
+		</ul>
+		假设需求是每个li被点击的时候触发一些任务，传统的方式是利用选择器查找出来所有的li元素，循环给每个li元素注册点击事件
+		事件委托的做法是仅在父元素，也就是ul上注册一次点击事件，当li被点击时，会自动冒泡到ul上，再由ul的事件统一处理
+		
+	优点：
+		1）减少注册次数，可以提高程序性能
+		2）原理：事件委托其实是利用事件冒泡的特点
+		       给父元素注册事件，当子元素触发时会冒泡到父元素上，从而触发父亲元素事件
+		3）实现：	通过事件对象.target可以获取真正触发事件的元素   
+				通过事件对象.target.tagName，可以判断当前元素的标签名
+
+17、阻止元素的默认行为
+	案例：\javascript_projects\javascript_exam_project\09-WEB_API_事件\09-阻止元素的默认行为.html
+	
+	在某些情况下需要阻止默认行为的发生，比如阻止链接的跳转，表单域的跳转
+	语法： 事件对象.preventDefault()
+	
+	例如：
+		<form action="http://www.baidu.com">
+			<button type="submit">提交</button>
+		</form>
+		<a href="https://www.sina.com">链接跳转被阻止</a>
+		<script>
+			const form = document.querySelector("form")
+			form.addEventListener('click', function (e) {
+			e.preventDefault()//阻止表单的默认提交行为
+			})
+		
+			const a = document.querySelector("a")
+			a.addEventListener('click', function (e) {
+			e.preventDefault()//阻止a标签的默认跳转行为
+			})
+		</script>
+
+18、页面加载事件
+	案例：\javascript_projects\javascript_exam_project\09-WEB_API_事件\10-页面的加载事件.html
+	
+	加载外部资源（如图片，外联css，js文件等等）加载完毕时触发的事件
+	
+	默认情况下，js一般放到页面<body>标签的下方，这样页面从上到下加载完后，此时DOM元素已经初始化成功，后面的js才能正常执行
+	更好的方式是，监听页面加载事件，等页面加载好以后再执行js，这样js就不需要必须放到页面的下方了
+	
+	事件名：load
+	作用：监听页面所有资源加载完毕后回调
+	通常load事件注册到window对象上，window对象是比document还要上层的页面对象，它代表整个浏览器窗口的声明周期对象
+	
+	load事件不光可以监听整个页面资源加载完毕，也可以针对某个资源绑定load事件
+	比如：img.addEventListener('load',function(){...})//这里是等待img资源加载完成后再回调
+
+19、DOM初始化成功事件
+	事件名：DOMContentLoaded
+	load事件是要等待所有资源加载完成之后才回调，而DOMContentLoaded事件是只要HTML的DOM元素初始化成功后就会回调
+	它不需要等待样式、图片等外联资源加载完成后才回调，因此比load更先调用。
+	某些情况下页面资源比较多，但是不影响当前页面js的执行，可以使用这个事件，提高页面响应效率
+	
+	使用方式:
+		通常是给document添加DOMContentLoaded事件
+		比如：document.addEventListener('DOMContentLoaded',function(){...})
+
+20、元素滚动事件
+	滚动条在滚动的时候触发的事件
+	很多页面需要检测用户把页面滚动到某个区域后做一些处理，比如固定导航栏，比如返回顶部等等
+	
+	事件名：scroll
+	案例：\javascript_projects\javascript_exam_project\09-WEB_API_事件\11-监听整个页面的滚动事件.html
+	作用：监听整个页面的滚动
+		window.addEventListener('scroll',function(e){})
+		该监听，每次滚动都会回调
+		给window或者document监听，整个页面滚动都会回调
+		也可以监听某个元素内部的滚动事件
+	
+	
+	获取当前位置
+	案例：\javascript_projects\javascript_exam_project\09-WEB_API_事件\12-获取元素滚动位置html
+	scrollLeft和scrollTop属性
+	1）获取被卷去的大小
+	2）获取元素内容往左、网上滚出去看不到的距离
+	3）这两个值是可读写的，数据是数字类型，可以通过设置这个值来设置元素的初始位置
+	   比如：设置为0，可以立即回到初始位置
+	4）页面通常使用上下滚动，因此scrollTop用的比较多
+	
+	元素.scrollTo(x,y)，内容移动方法
+	比如：让页面滚动到x,y的位置：window.scrollTo(x,y)
+
+21、页面尺寸相关的数据
+	案例：\javascript_projects\javascript_exam_project\09-WEB_API_事件\13-窗口尺寸事件监听.html
+	resize事件
+		会在窗口尺寸改变的时候触发事件
+		比如：window.addEventListener('resize',function(){}),//浏览器窗口变化会回调
+		
+		获取元素宽和高，clientWidth和clientHeight属性
+		这两个属性是元素可见部分的宽和高，包含padding，但是不包含边框，margin，滚动条等
+		比如：
+			let w = document.documentElement.clientWidth
+			let h = document.documentElement.clientHeight
+			这是获取整个html标签的宽和高
+			
+22、获取元素当前位置
+	案例：\javascript_projects\javascript_exam_project\09-WEB_API_事件\14-获取元素当前的位置.html
+	
+	获取宽高
+		获取元素自身的宽高、包含元素自身设置的宽高，padding,border
+		offsetWidth和offsetHeight
+		这两个属性的类型是数值类习惯，方便计算
+		注意：获取的是可视宽高，如果元素是隐藏的，获取的结果是0
+	
+	获取位置
+		offsetLeft和offsetTop,注意这两个属性是只读属性
+		这两个属性返回的是相对于最近一级带有定位的祖先元素的距离
+		如果祖先元素中没有类似 position:relative这种定位设置，实际上返回的是到整个窗口的距离，如果有，则是返回到这个祖先元素的距离
+		
+	也可以通过 元素.getBoundingClientRect()方法获取封装全部的位置和尺寸值的对象
+	它返回的值是相对于当前窗口的视口的值，如果窗口很大，视口就只能显示整个窗口的一部分，这样这里的位置值，就可能是负的(因为已经不在可视范围之内了)
+		
+23、节点操作
+	DOM节点：DOM树中的每一个内容都称之为节点
+	
+	节点类型：
+		1）元素节点，所有的标签，比如body,div,a等标签，其中html是根节点
+		2）属性节点，所有的属性，比如href,id,class,name等
+		3）文本节点，所有的文本
+		4）其他
+	在开发中，通常都是对元素节点进行增、删、改、查操作
+
+24、节点查找
+	案例:\javascript_projects\javascript_exam_project\10-WEB_API_节点操作\01-节点查找.html
+	通过关系查找节点很多时候比直接使用css查找更方便，更稳妥。
+	
+	节点关系：针对的找亲戚方法返回的都是对象
+		1）父节点查找
+			语法：元素.parentNode,返回最近一级的父节点(亲爸爸)，找不到返回null
+		2）子节点查找
+			语法：
+				元素.childNodes，获得所有子节点，包括文本节点（空格、换行）、注释节点
+				元素.children属性，仅获得所有直接子元素节点（儿子节点），返回的还是一个伪数组，在开发中通常用的都是这个属性获取子元素
+		3）兄弟节点查找
+			元素.nextElementSibling，查找下一个亲兄弟节点
+			元素.previousElementSibling，查找前一个亲兄弟节点
+
+25、增加节点
+	案例:javascript_projects\javascript_exam_project\10-WEB_API_节点操作\02-节点的增加.html
+	
+	步骤：
+		1）创建一个新的节点
+			document.createElement('标签名')该方法返回一个新标签节点的对象
+
+		2）把创建的节点放入到指定元素内部
+			2.1）插入到父元素的最后一个子元素
+				父元素.appendChild(要插入的元素)
+			2.2)插入到父元素中某个子元素的前面
+				父元素.insertBefore(要插入的元素，在哪个元素前面)
+
+26、克隆和删除节点
+	案例:\javascript_exam_project\10-WEB_API_节点操作\03-克隆和删除节点.html
+	
+	克隆节点，即复制一个原有的节点，并把复制的节点放到指定的元素内部
+	语法：元素.cloneNode(布尔值)
+		 参数：true,代表克隆时会包含后代节点一起克隆,也叫深克隆
+		      false，只克隆标签，连内容都不克隆，也叫浅克隆
+			  不写，默认false
+	
+	删除节点，要删除一个节点，必须要通过父元素删除
+	注意：
+		1）如果不存在父子关系，则删除不成功
+		2）删除节点和隐藏节点(display:none)是有区别的，隐藏节点还存在，删除则彻底从页面中去除
+	语法：
+		父元素.removeChild(要删除的子元素)
+
+27、M端事件
+	移动端也有自己独特的地方，比如触屏touch（也叫触摸事件），Android和ios都有
+	
+	touch对象代表一个触摸点。
+	触屏事件可响应用户点击对屏幕或者抽空版的操作
+	
+	常见的触屏事件如下：
+	1）touchstart,触摸到一个DOM元素时触发
+	2）touchmove,手指在DOM元素上滑动时触发
+	3）touchend,手指从一个DOM元素上移开时触发
+
+28、swiper插件简介
+	在开发移动端的页面时，通常会用到swiper插件
+	
+	Swiper是纯javascript打造的滑动特效插件，面向手机、平板电脑等移动终端。
+	Swiper能实现触屏焦点图、触屏Tab切换、触屏轮播图切换等常用效果。
+	Swiper开源、免费、稳定、使用简单、功能强大，是架构移动终端网站的重要选择
+	最新版本的swiper对pc端的特效也提供了足够的支持
+
+	官网：https://www.swiper.com.cn/
+	注意：多个swiper同时使用时，类名要注意区分
+
+29、BOM
+	BOM(Browser Object Model),浏览器对象模型，
+	常用的定时器对象，js执行机制，location对象，navigator对象，以及histroy对象都是BOM提供的
+	
+	window对象是BOM的主要对象，是js中的顶级对象
+	window中包含了 navigator,location,document,history,screen等核心对象
+		例如：console.log(document === window.document) //true
+		通过这个案例可以知道DOM中的document是包含在window中的
+	通常在页面上声明的函数，通过var定义的全局作用域中的变量，都是挂在window对象上的属性和方法
+	window对象下的属性和方法在被调用的时候可以省略window	
+		
+30、js的执行机制
+
+	浏览器通常要有两个引擎，一个用于渲染页面内容，另一个就是执行js的引擎，比如google浏览器的集成V8引擎
+	
+	js语言的最大特点就是单线程，也就是说，同一时间只能做一件事
+	单线程就意味着，所有任务需要排队，前一个任务结束，才会执行后一个任务。
+	这样导致的问题是：如果js执行的时间过长，就会照成页面的渲染不连贯，导致页面卡顿的感觉
+	
+	为了解决这个问题，利用多核CPU的计算能力，HTML5提出了Web Worker标准，允许js脚本创建多个线程。
+	于是js中出现了同步和异步
+	尽管 js 从 2012 年起具备了多线程能力，但其支持程度和易用性仍受限于浏览器环境和语言设计。
+	也就是说js本是是不支持多线程的，为了提升js的异步能力，js把异步能力交给了浏览器去做
+	
+	同步任务
+		同步任务都是在主线程中执行，形成一个任务栈
+		
+	异步任务
+		js的异步是通过回调函数实现的
+		通常来讲异步任务有三种类型
+		1）普通时间，比如click,resize等
+		2）资源加载，比如load,error等
+		3）定时器，包括setTimeout,setInterval等
+		异步任务相关添加到任务队列（也叫消息队列）中
+		
+	js的执行步骤
+		1）先去顺序执行“执行栈”的同步任务
+		2）遇到异步任务，会把异步任务提交给对应的异步进程处理。异步进程处理好任务以后，再把任务放到“任务队列”中去
+		3）一旦执行栈中的所有同步任务执行完毕，系统就会按次序读取“任务队列”中的异步任务，
+		  于是被读取的异步任务结束的等待状态，进入执行栈，开始执行
+	由于主线程不断的重复获得任务，执行任务，在获取任务，再执行，所以这种机制被称为事件循环(event loop)
+	
+	常见的异步API
+		1)ajax
+		2)DOM事件
+		3)定时器模块
+
+31、location对象
+	案例：\javascript_projects\javascript_exam_project\11-WEB_API_BOM\01-location对象.html
+	
+	location的数据类型是对象，它差分并保存了URL地址的各组成部分
+	1）location.href属性
+		该属性是可读写属性，他是当前页面的地址，通过修改该属性，可以实现页面的跳转
+		比如：location.href = "http://www.baidu.com"
+		属性修改后，页面立即就会跳转
+	2）location.search
+		search属性获取地址中携带的参数，也就是符号?后面的部分(包括?)
+	3）location.hash
+		获取地址中的哈希值，符号#后面的部分，通常单页面设计的网站，都会用到哈希值跳转
+	4）location.reload(是否强制刷新)
+		该方法用来刷新当前页面，传入true,强制刷新
+	
+32、navigation对象
+	案例：\javascript_projects\javascript_exam_project\11-WEB_API_BOM\02-navigator对象.html
+	
+	navigator的数据类型是对象，该对象下记录了浏览器自身相关的信息
+	
+	navigator.userAgent
+	获取检测浏览器信息
+	通常再移动端，使用正则表达式来判断是否是Android或者IOS系统，用于跳转对应的移动端网页
+	
+33、history对象
+	案例：\javascript_projects\javascript_exam_project\11-WEB_API_BOM\03-history对象.html
+	
+	history的数据类型是对象，主要管理历史记录，该对象于浏览器地址栏操作相对应，如前进，后退，历史记录等
+	
+	1）history.back(),后退功能
+	2）history.forward(),前进功能
+	3）go(参数)
+		参数是数字，正数代表前进几个页面，比如1就是前进一个页面。
+	    负数表示后退几个页面，比如-1代表后退1个页面
+	history对象一般在实际开发中比较少用，但是会在一些OA办公系统中见到
+
+34、本地存储
+	案例：\javascript_projects\javascript_exam_project\11-WEB_API_BOM\04-localStorage的使用.html
+	H5提出的网页应用数据保存方案
+	1）数据存储在浏览器中
+	2）设置，读取方便，甚至页面刷新也不会丢失数据
+	3）容量较大，sessionStorage和localStroage约5M左右
+	
+	localStroage
+	作用：可以将数据永久的保存带用户电脑中，除非手动删除，否则关闭页面也会存在
+	特性：
+		可以多窗口(页面)共享，同一浏览器可以共享
+		以键值对的形式存储使用
+	语法：
+		1）储存数据：localStorage.setItem(key,value)
+		   
+		2）读取数据
+			localStroage.getItem(key)
+		3)删除数据
+			localStorage.removeItem(key)
+		4)注意：
+			保存后，在浏览器的开发者工具->应用/Application -> 存储/Storage -> 本地存储空间/Local Storage
+			可以看到当前域名页面的所有数据，跨域不会共享数据
+			
+			读取数据是以字符串类型返回的，即使保存的时候是数字、布尔类型、null等
+			如果保存的是null,读取的时候是null这个字符串
+			如果保存的是对象，保存的实际上是‘[object Object]’这样的字符串，并不是真实的数据
+			
+	sessionStorage
+	生命周期为关闭浏览器窗口
+	在同一个窗口(页面)下数据可以共享
+	以键值对的形式存储使用，语法根localStorage相同
+		
+	读写复杂数据
+		1）本地只能存储字符串，无法直接存贮复杂数据
+		   语法：let jsonStr = JSON.stringify(复杂数据类型)
+		   先将复杂数据的对象保存为一个json的字符串，再把json字符串保存到localstorage中去
+
+		2）读取的时候由于是字符串，因此需要使用 let obj = JSON.parse(json字符串)，将字符串转换为对象
+	
+		
+		   

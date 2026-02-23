@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Complatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>02-事件类型</title>
+
+  <style>
+    .box {
+      width: 100px;
+      height: 100px;
+      background-color: aqua;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="box"></div>
+  <input type="text" id="inputTag">
+  <input type="text" id="inputKey" placeholder="监听键盘事件的输入框">
+  <input type="text" id="userInput" placeholder="监听用户输入事件的输入框">
+  <script>
+    const boxdiv = document.querySelector('.box')
+    boxdiv.addEventListener('mouseenter', function () {
+      boxdiv.innerHTML = "鼠标移动到div里了"
+    })
+    boxdiv.addEventListener('mouseleave', function () {
+      boxdiv.innerHTML = "鼠标移出了"
+    })
+    boxdiv.addEventListener('click', function () {
+      boxdiv.innerHTML = "鼠标点击"
+    })
+
+    boxdiv.click()//手动触发点击事件
+
+    const inputTag = document.querySelector("#inputTag")
+    inputTag.addEventListener('focus', function () {
+      inputTag.value = "获取到了光标焦点"
+    })
+    inputTag.addEventListener('blur', function () {
+      inputTag.value = "光标焦点丢失"
+    })
+    inputTag.focus()//手动触发focus事件
+
+    const inputKey = document.querySelector("#inputKey")
+    inputKey.addEventListener('keydown', function () {
+      console.log("Keydown");
+
+    })
+    inputKey.addEventListener('keyup', function () {
+      console.log("Keyup");
+    })
+
+    const userInput = document.querySelector("#userInput")
+    userInput.addEventListener('input', function () {
+      console.log(`当前用户输入：${userInput.value}`);
+
+    })
+  </script>
+</body>
+
+</html>

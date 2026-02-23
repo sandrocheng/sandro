@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Complatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>14-获取元素当前的位置</title>
+
+  <style>
+    .first {
+      width: 100px;
+      height: 100px;
+      background-color: aqua;
+      margin: 20px;
+      border: 4px, solid;
+    }
+  </style>
+
+  <script>
+    (function () {
+      function loadFinish() {
+        const p = document.querySelector('p')
+        console.log(`p标签的宽：${p.offsetWidth},高：${p.offsetHeight}`);
+
+        const div = document.querySelector('div')
+        console.log(`div标签的宽：${div.offsetWidth},高：${div.offsetHeight}`);
+        console.log(`div标签相对于父标签的x坐标：${div.offsetLeft}`);
+        console.log(`div标签相对于父标签的y坐标：${div.offsetTop}`);
+        console.log(`div getBoundingClientRect：`, div.getBoundingClientRect());
+      }
+      document.addEventListener('DOMContentLoaded', loadFinish)
+    })();
+
+  </script>
+</head>
+
+<body>
+  <p>第一行内容</p>
+  <div class="first">
+  </div>
+
+</body>
+
+</html>
