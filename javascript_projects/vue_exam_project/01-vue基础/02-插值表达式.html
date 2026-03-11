@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Complatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>02-插值表达式</title>
+  <script src="../lib/vue2.js"></script>
+</head>
+
+<body>
+
+
+  <div id="app">
+    <h1>1 {{msg}}</h1>
+    <h1>2 用户名：{{nickname}}</h1>
+    <h1>3 用户名（大写）：{{nickname.toUpperCase()}}</h1>
+    <h1>4 {{nickname + " " + msg}}</h1>
+
+    <h1>5 {{ age >= 18?'成年':'未成年'}}</h1>
+    <h1>6 {{ friend }}</h1>
+  </div>
+
+  <script>
+    const app = new Vue({
+      el: "#app",
+      data: {
+        msg: 'Hello Vue',
+        nickname: 'tony',
+        age: 18,
+        friend: {
+          name: 'lily',
+          gender: 'gril'
+        }
+      }
+    })
+  </script>
+
+</body>
+
+</html>

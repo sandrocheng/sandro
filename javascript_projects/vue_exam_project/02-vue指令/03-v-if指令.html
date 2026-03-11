@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Complatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>03-v-if指令</title>
+  <script src="../lib/vue2.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <button>{{btnValue}}</button>
+    <div v-if="flag" class="box">我是v-if控制的盒子</div>
+  </div>
+
+  <script>
+    const app = new Vue({
+      el: "#app",
+      data: {
+        flag: true,
+        btnValue: '隐藏'
+      }
+    })
+
+    const btn = document.querySelector('button')
+    btn.addEventListener('click', function () {
+      app.flag = !app.flag
+      app.btnValue = app.flag ? '隐藏' : '显示'
+    })
+  </script>
+
+</body>
+
+</html>

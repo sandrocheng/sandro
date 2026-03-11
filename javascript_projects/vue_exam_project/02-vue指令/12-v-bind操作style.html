@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Complatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>12-v-bind操作style</title>
+  <script src="../lib/vue2.js"></script>
+
+  <style>
+    .box {
+      width: 10px;
+      height: 10px;
+      background-color: aquamarine;
+    }
+  </style>
+
+</head>
+
+<body>
+  <div id="app">
+    <div class="box" :style="{width:w+'px'}"></div>
+  </div>
+
+  <script>
+    const app = new Vue({
+      el: "#app",
+      data: {
+        w: 40 //通过动态修改这个变量，:style中的对应的值也会被修改，从而达到修改的作用
+      },
+      methods: {
+      }
+    })
+
+    setInterval(() => {
+      app.w += 10
+      if (app.w > 300) {
+        app.w = 0
+      }
+    }, 500);
+  </script>
+
+</body>
+
+</html>

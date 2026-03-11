@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Complatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>02-wathc简写案例</title>
+  <script src="../lib/vue2.js"></script>
+
+  <style>
+
+  </style>
+</head>
+
+<body>
+
+  <div id="app">
+    <textarea v-model="watchData"></textarea><br>
+    <textarea v-model="watchObj.data"></textarea>
+  </div>
+
+  <script>
+    const app = new Vue({
+      el: "#app",
+      data: {
+        watchData: '',
+        watchObj: {
+          data: ''
+        }
+      },
+      watch: {
+        //注意该方法名要和被监控的对象名一样
+        watchData(newValue, oldValue) {
+          console.log(`watchData有修改，newValue:${newValue} , oldValue:${oldValue}`);
+        },
+        //如果被监控的是某个对象的属性，要这么写，注意要加引号包裹起来
+        "watchObj.data"(newValue, oldValue) {
+          console.log(`watchObj.data有修改，newValue:${newValue} , oldValue:${oldValue}`);
+        }
+      },
+      methods: {
+      },
+      computed: {
+      }
+    })
+  </script>
+
+</body>
+
+</html>

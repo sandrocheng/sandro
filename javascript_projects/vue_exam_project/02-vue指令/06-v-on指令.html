@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Complatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>06-v-on指令</title>
+  <script src="../lib/vue2.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <!--内联语句-->
+    <button v-on:click="number--">减1</button>
+    <span>{{number}}</span>
+    <button @click="number = number + 1">加1</button>
+
+    <br>
+    <!--使用methods中的函数-->
+    <button data-base="2" @click="multi">乘2</button>
+    <span>{{number}}</span>
+    <button data-base="3" @click="multi">乘3</button>
+
+    <br>
+    <!--使用methods中的带参数的函数-->
+    <button @click="division(2)">除2</button>
+    <span>{{number}}</span>
+    <button @click="division(3)">除3</button>
+  </div>
+
+  <script>
+    const app = new Vue({
+      el: "#app",
+      data: {
+        number: 10
+      },
+      methods: {
+        multi(e) {
+          this.number = this.number * (+e.target.dataset.base)
+        },
+        division(div) {
+          this.number = Math.floor(this.number / div)
+        }
+      }
+    })
+
+  </script>
+
+</body>
+
+</html>

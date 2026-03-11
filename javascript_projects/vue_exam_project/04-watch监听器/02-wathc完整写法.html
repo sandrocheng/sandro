@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Complatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>02-wathc完整写法</title>
+  <script src="../lib/vue2.js"></script>
+
+  <style>
+
+  </style>
+</head>
+
+<body>
+
+  <div id="app">
+    价格：<input v-model.number="obj.price" type="text"> 元<br>
+    数量：<input v-model.number="obj.num" type="text"> 个<br>
+    <h3>总价：{{total}}元</h3>
+  </div>
+
+  <script>
+    const app = new Vue({
+      el: "#app",
+      data: {
+        obj: {
+          num: 1,
+          price: 1
+        },
+        total: 0
+      },
+      watch: {
+        obj: {
+          deep: true,//深度监视
+          immediate: true,//初始化就立即执行一次
+          handler(newvalue) {
+            this.total = newvalue.num * newvalue.price
+          }
+        }
+      },
+      methods: {
+      },
+      computed: {
+      }
+    })
+  </script>
+
+</body>
+
+</html>

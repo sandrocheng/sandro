@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Complatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>01-计算属性案例</title>
+  <script src="../lib/vue2.js"></script>
+
+  <style>
+    table {
+      width: 300px;
+      /* 合并边框 */
+      border-collapse: collapse;
+
+    }
+
+    th,
+    td {
+      /* 单元格边框 */
+      border: 1px solid #000;
+
+      /* 内边距 */
+      padding: 10px;
+
+      /* 内容居中 */
+      text-align: center;
+    }
+
+    th {
+      /* 表头背景色 */
+      background-color: lightblue;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="app">
+    <h3>清单</h3>
+    <table>
+      <th>名字</th>
+      <th>数量</th>
+      </th>
+      <tr v-for="(item ,index) in list " :key="item.id">
+        <td>{{item.name}}</td>
+        <!--通过v-model绑定数组中对应的变量，这样当数据修改是，对应的list中的变量也会修改，并且sum也会重新计算-->
+        <td><input type="text" v-model="list[index].num" value="item.num"></input></td>
+      </tr>
+    </table>
+    <h3>球类中枢：{{sum}}个</h3>
+  </div>
+
+  <script>
+    const app = new Vue({
+      el: "#app",
+      data: {
+        list: [
+          { id: 1, name: '篮球', num: 5 },
+          { id: 2, name: '足球', num: 2 },
+          { id: 3, name: '排球', num: 11 }
+        ]
+      },
+      computed: {
+        sum() {//定义计算属性的名字
+          count = 0
+          for (index in this.list) {
+            count += +(this.list[index].num)
+          }
+          return count //返回结果
+        }
+      }
+    })
+  </script>
+
+</body>
+
+</html>

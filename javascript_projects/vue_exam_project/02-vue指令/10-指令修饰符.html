@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Complatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>10-指令修饰符</title>
+  <script src="../lib/vue2.js"></script>
+
+  <style>
+    .father {
+      width: 200px;
+      height: 200px;
+      background-color: aqua;
+      cursor: pointer;
+    }
+
+    .son {
+      width: 100px;
+      height: 100px;
+      background-color: rgb(193, 193, 65);
+      cursor: pointer;
+    }
+  </style>
+
+</head>
+
+<body>
+  <div id="app">
+    <!--监听回车弹起事件-->
+    <input v-model.trim="username" type="text" @keyup.enter="clickEnter" placeholder="按回车输出内容">
+    <input v-model.number="age" type="text" @keyup.enter="ageEnter" placeholder="按回车输出内容">
+    <div class="father" @click="fatherClick">
+      <div class="son" @click.stop="sonClick"><!--使用点击事件的冒泡阻断，父div的点击事件被阻断-->
+      </div>
+    </div>
+    <a @click.prevent href="https://www.baidu.com">点击事件被阻断</a>
+  </div>
+
+  <script>
+    const app = new Vue({
+      el: "#app",
+      data: {
+        username: '',
+        age: ''
+      },
+      methods: {
+        clickEnter(e) {
+          console.log(`监听到username回车keyup : ${this.username}`, e);
+        },
+        ageEnter(e) {
+          console.log(`监听age到回车keyup : ${this.age} ,age.tpye:${typeof this.age}`, e);
+        },
+        fatherClick() {
+          console.log("父div被点击");
+        },
+        sonClick() {
+          console.log("子div被点击");
+        }
+      }
+    })
+
+  </script>
+
+</body>
+
+</html>

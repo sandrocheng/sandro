@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Complatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>03-v-else-if指令</title>
+  <script src="../lib/vue2.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <button>年龄：{{age}}岁</button>
+    <div v-if="age===1" class="box">婴儿</div>
+    <div v-else-if="age<3" class="box">幼儿</div>
+    <div v-else-if="age<13" class="box">儿童</div>
+    <div v-else-if="age<18" class="box">青少年</div>
+    <div v-else-if="age<35" class="box">青年</div>
+    <div v-else-if="age<55" class="box">中年</div>
+    <div v-else class="box">老年</div>
+  </div>
+
+  <script>
+    const app = new Vue({
+      el: "#app",
+      data: {
+        age: 1
+      }
+    })
+
+    const btn = document.querySelector('button')
+    btn.addEventListener('click', function () {
+      if (app.age < 120) {
+        app.age++
+      }
+    })
+  </script>
+
+</body>
+
+</html>

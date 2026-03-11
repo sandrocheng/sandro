@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Complatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>08-v-for指令</title>
+  <script src="../lib/vue2.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <ul>
+      <li v-for="(item ,index) in names" :key="generateUUID()">
+        <span>{{index + 1}}:{{item}}:{{generateUUID()}}</span>
+        <button @click="del(index)">删除</button>
+      </li>
+    </ul>
+  </div>
+
+  <script>
+    const app = new Vue({
+      el: "#app",
+      data: {
+        names: ["tony", "lily", "jess"]
+      },
+      methods: {
+        del(index) {
+          this.names.splice(index, 1)
+        },
+        generateUUID() {
+          return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+            const r = Math.random() * 16 | 0;
+            const v = c === 'x' ? r : (r & 0x3 | 0x8);
+            return v.toString(16);
+          });
+        }
+      }
+    })
+
+  </script>
+
+</body>
+
+</html>

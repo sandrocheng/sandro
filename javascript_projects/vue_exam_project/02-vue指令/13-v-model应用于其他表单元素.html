@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Complatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>13-v-model应用于其他表单元素</title>
+  <script src="../lib/vue2.js"></script>
+
+  <style>
+
+  </style>
+
+</head>
+
+<body>
+  <div id="app">
+    <h3>常见表单元素</h3>
+    输入框：
+    <input v-model="inputData" type="text"><br><br>
+
+    checkbox:
+    <input type="checkbox" name="checkbox" v-model="checkboxData"><br><br>
+
+    radio：
+    <input type="radio" v-model="radioData" name="raido" value='0'> 值1
+    <input type="radio" v-model="radioData" name="raido" value='1'> 值2
+    <br><br>
+
+    select:
+    <select v-model="selectData">
+      <option name="select" value="0">选项1</option>
+      <option name="select" value="1">选项2</option>
+      <option name="select" value="2">选项3</option>
+      <option name="select" value="3">选项4</option>
+    </select><br><br>
+
+    textArea:
+    <textarea v-model="testAreaData"></textarea>
+    <br><br>
+    <button @click="submit">提交</button>
+    <button @click="reset">reset</button>
+  </div>
+
+  <script>
+    const app = new Vue({
+      el: "#app",
+      data: {
+        inputData: '初始输入框内容',
+        testAreaData: '初始文本内容',
+        checkboxData: true,//true ,默认选中；false，默认不选中
+        radioData: '1', //初始值等于哪个radio的value，哪个value就会被默认选中
+        selectData: '1'//初始值等于哪个opeion的value，哪个option就会被默认选中
+      },
+      methods: {
+        submit() {
+          console.log(`inputData:${app.inputData} , testAreaData:${app.testAreaData} , checkboxData:${app.checkboxData} , radioData:${app.radioData} , selectData:${app.selectData}`);
+        },
+        reset() {
+          app.inputData = '初始输入框内容'
+          app.testAreaData = '初始文本内容'
+          app.checkboxData = true//true ,默认选中；false，默认不选中
+          app.radioData = '1' //初始值等于哪个radio的value，哪个value就会被默认选中
+          app.selectData = '1'//初始值等于哪个opeion的value，哪个option就会被默认选中
+        }
+      }
+    })
+  </script>
+
+</body>
+
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Complatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>09-v-model指令</title>
+  <script src="../lib/vue2.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    账户：<input type="text" v-model="username"><br>
+    密码：<input type="password" v-model="password">
+    <button @click="login">登录</button>
+    <button @click="reset">重置</button>
+  </div>
+
+  <script>
+    const app = new Vue({
+      el: "#app",
+      data: {
+        username: '',
+        password: ''
+      },
+      methods: {
+        login() {
+          console.log(`username:${this.username} ,password:${this.password}`);
+        },
+        reset() {
+          this.username = ''
+          this.password = ''
+        }
+      }
+    })
+
+  </script>
+
+</body>
+
+</html>

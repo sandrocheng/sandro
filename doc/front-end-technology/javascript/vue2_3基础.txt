@@ -1,0 +1,775 @@
+1、VUE简介
+	vue是一个用于构建用户界面的渐进式框架
+	
+	vue基于数据来动态渲染用户看到的页面，相对于原始的js，vue开发节省了大量的DOM操作，提高开发效率
+	
+	渐进式框架
+	声明式渲染->组件系统->客户端路由(VueRouter 插件)->大规模状态管理(VueX 插件)->构建工具（Webpack/Vite 插件）
+	其中vue核心包，包含了声明式渲染和组件系统这两大模块
+	
+	vue的两种使用方式
+		1）vue核心包开发，主要用于局部模块改造
+		2）vue核心包&vue 插件工程化开发，主要用于整站开发
+	
+	vue提供了一整套完整的项目解决方案，对于中、大型项目提供了稳定强大的支持
+
+2、VUE实例的创建
+	案例：\javascript_projects\vue_exam_project\01-vue基础\01-创建一个vue实例.html
+	vue实例创建的核心4步
+	1）准备容器
+	2）引包(官网)，开发版本/生产版本
+		v2官网地址：https://v2.cn.vuejs.org/
+		v3官网地址：https://cn.vuejs.org/
+		在官网的安装指引下，可以下载，或者直接在页面上引用官网的vue核心包（<script src="https://cdn.jsdelivr.net/npm/vue@2"></script>）
+		后续可以安装nodejs，使用nmp命令安装vue
+		官网提供了开发版本和生产版本，开发版本提供了完整的警告和调试模式，生产版本体积更小
+	3）创建vue实例
+		一旦引入了vue核心包，在全就就有了一个vue构造函数，并使用new Vue(),来创建vue实例
+	4）指定配置项 -> 渲染数据
+		el，指定挂载点
+		data，提供数据
+		
+	例如：
+		<script src="../lib/vue.js"></script>
+		<div id="app">
+			{{ msg }}  
+		</div>
+		
+		<script>
+			const app = new Vue({
+				el: "#app", //el根据选择器比如id，指定加载数据的元素，比如一个div
+				data: {     //data,是挂载点需要的数据，在挂在点中使用 {{tagName}}来引用数据的值
+					msg: 'Hello Vue' 
+				}
+			})
+		</script>	
+
+3、插值表达式
+	案例：\javascript_projects\vue_exam_project\01-vue基础\02-插值表达式.html
+	插值表达式是vue的模板语法
+	例如：
+		<div id="app">
+			{{ msg }}  
+		</div>
+	这里 {{ msg }}，就是vue的插值表达式
+	
+	作用：利用表达式进行插值，渲染到页面中，这种方式比传统的js查找DOM元素再赋值，开发效率更高
+	表达式本身是一种可以求值的代码,js引擎会将其计算出一个结果
+	比如：
+		money + 100
+		price > 100?'真贵'：'还行'
+		arr[0]
+		fn()
+		obj.fn()
+		...
+	语法： {{ 表达式 }}
+	例如：
+		<h3>{{ title }}</h3>
+		<p> {{ nickname.toUpperCase()}} </p>
+		<p>{{ age>=18 '成年':'未成年'}}</p>
+		<p>{{ obj.name }}</p>
+	
+	注意：
+		1）数据变量必须要在Vue实例的data中定义
+		2）支持的是表达式，而非语句，比如 if .. else
+		3）不能在标签的属性中使用 {{}} 插值 ,插值是展示给用户看到的文本，而非标签的属性等
+			比如：<h3 class="{{ red }}">我是h3标签</h3>
+		
+4、vue的核心特征，响应式
+	案例：\javascript_projects\vue_exam_project\01-vue基础\03-响应式.html
+	vue除了基本的模板渲染，vue背后还做了大量的工作，比如数据的响应式处理
+	
+	响应式：数据变化，视图自动更新
+	
+	vue实例数据的访问
+		语法：实例.属性名=值
+		注意：不是 实例.data.属性名
+	例如：
+		const app = new Vue({
+		el: "#app",
+		data: {
+			msg: 'Hello Vue 0'
+		}
+		})
+	
+		let i = 0
+		setInterval(function () {
+		i++
+		app.msg = 'Hello Vue ' + i //只要值修改了，页面的数据就会直接修改，注意是app.msg 而不是 app.data.msg
+		console.log(i);
+	
+		}, 1000)
+	
+	所谓响应式就是vue可以监听vue对象中数据的变化，一旦变化就自动查找对应的DOM元素并修改其中的值，这节省了大量的js开发代码
+	
+5、开发者工具的安装
+	通过在chrome上安装vue插件可以高效的进行vue调试
+	极简插件，下载地址：https://chrome.zzzmh.cn/index
+	在官网中搜索Vue Devtools插件，并下载
+	安装步骤：
+		1. 打开Chrome浏览器 -> 点击右上角三个点 -> 扩展程序 -> 管理扩展程序
+		2. '管理扩展程序' 页面的右上角 '开发者模式' 开关打开
+		3. 极简插件下载到的是压缩包，必须先解压缩！解压后有2个文件。一个安装文件，一个说明书
+		4. 其中名字长的 `xxx_chrome.zzzmh.cn.crx` 文件就是安装包，鼠标长按拖住，拖到 '管理扩展程序' 页面，松开鼠标
+		5. 看到弹出框，点添加扩展程序，安装成功！
+		6. 在插件详情页面，找到“允许访问文件网址”，并开启
+		7. 重启浏览器
+	
+	注意最新版本的vue devtools 只支持vue3，可以在官网上找到老的支持vue2的插件
+	
+	安装好插件以后，就可以在chrome的开发者工具找到vue工具栏，当打开的页面中有vue运行时，就可以调试了
+
+6、vue指令
+	vue会根据不同的指令，针对标签实现不同的功能
+	指令：带有 v- 前缀的特殊标签属性
+	
+	比如：
+		<div v-html="str"></div>
+	这里就使用了v-html的指令
+	
+	在官网的学习栏目中可以找到所有vue支持的指令
+    
+7、v-html指令
+	案例：\javascript_projects\vue_exam_project\02-vue指令\01-v-html指令.html
+	
+	作用：设置元素的innerHTML
+	语法：v-html="表达式"
+	
+	虽然插值表达式也可以展示内容，但是如果内容是有标签的html文本，插值表达式只能把内容展示为文本，不能解析标签
+	这时候就需要v-html来进行标签解析
+	
+8、v-show指令
+	案例：\javascript_projects\vue_exam_project\02-vue指令\02-v-show指令.html
+	
+	作用：控制元素的显示和隐藏
+	语法：v-show="表达式"，
+	     表达式值：true ，显示； false,隐藏 
+		 相当于使用了元素.style.display='none'
+		 因此v-show更适合于频繁切换显示/隐藏的场景
+	比如：<div v-show="flag" class="box">我是v-show控制的盒子</div>
+
+9、v-if指令
+	案例：D:\my_work\sandro\javascript_projects\vue_exam_project\02-vue指令\03-v-if指令.html
+	
+	作用：控制元素的显示和隐藏（条件渲染）
+	语法：v-if="表达式"，
+	     表达式值：true ，显示； false,隐藏 
+		 不同于v-show，v-if是添加或者移除该元素
+		 因此v-if，开销比较大，但是比较节省内存，一般用于不频繁显示/隐藏的元素
+	比如：<div v-if="flag" class="box">我是v-if控制的盒子</div>
+
+8、v-else 指令
+	案例:\javascript_projects\vue_exam_project\02-vue指令\04-v-else指令.html
+	该指令用于辅助v-if指令，适用于双条件的页面元素渲染
+	语法：v-else，不需要表达式
+	注意：需要紧挨着v-if 或者 v-else-if指令指令
+	
+	比如：	
+		<div v-if="gender===1" class="box">男</div>
+		<div v-else class="box">女</div>
+
+9、v-else-if指令
+	案例：D:\my_work\sandro\javascript_projects\vue_exam_project\02-vue指令\05-v-else-if指令.html
+	该指令用于辅助v-if指令，结合v-else 可以多条件的页面元素渲染
+	注意：需要紧挨着v-if指令
+	比如：
+		<button>年龄：{{age}}岁</button>
+		<div v-if="age===1" class="box">婴儿</div>
+		<div v-else-if="age<3" class="box">幼儿</div>
+		<div v-else-if="age<13" class="box">儿童</div>
+		<div v-else-if="age<18" class="box">青少年</div>
+		<div v-else-if="age<35" class="box">青年</div>
+		<div v-else-if="age<55" class="box">中年</div>
+		<div v-else class="box">老年</div>			
+
+10、v-on指令
+	案例：\javascript_projects\vue_exam_project\02-vue指令\06-v-on指令.html
+	作用：
+		注册事件 = 添加监听 + 提供处理逻辑
+	语法：
+		1）v-on:事件名=‘内联语句’
+		   内联语句，就是一段可执行的代码
+		   比如：
+		        <button v-on:click="number--">-</button>
+				<span>{{number}}</span>
+				<button v-on:click="number = number + 1">+</button>
+		2）v-on:事件名=‘methods中的函数名’
+			methods是vue对象的一个属性，里面配置各种函数
+			对于v-on来说函数参数里会自动传递会事件对象
+			通过html的data-自定义属性结合事件对象可以获取标签对应的参数
+			在vue对象的method中要想引用本对象的属性，可以使用this.属性名进行访问
+			比如：
+				<button data-base="3" @click="multi">乘3</button>
+				
+				const app = new Vue({
+				el: "#app",
+				data: {
+					number: 10
+				},
+				methods: {
+					multi(e) {
+						this.number = this.number * (+e.target.dataset.base)
+					}
+				}
+				})
+		3）v-on:事件名=‘methods中的函数名(参数1，参数2....)’
+			调用带有参数的函数
+			
+			比如：
+				<button @click="division(3)">除3</button>
+				const app = new Vue({
+					el: "#app",
+					data: {
+						number: 10
+					},
+					methods: {
+						division(div) {
+							this.number = Math.floor(this.number / div)
+						}
+					}
+				})				
+			注意这种写法，就无法获取到事件对象了
+		
+	v-on: 也可以使用 @来替换
+	比如：<button @click="number--">-</button>
+
+11、v-bind指令
+	案例：\javascript_projects\vue_exam_project\02-vue指令\07-v-bind指令.html
+	
+	作用：动态的设置设置html的标签属性，比如src,href,title等
+	语法：v-bind:属性名="表达式"
+		也可以简写 :属性名="表达式"
+	
+	比如：
+		<img v-bind:src="imageUrl" :title="title">
+		
+		const app = new Vue({
+			el: "#app",
+			data: {
+				imageUrl: "../lib/1.webp",
+				title: '测试图片'
+			},
+			methods: {
+
+			}
+		})
+
+12、v-for指令
+	案例：javascript_projects\vue_exam_project\02-vue指令\08-v-for指令.html
+	
+	作用：基于数据进行循环，多次渲染整个元素
+		 v-for可以遍历 数组，对象，数字....
+	基础语法：v-for="(item,index) in 数组"
+		 item:数组元素
+		 index，下标，如果不需要index，可以缩写为：v-for="item in 数组"
+		 在标签内容中可以使用{{item}}，{{index}} 访问这两个数据
+		 如果是子标签的属性需要引用这两个数据，可以直接应用不需要{{}}
+	
+	例如：
+		循环数组，批量生成li标签
+		<ul>
+			<li v-for="(item ,index) in names">
+				<span>{{index + 1}}:{{item}}</span>
+				<button @click="del(index)">删除</button>
+			</li>
+		</ul>
+	
+		const app = new Vue({
+			el: "#app",
+			data: {
+				names: ["tony", "lily", "jess"]
+			},
+			methods: {
+				del(index){
+				
+				}
+			}
+		})	
+	
+	v-for中的key
+	语法：  :key属性='唯一标识'
+	作用：给列表项添加唯一标识，便于vue进行列表项的正确排序复用
+		 如果不加key，当数据删除的时候，vue不一定会删除对应的标签，而仅仅是替换标签的内容
+		 如果想对标签进行彻底删除，最好加Key
+	注意点：
+		key的值只能是字符串或者数字
+		key的值必须有唯一性
+		最好不要用index作为key,因为key会变化，不对应,
+	
+	例如：
+		<ul>
+			<li v-for="(item ,index) in names" :key="generateUUID()">
+				<span>{{index + 1}}:{{item}}:{{generateUUID()}}</span>
+				<button @click="del(index)">删除</button>
+			</li>
+		</ul>
+	
+		const app = new Vue({
+			el: "#app",
+		data: {
+			names: ["tony", "lily", "jess"]
+		},
+		methods: {
+			del(index) {
+				this.names.splice(index, 1)
+			},
+			generateUUID() {
+				return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+					const r = Math.random() * 16 | 0;
+					const v = c === 'x' ? r : (r & 0x3 | 0x8);
+					return v.toString(16);
+				});
+			}
+		}
+		
+13、v-model指令
+	案例：\javascript_projects\vue_exam_project\02-vue指令\09-v-model指令.html
+	
+	作用：给表单元素使用，它可以支持表单元素的双向数据绑定，能够快速的设置或获取表单元素内容
+		前面的插值表达式，只能单向的控制视图数据的展示，对于表单数据来说，视图内容改了，插值对应的变量并不会变化
+		要想双向的获取数据，即视图数据修改，vue内部的变量也跟着修改，就需要v-model指令
+		
+	语法：v-model='变量'
+	
+	比如：
+		账户：<input type="text" v-model="username"><br>
+		密码：<input type="password" v-model="password">
+		<button @click="login">登录</button>
+		<button @click="reset">重置</button>
+		
+		const app = new Vue({
+			el: "#app",
+			data: {
+				username: '',
+				password: ''
+			},
+			methods: {
+				login() {
+					console.log(`username:${this.username} ,password:${this.password}`);
+				},
+				reset() {
+					this.username = ''
+					this.password = ''
+				}
+			}
+		})
+
+14、指令的修饰符
+	案例：\javascript_projects\vue_exam_project\02-vue指令\10-指令修饰符.html
+	通过"."指明一些指令的后缀，不同后缀封装了不同的操作处理
+	通过指令修饰符可以更加简化代码
+	
+	比如：
+		@keyup.enter -> 键盘回车监听
+		v-model.trim -> 去除首尾空格
+		v-model.number->尝试转数字，如果输入框输入的是数组，则变量会转为number类型，否则还是字符串
+		@事件名.stop -> 阻止冒泡
+			比如：@事件名.stop='方法名()' ,该方法在执行后，不会冒泡
+		@事件名.prevent -> 阻止默认行为
+			比如：@事件名.prevent='方法名()' ,该方法在执行后，控件的默认行为就不会执行了，通常用于a标签，点击后不会跳转并执行指定方法
+			   
+15、v-bind操作class
+	案例：\javascript_projects\vue_exam_project\02-vue指令\11-v-bind操作class.html
+	
+	v-bind在操作class属性方面增强了处理
+	语法 :class = "对象/数组"
+		
+		对象案例
+		<div class="box" :class="{类名1:布尔值，类名2:布尔值,...}">
+		如果值是true，则使用该css类
+		适用场景：一个类名 来回切换
+		
+		数组案例
+		<div class="box" :class="[类名1，类名2...]">
+		数组中所有的类都会加载到标签的class上
+		适用场景：批量添加或删除类
+
+15、v-bind操作style
+	案例：\javascript_projects\vue_exam_project\02-vue指令\12-v-bind操作style.html
+	
+	语法 :style="对象"
+	例如：<div class="box" :style="{css属性1：'值1'，css属性值2:'值2'...}"></div>
+	适用场景：某个具体css属性的动态设置
+	
+16、v-model应用于其他表单元素
+	案例：\javascript_projects\vue_exam_project\02-vue指令\13-v-model应用于其他表单元素.html
+	
+	除了输入框以外，常见的表单元素都可以使用v-model绑定关联
+	v-model会根据控件类型选取正确的方法来更新元素的值
+
+17、计算属性 computed
+	案例:\javascript_projects\vue_exam_project\03-计算属性\01-计算属性案例.html
+	概念：基于现有的数据，计算出来的新属性，依赖数据的变化，自动重新计算
+	
+	语法：
+		1）声明在computer配置项中，一个计算属性对应一个函数
+		2）使用起来和普通属性一样使用{{计算属性名}}
+	
+	例如：
+		<h3>球类中枢：{{sum}}个</h3>
+		const app = new Vue({
+			el: "#app",
+			data: {
+	
+			},
+			computed: {
+				sum() {//定义计算属性的名字
+				return 0 //返回结果
+				}
+			}
+		})	
+	注意：computed中定义的方法在调用的时候是以属性的方式，因此不能加() 。
+	     比如例子中的sum方法在使用的时候，应该是{{sum}}。
+
+18、计算属性computed和methods方法的区别
+	作用：
+		计算属性computed封装了一段对于数据的处理，求得一个结果
+		方法主要用于业务逻辑
+		
+	调用：
+		计算属性：作为属性，直接使用-> this.计算属性，{{计算属性名}}
+		方法，需要调用this.方法名()  {{方法名()}} @事件名="方法名"
+		
+	计算属性的优势
+		计算属性会对会的计算出来的结果缓存，再次使用直接读取缓存
+		依赖项变了，会自动重新计算，并再次缓存
+		
+19、计算属性的完整写法
+	案例：\javascript_projects\vue_exam_project\03-计算属性\02-计算属性的完整写法.html
+	
+	计算属性默认的简写，只能读取访问，不能修改
+	如果想要修改，需要使用计算属性的完整写法
+	
+	语法：
+		const app = new Vue({
+			el: "#app",
+			data: {
+	
+			},
+			computed: {
+				data: {//定义一个计算属性的名
+					get() {//定义一个get方法，用于取值
+						return 0
+					},
+					set(value) {定义一个set方法，用于设置值
+					}
+				}
+			}
+		})
+
+20、watch监听器
+	作用：监视数据变化，执行一些业务逻辑或异步操作
+	
+	简写：
+		案例：\javascript_projects\vue_exam_project\04-watch监听器\01-wathc简写案例.html
+		简写只能监听简单类型的数据，直接监视
+		const app = new Vue({
+			el: "#app",
+			data: {
+			watchData: '',
+				watchObj: {
+					data: ''
+				}
+			},
+			watch: {
+				//注意该方法名要和被监控的对象名一样，通常只用新值第一个参数，第二个参数不用可以不写
+				watchData(newValue, oldValue) {
+		
+				},
+				//如果被监控的是某个对象的属性，要这么写，注意要加引号包裹起来，第二个参数（老值）不用可以不写
+				"watchObj.data"(newValue, oldValue) {
+		
+				}
+			}
+		})		
+		
+		防抖需求，比如每次修改都要发送http请求，这样会极大浪费服务器性能
+		防抖，就是通过一定的延迟处理，避免短时间内触发大量事件
+		实际上就是使用延时器，输入之后先停止上一次的延时器，再重新创建延迟器去执行
+		
+	完整写法：
+		案例：\javascript_projects\vue_exam_project\04-watch监听器\02-wathc完整写法.html
+		可以额外添加配置项，提供更灵活的方式完成业务需求
+		1）deep:true ，对复杂类型深度监视，
+					  比如多个变量的变化都可能引起结果的变化，可以把这个多个变量封装到一个对象里 然后对这个对象进行监视
+					  这个时候就可以使用deep 这个属性
+			
+		2）immediate:true，初始化立刻执行一次handle方法
+		
+		例如：
+		    const app = new Vue({
+				el: "#app",
+				data: {
+					obj: {
+						num: 1,
+						price: 1
+					},
+					total: 0
+				},
+				watch: {
+					obj: {
+						deep: true,//深度监视
+						immediate: true,//初始化就立即执行一次
+						handler(newvalue) {
+							this.total = newvalue.num * newvalue.price
+						}
+					}
+				},
+				methods: {
+				},
+				computed: {
+				}
+			})
+			
+21、vue的生命周期
+	vue的生命周期就是vue实例从创建到销毁的过程
+	
+	生命周期的四个阶段：创建->挂载->更新->销毁
+	
+	1）创建阶段，只会执行一次
+		将数据从普通数据转换成响应式数据，转换完成以后，修改数据页面才会被vue修改
+	2）挂载阶段，只会执行一次
+		渲染模板，也就是在页面中可以看到对应的数据展示了
+	3）更新阶段，根据页面响应逻辑，执行多次
+		此时页面已经渲染好，数据修改后，视图也会修改了
+		在这个阶段，是数据和视图可以双向修改了
+	4）销毁阶段
+		销毁实例
+		
+	通常页面数据的准备工作应该放页面的创建阶段，比如向后台请求初始数据
+	如果想要操作DOM元素，最早可以放在挂载阶段结束后
+	
+22、vue的生命周期函数
+	案例：\javascript_projects\vue_exam_project\05-vue生命周期\01-生命周期函数.html
+	
+	vue生命周期过程中，会自动运行一些函数，被称为生命周期钩子，让开发者可以在特定阶段运行自己的代码
+	在每个生命周期阶段都准备了两个函数，分别在各阶段的开始和结束触发
+	比如想尽快操作DOM元素，就应该在挂在阶段结束的回调函数里操作
+	
+	这些函数分别为
+	1）创建阶段
+		beforeCreate,创建前回调，此时响应式数据还没有准备好，不易过早操作数据
+		created，创建后回调，通常在这里进行数据准备，比如请求服务获取用户数据
+	2）挂载阶段 
+		beforeMount,挂载前回调，这个时候DOM中元素还没有开始渲染，因此模板数据还不是实际的数据
+		mounted,挂载后回调，从这里之后，DOM元素中的插值、指令等数据就已经映射并赋值了
+		比如：想要打开页面的时候自动让某个input输入框获取焦点，如果该input标签使用了vue模板，那么传统的autofocus就不再起作用了
+		     因此需要在mounted回调中，查找dom元素，并手动设置初始焦点 input.focus()
+	3）更新阶段
+		beforeUpdate,更新前回调
+		updated，更新后回调
+		因为更新是根据业务反复调用，因此这两个函数也会反复被回调
+	4）销毁阶段，卸载阶段通常很难看到输出，可以在浏览器的控制台上使用实例名.$destroy()方法，触发销毁 ，比如app.$destroy()
+		beforeDestroy,销毁前回调，通常在这里释放vue以外的资源，比如清除定时器，延时器等
+		destroyed,销毁后回调
+		销毁后，实例中的数据都会被释放，也就无法在操作和响应页面视图了
+		
+	总结，通常用的最多的是created,mounted，beforeDestroy回调函数
+
+23、vue的工程化开发模式
+	核心包传统开发模式 基于html/css/js文件，直接引入核心包，开发vue.
+	工程化开发模式：基于构建工具，比如webpack的环境中开发vue
+	源代码->自动化编译压缩组合->运行的代码
+	
+	Vue CLI脚手架
+		工程化开发模式，配置比较繁琐，vue官网提供了一个全局命令工具
+		它可以帮助我们快速创建一个开发vue项目的标准化基础框架（继承了webpack配置）
+		好处：开箱即用，0配置，内置babel等工具，标准化
+	
+	使用步骤：
+		1）全局安装（执行一次即可）
+			安装前，要去nodejs官网下载nodejs安装包安装nodejs,
+			注意nodejs安装后 最好配置一下的是npm安装的全局模块所在的路径，以及缓存cache的路径，否则依赖包都会下载到默认的c盘
+			
+			nmp i @vue/cli -g 命令安装vue脚手架
+		2）查看vue版本
+			vue --version
+		3）创建项目框架
+			vue create [project-name] ,在当前目录下创建项目，项目名不能用中文
+			创建的时候，会提示选择是vue3,还是vue2
+		4）启动项目
+			在项目目录下执行命令 npm run serve,之后会在8080端口开启服务，直接访问即可脚手架自动创建的vue项目了
+			serve是配置的项目目录下的package.json中的
+			{
+				...
+				"scripts": {
+					"serve": "vue-cli-service serve",//在这里定义了服务名，这个服务名可以根据项目修改为实际的名称，默认叫"serve"
+					"build": "vue-cli-service build",
+					"lint": "vue-cli-service lint"
+				},
+				...
+			}
+	
+24、脚手架目录文件介绍 
+	案例：\javascript_projects\vue_cli_start
+	node_moudles 			第三方包的文件夹          	      
+	public					放html文件的地方
+	|---favicon.ico			网站图标
+	|---index.html			index.html模板文件
+	src						源代码目录->以后写代码的文件夹
+	|---assets				静态资源文件->存放图片、字体等
+	|---components			组件目录->存放通用组件
+	|---App.vue				App根组件->项目运行看到的内容就在这里编写
+	|---main.js				入口文件->打包或者运行，第一个执行的文件
+	styles					存放样式文件
+	babel.config.js			babel配置文件
+	jsconfig.json			js配置文件
+	package.json			项目配置文件->包含项目名称、版本号、scripts、依赖包等
+	README.md				项目说明文件
+	vue.config.js			vue-cli配置文件
+	package-lock.json		锁定项目依赖的精确版本‌，以确保在不同环境（如开发机、CI/CD 流水线或团队成员的机器）中安装的依赖包完全一致。
+	
+
+	初学者重点关注App.vue , main.js , index.html这三个文件即可
+	
+	npm run serve命令会执行 main.js文件，在main.js文件中会实例化App.vue中的vue实例
+	最终渲染到index.html页面上
+
+25、组件化开发和根组件
+	案例：\javascript_projects\vue_cli_start
+	
+	组件化：一个页面可以拆分为一个个组件，每个组件都有自己独立的结构，样式，行为。
+	好处：便于维护，利于复用，提升开发效率
+	
+	组件分类
+		1）普通组件，
+		2）根组件，整个应用最上层的组件，包裹所有普通小组件
+	比如
+		根组件
+			---->头部组件
+			---->导航组件
+			---->主体组件
+				 ---->商品组件1
+				 ---->商品组件2
+				 ---->....
+			---->底部组件
+	
+	App.vue文件（单文件组件）的三个组成部分
+	1）结构，有且只能有一个根元素
+		<template>
+			<div id="app">
+				<img alt="Vue logo" src="./assets/logo.png">
+				<HelloWorld msg="Welcome to Your Vue.js App"/>
+			</div>
+		</template>	
+	2)行为，js逻辑
+		<script>
+			import HelloWorld from './components/HelloWorld.vue'
+		
+			export default {
+				name: 'App',
+				components: {
+					HelloWorld
+				}
+			}
+		</script>
+	3）样式 （可支持less,需要装包）
+		<style>
+			#app {
+				font-family: Avenir, Helvetica, Arial, sans-serif;
+				-webkit-font-smoothing: antialiased;
+				-moz-osx-font-smoothing: grayscale;
+				text-align: center;
+				color: #2c3e50;
+				margin-top: 60px;
+			}
+		</style>
+		让组件支持less,
+			1)style标签中 开启less, lang="less"
+			2)装包： 项目本地安装 npm install less-loader --save-dev
+				--save-dev是less-loader指定开发环境才使用，通常生产环境是不需要装的
+		
+		如果是样式文件的话，可以通过import '样式路径'来导入
+	
+	vue VSCode 高亮插件：Vetur
+
+26、普通组件的注册-局部注册
+	案例：\javascript_projects\vue_cli_start
+	
+	通常整个页面是由多个部分组成的，因此可以将这些部分分别封装整普通组件，便于维护和复用
+	
+	组件注册的两种方式
+	1）局部注册：只能在注册的组件内使用
+		1.创建.vue文件，通常是放在components目录下
+		2.在使用的组件内导入并注册 
+		3.使用，在模板中把组件名当成html标签使用即可
+		例如：
+			项目中的HelloWorld.vue就是普通组件，和根组件一样，通常由三个组成部分
+			在App.vue中使用import HelloWorld from "./components/HelloWorld.vue"; 来导入这个组件
+			在App.vue的配置项中使用components来注册该组件
+			export default {
+				name: 'App',
+				components: {
+					HelloWorld //全写是“组件名”：对象名，如果组件名和对象名一样，就可以简写一个即可
+				}
+			}		
+
+			使用的时候当成html标签即可：<HelloWorld msg="Welcome to Your Vue.js App" />
+		注意：组件名的规范：使用大驼峰命名法：比如HelloWorld
+		
+	2）全局注册：所有组件内都能使用
+		1.创建.vue文件，通常是放在components目录下
+		2.在mainjs中导入
+			import CommonBtn from './components/CommonBtn' //导入需要全局注册的组件
+		  在main.js中可以，通过import '样式文件路径' 来导入通用样式
+		3.在mainjs中注册为全局的组件
+			//参数：组件名，组件对象
+			Vue.component('CommonBtn', CommonBtn)//在Vue中注册这个组件,
+		4.注册以后，即可在当前环境中通过标签使用了，标签名就是组件名
+	
+	开发过程中，通常先使用局部注册，当发现其他模块也需要时，再抽离到全局
+
+27、组件三大组成部分注意点说明
+	案例:D:\my_work\sandro\javascript_projects\vue_cli_start
+	1）组件中只能有一个根元素，通常是一个div
+	2）样式，默认情况下是全局样式，会影响全局组件，因此很容易造成多个组件之间的样式因重名互相覆盖的问题
+		    在组件的style 标签中增加 scoped属性，则为局部样式，只能作用于当前组件，这样就可以避免样式冲突的问题了
+			通常组件应该是有自己独立的样式，因此推荐加上scoped
+			例如：	
+				<style scoped>
+				...
+				</style>
+	3）el是根实例独有，data是一个函数，其他配置项一致
+		案例:\components\CommonCounter.vue
+		一个组件的data选项必须是一个函数,这是为了保证每个组件实例，维护的是一个独立的数据
+		该组件被引用了多次，但是count数据都是独立的，不会因为count名是一样的而被多个组件操作
+
+28、组件通信
+	组件通信，就是指组件与组件之间的数据传递
+		组件的数据是独立的，无法直接访问其他组件中的数据
+		想用其他组件的数据，就需要使用组件通信技术
+	
+	根据组件和组件之间的关系不同，通信方式也不一样
+	组件关系根据包含结构分为：
+		1）父子关系，使用props 和 $emit来传递数据
+		2）非父子关系，使用provide&inject 和 eventbus技术来传递数据
+		
+	如果更复杂的业务，还有更终极的解决方案,即Vuex
+
+29、父组件向子组件传递数据
+	案例:D:\my_work\sandro\javascript_projects\vue_cli_start项目中\components\CustomBtn.vue组件
+	
+	父组件通过props将数据传递给子组件
+	props本质上是子组件自己定义的属性，父组件在使用子组件的时候，利用这个属性来向下传递数据
+	比如：
+		1）子组件定义props属性，
+			export default {
+				props: {
+					btnName: String,//这里定义传值时属性的名字，在页面上可以使用插值等多种方式利用该属性了
+				},
+			};
+		2）父组件使用子组件时，利用这个属性传值
+			<!--通过:属性名= "内部对象名"的方式达到双向关联的效果-->
+			<CustomBtn :btnName="btnNameFist" />
+
+30、子组件向父组件传递数据
+	案例:D:\my_work\sandro\javascript_projects\vue_cli_start
+	
+	子组件利用$emit通知父组件，数据进行了修改
+	例如：this.$emit("change", this.inputData);
+		第一个参数是事件名，第二个参数是需要传递的数据
+	详见 \src\components\InputArea.vue
+			
+	
+	
+	

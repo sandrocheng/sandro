@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Complatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>02-计算属性的完整写法</title>
+  <script src="../lib/vue2.js"></script>
+
+  <style>
+
+  </style>
+</head>
+
+<body>
+
+  <div id="app">
+    姓：<input type="text" v-model="firstName"> +
+    名：<input type="text" v-model="secondName">
+    = <span>{{fullName}}</span><br><br>
+
+    <button @click="changeName">改名为吕布</button>
+  </div>
+
+  <script>
+    const app = new Vue({
+      el: "#app",
+      data: {
+        firstName: '刘',
+        secondName: '备'
+      },
+      methods: {
+        changeName() {
+          this.fullName = '吕布'
+        }
+      },
+      computed: {
+        fullName: {
+          get() {
+            return this.firstName + this.secondName
+          },
+          set(value) {//当fullName计算属性被修改时，该方法会被调用，并把修改后的值传递过来
+            console.log("改名了");
+            this.firstName = value.slice(0, 1)
+            this.secondName = value.slice(1)
+          }
+        }
+      }
+    })
+  </script>
+
+</body>
+
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Complatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>01-生命周期函数</title>
+  <script src="../lib/vue2.js"></script>
+
+  <style>
+
+  </style>
+</head>
+
+<body>
+
+  <div id="app">
+    <h3>{{count}}</h3>
+    <button @click="count ++">+</button><br>
+    <input type="text" name="" id="">
+  </div>
+
+  <script>
+    const app = new Vue({
+      el: "#app",
+      data: {
+        count: 100
+      },
+      watch: {
+      },
+      methods: {
+
+      },
+      computed: {
+      },
+      beforeCreate() {
+        console.log(`创建阶段前回调 ,此时data中的数据是无法访问的 count = ${this.count}`);
+      },
+      created() {
+        console.log(`创建阶段完成回调 , 此时data中的数据就可以访问了 count = ${this.count}`);
+        //通常在这里进行数据请求
+        //比如 this.count=请求数据
+      },
+      beforeMount() {
+        console.log('挂载阶段前回调，此时还没有渲染模板 DOM元素中的vue数据还不是业务数据 比如h3元素中的展示数据 = ', document.querySelector('h3').innerHTML);
+      },
+      mounted() {
+        console.log('挂载阶段完成回调，此时模板已经渲染完成，DOM中的元素已经映射完成，比如h3元素中的展示数据 = ', document.querySelector('h3').innerHTML);
+        document.querySelector('input').focus()
+      },
+      beforeUpdate() {
+        console.log("数据更新前回调，此时h3DOM中的内容为 ：", document.querySelector('h3').innerHTML);
+      },
+      updated() {
+        console.log("数据更新完成回调，此时h3DOM中的内容为 ：", document.querySelector('h3').innerHTML);
+      },
+      beforeDestroy() {
+        console.log("实例销毁前回调");
+      },
+      destroyed() {
+        console.log("实例销毁后回调");
+      }
+    })
+  </script>
+
+</body>
+
+</html>

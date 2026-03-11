@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Complatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>11-v-bind操作class</title>
+  <script src="../lib/vue2.js"></script>
+
+  <style>
+    .box {
+      width: 100px;
+      height: 100px;
+      border: 3px solid #000;
+      margin-top: 10px;
+    }
+
+    .pink {
+      background-color: pink;
+    }
+
+    .big {
+      width: 300px;
+      height: 100px;
+    }
+
+    li {
+      width: 100px;
+      height: 50px;
+      background-color: white
+    }
+
+    .active {
+      background-color: red;
+    }
+  </style>
+
+</head>
+
+<body>
+  <div id="app">
+    <div class="box" :class="{pink:true,big:true}">hello vue</div>
+    <ul>
+      <li v-for="(item,index) in dataList" :key="item.id" :class="{active:index===activeIndex}"
+        @click="activeIndex = index">
+        {{item.name}}
+      </li>
+    </ul>
+  </div>
+
+  <script>
+    const app = new Vue({
+      el: "#app",
+      data: {
+        dataList: [
+          { id: 0, name: '第一行' },
+          { id: 1, name: '第二行' },
+          { id: 2, name: '第三行' }
+        ],
+        activeIndex: 0
+      },
+      methods: {
+      }
+    })
+
+  </script>
+
+</body>
+
+</html>

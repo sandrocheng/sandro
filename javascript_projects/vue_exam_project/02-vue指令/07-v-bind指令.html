@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Complatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>07-v-bind指令</title>
+  <script src="../lib/vue2.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <img v-bind:src="imageUrl[index]" :title="title">
+  </div>
+
+  <script>
+    const app = new Vue({
+      el: "#app",
+      data: {
+        imageUrl: ["../lib/1.webp", "../lib/2.webp", "../lib/3.webp"],
+        index: 0,
+        title: '测试图片'
+      },
+      methods: {
+
+      }
+    })
+    setInterval(function () {
+      app.index++
+      if (app.index >= app.imageUrl.length) {
+        app.index = 0
+      }
+    }, 3000)
+
+  </script>
+
+</body>
+
+</html>
