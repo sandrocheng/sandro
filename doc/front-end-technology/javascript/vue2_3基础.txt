@@ -466,7 +466,7 @@
 		const app = new Vue({
 			el: "#app",
 			data: {
-			watchData: '',
+				watchData: '',
 				watchObj: {
 					data: ''
 				}
@@ -654,6 +654,7 @@
 		</template>	
 	2)行为，js逻辑
 		<script>
+			//通过import 引入vue组件
 			import HelloWorld from './components/HelloWorld.vue'
 		
 			export default {
@@ -665,6 +666,9 @@
 		</script>
 	3）样式 （可支持less,需要装包）
 		<style>
+			//适用@import + 路径可以引用css文件，如果css文件是通过npm安装的，直接从第三方包的根引用即可，
+			//如果是放在assets中，则需要通过相对路径或者绝对路径(绝对路径可以用‘@’代表src文件目录的路径 )引入
+			@import "simple-keyboard/build/css/index.css";
 			#app {
 				font-family: Avenir, Helvetica, Arial, sans-serif;
 				-webkit-font-smoothing: antialiased;

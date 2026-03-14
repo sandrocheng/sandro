@@ -3,11 +3,12 @@ package sandro.springboot.demo1.controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController //该注解返回字符串到页面
-public class HelloController {
+//给蓝牙扫描前端提供测试接口
+@RestController
+public class FridScanner {
 
-    @RequestMapping("/hello")
+    @RequestMapping("/login")
     public String hello(){
-        return "hello,world111";
+        return "login";
     }
 }
