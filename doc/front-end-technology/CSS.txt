@@ -1,0 +1,333 @@
+1、CSS简介
+	Cascading Style Sheets层叠样式表也称为级联样式表，主要用于美化网页，布局页面的，CSS本身也是一种标记语言
+	
+	html比较单纯，只关注内容的语义，比如h1表明这时一个大标题，p表明这是一个段落,img表明这里有张图片等等
+	虽然html可以做一些简单的样式，但是非常繁琐和臃肿
+	
+	CSS则可以设置HTML页面中的文本内容（字体，大小，对齐方式等），图片外形(宽，高，边框样式边距等)
+	以及版面的布局和外观显示样式
+	CSS最大的价值：由HTML专注去做结构呈现，样式交给CSS，即结构(HTML)与样式(CSS)相分离
+
+2、CSS语法规范
+	案例:h5_css_projects\CSS\01-css体验\01-CSS语法规则.html
+	CSS规则由两个主要部分组成
+		1）选择器
+		2）一条或多条声明
+	
+	例如：
+		h1{
+			color:red;
+			font-size:25px;
+		}
+	h1就是选择器，它代表当前的样式内容作用于h1这个标签，
+	{}内部是多条声明，每条声明由属性和值组成，中间用:分隔，最后用;结束
+	
+	在html页面中，通常可以把样式放在<head>标签内部，使用style来声明
+	例如：	
+		<head>
+			...
+			<style>
+				p {
+					color: red;
+					font-size: 25px;
+				}
+			</style>
+		</head>	
+
+3、CSS的代码风格
+	1）样式格式书写
+		1.1 紧凑格式 ，例如： h1{color:red;font-size:20px;}
+		1.2 展开格式，例如：
+			p {
+				color: red;
+				font-size: 25px;
+			}			
+		通常开发者更喜欢使用展开格式
+	
+	2）样式大小写，css中不区分大小写，通常在开发中都统一使用小写
+	3）空格规范
+		3.1 通常在属性值前面,冒号后面保留一个空格
+		3.2 在选择器(标签)和大括号中间保留空格
+
+4、CSS选择器的作用
+	选择器/选择符就是根据不同需求把不同的标签选出来，这就是选择器的作用，简单来说就是选择标签用的。
+	
+	选择器大致可以分为两类
+	1）基础选择器，由单个选择器组成，其中由包括标签选择器，类选择器，id选择器和通配符选择器
+	2）复合选择器，是 CSS 中一种由两个或多个基础选择器通过特定方式组合而成的选择器。
+	   它能够更准确、更高效地选择目标元素，相比单一的基础选择器，复合选择器提供了更强的灵活性和精确性。
+	   
+
+5、标签选择器
+	案例：\h5_css_projects\CSS\02-css选择器\01-标签选择器.html
+	标签选择器,也叫元素选择器，是指用HTML标签名称作为选择器，按标签名称分类，为页面中某一类标签全部指定统一的CSS样式
+	
+	语法：
+		标签名{
+			属性1: 属性值1;
+			...
+		}
+	
+	优点：可以快速对页面中同类型的标签统一设置样式
+	缺点：不能差异化设置，只能选择全部的当前标签
+
+6、类选择器
+	案例：\h5_css_projects\CSS\02-css选择器\02-类选择器.html
+	
+	如果想要差异化选择不同的标签，单独选择一个或几个标签，可以使用类选择器
+	
+	语法：
+		.类名{
+			属性1:属性值1;
+			属性2:属性值2;
+			...
+		}
+	定义好以后 在标签中使用class属性指定该类名即可使用该类名中的样式属性了
+	通常在开发中，最常用的选择器就是类选择器
+	
+	注意:不能使用标签名用于类名
+		如果名字比较长可以使用多个单词中间用"-"来分隔
+		不要使用纯数字，中文来命名，最好使用英文和"-"来命名
+		类命名通常有常用的类命名规范，可以参考
+
+	多类名选择器
+	可以给一个标签指定多个类名，从而达到更多的选择目的。这些类名都可以选出这个标签
+	比如：<li class="single big">第五条</li>
+	多类名开发的使用场景：
+		1）可以把一些标签元素相同的样式共同的部分，放到一个类里面
+		2）这些标签都可以调用这个公共的类，然后再调用自己独有的类
+		3）节省CSS代码，统一修改也非常方便
+	
+7、id选择器
+	案例：\h5_css_projects\CSS\02-css选择器\03-id选择器.html
+	
+	id选择器可以为标有特定id的HTML元素指定特定的样式
+	HTML元素以id属性来设置id选择器，CSS中id选择以"#"来定义
+	比如：
+	    #box1 {
+			color: red;
+		}
+	
+	id选择器和类选择器最大的区别在于使用次数上，id选择器只会被一个标签使用，而类选择器可以被多个标签使用
+	id选择器一般用于页面唯一性的元素上
+
+8、通配符选择器
+	案例：\h5_css_projects\CSS\02-css选择器\04-通配符选择器.html
+	在CSS中，通配符选择器使用*定义，它表示选中页面中所有的元素(标签)
+	比如：
+    * {
+      color: rgb(33, 77, 224)
+    }
+
+9、font-family
+	案例：\h5_css_projects\CSS\03-css文本属性\01-font-family设置字体.html
+	
+	css使用font-family属性定义文本的字体系列
+	比如：
+		p{font-family:"微软雅黑";}
+		div{font-family:Arial,"Microsoft Yahei","微软雅黑";}
+	
+	注意：
+		1）属性值可以是多种字体的名字
+		2）各种字体之间必须要用 “,” 隔开
+		3）一般情况下推荐使用英文字体的名称(同一中字体可能有中文名称，也有英文名称)
+		4）如果名称由多个单词组成，并且用空格隔开了，最要用""括起来，比如："Microsoft Yahei"
+		5）尽量选择系统默认自带字体，保证在任何用户的浏览器上都能正确显示
+		6）最常见的几个字体：'Microsoft YaHei',tahoma,arial,'Hiragino Sans GB'
+		7）当设置了多个字体时，浏览器会优先使用第一个字体，如果第一个字体，系统没有，则继续尝试第二个字体，依次类推
+		8）如果不指定字体或者指定的字体系统都没有，则会使用默认字体，通常是微软雅黑字体
+		9）通常字体都直接使用body标签来设置，这样整个页面所有的字体都被设置了
+			例如 body{font-family: 'Microsoft YaHei',tahoma,arial,'Hiragino Sans GB'}
+
+10、font-size字号大小
+	案例：\h5_css_projects\CSS\03-css文本属性\02-font-size字号大小.html
+	
+	css 使用font-size属性定义字体大小
+	比如：
+		p {
+			font-size: 20px;
+		}		
+		
+	注意:
+		1）字体大小必须设置单位，通常用px(像素)
+		2）chrome浏览器默认的文字大小是16像素
+		3）通常不同的浏览器默认字体大小不一定一样，因此尽量给一个明确的值大小，不要默认大小
+		4）可以给body指定一个整体页面文字的大小
+		5）标题标签比较特殊，需要单独设置大小
+
+11、font-weight设置字体粗细
+	案例：\h5_css_projects\CSS\03-css文本属性\03-font-weight设置字体粗细.html
+	
+	font-weight， CSS 属性指定了字体的粗细程度。一些字体只提供 normal 和 bold 两种值。
+	
+	常用粗细的设置：normal  bold lighter bolder
+	也可以设置100，200，300，400(normal)，500，600，700(bold)，800，900
+	实际开发中通常使用数字来设置粗细
+
+12、font-style文字样式
+	案例：\h5_css_projects\CSS\03-css文本属性\04-font-style文字样式.html
+	
+	css使用font-style属性设置文本的风格
+	例如：
+		p{
+			font-style:normal;
+		}
+	font-style 的取值范围
+		1）normal，默认值
+		2）italic，斜体
+	
+	通常使用em标签的时候，可以给em设置font-style属性为normal，这样可以让倾斜的字体变为正常
+
+13、font复合属性的写法
+	案例：\h5_css_projects\CSS\03-css文本属性\05-font复合属性写法.html
+	当同时要设置多种字体的时候，比如倾斜，加粗，字号，字体时可以简写
+	
+	语法：
+		font: font-style font-weight font-size/line-height font-family;
+	
+	比如：     
+		p {
+			font: italic 700 16px/20px 'Microsoft yahei';
+		}
+	注意，
+		1）顺序不能变化，值之间用空格隔开
+		2）line-height可以不设置，比如：p{font: italic 700 16px 'Microsoft yahei';}
+		3）至少要留有 font-size 和 font-family属性，其他可以不写
+		   比如：  p{font: 25px 'Microsoft yahei';}
+		   
+14、color文本颜色
+	案例：\h5_css_projects\CSS\03-css文本属性\06-文字颜色color属性.html
+	
+	CSS使用color属性给文本定义颜色
+	比如： p { color: red;}
+	
+	color 的取值
+		1）预定义颜色，比如red,green,blue,pink等，具体值可以参考vscode的提示
+		2）十六进制 #FF0000
+		3) RGB代码 ，rgb(255,0,0) 或者 rgb(100%,50%,50%)
+
+15、text-align对齐文本
+	案例：\h5_css_projects\CSS\03-css文本属性\07-text-align对齐文本.html
+	
+	text-align属性用于设置元素内文本内容/图片的水平对齐方式
+	
+	例如：
+		div{
+			text-align:center;
+		}
+	
+	text-align的取值范围：right,center,left(默认)
+
+16、text-decoration装饰文本
+	案例：\h5_css_projects\CSS\03-css文本属性\08-text-decoration装饰文本.html
+	text-decoration属性规定添加到文本的修饰。可以根据文本添加下划线，删除线，上划线等
+	
+	text-decoration取值范围
+		1）none，没有装饰线
+		2）underline，下划线
+		3）overline,上划线
+		4）line-through，删除线
+		
+	通常在使用a标签时，内容会自动增加一个下划线，可以通过设置 text-decoration:none，将a标签的下划线去掉
+
+17、text-indent文本缩进
+	案例：\h5_css_projects\CSS\03-css文本属性\09-text-indent文本缩进.html
+	
+	text-indent属性用来指定文本的第一行的缩进，通常时段落的首航缩进
+	
+	比如：  div {text-indent: 10px;}
+	取值：
+		1）像素，正数向右边缩进，负数向左边缩进
+		2）em,是一个相对单位，就是当前元素(font-size)一个文字的大小，如果当前元素没有设置大小，则会按照父元素的1个文字大小。
+		
+18、line-height行间距
+	案例：\h5_css_projects\CSS\03-css文本属性\10-line-height行间距.html
+	
+	line-height用于设置行间的距离（行高），可以控制文字行与行之间的距离
+	
+	例如：    p { line-height: 30px;}
+	注意：行间距有三个部分组成
+		1）上间距，即文字顶部和行顶部之间的距离
+		2）文字本身的高度
+		3）下间距，即文字底部和行底部之间的距离
+		行间距实际上是改变了上间距和下间距的距离，文字本身的高度无法改变
+	
+19、CSS的引入方式
+	按照CSS样式书写的位置(或者引入的位置)，CSS样式表可以分为三大类
+	1）内部样式表也叫行内式
+		这种方式是把CSS代码抽取出来放到style标签中去
+		比如：
+		<!DOCTYPE html>
+		<html lang="en">
+		<head>
+			...
+			<style>
+				p {
+					line-height: 2px;
+				}
+				...
+			</style>
+		</head>
+		<body>
+			...
+		</body>
+		</html>
+		虽然理论上style标签可以放到任意位置上，但是通常style标签都放在head中。
+		style标签内的样式是作用域整个html页面的所有元素
+		
+	2）行内样式表也叫嵌入式
+		是在元素标签内部的style属性中设定CSS样式，适合于修改简单样式
+		例如：
+			<div sytle="color:red;fone-size:12px"> xxxxx <div>
+		注意：
+			这里style是标签的属性
+			内容要使用双引号包裹起来，写法要复合CSS的规范
+			只能控制当前标签的样式
+			该种写法没有分离样式和结构，所以不提倡大量使用
+	
+	3）外部样式表也叫链接式
+		是把CSS样式代码写到一个CSS文件中去(后缀名是.css)，再引入到HTML页面中使用
+		这种方式适合大量CSS代码的情况
+		
+		注意css文件中只有样式没有style标签
+		比如：
+			p {line-height: 2px;}
+			div{xxx}
+			.class{xxxx}
+			#id{xxx}
+			...
+		
+		css文件的引入
+		使用link标签：<link rel="stylesheet" herf="css文件路径"></link>
+		rel="stylesheet"说明该文件是一个CSS文件
+		href属性值可以是相对路径，也可以是绝对路径，或者网络url
+	
+20、chrome调试工具技巧
+	通过F12或者在chrome页面空白处点击右键->检查，可以调出chrome调试工具
+	1、ctrl + 滚轮：可以放大/缩小调试页面的内容
+	2、在“元素”中，左边是html，右边是选中元素的样式
+	3、在“样式”中，可以改动数值和查看颜色等。
+	4、ctrl + 0，复原浏览器大小。
+	5、如果点击元素，发现右侧没有样式引入，极有可能是类名或者样式引入错误。
+	6、如果有样式，但是样式前面有黄色叹号提示，则是杨思华属性书写错误。
+	
+21、Emmet语法
+
+	Emmet语法的前身是Zen coding,它使用缩写，来提高html/css的编写速度，Vscode内部已经集成了该语法
+	
+	1、使用Emmet快速生成HTML结构
+		1）生成标签，直接输入标签名，按tab键即可，比如输入 div，然后tab按键，就可以生成<div></div> 
+		2) 如果想要生成多个相同标签，加上*就可以了，比如输入 div*3，然后tab按键,就可以快速生成3个div。
+		3）如果有父子级关系的标签，可以用>，比如ul>li，就可以了，也可以更复杂一些，输入：div>ul>li*3，按tab按键，可以生成div ul 和3个li标签
+		4）如果有兄弟关系的标签，可以用 + ，比如： div + p
+			再复杂一点，div>p+h1,可以生成一个div内部是p和h1两个同级标签。
+		5）如果生成带有类名或者id名字的 div，直接写 .demo 或者 #id ，就可以了。
+			如果是其他标签，比如p标签 可以输入 p.one,则会自动生成 p标签并且类名是one。
+		6）如果生成的div类名是有顺序的，可以用自增符号 $
+			比如: .demo$*5,会生成5个div,类名是 demo1,demo2....
+		7) 在空html中 输入！ ，按tab按键，可以生成一个HTML页面框架
+		8）在某个标签内部默认生成一部分文字可以使用{}
+			比如： span{helloword},tab按键，就会生成<span>helloworld</span>
+	
+	2、快速生成CSS样式语法
+		

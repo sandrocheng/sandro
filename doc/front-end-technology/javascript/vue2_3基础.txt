@@ -236,7 +236,7 @@
 11、v-bind指令
 	案例：\javascript_projects\vue_exam_project\02-vue指令\07-v-bind指令.html
 	
-	作用：动态的设置设置html的标签属性，比如src,href,title等
+	作用：动态的设置html的标签属性，比如src,href,title等
 	语法：v-bind:属性名="表达式"
 		也可以简写 :属性名="表达式"
 	
@@ -321,6 +321,9 @@
 				});
 			}
 		}
+	
+	注意 ： v-for="index in 5" 语法时，index 从 ‌1‌ 开始
+		v-for也可以指定一个数字，循环这个数字的次数，此时index从1开始
 		
 13、v-model指令
 	案例：\javascript_projects\vue_exam_project\02-vue指令\09-v-model指令.html
@@ -686,7 +689,7 @@
 		如果是样式文件的话，可以通过import '样式路径'来导入
 	
 	vue VSCode 高亮插件：Vetur
-
+	快速生成vue框架代码：新建 .vue 文件后，输入“vue”再按 Tab
 26、普通组件的注册-局部注册
 	案例：\javascript_projects\vue_cli_start
 	
