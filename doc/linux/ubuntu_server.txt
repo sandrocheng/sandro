@@ -5,7 +5,62 @@
 2、设置时区
 	sudo timedatectl set-timezone Asia/Shanghai
 
-3、usb无线网卡
+3、笔记本wifi配置
+	1）查看网卡，找到 wlp3s0 /wlan0 这类 wl 开头网卡名称，记下来
+	   ip link
+	2)创建配置文件
+	  sudo vi /etc/netplan/00-wifi.yaml
+	  
+	  配置以下内容：
+		network:
+		version: 2
+		renderer: networkd
+		wifis:
+			wlp2s0:    # ←改成你自己的无线网卡名字！
+			dhcp4: true
+			optional: true
+			access-points:
+				"WiFi名称":
+				password: "WiFi密码"
+	
+	3）生效配置
+		sudo netplan try # 先测试，出错会自动回滚（强烈建议）
+		sudo netplan apply 确认网络正常后永久生效
+	4）networkd配置的wifi,并不稳定，可以临时使用该方法连上网，
+	   可以配置apt 清华的镜像，提高下载速度和成功率
+	   再立即安装network-manager
+		sudo apt update
+		sudo apt install network-manager -y
+		sudo systemctl enable --now NetworkManager
+	5）	清理 Netplan 残留配置
+		删除上面配置的00-wifi.yaml
+		创建01-network-manager-all.yaml，内容如下
+		network:
+		version: 2
+		renderer: NetworkManager
+	6）sudo netplan apply	#应用 Netplan 配置
+       sudo nmcli device set wlp3s0 managed yes	#将网卡（wlp3s0）强制设置为 managed
+	   sudo systemctl restart NetworkManager #重启 NetworkManager 服务
+	   nmcli device status #验证状态，
+	   此时 wlp3s0 状态应该变成 disconnected（不再是 unmanaged）,如果不行就重启
+	7）扫描 WiFi
+		sudo nmcli device wifi rescan
+		#等待几秒中
+		sudo nmcli device wifi list #查看当前wifi能扫描到哪些节点
+		此时应该能出现各种可以连接的wifi信号了
+	8）连接wifi
+		nmcli device wifi connect "WiFi名称" password "WiFi密码"
+		连接成功后，以后每次启动都会自动连接该wifi
+	9）清理networkd服务，可以提升系统启动速度
+		# 停止、禁用、彻底屏蔽（防止被其他依赖拉起）
+		sudo systemctl stop systemd-networkd-wait-online.service
+		sudo systemctl disable systemd-networkd-wait-online.service
+		sudo systemctl mask systemd-networkd-wait-online.service
+		
+		关闭无用的 systemd-networkd：
+		sudo systemctl stop systemd-networkd
+		sudo systemctl disable systemd-networkd
+4、usb无线网卡
 	ip -a :查看网卡信息
 
 	系统安装的时候无线网卡相关的命令没有装，先通过有线网安装无线网卡需要的工具包
@@ -51,7 +106,7 @@
 		Bus 002 Device 008: ID 0a5c:bd17 Broadcom Corp. BCM43236 802.11abgn Wireless Adapter
 	如果没有，尝试换一个usb口
 
-4、创建一个新用户
+5、创建一个新用户
 	sudo adduser new_user
 	使用adduser命令可以交互式地创建新用户，系统将提示您输入所需的信息，例如新用户名、密码等。这个命令还会为新用户创建一个主目录。
 	
@@ -65,13 +120,15 @@
 	  在 root用户下面添加用户，比如 morgan  ALL(ALL:ALL) ALL	
 	
 
-5、分区设置为全硬盘大小
+6、分区设置为全硬盘大小
 	ubuntu server安装的时候默认是保留一部分freespace的，这会导致磁盘可使用的大小只有一部分，可以通过如下命令把freespace扩充当前卷中
-	sudo vgdisplay : 查看现有的卷组
-	sudo lvextend -l +100%FREE /dev/mapper/ubuntu--vg-ubuntu--lv : 把FREE部分全部扩展到/dev/mapper/ubuntu--vg-ubuntu--lv 卷组中去
-	通过df -h可以看到全部磁盘都可以使用了
+	1、sudo vgdisplay : 查看现有的卷组
+	2、sudo lvextend -l +100%FREE /dev/mapper/ubuntu--vg-ubuntu--lv : 把FREE部分全部扩展到/dev/mapper/ubuntu--vg-ubuntu--lv 卷组中去
+	3、# 刷新文件系统（Ubuntu 默认 ext4）
+	sudo resize2fs /dev/mapper/ubuntu--vg-ubuntu--lv
+	4、通过df -h可以看到全部磁盘都可以使用了
 
-6、查看当前系统版本
+7、查看当前系统版本
 	lsb_release -a
 	返回：
 		No LSB modules are available.
@@ -80,7 +137,7 @@
 		Release:	22.04
 		Codename:	jammy
 
-7、通过tar.gz压缩包安装java
+8、通过tar.gz压缩包安装java
 	-oracle官网下载需要的tar包
 	-sudo mkdir -p /usr/local/java  在usr中创建java目录
 	-tar -vzxf jdk-8u161-linux-x64.tar.gz -C /usr/local/java/  将tar包解压缩到java目录中去
@@ -95,5 +152,3 @@
  
 	 source /etc/profile 运行环境变量设置
 	 java -version 查看版本好，确认安装成功
-
-	
