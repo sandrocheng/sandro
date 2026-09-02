@@ -63,3 +63,14 @@
 	5)查看传输进度
 		rsync -r --progress sourcePath destPath
 
+4、服务端ssh启动
+	1）systemctl status ssh
+		看看服务端的ssh有没有启动
+		如果返回的内容中有：Active：Inactive（dead）
+		说明服务端的ssh没有启动，
+		sudo systemctl enable --now ssh ，立刻启动ssh，并开机自启动
+	
+	2）防火墙放行 ssh
+		sudo ufw status，如果是active,则执行
+		sudo ufw allow 22/tcp
+		
