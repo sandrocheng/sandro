@@ -54,9 +54,12 @@
 			available = yes
 			# 是否可写
 			writable = yes
-	4) 重启samba服务：service smbd restart
-        5) ifconfig 查看ip ,比如：192.168.0.111
-	6) 在windows下面打开 \\192.168.0.111，打开后会看到mywork目录，点击打开输入用户名密码 ，sandro ,1234qwer,就可以打开了。
+	4) 重启samba服务：sudo systemctl restart smbd nmbd
+	   修改配置文件，也可以：
+			sudo systemctl reload smbd nmbd，
+	   这样已经连接的用户不会断开
+    5) ifconfig 查看ip ,比如：192.168.0.109
+	6) 在windows下面打开 \\192.168.0.109，打开后会看到mywork目录，点击打开输入用户名密码 ，sandro ,1234qwer,就可以打开了。
 	        
 3、samba命令：
 	smbd --version,查看版本
@@ -64,4 +67,6 @@
 	sudo pdbedit -Lv:列出samba用户列表详细信息。
 	sudo pdbedit -c "[D]" -u username ,暂停该samba用户账号
 	pdbedit -c "" -u username:恢复该Samba用户账号
+	systemctl status smbd nmbd  查看samba的运行状态
+	journalctl -u smbd -f 排查smba日志
 
