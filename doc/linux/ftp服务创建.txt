@@ -14,7 +14,8 @@ linux 创建ftp服务
 	2)如果想增加某个文件夹可以如下配置		
 		local_root=/mnt/diskA
 
-
+	3）utf8_filesystem=YES
+		避免中文乱码
 3、常用命令
 	systemctl restart vsftpd 重启vsftpd 
 	vsftpd -v  : 查看版本号
